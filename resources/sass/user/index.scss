@@ -1,0 +1,724 @@
+@import "../base";
+@import "../front-common";
+
+.membercp-header {
+    background-color: #0096D2;
+    color: #fff;
+    height: 60px;
+    display: block;
+    padding: 0 20px;
+    margin: 0;
+}
+
+.membercp-header .header {
+    height: 60px;
+}
+
+.membercp-header .logo {
+    float: left;
+    padding-top: 10px;
+}
+
+.membercp-header .logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    border: 0;
+}
+
+.membercp-header .right-menu {
+    font-size: 12px;
+    overflow: hidden;
+    margin-left: 180px;
+    padding: 20px 0 0;
+}
+
+.membercp-header .right-menu a {
+    display: inline-block;
+    padding: 0 20px;
+    float: left;
+    font-size: 14px;
+    color: #fff;
+    line-height: 20px;
+}
+
+.sidebar {
+    width: 160px;
+    background: #EAEDF1;
+    float: left;
+    padding: 10px 0;
+}
+
+.sidebar .sidebar-content {
+    display: block;
+    padding: 0;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar .scroll {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: -20px;
+    bottom: 0;
+    overflow: auto;
+}
+
+.sidebar .menus {
+    display: block;
+    padding: 10px 0 20px 0;
+}
+
+.sidebar dl {
+    display: block;
+}
+
+.sidebar dl dd {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.sidebar dl dd a {
+    display: block;
+    padding: 8px 32px;
+    font-size: 14px;
+}
+
+.sidebar dl dd a:hover {
+    color: #000;
+}
+
+.sidebar dl dd .iconfont {
+    display: inline-block;
+    vertical-align: -1px;
+    font-size: 16px;
+    margin-right: 3px;
+}
+
+.sidebar dl dt {
+}
+
+.sidebar dl ul {
+}
+
+.sidebar dl li {
+    display: block;
+}
+
+.sidebar dl li a {
+    display: block;
+    padding: 7px 20px 7px 51px;
+    font-size: 12px;
+}
+
+.sidebar dl li a:hover {
+    background: #e2e2e2;
+    color: #000;
+}
+
+.sidebar dl li a.cur {
+    background-color: #0097d0;
+    color: #fff;
+}
+
+.mainframe {
+    margin-left: 190px;
+}
+
+.mainframe .main-content {
+    padding: 0 0 20px 0;
+    overflow: hidden;
+    min-height: 500px;
+}
+
+.mainframe .main-content:before {
+    clear: none;
+    content: none;
+}
+
+.mainframe .main-content:after {
+    clear: both;
+    content: "";
+    display: block;
+}
+
+.listtable {
+}
+
+.listtable td, .listtable th {
+    padding: 10px;
+    text-align: left;
+    font-size: 12px;
+}
+
+.listtable td .title {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.listtable td .info {
+    font-size: 10px;
+    color: #999;
+    display: block;
+    margin-top: 5px;
+}
+
+.listtable td .pic {
+    width: 50px;
+    height: 50px;
+    float: left;
+    border-radius: 100%;
+    background-size: cover;
+}
+
+.listtable td .pic img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 100%;
+}
+
+.listtable td .thumb {
+    width: 60px;
+    height: 60px;
+    display: block;
+    border-radius: 4px;
+    position: relative;
+}
+
+.listtable td .thumb img, .listtable td .thumb a {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.listtable thead th {
+    background-color: #F5F6FA;
+}
+
+.listtable tbody td, .listtable tbody th {
+    border-bottom: 1px #EDEDED solid;
+}
+
+.listtable tbody tr:hover td {
+    background-color: #FeFeF0;
+}
+
+.listtable .head-first {
+    padding-left: 10px;
+}
+
+.listtable .first {
+    padding-left: 10px;
+}
+
+.listtable .align-right {
+    text-align: right !important;
+}
+
+.listtable .align-center {
+    text-align: center;
+}
+
+.formtable {
+}
+
+.formtable td, .formtable th {
+    padding: 10px 0;
+    font-size: 12px;
+    text-align: left;
+}
+
+.formtable .cell-label {
+    text-align: right;
+    padding-right: 15px;
+}
+
+.formtable .cell-tips {
+    padding-left: 15px;
+}
+
+.formtable .a-bind-link {
+    color: #008FBF;
+}
+
+.formtable .a-bind-link:hover {
+    text-decoration: underline;
+}
+
+.console-title {
+    display: block;
+    padding: 2px 0 13px;
+    border-bottom: 1px #CCC solid;
+    margin-bottom: 20px;
+}
+
+.console-title h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 5px;
+    border-left: 3px #86B6E2 solid;
+    padding-left: 6px;
+    float: left;
+    line-height: 1;
+    padding-top: 2px;
+}
+
+.pagination-container {
+    display: inline-block;
+    padding: 10px 0;
+}
+
+.avatar-div {
+    width: 240px;
+    float: left;
+    margin-right: 50px;
+}
+
+.avatar-div .avatar {
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+    display: block;
+}
+
+.avatar-div .avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.avatar-div .avatar-content {
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+    color: #00BAAA;
+    font-size: 14px;
+    position: relative;
+}
+
+.avatar-div .upload-button {
+    position: relative;
+}
+
+.avatar-div #J-file {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: pointer;
+}
+
+.userinfo-div {
+    overflow: hidden;
+}
+
+.wellcome-div {
+    display: block;
+    height: 30px;
+    position: relative;
+}
+
+.wellcome-div .txt {
+    margin-left: 140px;
+    font-size: 12px;
+    color: #333;
+    line-height: 30px;
+}
+
+.wellcome-div .btn-recharge {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    height: 28px;
+    line-height: 28px;
+}
+
+.mcenter-content-div {
+    display: block;
+    border: 1px #DDD solid;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.mcenter-content-div .headimg-div {
+    position: absolute;
+    left: 20px;
+    top: -30px;
+    display: block;
+    width: 100px;
+}
+
+.mcenter-content-div .headimg-div .avatar {
+    padding: 10px;
+    border: 1px #DDD solid;
+    background-color: #fff;
+}
+
+.mcenter-content-div .headimg-div .avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.mcenter-content-div .headimg-div .a-setting {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #0090CB;
+}
+
+.mcenter-content-div .user-account {
+    margin-left: 140px;
+}
+
+.mcenter-content-div .user-account .row {
+    font-size: 12px;
+    display: block;
+    border-bottom: 1px #DDD solid;
+}
+
+.mcenter-content-div .user-account .row .item {
+    padding: 10px 0;
+    margin-right: 20px;
+    float: left;
+}
+
+.mcenter-content-div .user-account .row .item i {
+    font-style: normal;
+    color: #F00;
+}
+
+.mcenter-content-div .user-account .row .item .icon {
+    width: auto;
+    height: auto;
+    font-size: 12px;
+    margin-right: 2px;
+}
+
+.mcenter-content-div .console-title {
+    display: block;
+    padding: 10px 20px;
+}
+
+.mcenter-content-div .console-title strong {
+    border-left: 3px #70B46E solid;
+    padding-left: 5px;
+    display: inline-block;
+    line-height: 1.1;
+}
+
+.mcenter-task-div {
+    display: block;
+    margin-left: -20px;
+}
+
+.mcenter-task-box {
+    width: 20%;
+    float: left;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.mcenter-task-box .box {
+    padding: 25px 15px;
+    display: block;
+    margin-left: 20px;
+}
+
+.mcenter-task-box .icon {
+    font-size: 46px;
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+    float: left;
+}
+
+.mcenter-task-box .con {
+    overflow: hidden;
+}
+
+.mcenter-task-box .con h3 {
+    font-size: 16px;
+    padding-top: 5px;
+}
+
+.mcenter-task-box .con p {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+}
+
+.trade-filter-div {
+    display: block;
+}
+
+.trade-filter-div .row {
+    display: block;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.trade-filter-div .row .label {
+    width: 60px;
+    float: left;
+    padding-right: 5px;
+    color: #777;
+    line-height: 24px;
+}
+
+.trade-filter-div .row .content {
+    margin-left: 60px;
+}
+
+.trade-filter-div .row .content a {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 0 10px;
+    border-radius: 3px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.trade-filter-div .row .content a:hover {
+    background-color: #f0f0f0;
+}
+
+.trade-filter-div .row .content a.cur {
+    background-color: #0097D0;
+    color: #fff;
+}
+
+.trade-list-table {
+}
+
+.trade-list-table thead th {
+    border-bottom: 1px #CCC solid;
+}
+
+.trade-list-table thead .head-time {
+    padding-left: 10px;
+}
+
+.trade-list-table .time {
+    width: 140px;
+}
+
+.trade-list-table .time span {
+    font-size: 14px;
+    color: #666;
+    font-weight: 400;
+}
+
+.trade-list-table .name h3 {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.trade-list-table .name p {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+    font-size: 10px;
+}
+
+.trade-list-table .amount {
+    text-align: right;
+    width: 100px;
+}
+
+.trade-list-table .amount span {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+/*===订单列表===*/
+.order-title-table {
+    background-color: #F2F2F2;
+    font-size: 13px;
+    border: 1px #e5e5e5 solid;
+    clear: both;
+}
+
+.order-title-table td {
+    padding: 10px 0;
+    text-align: center;
+    color: #777;
+}
+
+.order-item-wrap {
+    display: block;
+    margin-top: 10px;
+}
+
+.order-item-table {
+    border: 1px #e5e5e5 solid;
+}
+
+.order-item-table:hover {
+    border-color: #999;
+}
+
+.order-item-table thead th {
+    background-color: #F2F2F2;
+    padding: 10px 15px;
+    font-weight: normal;
+    text-align: left;
+    font-size: 12px;
+    color: #666;
+    border-bottom: 1px #e5e5e5 solid;
+}
+
+.order-item-table thead .wrap-checkbox {
+    margin-right: 3px;
+}
+
+.order-item-table thead .wrap-time {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #222;
+}
+
+.order-item-table thead .wrap-order-no {
+    color: #666;
+}
+
+.order-item-table thead h3 {
+    font-size: 12px;
+    color: #222;
+}
+
+.order-item-table thead .delete-order {
+    color: #888;
+}
+
+.order-item-table thead .delete-order:hover {
+    color: #222;
+}
+
+.order-item-table tbody td {
+    padding: 15px 0;
+    font-size: 12px;
+    color: #666;
+    font-weight: 400;
+}
+
+.order-item-table tbody .goods-pic {
+    width: 80px;
+    float: left;
+}
+
+.order-item-table tbody .goods-pic img {
+    width: 80px;
+    height: 80px;
+    display: block;
+}
+
+.order-item-table tbody .goods-name {
+    line-height: 1;
+    font-size: 13px;
+    padding: 8px 0;
+    height: auto;
+    color: #333;
+}
+
+.order-item-table tbody .goods-attr {
+    font-size: 12px;
+    color: #999;
+    line-height: 1;
+}
+
+.order-item-table tbody .col1 {
+    padding: 15px;
+    text-align: left;
+}
+
+.order-item-table tbody .col2 {
+    width: 80px;
+    vertical-align: top;
+    text-align: center;
+    font-size: 12px;
+}
+
+.order-item-table tbody .col3 {
+    width: 60px;
+    vertical-align: top;
+    text-align: center;
+    font-size: 14px;
+}
+
+.order-item-table tbody .col4 {
+    width: 100px;
+    vertical-align: top;
+    text-align: center;
+}
+
+.order-item-table tbody .col5, .order-item-table tbody .col6, .order-item-table tbody .col7 {
+    border-left: #e5e5e5 solid 1px;
+    vertical-align: top;
+    width: 100px;
+    text-align: center;
+}
+
+.order-item-table tbody .col7 .btn {
+    height: 26px;
+    line-height: 24px;
+    border-radius: 3px;
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.order-item-table tbody td p {
+    display: block;
+    padding-bottom: 3px;
+}
+
+/*订单搜索*/
+.search-container {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.search-container .row {
+    clear: both;
+    margin: 10px 0;
+}
+
+.search-container .row .cell {
+    width: 33.3333%;
+    float: left;
+}
+
+.search-container .row .cell label {
+    width: 90px;
+    text-align: center;
+    font-size: 12px;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+}
+
+.search-container .row .cell .field {
+    margin-left: 91px;
+}
+
+.search-container .row .cell .button {
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.search-container .row .cell .con {
+    display: inline-block;
+}

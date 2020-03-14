@@ -1,0 +1,55 @@
+.app{
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    .error-content{
+        text-align: center;
+        padding-top: 100px;
+        min-height: 530px;
+
+        .image{
+            text-align: center;
+            display: block;
+
+            img{
+                width: 200px;
+                display: inline-block;
+            }
+        }
+
+        .error-icon{
+            text-align: center;
+
+            img{
+                width: 80px;
+                display: inline-block;
+                margin-bottom: 10px;
+            }
+        }
+
+        h2{
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 3.6;
+        }
+
+        .links{
+            text-align: center;
+            font-size: 14px;
+        }
+
+        a{
+            margin: 0 5px;
+            text-decoration: none;
+
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .foot{
+
+    }
+}

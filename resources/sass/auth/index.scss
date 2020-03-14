@@ -1,0 +1,78 @@
+@import "../base";
+
+.header{
+  display: block;
+  background-color: #fff;
+  padding: 20px 0;
+}
+
+.header .logo{
+  height: 60px;
+  display: inline-block;
+}
+
+.header .logo img{
+  display: block;
+  height: 100%;
+}
+
+.form-body{
+  padding: 30px 0;
+  background-image: url("#{$image-path}/ad/loginbg.jpg");
+  min-height: 550px;
+}
+
+.form-body .form-container{
+  position: absolute;
+  width: 380px;
+  background-color: #fff;
+  border-radius: 6px;
+  top: 0;
+  right: 0;
+}
+
+.form-body .form-container .form-content{
+  padding: 30px;
+  display: block;
+}
+
+.form-body .form-container .form-header{
+  font-size: 18px;
+  padding-bottom: 15px;
+  border-bottom: 2px #E4B8AF solid;
+  margin-bottom: 40px;
+}
+
+.form-body .form-group{
+  margin-bottom: 30px;
+}
+
+.form-body .links{
+  display: block;
+  font-size: 14px;
+  padding-top: 15px;
+}
+
+.form-body .iconfont{
+  font-size: 18px;
+  color: #666;
+  font-weight: 500;
+}
+
+.form-body .input-group-prepend .btn-default{
+  background-color: #f5f5f5;
+}
+
+.form-body .btn-submit{
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 16px;
+}
+
+.form-body .form-control{
+  z-index: 10;
+}
+
+.form-body .is-invalid:focus{
+  box-shadow: none;
+}

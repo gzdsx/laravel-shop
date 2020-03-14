@@ -1,0 +1,270 @@
+.area {
+    display: block;
+    margin: 0 auto;
+    width: 1180px;
+}
+
+.top {
+    background-color: #F7F7F7;
+    height: 35px;
+    line-height: 34px;
+    border-bottom: 1px #CCC solid;
+    font-size: 12px;
+
+    ul {
+        li {
+            float: left;
+        }
+
+        li.pipe {
+            color: #e5e5e5;
+            width: 5px;
+            height: 34px;
+            text-align: center;
+        }
+
+        a {
+            padding: 0 10px;
+            color: #6c6c6c;
+            display: inline-block;
+        }
+    }
+
+    .iconfont {
+        font-size: 16px;
+        float: left;
+        margin-right: 3px;
+    }
+}
+
+.footer-common {
+    background-color: #fff;
+    padding: 30px 0;
+    display: block;
+    font-size: 14px;
+
+    p {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .copyright {
+        color: #666;
+        font-size: 12px;
+    }
+}
+
+.header {
+    display: block;
+
+    .banner {
+        display: block;
+        padding: 20px 0;
+        position: relative;
+    }
+
+    .global-logo {
+        height: 60px;
+        float: left;
+        width: 240px;
+    }
+
+    .global-logo img {
+        height: 60px;
+        width: auto;
+        display: block;
+    }
+
+    .global-search-box {
+        height: 60px;
+        width: 600px;
+        float: left;
+        position: relative;
+        padding-top: 3px;
+
+        .input-box {
+            height: 34px;
+            border: 2px #41CC24 solid;
+            width: 500px;
+            position: relative;
+        }
+
+        .text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border: 0;
+            background: none;
+            width: 460px;
+            height: 30px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #333;
+            padding: 0 10px;
+        }
+
+        .btn {
+            background-color: #41CC24;
+            color: #fff;
+            position: absolute;
+            border: none;
+            width: 60px;
+            cursor: pointer;
+            border-radius: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            -webkit-appearance: none;
+            line-height: 18px;
+        }
+
+        .hot {
+            display: block;
+            padding-top: 10px;
+            font-size: 12px;
+            line-height: 1.0;
+            color: #666;
+        }
+    }
+
+    .phone {
+        height: 60px;
+        overflow: hidden;
+        padding-top: 12px;
+
+        span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .phone-num {
+            font-size: 22px;
+            font-weight: bold;
+            color: #41CC24
+        }
+    }
+
+    .apps {
+        position: absolute;
+        top: 15px;
+        right: 0;
+
+        li {
+            float: left;
+            margin-left: 20px;
+
+            .pic {
+                height: 50px;
+                text-align: center;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    display: block;
+                    margin: 0 auto;
+                }
+            }
+
+            p {
+                padding-top: 5px;
+                text-align: center;
+                display: block;
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+
+.global-nav {
+    background-color: #41CC24;
+    color: #fff;
+    display: block;
+    height: 38px;
+    clear: both;
+
+    .nav {
+        width: 1180px;
+        display: block;
+        height: 38px;
+        position: relative;
+        margin: 0 auto;
+
+        .cat {
+            width: 160px;
+            height: 38px;
+            line-height: 38px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            float: left;
+            position: relative;
+
+            .iconfont {
+                left: 0;
+                position: absolute;
+                font-size: 18px;
+            }
+
+            * {
+                color: #fff;
+            }
+        }
+
+        ul {
+            float: left;
+
+            li {
+                height: 38px;
+                float: left;
+
+                a {
+                    display: block;
+                    padding: 0 20px;
+                    line-height: 38px;
+                    color: #fff;
+                    font-size: 14px;
+                }
+
+                a.cur {
+                    background-color: #D10025;
+                }
+            }
+        }
+
+        .cart {
+            position: absolute;
+            height: 38px;
+            line-height: 38px;
+            top: 0;
+            right: 0;
+
+            .ico {
+                width: 24px;
+                height: 24px;
+                float: left;
+                margin: 7px 10px 0 0;
+                background-image: url("#{$image-path}/cugeng/icon-cart.png");
+                background-size: 100% 100%;
+            }
+
+            span {
+                margin-right: 10px;
+            }
+
+            a {
+                color: #fff;
+            }
+        }
+    }
+}
+
+.yourpos {
+    display: block;
+    padding: 15px 0;
+    font-size: 14px;
+}
