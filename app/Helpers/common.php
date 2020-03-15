@@ -1,18 +1,17 @@
 <?php
 /**
  * ============================================================================
- * Copyright (c) 2015-2018 贵州大师兄信息技术有限公司 All rights reserved.
- * siteַ: http://www.dsxcms.com
+ * Copyright (c) 2015-2020 贵州大师兄信息技术有限公司 All rights reserved.
+ * siteַ: https://www.gzdsx.cn
  * ============================================================================
  * @author:     David Song<songdewei@163.com>
  * @version:    v1.0.0
  * ---------------------------------------------
- * Date: 2018/5/31
+ * Date: 2020/03/15
  * Time: 下午4:29
  */
 
 use App\Repositories\Contracts\SettingsRepositoryInterface;
-use Illuminate\Support\HtmlString;
 
 if (!function_exists('setting')) {
     /**
@@ -99,16 +98,6 @@ function format_distance($distance)
 }
 
 /**
- * 16位MD5散列值
- * @param $str
- * @return string
- */
-function md5_16($str)
-{
-    return substr(md5($str), 0, 16);
-}
-
-/**
  * 去除HTML代码和空格
  * @param string $str
  * @return mixed
@@ -155,6 +144,19 @@ function format_size($size)
 function format_amount($money)
 {
     return number_format($money, 2, '.', '');
+}
+
+/**
+ * @param $count
+ * @return string
+ */
+function format_count($count)
+{
+    if ($count > 10000) {
+        return round($count / 10000, 2) . 'w';
+    } else {
+        return $count;
+    }
 }
 
 /**
@@ -291,15 +293,6 @@ function avatar($uid, $size = 'big')
 {
     $code = base64_encode(serialize(['uid' => $uid, 'size' => $size]));
     return url('avatar/' . $code);
-}
-
-/**
- * @param $pageid
- * @return string
- */
-function page_url($pageid)
-{
-    return url('pages/detail/' . $pageid . '.html');
 }
 
 /**

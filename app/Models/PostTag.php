@@ -23,7 +23,6 @@ class PostTag extends Model
 {
     protected $table = 'post_tag';
     protected $primaryKey = 'tag_id';
-    protected $guarded = [];
 
     public $timestamps = false;
 }

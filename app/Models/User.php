@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\Traits\UserCmsRelations;
-use App\Models\Traits\UserMallRelations;
-use App\Models\Traits\UserNewsRelations;
 use App\Models\Traits\WechatMessageAble;
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,8 +33,8 @@ use Laravel\Passport\HasApiTokens;
  * @property int $exp1
  * @property int $exp2
  * @property int $exp3
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\Models\Account $account
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
  * @property-read int|null $addresses_count
@@ -111,12 +109,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token', 'api_token'
     ];
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'uid', 'gid', 'admingid', 'admincp', 'username', 'email', 'mobile',
         'password', 'remember_token', 'state', 'newpm', 'email_state',

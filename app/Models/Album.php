@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $password
  * @property int $is_open
  * @property int $views
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Material[] $images
  * @property-read int|null $images_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newModelQuery()
@@ -37,12 +37,6 @@ class Album extends Model
 {
     protected $table = 'album';
     protected $primaryKey = 'albumid';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['albumid', 'uid', 'title', 'cover', 'password', 'is_open', 'views', 'created_at', 'updated_at'];
 
     /**

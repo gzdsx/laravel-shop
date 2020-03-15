@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $order_id 订单ID
  * @property string|null $reason 关闭原因
- * @property mixed $closed_at 关闭时间
+ * @property string|null $closed_at 关闭时间
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed newQuery()
@@ -26,11 +26,6 @@ class OrderClosed extends Model
 {
     protected $table = 'order_closed';
     protected $primaryKey = 'order_id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'closed_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['order_id', 'reason', 'closed_at'];
 
     public $timestamps = false;

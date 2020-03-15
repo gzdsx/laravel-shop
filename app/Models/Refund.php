@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $refund_reason 退货原因
  * @property string|null $refund_desc 退款说明
  * @property float $refund_amount 退款金额
- * @property mixed $created_at 创建时间
- * @property mixed $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RefundImage[] $images
  * @property-read int|null $images_count
  * @property-read \App\Models\Order $order
@@ -41,12 +41,6 @@ class Refund extends Model
 {
     protected $table = 'refund';
     protected $primaryKey = 'refund_id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'order_id', 'refund_no', 'refund_type', 'refund_state', 'refund_reason',
         'refund_desc', 'refund_amount', 'created_at', 'updated_at'

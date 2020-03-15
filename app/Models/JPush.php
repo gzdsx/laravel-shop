@@ -12,18 +12,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int|null $uid
  * @property string|null $appid
- * @property string|null $platform
- * @property string|null $registrationid
+ * @property string|null $ios
+ * @property string|null $android
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush android()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush ios()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereAndroid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereAppid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush wherePlatform($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereRegistrationid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereIos($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\JPush whereUid($value)
  * @mixin \Eloquent
  */

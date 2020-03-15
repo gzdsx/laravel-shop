@@ -58,7 +58,7 @@ trait PostManagerTrait
 
         if (!$post['summary']) {
             if ($content) {
-                $post['summary'] = mbsubstr(stripHtml($content['content']), 300);
+                $post['summary'] = mbsubstr(strip_html($content['content']), 300);
             }
         }
 

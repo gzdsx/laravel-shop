@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $image
  * @property int $sku_id
  * @property string|null $sku_name
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Item $item
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $items
  * @property-read int|null $items_count
@@ -49,12 +49,6 @@ class Cart extends Model
 {
     protected $table = 'cart';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'uid', 'itemid', 'title', 'quantity', 'price',
         'thumb', 'image', 'sku_id', 'sku_name', 'created_at', 'updated_at'

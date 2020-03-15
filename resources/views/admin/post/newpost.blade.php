@@ -37,7 +37,7 @@
                         <input type="hidden" id="postImage" name="post[image]" value="{{$post->image ?? ''}}">
                         <div class="post-image-box" title="点击更换图片">
                             <div class="bg-cover" id="postImagePreview"
-                                 style="width: 140px; height: 140px; display: inline-block; background-image: url({{$post->image}})"></div>
+                                 style="width: 140px; height: 140px; display: inline-block; background-image: url({{image_url($post->image)}})"></div>
                             <p style="text-align: center; padding-top: 5px;">文章配图</p>
                         </div>
                     </td>

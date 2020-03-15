@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $district
  * @property string|null $street
  * @property string|null $postalcode
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Refund $refund
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping newQuery()
@@ -46,12 +46,6 @@ class RefundShipping extends Model
 {
     protected $table = 'refund_shipping';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'refund_id', 'express_code', 'express_name', 'express_no',
         'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode', 'created_at', 'updated_at'

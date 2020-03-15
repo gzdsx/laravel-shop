@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $uid
  * @property int $aid
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostItem $post
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostCollect newModelQuery()
@@ -28,13 +28,7 @@ class PostCollect extends Model
 {
     protected $table = 'post_collect';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
-    protected $fillable = ['aid','uid'];
+    protected $fillable = ['aid', 'uid'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

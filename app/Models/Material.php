@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
  *
  * @property int $id
  * @property int $uid
- * @property int $albumid 专辑ID，图片素材有效
  * @property string|null $name
  * @property string $source
  * @property string $thumb
@@ -24,8 +23,8 @@ use Illuminate\Support\Facades\Auth;
  * @property int $size
  * @property int $views
  * @property int $downloads
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $image
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material doc()
@@ -39,7 +38,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material video()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material voice()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material whereAlbumid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material whereBeginsWith($column, $value, $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Material whereDownloads($value)
@@ -65,12 +63,6 @@ class Material extends Model
 
     protected $table = 'material';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'uid', 'albumid', 'name', 'source', 'thumb', 'width', 'height',
         'type', 'extension', 'size', 'views', 'downloads', 'created_at', 'updated_at'

@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $uid
  * @property string|null $title
  * @property string|null $action_type
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostItem $post
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostLog newQuery()
@@ -30,12 +30,6 @@ class PostLog extends Model
 {
     protected $table = 'post_log';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['aid', 'uid', 'title', 'action_type'];
 
     /**

@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $uid 操作用户ID
  * @property string|null $username
  * @property string|null $content 操作内容
- * @property mixed $created_at 操作时间
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at 操作时间
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderAction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderAction newQuery()
@@ -32,12 +32,6 @@ class OrderAction extends Model
 {
     protected $table = 'order_action';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['order_id', 'uid', 'username', 'content', 'created_at', 'updated_at'];
 
     /**

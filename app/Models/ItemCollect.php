@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $title
  * @property string $image
  * @property float $price
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ItemCollect newModelQuery()
@@ -34,12 +34,6 @@ class ItemCollect extends Model
 {
     protected $table = 'item_collect';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['uid', 'itemid', 'title', 'image', 'price', 'created_at', 'updated_at'];
 
     /**

@@ -101,7 +101,7 @@
                     <td><img src="{{image_url($item['image'])}}" width="50" height="50" rel="pickimage" data-id="{{$item['aid']}}"></td>
                     <th>
                         <div style="word-break: break-all; word-wrap: break-word;">
-                            <a href="{{post_url($item['aid'])}}" target="_blank">{{$item['title']}}</a>
+                            <a href="{{$item['url']}}" target="_blank">{{$item['title']}}</a>
                         </div>
                     </th>
                     <td>{{$item['user']['username']}}</td>

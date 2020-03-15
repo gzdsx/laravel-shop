@@ -19,8 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $content
  * @property string|null $template
  * @property int $displayorder
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Pages $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pages[] $pages
  * @property-read int|null $pages_count
@@ -47,16 +47,28 @@ class Pages extends Model
 {
     protected $table = 'pages';
     protected $primaryKey = 'pageid';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'type', 'catid', 'title', 'alias', 'image', 'summary',
         'content', 'template', 'displayorder', 'created_at', 'updated_at'
     ];
+    protected $appends = ['url', 'h5_url'];
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getUrlAttribute()
+    {
+        return url('pages/detail/' . $this->attributes['pageid'] . '.html');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getH5UrlAttribute()
+    {
+        return url('h5/pages/detail/' . $this->attributes['pageid'] . '.html');
+    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

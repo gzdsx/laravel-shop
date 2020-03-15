@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $id_card_back 身份证背面
  * @property string $id_card_hand 手持身份证
  * @property int $auth_state 认证状态
- * @property mixed $created_at 创建时间
- * @property mixed $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon $created_at 创建时间
+ * @property \Illuminate\Support\Carbon $updated_at 更新时间
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAuth newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAuth newQuery()
@@ -36,12 +36,6 @@ class UserAuth extends Model
 {
     protected $table = 'user_auth';
     protected $primaryKey = 'uid';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at'=>'datetime:Y-m-d H:i:s',
-        'updated_at'=>'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'uid','name','id_card_no','id_card_front',
         'id_card_back','id_card_hand','auth_state','created_at','updated_at'

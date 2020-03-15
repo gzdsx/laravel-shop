@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Library\Mall\Buyer\BoughtManagers;
+use App\Traits\Order\BoughtTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class BoughtController extends BaseController
 {
-    use BoughtManagers;
+    use BoughtTrait;
     /**
      * TradeController constructor.
      * @param Request $request

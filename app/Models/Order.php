@@ -27,22 +27,22 @@ use Illuminate\Support\Facades\Auth;
  * @property float $total_fee 付款金额
  * @property int $pay_type 付款方式，1=在线支付，2=货到付款
  * @property int $pay_state 支付状态，1=已支付，0=未支付
- * @property mixed|null $pay_at 付款时间
+ * @property \Illuminate\Support\Carbon|null $pay_at 付款时间
  * @property int $shipping_state 发货状态，0=未发货，1=已发货
- * @property mixed|null $shipping_at 发货时间
+ * @property \Illuminate\Support\Carbon|null $shipping_at 发货时间
  * @property int $receive_state 收货状态，0=未收货，1=已收货
- * @property mixed $receive_at 收货时间
+ * @property \Illuminate\Support\Carbon|null $receive_at 收货时间
  * @property int $buyer_rate 评价状态，0=未评价，1=已评价
  * @property int $seller_rate 卖家评价状态
  * @property int $refund_state 退款状态，0=无退款，1=退款中，2=退款完成
- * @property mixed $refund_at 退款时间
+ * @property \Illuminate\Support\Carbon|null $refund_at 退款时间
  * @property int $closed 关闭状态
- * @property mixed $closed_at 关闭时间
+ * @property \Illuminate\Support\Carbon|null $closed_at 关闭时间
  * @property int $buyer_deleted 买家已删除
  * @property int $seller_deleted 卖家已删除
- * @property mixed $finished_at 成交时间
- * @property mixed $created_at 创建时间
- * @property mixed $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon|null $finished_at 成交时间
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderAction[] $actions
  * @property-read int|null $actions_count
  * @property-read \App\Models\User $buyer
@@ -117,17 +117,6 @@ class Order extends Model
         'refund_at',
         'finished_at',
         'closed_at'
-    ];
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-        'pay_at' => 'datetime:Y-m-d H:i:s',
-        'shipping_at' => 'datetime:Y-m-d H:i:s',
-        'receive_at' => 'datetime:Y-m-d H:i:s',
-        'refund_at' => 'datetime:Y-m-d H:i:s',
-        'finished_at' => 'datetime:Y-m-d H:i:s',
-        'closed_at' => 'datetime:Y-m-d H:i:s',
     ];
     protected $appends = [
         'order_state_des',

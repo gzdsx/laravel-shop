@@ -5,9 +5,7 @@ namespace App\Models;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 
 
 /**
@@ -23,8 +21,8 @@ use Illuminate\Support\Facades\Date;
  * @property string|null $summary 摘要
  * @property string $image 图片
  * @property array|null $tags 标签
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property int $allowcomment 允许评论
  * @property int $collections 被收藏数
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PostComment[] $comments 评论数
@@ -45,8 +43,10 @@ use Illuminate\Support\Facades\Date;
  * @property-read \App\Models\PostCatlog $catlog
  * @property-read int|null $comments_count
  * @property-read \App\Models\PostContent $content
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
  * @property-read mixed $state_des
  * @property-read mixed $type_des
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostImage[] $images
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostLog[] $logs
@@ -99,15 +99,14 @@ class PostItem extends Model
 
     protected $table = 'post_item';
     protected $primaryKey = 'aid';
-    protected $dateFormat = 'U';
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
         'tags' => 'array'
     ];
     protected $appends = [
         'type_des',
-        'state_des'
+        'state_des',
+        'url',
+        'h5_url'
     ];
 
     protected $fillable = [
@@ -144,10 +143,7 @@ class PostItem extends Model
      */
     public function getTypeDesAttribute()
     {
-        if (isset($this->attributes['type'])){
-            return Arr::get(trans('post.post_types'), $this->attributes['type']);
-        }
-        return null;
+        return data_get(trans('post.post_types'), $this->attributes['type']);
     }
 
     /**
@@ -155,10 +151,23 @@ class PostItem extends Model
      */
     public function getStateDesAttribute()
     {
-        if (isset($this->attributes['state'])){
-            return Arr::get(trans('post.post_states'), $this->attributes['state']);
-        }
-        return null;
+        return data_get(trans('post.post_states'), $this->attributes['state']);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getUrlAttribute()
+    {
+        return url('post/detail/' . $this->attributes['aid'] . '.html');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getH5UrlAttribute()
+    {
+        return url('h5/post/detail/' . $this->attributes['aid'] . '.html');
     }
 
     /**
@@ -176,11 +185,6 @@ class PostItem extends Model
     public function setImageAttribute($value)
     {
         $this->attributes['image'] = strip_image_url($value);
-    }
-
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = $this->fromDateTime(Date::parse($value));
     }
 
     /**

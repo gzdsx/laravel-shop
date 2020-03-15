@@ -33,8 +33,8 @@ use Illuminate\Support\Facades\Auth;
  * @property float $shipping_fee 运费
  * @property string|null $unit 单位
  * @property int $freight_template 运费模板
- * @property mixed $created_at 创建时间
- * @property mixed $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon $created_at 创建时间
+ * @property \Illuminate\Support\Carbon $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemReviews[] $buyerReviews
  * @property-read int|null $buyer_reviews_count
  * @property-read \App\Models\ItemCatlog $catlog
@@ -89,17 +89,12 @@ class Item extends Model
 
     protected $table = 'item';
     protected $primaryKey = 'itemid';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'uid', 'catid', 'title', 'subtitle', 'merchant_code', 'thumb', 'image',
         'price', 'market_price', 'redpack_amount', 'isdiscount', 'on_sale', 'is_best', 'stock', 'sold', 'views',
         'shipping_fee', 'unit', 'freight_template', 'created_at', 'updated_at'
     ];
+    protected $appends = ['url', 'h5_url'];
 
     public static function boot()
     {
@@ -158,6 +153,22 @@ class Item extends Model
     public function setImageAttribute($value)
     {
         $this->attributes['image'] = strip_image_url($value);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getUrlAttribute()
+    {
+        return url('item/detail/' . $this->attributes['itemid'] . '.html');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getH5UrlAttribute()
+    {
+        return url('h5/item/detail/' . $this->attributes['itemid'] . '.html');
     }
 
     /**

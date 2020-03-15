@@ -26,6 +26,7 @@
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.0",
         "mews/captcha": "^3.0",
+        "moontoast/math": "^1.2",
         "overtrue/laravel-wechat": "^5.0",
         "prettus/l5-repository": "^2.6",
         "simplesoftwareio/simple-qrcode": "^2.0",

@@ -68,7 +68,7 @@ class PostController extends BaseController
             [trans('common.reedit'), back()->getTargetUrl()],
             [trans('common.continue publish'), admin_url('post/newpost?catid=' . $postitem->catid)],
             [trans('common.back list'), admin_url('post')],
-            [trans('common.preview'), post_url($postitem->aid), '_blank']
+            [trans('common.preview'), $postitem->url, '_blank']
         ])->render();
     }
 }

@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $uid
  * @property int $subscribe_uid
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $subscribeUser
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Subscribe newModelQuery()
@@ -29,12 +29,6 @@ class Subscribe extends Model
 {
     protected $table = 'subscribe';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = ['uid', 'subscribe_uid', 'created_at', 'updated_at'];
 
     /**

@@ -45,7 +45,7 @@ class Ad extends Model
     ];
 
     protected $fillable = [
-        'uid','title','type','data'
+        'uid', 'title', 'type', 'data'
     ];
 
     public $timestamps = false;
@@ -53,10 +53,8 @@ class Ad extends Model
     /**
      * @return mixed|null
      */
-    public function getTypeDescAttribute(){
-        if (isset($this->attributes['type'])){
-            return Arr::get(trans('ad.ad_types'), $this->attributes['type']);
-        }
-        return null;
+    public function getTypeDescAttribute()
+    {
+        return data_get(trans('ad.ad_types'), $this->attributes['type']);
     }
 }

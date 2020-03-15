@@ -79,7 +79,7 @@ class ItemCatlog extends Model
      */
     public function getIconAttribute($value)
     {
-        return image_url($value);
+        return $value ? image_url($value) : $value;
     }
 
     /**

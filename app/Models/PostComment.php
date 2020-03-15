@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $street
  * @property int $likes
  * @property int $state 审核状态
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostItem $post
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostComment newModelQuery()
@@ -47,13 +47,6 @@ class PostComment extends Model
 {
     protected $table = 'post_comment';
     protected $primaryKey = 'cid';
-    protected $guarded = [];
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at'=>'datetime:Y-m-d H:i:s',
-        'updated_at'=>'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'aid','uid','username','reply_uid','reply_name','message',
         'province','city','street','likes','state','created_at','updated_at'

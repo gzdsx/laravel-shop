@@ -17,7 +17,6 @@ class ItemReviewsImage extends Model
 {
     protected $table = 'item_reviews_image';
     protected $primaryKey = 'id';
-    protected $guarded = [];
 
     public $timestamps = false;
 

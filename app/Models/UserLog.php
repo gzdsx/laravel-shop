@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $operate
  * @property string|null $address
  * @property string|null $src
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserLog newQuery()
@@ -34,13 +34,7 @@ class UserLog extends Model
 {
     protected $table = 'user_log';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at'=>'datetime:Y-m-d H:i:s',
-        'updated_at'=>'datetime:Y-m-d H:i:s',
-    ];
-
-    protected $fillable = ['uid','ip','operate','address','src','created_at','updated_at'];
+    protected $fillable = ['uid', 'ip', 'operate', 'address', 'src', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

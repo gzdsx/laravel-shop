@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $street
  * @property string|null $introduction
  * @property string|null $tags
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo newQuery()
@@ -48,15 +48,9 @@ class UserInfo extends Model
 {
     protected $table = 'user_info';
     protected $primaryKey = 'uid';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at'=>'datetime:Y-m-d H:i:s',
-        'updated_at'=>'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
-        'uid','gender','birthday','blood','star','country','province',
-        'city','district','town','street','introduction','tags','created_at','updated_at'
+        'uid', 'gender', 'birthday', 'blood', 'star', 'country', 'province',
+        'city', 'district', 'town', 'street', 'introduction', 'tags', 'created_at', 'updated_at'
     ];
 
     /**

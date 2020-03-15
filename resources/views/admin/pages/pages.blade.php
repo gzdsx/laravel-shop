@@ -38,7 +38,7 @@
                 @foreach($items as $item)
                 <tr>
                     <td><input type="checkbox" class="checkmark" name="delete[]" value="{{$item['pageid']}}"></td>
-                    <td><a href="{{page_url($item['pageid'])}}" target="_blank">{{$item['title']}}</a></td>
+                    <td><a href="{{$item->url}}" target="_blank">{{$item['title']}}</a></td>
                     <td>{{$item['alias']}}</td>
                     <td><input type="number" class="form-control w60" name="pages[{{$item['pageid']}}][displayorder]" value="{{$item['displayorder']}}" /></td>
                     <td>{{$item['created_at']}}</td>

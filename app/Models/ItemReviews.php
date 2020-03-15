@@ -16,10 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $message
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\ItemReviewsImage[] $images
  * @property int $image_count
- * @property int $created_at
+ * @property string|null $created_at
  * @property string|null $add_message
  * @property string|null $add_images
- * @property int $add_at
+ * @property string|null $add_at
  * @property int $add_image_count
  * @property string|null $seller_message
  * @property-read int|null $images_count

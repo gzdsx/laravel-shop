@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $district
  * @property string|null $street
  * @property string|null $postalcode
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $consignee
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping newModelQuery()
@@ -49,12 +49,6 @@ class OrderShipping extends Model
 {
     protected $table = 'order_shipping';
     protected $primaryKey = 'id';
-    protected $dateFormat = 'U';
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
-
     protected $fillable = [
         'order_id', 'shipping_type', 'express_code', 'express_name', 'express_no',
         'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode', 'created_at', 'updated_at'
