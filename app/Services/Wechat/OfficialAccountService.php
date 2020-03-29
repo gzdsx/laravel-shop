@@ -62,7 +62,10 @@ class OfficialAccountService implements WechatServiceInterface
             }
         }
         if (!$user) {
-            $user = $this->userRepository->create(['username' => $wechatUserInfo->get('nickname')]);
+            $user = $this->userRepository->create([
+                'username' => $wechatUserInfo->get('nickname'),
+                'avatar_state' => 1
+            ]);
         }
 
         $user->connects()->updateOrCreate([
@@ -76,6 +79,7 @@ class OfficialAccountService implements WechatServiceInterface
             'province' => $wechatUserInfo->get('province'),
             'city' => $wechatUserInfo->get('city'),
             'appid' => $wechatUserInfo->get('appid'),
+            'platform' => 'official_account'
         ]);
 
         $user->info()->update([

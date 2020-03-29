@@ -37,14 +37,13 @@ trait CartTrait
         $itemid = $request->input('itemid', 0);
         $quantity = $request->input('quantity', 1);
         if ($itemid && $quantity) {
-            $cartitem = $this->cartRepository()->where('uid', Auth::id())->where('itemid', $itemid)->first();
-            if ($cartitem) {
-                $cartitem->increment('quantity', $quantity);
+            $result = $this->cartRepository()->where('uid', Auth::id())->where('itemid', $itemid)->first();
+            if ($result) {
+                $result->increment('quantity', $quantity);
             } else {
                 $item = app(ItemRepositoryInterface::class)->findOrFail($itemid);
-                $cartitem = $this->cartRepository()->create([
+                $result = $this->cartRepository()->create([
                     'itemid' => $item->itemid,
-                    'shop_id' => $item->shop_id,
                     'title' => $item->title,
                     'quantity' => $quantity,
                     'price' => $item->price,
@@ -55,19 +54,19 @@ trait CartTrait
                 ]);
             }
         } else {
-            $cartitem = null;
+            $result = [];
         }
-        return $this->sendSavedResponse($request, $cartitem);
+        return $this->sendSavedResponse($request, $result);
     }
 
     /**
      * @param Request $request
-     * @param $cartitem
+     * @param $item
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendSavedResponse(Request $request, $cartitem)
+    protected function sendSavedResponse(Request $request, $item)
     {
-        return ajaxReturn(compact('cartitem'));
+        return ajaxReturn(compact('item'));
     }
 
     /**
@@ -98,29 +97,17 @@ trait CartTrait
      */
     public function showCart(Request $request)
     {
-        $items = $this->cartRepository()->with(['item', 'shop'])->where('uid', $request->user()->uid)->get();
-        $shops = [];
-        foreach ($items as $item) {
-            if (!isset($shops[$item->shop_id])) {
-                $shops[$item->shop_id] = [
-                    'shop' => $item->shop,
-                    'items' => []
-                ];
-            }
-
-            $item->item->setAttribute('quantity', $item->quantity);
-            $shops[$item->shop_id]['items'][] = $item->item;
-        }
-        return $this->showCartView($request, array_values($shops));
+        $items = $this->cartRepository()->with(['item'])->where('uid', Auth::id())->get();
+        return $this->showCartView($request, $items);
     }
 
     /**
      * @param Request $request
-     * @param $shops
+     * @param $items
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function showCartView(Request $request, $shops)
+    protected function showCartView(Request $request, $items)
     {
-        return ajaxReturn(['shops' => $shops]);
+        return ajaxReturn(['items' => $items]);
     }
 }

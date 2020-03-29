@@ -34,4 +34,13 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
     {
         return Auth::user()->addresses()->create($attributes);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
+     */
+    public function getDefaultAddress()
+    {
+        // TODO: Implement getDefaultAddress() method.
+        return Auth::user()->addresses()->orderByDesc('isdefault')->first();
+    }
 }

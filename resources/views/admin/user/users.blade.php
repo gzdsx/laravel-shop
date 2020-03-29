@@ -87,7 +87,7 @@
                 @foreach($users as $user)
                 <tr id="user_{{$user['uid']}}">
                     <td><input title="" type="checkbox" class="checkmark" name="users[]" value="{{$user['uid']}}" /></td>
-                    <td><img src="{{avatar($uid, 'small')}}" width="30" height="30" style="border-radius:100%;"></td>
+                    <td><img src="{{$user->avatar}}" width="30" height="30" style="border-radius:100%;"></td>
                     <th><a>{{$user['username']}}</a></th>
                     <td>{{$user['mobile']}}</td>
                     <td>{{$user['email']}}</td>

@@ -320,6 +320,14 @@ function admin_has_priv($priv)
 }
 
 /**
+ * @return bool
+ */
+function is_wechat()
+{
+    return $isWechat = strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false;
+}
+
+/**
  * @param array $data
  * @return \Illuminate\Http\JsonResponse
  */

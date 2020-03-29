@@ -99,7 +99,7 @@
                         </a>
                     </td>
                     <td>
-                        <h4><a href="{{item_url($item['itemid'])}}" target="_blank">{{$item['title']}}</a></h4>
+                        <h4><a href="{{$item['url']}}" target="_blank">{{$item['title']}}</a></h4>
                         <p style="color:#f00; margin-top: 5px;">{{$item['subtitle']}}</p>
                     </td>
                     <td>{{$item['catlog']['name']}}</td>

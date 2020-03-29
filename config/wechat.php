@@ -59,10 +59,10 @@ return [
      */
     'official_account' => [
         'default' => [
-            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', 'wx820de4d667f90671'),         // AppID
-            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', '7b2064688f84b78923b289e6f16d9091'),    // AppSecret
+            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', ''),         // AppID
+            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', ''),         // AppSecret
             'token' => env('WECHAT_OFFICIAL_ACCOUNT_TOKEN', ''),           // Token
-            'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', ''),                 // EncodingAESKey
+            'aes_key' => env('WECHAT_OFFICIAL_ACCOUNT_AES_KEY', ''),       // EncodingAESKey
 
             /*
              * OAuth 配置
@@ -70,10 +70,10 @@ return [
              * scopes：公众平台（snsapi_userinfo / snsapi_base），开放平台：snsapi_login
              * callback：OAuth授权完成后的回调页地址(如果使用中间件，则随便填写。。。)
              */
-            // 'oauth' => [
-            //     'scopes'   => array_map('trim', explode(',', env('WECHAT_OFFICIAL_ACCOUNT_OAUTH_SCOPES', 'snsapi_userinfo'))),
-            //     'callback' => env('WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK', '/examples/oauth_callback.php'),
-            // ],
+//             'oauth' => [
+//                 'scopes'   => array_map('trim', explode(',', env('WECHAT_OFFICIAL_ACCOUNT_OAUTH_SCOPES', 'snsapi_userinfo'))),
+//                 'callback' => env('WECHAT_OFFICIAL_ACCOUNT_OAUTH_CALLBACK', '/examples/oauth_callback.php'),
+//             ],
         ],
     ],
 
@@ -94,8 +94,8 @@ return [
      */
     'mini_program' => [
         'default' => [
-            'app_id' => env('WECHAT_MINI_PROGRAM_APPID', 'wx52342f9e9c4b8b18'),
-            'secret' => env('WECHAT_MINI_PROGRAM_SECRET', '6610198d88a7b0044e08addf3ba9933d'),
+            'app_id' => env('WECHAT_MINI_PROGRAM_APPID', ''),
+            'secret' => env('WECHAT_MINI_PROGRAM_SECRET', ''),
             'token' => env('WECHAT_MINI_PROGRAM_TOKEN', ''),
             'aes_key' => env('WECHAT_MINI_PROGRAM_AES_KEY', ''),
         ]
@@ -103,8 +103,8 @@ return [
 
     'app' => [
         'default' => [
-            'app_id' => 'wxd061fe9e48e8c5f1',
-            'secret' => '1664d197a4d5d24fddf0c308903a8578',
+            'app_id' => '',
+            'secret' => '',
             'token' => '',
             'aes_key' => ''
         ],
@@ -115,12 +115,12 @@ return [
     'payment' => [
         'default' => [
             'sandbox' => env('WECHAT_PAYMENT_SANDBOX', false),
-            'app_id' => env('WECHAT_PAYMENT_APPID', 'wx68fe44528075f3cb'),
-            'mch_id' => env('WECHAT_PAYMENT_MCH_ID', '1386271002'),
-            'key' => env('WECHAT_PAYMENT_KEY', 'acb94afb13018ebc114a65610407f67b'),
+            'app_id' => env('WECHAT_PAYMENT_APPID', ''),
+            'mch_id' => env('WECHAT_PAYMENT_MCH_ID', ''),
+            'key' => env('WECHAT_PAYMENT_KEY', ''),
             'cert_path' => env('WECHAT_PAYMENT_CERT_PATH', base_path('cert/wechat/apiclient_cert.pem')),    // XXX: 绝对路径！！！！
             'key_path' => env('WECHAT_PAYMENT_KEY_PATH', base_path('cert/wechat/apiclient_key.pem')),      // XXX: 绝对路径！！！！
-            'notify_url' => 'https://cg.gzdsx.cn/notify/wechatpay', // 默认支付结果通知地址
+            'notify_url' => env('WECHAT_PAYMENT_NOTIFY_URL',''), // 默认支付结果通知地址
             'trade_type' => 'JSAPI'
         ]
     ],

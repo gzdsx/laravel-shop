@@ -35,7 +35,7 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(){
-        return PostItem::all();
+        return Item::all();
     }
 
     public function app(){

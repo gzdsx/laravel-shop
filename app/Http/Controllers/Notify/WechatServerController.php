@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Notify;
 
-use App\Models\Invite;
+
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Wechat\OfficialAccountService;
 use App\WeChat\Message\WechatServerMessage;
@@ -25,7 +25,6 @@ class WechatServerController extends Controller
 
     public function __construct(Request $request, UserRepositoryInterface $userRepository)
     {
-        parent::__construct($request);
         $this->userRepository = $userRepository;
     }
 
@@ -41,7 +40,7 @@ class WechatServerController extends Controller
      */
     public function index(Request $request)
     {
-        Storage::put('server.php', $request->getContent());
+        //Storage::put('server.php', $request->getContent());
         $app = $this->officialAccount();
         $app->server->push(function ($message) use ($app) {
             $msg = new WechatServerMessage($message);

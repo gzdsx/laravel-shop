@@ -64,7 +64,7 @@ trait ItemTrait
         if (!$request->has('sort')) {
             $request->query->add(['sort' => 'default']);
         }
-        $items = $this->itemRepository()->with(['shop', 'user'])->filter($request->all())->fetch($offset, $count);
+        $items = $this->itemRepository()->filter($request->all())->fetch($offset, $count);
         return ajaxReturn(['items' => $items]);
     }
 
@@ -75,9 +75,12 @@ trait ItemTrait
      */
     public function detail(Request $request, $itemid)
     {
-        $item = $this->itemRepository()->with(['content', 'images', 'shop', 'user'])->find($itemid);
+        $item = $this->itemRepository()->find($itemid);
         if (!$item) {
             abort(404, trans('item.this item has been removed'));
+        } else {
+            $item->increment('views');
+            $item->load(['content', 'images']);
         }
         return $this->showDetailView($request, $item);
     }

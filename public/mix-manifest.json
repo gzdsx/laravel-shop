@@ -1,15 +1,10 @@
 {
-    "/js/base.js": "/js/base.js?id=297626140a944702dd37",
-    "/css/post/index.css": "/css/post/index.css?id=636532392b344cb613a2",
-    "/css/user/index.css": "/css/user/index.css?id=692c7316f9d7ece41ff0",
-    "/css/admin/index.css": "/css/admin/index.css?id=ed21e0807b86e857b58a",
-    "/css/auth/index.css": "/css/auth/index.css?id=3743f9541a4876e913ae",
-    "/css/auction/index.css": "/css/auction/index.css?id=3533a930bcff7b3ff122",
-    "/css/cart/index.css": "/css/cart/index.css?id=a5e3a467fbdc7dbc3a5d",
-    "/css/h5/index.css": "/css/h5/index.css?id=abea323a659a2d134c2b",
-    "/css/errors/index.css": "/css/errors/index.css?id=6f5b65af3bcfc313434a",
-    "/css/widget/index.css": "/css/widget/index.css?id=0b089bdfc990a680383e",
-    "/css/app/index.css": "/css/app/index.css?id=4975d747e9f6175535cf",
-    "/js/vendor.js": "/js/vendor.js?id=cc1f4f74ff964d7ded7a",
-    "/js/manifest.js": "/js/manifest.js?id=40dcfff9d09d402daf38"
+    "/js/h5/address.js": "/js/h5/address.js",
+    "/js/h5/buynow.js": "/js/h5/buynow.js",
+    "/js/h5/cart.js": "/js/h5/cart.js",
+    "/js/h5/catlog.js": "/js/h5/catlog.js",
+    "/js/h5/index.js": "/js/h5/index.js",
+    "/css/h5/index.css": "/css/h5/index.css",
+    "/js/h5/item.js": "/js/h5/item.js",
+    "/js/h5/user.js": "/js/h5/user.js"
 }

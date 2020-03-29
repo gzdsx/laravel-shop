@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('images/common/favicon.png')}}" rel="icon"/>
     <link href="{{asset('css/vendor/bootstrap.css')}}" type="text/css" rel="stylesheet">
-    <link href="{{asset('css/entry/index.css')}}" type="text/css" rel="stylesheet">
     <style type="text/css">
         * {
             outline: none;
@@ -79,7 +78,7 @@
                 @endif
             </div>
             <div class="form-group">
-                <button class="form-control btn btn-danger btn-lg">登录</button>
+                <button type="submit" class="form-control btn btn-danger btn-lg">登录</button>
             </div>
         </form>
     </div>

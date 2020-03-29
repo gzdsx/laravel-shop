@@ -74,7 +74,8 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapNotifyRoutes()
     {
-        Route::middleware('api')
+        Route::prefix('notify')
+            ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/notify.php'));
     }

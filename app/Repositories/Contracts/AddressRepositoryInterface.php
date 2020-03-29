@@ -16,5 +16,8 @@ namespace App\Repositories\Contracts;
 
 interface AddressRepositoryInterface extends RepositoryInterface
 {
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
+     */
+    public function getDefaultAddress();
 }

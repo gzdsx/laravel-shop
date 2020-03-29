@@ -93,10 +93,10 @@ class BlockController extends BaseController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function newitem()
+    public function newitem(Request $request)
     {
-        $id = $this->request->input('id', 0);
-        $block_id = $this->request->input('block_id', 0);
+        $id = $request->input('id', 0);
+        $block_id = $request->input('block_id', 0);
         $block = Block::find($block_id);
         if ($id) {
             $item = $block->items()->find($id);
