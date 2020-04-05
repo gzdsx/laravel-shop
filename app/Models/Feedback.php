@@ -31,5 +31,5 @@ class Feedback extends Model
 {
     protected $table = 'feedback';
     protected $primaryKey = 'id';
-    protected $fillable = ['uid', 'username', 'title', 'message', 'created_at', 'updated_at'];
+    protected $fillable = ['uid', 'username', 'title', 'message'];
 }

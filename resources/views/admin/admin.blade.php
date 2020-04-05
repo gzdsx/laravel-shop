@@ -84,7 +84,7 @@
                             <dt>
                                 <ul>
                                     <li><a rel="item" data-action="{{admin_url('order')}}">订单记录</a></li>
-                                    <li><a rel="item" data-action="{{admin_url('transaction')}}">交易记录</a></li>
+{{--                                    <li><a rel="item" data-action="{{admin_url('transaction')}}">交易记录</a></li>--}}
                                 </ul>
                             </dt>
                         </dl>
@@ -109,6 +109,7 @@
                             <dd><a><i class="iconfont icon-messagefill"></i>微信公众号</a></dd>
                             <dt>
                                 <ul>
+                                    <li><a rel="item" data-action="{{admin_url('settings/wechat')}}">关注设置</a></li>
                                     <li><a rel="item" data-action="{{admin_url('wechat/menu')}}">菜单设置</a></li>
                                     <li><a rel="item" data-action="{{admin_url('wechat/material')}}">素材管理</a></li>
                                     <li><a rel="item" data-action="{{admin_url('wechat/news')}}">图文消息</a></li>

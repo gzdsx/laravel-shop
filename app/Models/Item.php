@@ -33,12 +33,14 @@ use Illuminate\Support\Facades\Auth;
  * @property float $shipping_fee 运费
  * @property string|null $unit 单位
  * @property int $freight_template 运费模板
- * @property \Illuminate\Support\Carbon $created_at 创建时间
- * @property \Illuminate\Support\Carbon $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemReviews[] $buyerReviews
  * @property-read int|null $buyer_reviews_count
  * @property-read \App\Models\ItemCatlog $catlog
  * @property-read \App\Models\ItemContent $content
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemImage[] $images
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemProps[] $props

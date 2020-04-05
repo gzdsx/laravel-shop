@@ -17,7 +17,6 @@ namespace App\Traits\Auction;
 use App\Events\OrderEvent;
 use App\Exceptions\UserRequestException;
 use App\Models\Order;
-use App\Models\Shop;
 use App\Repositories\Contracts\CartRepositoryInterface;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Repositories\Contracts\ShopRepositoryInterface;
@@ -89,10 +88,12 @@ trait AuctionTrait
         $item = $this->prepareItemFormAuction($request);
         $address_id = $request->input('address_id', 0);
         $address = Auth::user()->addresses()->findOrFail($address_id);
-        $order = $this->orderService()->create($item->shop, [$item], $address, [
+        $order = $this->orderService()->create([$item], $address, [
             'buyer_message' => $request->input('buyer_message', ''),
             'pay_type' => $request->input('pay_type', 1)
         ]);
+
+        event(new OrderEvent($order,'created'));
         return $this->sendOrderCreatedResponse($request, $order);
     }
 
@@ -113,24 +114,20 @@ trait AuctionTrait
      */
     public function settlement(Request $request, CartRepositoryInterface $cartRepository)
     {
-        $orders = [];
-        $order_data = $request->input('order_data', []);
-        $address = Auth::user()->addresses()->findOrFail($request->input('address_id'));
-        foreach ($order_data as $data) {
-            $shop = $this->shopRepository()->findOrFail($data['shop_id']);
-            $items = $this->cartRepository()->with('item')->where('uid', $request->user()->uid)
-                ->whereIn('itemid', $data['items'])->get()->map(function ($item) {
-                    $item->item->setAttribute('quantity', $item->quantity);
-                    return $item->item;
-                });
-            $orders[] = $this->orderService()->create($shop, $items->all(), $address, [
-                'buyer_messsage' => $data['buyer_message'] ?? null,
-                'pay_type' => $data['pay_type'] ?? null,
-                'shipping_type' => $data['shipping_type'] ?? null
-            ]);
-            $this->cartRepository()->where('uid', Auth::id())->whereIn('itemid', $data['items'])->delete();
+        $cartList = $cartRepository->with('item')->where('uid', Auth::id())->whereIn('itemid', $request->input('items', []))->get();
+        $items = [];
+        foreach ($cartList as $cart) {
+            if ($cart->item) {
+                $cart->item->setAttribute('quantity', $cart->quantity);
+                $items[] = $cart->item;
+            }
         }
-        return $this->sendSellementedResponse($request, $orders);
+        $address = Auth::user()->addresses()->findOrFail($request->input('address_id'));
+        $order = $this->orderService()->create($items, $address, ['buyer_message' => $request->input('buyer_message')]);
+        $this->cartRepository()->where('uid', Auth::id())->whereIn('itemid', $request->input('items', []))->delete();
+
+        event(new OrderEvent($order,'created'));
+        return $this->sendSellementedResponse($request, $order);
     }
 
     /**
@@ -138,8 +135,8 @@ trait AuctionTrait
      * @param $orders
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendSellementedResponse(Request $request, $orders)
+    protected function sendSellementedResponse(Request $request, $order)
     {
-        return ajaxReturn(['orders' => $orders]);
+        return ajaxReturn(['order' => $order]);
     }
 }

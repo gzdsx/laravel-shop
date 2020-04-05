@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $phone 手机号
  * @property string|null $email 邮箱
  * @property int $used 已使用
- * @property string|null $created_at 发送时间
+ * @property \Illuminate\Support\Carbon|null $created_at 发送时间
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Verify newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Verify newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Verify query()

@@ -23,6 +23,12 @@
         p {
             font-size: 12px;
         }
+
+        .addaddress {
+            padding: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
     }
 
 
@@ -95,11 +101,11 @@
         }
     }
 
-    .settlement-info{
+    .settlement-info {
         background-color: #fff;
         padding: 5px 0;
 
-        .amount{
+        .amount {
             color: #f40;
         }
     }

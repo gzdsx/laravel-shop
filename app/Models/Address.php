@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $address_id
  * @property int $uid
  * @property string|null $name
- * @property string|null $consignee
- * @property string|null $phone
+ * @property string|null $tel
  * @property string|null $province
  * @property string|null $city
  * @property string|null $district
@@ -26,14 +25,13 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereConsignee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereDistrict($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereIsdefault($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Address whereUid($value)
  * @mixin \Eloquent
  */
@@ -42,9 +40,10 @@ class Address extends Model
     protected $table = 'address';
     protected $primaryKey = 'address_id';
     protected $fillable = [
-        'uid', 'name', 'consignee', 'phone', 'province',
+        'uid', 'name', 'tel', 'province',
         'city', 'district', 'street', 'postalcode', 'isdefault'
     ];
+    protected $appends = ['addressText'];
 
     public $timestamps = false;
 
@@ -62,5 +61,13 @@ class Address extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'uid', 'uid');
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressTextAttribute()
+    {
+        return $this->attributes['province'] . $this->attributes['city'] . $this->attributes['district'] . $this->attributes['street'];
     }
 }

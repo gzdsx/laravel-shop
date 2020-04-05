@@ -7,5 +7,5 @@
 @stop
 
 @section('foot')
-    <script src="{{asset('js/h5/address.js?v='.time())}}"></script>
+    <script src="{{asset('js/h5/address/index.js?v='.time())}}"></script>
 @stop

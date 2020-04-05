@@ -14,6 +14,7 @@
 namespace App\Repositories\Contracts;
 
 
+use App\Models\Order;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,7 @@ interface RepositoryInterface
     /**
      * @param $id
      * @param array $columns
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Model|Order
      */
     public function findOrFail($id, $columns = ['*']);
 

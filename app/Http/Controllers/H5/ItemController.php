@@ -12,7 +12,7 @@ class ItemController extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware(['wechat.oauth']);
+        //$this->middleware(['wechat.oauth']);
     }
 
     protected function showDetailView(Request $request, $item)

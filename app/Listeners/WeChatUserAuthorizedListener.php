@@ -45,9 +45,12 @@ class WeChatUserAuthorizedListener
          * 'unionid'=>''
          */
 
+        //dd($event->getUser());
         //dd($event->user->getId());
-        $userinfo = $this->officialAccount()->user->get($event->user->getId());
+        //$userinfo = $this->officialAccount()->user->get($event->user->getId());
+        $userinfo = $event->getUser()->getOriginal();
         $userinfo['appid'] = $this->officialAccount()->config->get('app_id');
+        //dd($userinfo);
         $service = new OfficialAccountService();
         $user = $service->register($userinfo);
         Auth::loginUsingId($user->uid);

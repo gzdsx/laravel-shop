@@ -41,4 +41,15 @@
             }
         }
     }
+
+    .delete-cell{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        background-color: #f00;
+        color: #fff;
+        width: 65px;
+        height: 100%;
+    }
 }

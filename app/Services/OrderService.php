@@ -17,7 +17,6 @@ namespace App\Services;
 use App\Events\OrderEvent;
 use App\Models\Address;
 use App\Models\Order;
-use App\Models\Shop;
 use App\Services\Contracts\OrderServiceInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,20 +25,15 @@ class OrderService implements OrderServiceInterface
 {
 
     /**
-     * @param Shop $shop
      * @param array $items
      * @param Address $address
      * @param array $options
-     * @return Order|\Illuminate\Database\Eloquent\Model
+     * @return mixed
      * @throws \Exception
      */
-    public function create(Shop $shop, array $items, Address $address, $options = [])
+    public function create(array $items, Address $address, $options = [])
     {
         // TODO: Implement create() method.
-        if (!$shop) {
-            abort(400, 'invaild shop value');
-        }
-
         if (empty($items)) {
             abort(400, 'invaild items value');
         }
@@ -49,17 +43,12 @@ class OrderService implements OrderServiceInterface
         }
 
         $buyer = Auth::user();
-        $seller = $shop->user;
         DB::beginTransaction();
         try {
             $order_no = createOrderNo();
             $order = $buyer->boughts()->create([
                 'buyer_name' => $buyer->username,
                 'buyer_message' => $options['buyer_message'] ?? null,
-                'seller_uid' => $seller->uid,
-                'seller_name' => $seller->username,
-                'shop_id' => $shop->shop_id,
-                'shop_name' => $shop->shop_name,
                 'order_no' => $order_no,
                 'order_state' => 1,
             ]);
@@ -82,9 +71,6 @@ class OrderService implements OrderServiceInterface
                     'redpack_amount' => $item->redpack_amount
                 ]);
 
-                if ($shop->reduce_type == 1) {
-                    $item->decreaseStock($item->quantity);
-                }
                 $item->increment('sold', $item->quantity);
 
                 if (!$subject) $subject = $item->title;
@@ -99,22 +85,8 @@ class OrderService implements OrderServiceInterface
                 'total_fee' => $total_fee
             ]);
 
-            //创建付款记录
-            $order->transaction()->create([
-                'payer_uid' => $buyer->uid,
-                'payer_name' => $buyer->username,
-                'payee_uid' => $seller->uid,
-                'payee_name' => $seller->username,
-                'transaction_type' => 'shopping',
-                'transaction_state' => 1,
-                'subject' => $subject,
-                'detail' => $detail,
-                'amount' => $total_fee,
-                'out_trade_no' => $order_no,
-            ]);
-
             //更新配送信息
-            $order->shipping->update($address->only(['name', 'phone', 'province', 'city', 'district', 'street', 'postalcode']));
+            $order->shipping->update($address->only(['name', 'tel', 'province', 'city', 'district', 'street', 'postalcode']));
 
             //添加操作记录
             $order->actions()->create([
@@ -122,10 +94,9 @@ class OrderService implements OrderServiceInterface
                 'username' => $buyer->username,
                 'content' => trans('auction.order submitted success')
             ]);
-
-            $shop->customers()->updateOrCreate(['uid' => $buyer->uid]);
             DB::commit();
-            event(new OrderEvent($order, 'created'));
+            //event(new OrderEvent($order, 'created'));
+            $order->load(['buyer', 'shipping', 'items']);
             return $order;
         } catch (\Exception $exception) {
             DB::rollBack();

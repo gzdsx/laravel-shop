@@ -55,10 +55,10 @@ class OrderController extends BaseController
     /**
      * 订单详情
      */
-    public function detail()
+    public function detail(Request $request)
     {
-        $order_id = $this->request->get('order_id');
-        $order = $this->orderRepository->with(['items', 'shipping', 'shop'])->findOrFail($order_id);
+        $order_id = $request->get('order_id');
+        $order = $this->orderRepository->with(['items', 'shipping', 'buyer'])->findOrFail($order_id);
         return $this->view('admin.order.detail', compact('order_id', 'order'));
     }
 

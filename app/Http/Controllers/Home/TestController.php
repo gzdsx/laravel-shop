@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Events\OrderEvent;
 use App\Jobs\SendEmail;
 use App\Models\Item;
 use App\Models\Order;
@@ -32,6 +33,8 @@ class TestController extends Controller
         //SendEmail::dispatch()->delay(now()->addMinutes(3));
         //SendEmail::dispatch()->delay(now()->addMinutes(3));
 
-        User::find('1042159')->notify(new OrderStateNotification(Order::first()));
+        //User::find('1042159')->notify(new OrderStateNotification(Order::first()));
+        $order = Order::orderByDesc('order_id')->first();
+        event(new OrderEvent($order, 'created'));
     }
 }

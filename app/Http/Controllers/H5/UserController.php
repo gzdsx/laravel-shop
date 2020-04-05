@@ -18,7 +18,6 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-
         return $this->view('h5.user');
     }
 }

@@ -35,7 +35,13 @@ class IndexController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(){
-        return Item::all();
+        return mix('js/h5/base.js');
+        return [
+            'title' => setting('wechat_subscribe_msg_title'),
+            'description' => setting('wechat_subscribe_msg_text'),
+            'image' => image_url(setting('wechat_subscribe_msg_img')),
+            'url' => setting('wechat_subscribe_msg_url')
+        ];
     }
 
     public function app(){

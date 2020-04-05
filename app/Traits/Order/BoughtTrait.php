@@ -20,6 +20,7 @@ use App\Services\Contracts\OrderServiceInterface;
 use App\Traits\Common\AuthenticatedUser;
 use App\WeChat\Message\TemplateMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 trait BoughtTrait
 {
@@ -48,15 +49,7 @@ trait BoughtTrait
     public function get(Request $request)
     {
         $order = $this->getOrderForRequest($request);
-        $order->load(['items', 'shop', 'shipping', 'transaction']);
-        if (!$order->transaction) {
-            $order->setAttribute('transaction', []);
-        }
-
-        if (!$order->shop) {
-            $order->setAttribute('shop', []);
-        }
-
+        $order->load(['items','shipping', 'buyer']);
         if (!$order->shipping) {
             $order->setAttribute('shipping', []);
         }
@@ -291,6 +284,6 @@ trait BoughtTrait
     private function getOrderForRequest(Request $request)
     {
         $order_id = $request->input('order_id');
-        return $this->user()->boughts()->findOrFail($order_id);
+        return Auth::user()->boughts()->findOrFail($order_id);
     }
 }

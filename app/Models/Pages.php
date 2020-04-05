@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Pages $category
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
+ * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pages[] $pages
  * @property-read int|null $pages_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Pages newModelQuery()

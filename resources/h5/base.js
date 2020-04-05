@@ -1,12 +1,10 @@
 import Vue from 'vue';
-import axios from 'axios';
+import Axios from 'axios';
 import Vant from 'vant';
 import VueRouter from 'vue-router';
 
-window.Vue = Vue;
-window.VueRouter = VueRouter;
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+Vue.use(Vant);
+Vue.use(VueRouter);
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -14,13 +12,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
+Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
-Vue.prototype.$axios = window.axios;
-
-Vue.use(Vant);
-Vue.use(VueRouter);
+Vue.prototype.$axios = Axios;
+window._ = require('lodash');
+window.Vue = Vue;
+window.VueRouter = VueRouter;

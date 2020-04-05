@@ -16,18 +16,16 @@ namespace App\Services\Contracts;
 
 use App\Models\Address;
 use App\Models\Order;
-use App\Models\Shop;
 
 interface OrderServiceInterface
 {
     /**
-     * @param Shop $shop
      * @param array $items
      * @param Address $address
      * @param array $options
-     * @return Order
+     * @return mixed
      */
-    public function create(Shop $shop, array $items, Address $address, $options = []);
+    public function create(array $items, Address $address, $options = []);
 
     /**
      * @param Order $order

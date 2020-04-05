@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
  *
  * @property int $id
  * @property int $uid
- * @property int $shop_id
  * @property int $itemid
  * @property string|null $title
  * @property int $quantity
@@ -37,7 +36,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereItemid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereSkuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereSkuName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereThumb($value)

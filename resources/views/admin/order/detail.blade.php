@@ -63,51 +63,22 @@
         </div>
         <div class="address-row">
             <label>收货人:</label>
-            <div class="content">{{$order->shipping['consignee']}}</div>
+            <div class="content">{{$order->shipping['name']}}</div>
         </div>
         <div class="address-row">
             <label>联系电话:</label>
-            <div class="content">{{$order->shipping['phone']}}</div>
+            <div class="content">{{$order->shipping['tel']}}</div>
         </div>
         <div class="address-row">
             <label>收货地址:</label>
             <div class="content">{{$order->shipping['province']}}{{$order->shipping['city']}}{{$order->shipping['district']}}{{$order->shipping['street']}}</div>
         </div>
-        <h3 class="h3-title">卖家信息</h3>
-        <table cellspacing="0" cellpadding="0" width="100%" class="detail-table">
-            <tr>
-                <td>
-                    <label>店铺名称:</label>
-                    <div class="content"><a href="{{shop_url($order['shop_id'])}}" target="_blank">{{$order->shop['shop_name']}}</a></div>
-                </td>
-                <td>
-                    <label>卖家账号:</label>
-                    <div class="content">{{$order['seller_name']}}</div>
-                </td>
-                <td>
-                    <label>联系电话:</label>
-                    <div class="content">{{$order->shop['phone']}}</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>所在地:</label>
-                    <div class="content">{{$order->shop['province']}} {{$order->shop['city']}} {{$order->shop['county']}}</div>
-                </td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
         <h3 class="h3-title">订单信息</h3>
         <table cellspacing="0" cellpadding="0" width="100%" class="detail-table">
             <tr>
                 <td>
                     <label>订单编号:</label>
                     <div class="content">{{$order['order_no']}}</div>
-                </td>
-                <td>
-                    <label>交易流水:</label>
-                    <div class="content">{{$order['trade_no']}}</div>
                 </td>
                 <td>
                     <label>创建时间:</label>
@@ -123,7 +94,6 @@
                     <label>发货时间:</label>
                     <div class="content">{{$order['shipping_at']}}</div>
                 </td>
-                <td></td>
             </tr>
         </table>
         <h3 class="h3-title">商品信息</h3>

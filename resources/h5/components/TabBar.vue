@@ -14,11 +14,6 @@
 </template>
 
 <script>
-    import {Tabbar, TabbarItem} from 'vant';
-
-    Vue.use(Tabbar);
-    Vue.use(TabbarItem);
-
     export default {
         name: "TabBar",
         data() {

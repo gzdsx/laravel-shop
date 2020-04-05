@@ -37,7 +37,6 @@
             overflow: hidden;
             display: block;
             border-radius: 5px;
-            overflow: hidden;
 
             .hd{
                 display: block;

@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\OrderEvent;
-use App\Models\Invite;
 use App\Notifications\OrderStateNotification;
 use App\WeChat\Message\TemplateMessage;
 use App\WeChat\WechatDefaultConfig;
@@ -25,13 +24,10 @@ class OrderEventListener
     }
 
     /**
-     * Handle the event.
-     *
      * @param OrderEvent $event
-     * @return void
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function handle(OrderEvent $event)
     {
@@ -41,58 +37,50 @@ class OrderEventListener
         //创建订单
         if ($event->type == 'created')
         {
-            $shop = $order->shop;
-            $shipping = $order->shipping;
+            $item = $order->items()->first();
 
             $message = new TemplateMessage();
-            $message->setTemplateId('kCEcsEZTI8IBDBOO8QV_f6wZH6xUhYkVxY2rUGrxuDI');
-            $message->setFirst($shop->shop_name.'商家，您有一笔新订单！');
-            $message->setRemark('请注意查收！');
-            $message->setDataValue('keyword1', $order->order_no);
-            $message->setDataValue('keyword2', $order->items()->first()->title);
-            $message->setDataValue('keyword3', $order->total_fee);
-            $message->setDataValue('keyword4', $order->pay_type_des);
-            $message->setDataValue('keyword5', $shipping->consignee.' '.$shipping->phone.' '.$shipping->province.$shipping->city.$shipping->district.$shipping->street);
+            $message->setTemplateId('_ezyNqtHKGHjpeqIA-IuMJuR8QI6L_3JE_dHQzxz9tQ');
+            $message->setFirst('尊敬的商家，您有一笔新订单！');
+            $message->setRemark('点击查看订单详情！');
+            $message->setUrl(url('h5/trade/sold/order?order_id='.$order->order_id));
+            $message->setDataValue('keyword1', $order->total_fee.'元');
+            $message->setDataValue('keyword2', $item->title);
+            $message->setDataValue('keyword3', $order->order_no);
+            $message->setDataValue('keyword4', $order->buyer->username);
+            $message->setTouser(setting('wechat_kefu_openid'));
+            try{
+                $this->officialAccount()->template_message->send($message->getMsgContent());
+            }catch (\Exception $exception){
 
-            $shop->kefus->map(function ($kefu) use ($message){
-                $message->setTouser($kefu->openid);
-                try{
-                    $this->officialAccount()->template_message->send($message->getMsgContent());
-                }catch (\Exception $exception){
-
-                }
-            });
+            }
         }
 
         //支付订单
         if ($event->type == 'paid')
         {
-            //付款减库存
-            $shop = $event->order->shop;
-            $order->items()->with('item')->get()->map(function ($item) use (&$shop){
-                if ($item->item)
-                {
-                    $item->item->sold+= $item->quantity;
-                    if ($item->item->stock >= $item->quantity)
-                    {
-                        $item->item->stock -= $item->quantity;
-                    } else {
-                        $item->item->stock = 0;
-                    }
-                    $item->item->save();
-                }
-                $shop->total_sold+= $item->quantity;
-            });
-            $shop->save();
+            $item = $order->items()->first();
+            $message = new TemplateMessage();
+            $message->setTemplateId('QGCqaDZqAatTb-y2rY5spw2uYJlCsLL_DJu9e7ylvEw');
+            $message->setFirst('尊敬的商家，您有一笔订单客户已完成付款！');
+            $message->setRemark('点击查看订单详情！');
+            $message->setUrl(url('h5/trade/sold/order?order_id='.$order->order_id));
+            $message->setDataValue('keyword1', $order->order_no);
+            $message->setDataValue('keyword2', $item->title);
+            $message->setDataValue('keyword3', $order->total_fee.'元');
+            $message->setDataValue('keyword4', $order->order_state_des);
+            $message->setDataValue('keyword5', $order->created_at);
+            $message->setTouser(setting('wechat_kefu_openid'));
+            try{
+                $this->officialAccount()->template_message->send($message->getMsgContent());
+            }catch (\Exception $exception){
+
+            }
         }
 
         if ($event->type == 'send')
         {
-            $connect = $order->buyer->connects()->miniProgram()->first();
-            if ($connect)
-            {
 
-            }
         }
 
         //确认收货到货物，交易成功

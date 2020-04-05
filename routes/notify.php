@@ -13,4 +13,5 @@
 
 Route::group(['namespace' => 'Notify'], function () {
     Route::any('wechat/server', 'WechatServerController@index');
+    Route::any('wechat/pay', 'WechatPayController@index');
 });

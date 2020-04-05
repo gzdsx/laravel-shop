@@ -50,6 +50,10 @@ class OfficialAccountService implements WechatServiceInterface
         if (!$wechatUserInfo->get('appid')) {
             abort(400, 'appid empty');
         }
+
+        if (!$wechatUserInfo->get('nickname')){
+            abort(400, 'nickname empty');
+        }
         $connect = $this->connectRepository->where('openid', $openid)->first();
         if ($connect) {
             $user = $connect->user;
@@ -79,7 +83,7 @@ class OfficialAccountService implements WechatServiceInterface
             'province' => $wechatUserInfo->get('province'),
             'city' => $wechatUserInfo->get('city'),
             'appid' => $wechatUserInfo->get('appid'),
-            'platform' => 'official_account'
+            'platform' => 'officialaccount'
         ]);
 
         $user->info()->update([

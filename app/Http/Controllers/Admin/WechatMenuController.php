@@ -58,7 +58,7 @@ class WechatMenuController extends BaseController
     {
         $id = $request->input('id', 0);
         $fid = $request->input('fid', 0);
-        $menu = $this->menuRepository->findOrFail($id);
+        $menu = $this->menuRepository->findOrNew($id);
         $menu_types = trans('wechat.menu_types');
 
         return $this->view('admin.wechat.newmenu', compact('id', 'fid', 'menu', 'menu_types'));

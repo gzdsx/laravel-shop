@@ -4,5 +4,5 @@
 
 @section('content')
     <script>var userData=@json(auth()->user());</script>
-    <script src="{{asset('js/h5/user.js?v='.time())}}" type="text/javascript"></script>
+    <script src="{{asset('js/h5/user/index.js?v='.time())}}" type="text/javascript"></script>
 @stop

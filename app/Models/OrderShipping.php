@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $express_name 快递名称
  * @property string|null $express_no 快递单号
  * @property string|null $name
- * @property string|null $phone
+ * @property string|null $tel
  * @property string|null $province
  * @property string|null $city
  * @property string|null $district
@@ -37,11 +37,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereShippingType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -51,11 +51,17 @@ class OrderShipping extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'order_id', 'shipping_type', 'express_code', 'express_name', 'express_no',
-        'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode', 'created_at', 'updated_at'
+        'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
     ];
+    protected $appends = ['address_text'];
 
-    public function getConsigneeAttribute(){
-        return $this->attributes['name'] ?? null;
+
+    /**
+     * @return string
+     */
+    public function getAddressTextAttribute()
+    {
+        return $this->attributes['province'] . $this->attributes['city'] . $this->attributes['district'] . $this->attributes['street'];
     }
 
     /**

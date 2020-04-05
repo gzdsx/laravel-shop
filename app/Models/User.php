@@ -7,7 +7,6 @@ use App\Models\Traits\WechatMessageAble;
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
 
@@ -275,5 +274,13 @@ class User extends Authenticatable
     public function fans()
     {
         return $this->hasMany(Subscribe::class, 'subscribe_uid', 'uid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function boughts()
+    {
+        return $this->hasMany(Order::class, 'buyer_uid', 'uid');
     }
 }

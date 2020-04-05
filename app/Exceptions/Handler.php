@@ -48,11 +48,10 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
-     *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception $exception
-     * @return \Illuminate\Http\Response
+     * @param Exception $exception
+     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws Exception
      */
     public function render($request, Exception $exception)
     {
@@ -62,7 +61,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($request->ajax() || $request->isJson() || $request->expectsJson()) {
-            return ajaxError($exception->getCode(), $exception->getMessage());
+            return ajaxError($exception->getStatusCode(), $exception->getMessage());
         }
 
         return parent::render($request, $exception);

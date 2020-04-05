@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Auth;
  * @property int $buyer_uid 买家ID
  * @property string|null $buyer_name 买家账号
  * @property string|null $buyer_message 买家留言
- * @property int $seller_uid 卖家ID
- * @property string|null $seller_name 卖家账号
- * @property int $shop_id 店铺ID
- * @property string|null $shop_name 店铺名称
  * @property float $order_fee 订单费用
  * @property float $shipping_fee 运费
  * @property float $total_fee 付款金额
@@ -89,14 +85,10 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRefundAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerDeleted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShopId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShopName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTotalFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)
  * @mixin \Eloquent

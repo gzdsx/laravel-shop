@@ -109,6 +109,7 @@
         function apply(){
             DSXUI.showConfirm('应用成功后，微信公众号现有的自定义菜单将会被替换', function () {
                 $.ajax({
+                    type:'POST',
                     url:'{{admin_url('wechat/menu/apply')}}',
                     beforeSend:DSXUI.showSpinner,
                     success: function(response){

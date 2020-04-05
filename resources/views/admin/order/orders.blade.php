@@ -93,7 +93,7 @@
                     <th>商品名称 | 卖家 | 订单号</th>
                     <th>买家账号</th>
                     <th width="100">金额</th>
-                    <th width="150">下单时间</th>
+                    <th width="155">下单时间</th>
                     <th width="100">交易状态</th>
                     <th width="60">详情</th>
                 </tr>
@@ -103,15 +103,13 @@
                 <tr>
                     <td class="center"><input title="" type="checkbox" class="checkmark" name="items[]" value="{{$order['order_id']}}"></td>
                     <td>
-                        <a href="{{item_url($order['item']['itemid'])}}" target="_blank">
+                        <a href="{{$order['item']['h5_url']}}" target="_blank">
                             <img src="{{$order['items'][0]['thumb']}}" width="50" height="50">
                         </a>
                     </td>
                     <td>
                         <h3><a href="{{admin_url('order/detail?order_id='.$order['order_id'])}}" target="_blank">{{$order['items'][0]['title']}}</a></h3>
                         <p>
-                            <a href="{{shop_url($order['shop_id'])}}" target="_blank">{{$order['seller_name']}}</a>
-                            <span> | </span>
                             <span>单号:{{$order['order_no']}}</span>
                         </p>
                     </td>
