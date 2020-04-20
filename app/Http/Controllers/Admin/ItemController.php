@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\FreightTemplate;
 use App\Models\ItemReviews;
-use App\Traits\Item\ItemManagerTrait;
+use App\Traits\Item\ItemTrait;
 use Illuminate\Http\Request;
 
 class ItemController extends BaseController
 {
-    use ItemManagerTrait;
+    use ItemTrait;
 
     /**
      * 商品列表
@@ -18,43 +18,9 @@ class ItemController extends BaseController
      */
     public function index(Request $request)
     {
-        return $this->showItems($request);
-    }
-
-    /**
-     * @param Request $request
-     * @param \Illuminate\Pagination\Paginator $items
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showItemsView(Request $request, $items)
-    {
-        $this->assign(array_merge([
-            'shop_name' => '',
-            'seller_name' => '',
-            'sale_state' => '',
-            'title' => '',
-            'min_price' => '',
-            'max_price' => '',
-            'itemid' => '',
-            'catid' => ''
-        ], $request->all()));
-        return $this->view('admin.item.items', [
-            'items' => $items,
-            'pagination' => $items->appends($request->except('page'))->render(),
-            'catlogOptions' => $this->catlogRepository()->fetchOptions(0, $request->input('catid', 0))
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @param $item
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showPublishView(Request $request, $item)
-    {
         $freightTemplates = FreightTemplate::all();
-        $catlogOptions = $this->catlogRepository()->fetchOptions(0, $item->catid);
-        return $this->view('admin.item.publish', compact('item', 'catlogOptions', 'freightTemplates'));
+        $catlogs = $this->catlogRepository()->fetchAll(0);
+        return $this->view('admin.item',compact('catlogs','freightTemplates'));
     }
 
     /**

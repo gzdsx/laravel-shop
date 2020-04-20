@@ -21,7 +21,7 @@ return [
     'post_states' => array(
         '0' => '等待审核',
         '1' => '可供阅读',
-        '2' => '审核不过'
+        '-1' => '审核不过'
     ),
     'post title required' => '文章标题不能为空',
     'post title must a string' => '文章标题必须是一个字符串',

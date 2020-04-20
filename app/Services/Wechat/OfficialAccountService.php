@@ -14,8 +14,8 @@
 namespace App\Services\Wechat;
 
 
-use App\Repositories\Contracts\UserConnectRepositoryInterface;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\User;
+use App\Models\UserConnect;
 use App\Services\Contracts\WechatServiceInterface;
 use App\Traits\Wechat\SyncWechatHeadImg;
 use Illuminate\Support\Collection;
@@ -23,15 +23,6 @@ use Illuminate\Support\Collection;
 class OfficialAccountService implements WechatServiceInterface
 {
     use SyncWechatHeadImg;
-
-    protected $userRepository;
-    protected $connectRepository;
-
-    public function __construct()
-    {
-        $this->userRepository = app(UserRepositoryInterface::class);
-        $this->connectRepository = app(UserConnectRepositoryInterface::class);
-    }
 
     /**
      * @param array $userInfo
@@ -54,19 +45,19 @@ class OfficialAccountService implements WechatServiceInterface
         if (!$wechatUserInfo->get('nickname')){
             abort(400, 'nickname empty');
         }
-        $connect = $this->connectRepository->where('openid', $openid)->first();
+        $connect = UserConnect::where('openid', $openid)->first();
         if ($connect) {
             $user = $connect->user;
         } else {
             if ($unionid) {
-                $connect = $this->connectRepository->where('unionid', $unionid)->first();
+                $connect = UserConnect::where('unionid', $unionid)->first();
                 if ($connect) {
                     $user = $connect->user;
                 }
             }
         }
         if (!$user) {
-            $user = $this->userRepository->create([
+            $user = User::create([
                 'username' => $wechatUserInfo->get('nickname'),
                 'avatar_state' => 1
             ]);

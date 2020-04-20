@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $order_id 订单ID
  * @property int $shipping_type
- * @property string|null $express_code
+ * @property string|null $express_code 快递公司编号
  * @property string|null $express_name 快递名称
  * @property string|null $express_no 快递单号
  * @property string|null $name
@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $postalcode
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $consignee
+ * @property-read string $address_text
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping newQuery()
@@ -53,15 +53,15 @@ class OrderShipping extends Model
         'order_id', 'shipping_type', 'express_code', 'express_name', 'express_no',
         'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
     ];
-    protected $appends = ['address_text'];
+    protected $appends = ['full_address'];
 
 
     /**
      * @return string
      */
-    public function getAddressTextAttribute()
+    public function getFullAddressAttribute()
     {
-        return $this->attributes['province'] . $this->attributes['city'] . $this->attributes['district'] . $this->attributes['street'];
+        return $this->province . $this->city . $this->district . $this->street;
     }
 
     /**

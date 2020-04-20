@@ -14,19 +14,12 @@
 namespace App\Traits\Common;
 
 
+use App\Models\Block;
 use App\Models\BlockItem;
-use App\Repositories\Contracts\BlockRepositoryInterface;
 use Illuminate\Http\Request;
 
 trait BlockTrait
 {
-    /**
-     * @return BlockRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    protected function blockRepository()
-    {
-        return app(BlockRepositoryInterface::class);
-    }
 
     /**
      * @param Request $request
@@ -34,8 +27,7 @@ trait BlockTrait
      */
     public function getBlock(Request $request)
     {
-        $block_id = $request->input('block_id', 0);
-        return ajaxReturn(['block' => $this->blockRepository()->findOrFail($block_id)]);
+        return ajaxReturn(['block' => Block::findOrFail($request->input('block_id', 0))]);
     }
 
     /**
@@ -46,7 +38,7 @@ trait BlockTrait
     {
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 20);
-        $items = $this->blockRepository()->offset($offset)->limit($count)->get();
+        $items = Block::offset($offset)->limit($count)->get();
 
         return ajaxReturn(['items' => $items]);
     }

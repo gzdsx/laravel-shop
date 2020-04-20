@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Illuminate\Http\Request;
+
 class IndexController extends BaseController
 {
-    public function index(){
+    public function index(Request $request)
+    {
 
-        return $this->view('admin.admin');
-    }
-
-    public function wellcome(){
-        return $this->view('admin.wellcome');
+        return $this->view('admin.index');
     }
 }

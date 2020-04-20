@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -60,24 +59,15 @@ class Handler extends ExceptionHandler
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        if ($request->ajax() || $request->isJson() || $request->expectsJson()) {
-            return ajaxError($exception->getStatusCode(), $exception->getMessage());
+        if ($request->ajax()) {
+            if (method_exists($exception,'getStatusCode')){
+                $errcode = $exception->getStatusCode();
+            }else{
+                $errcode = $exception->getCode() == 0 ? 400 : $exception->getCode();
+            }
+            return ajaxError($errcode, $exception->getMessage(), ['trace'=>$exception->getTrace()]);
         }
 
         return parent::render($request, $exception);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Auth\AuthenticationException $exception
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        if ($request->expectsJson() || $request->isJson()) {
-            //return response()->json(['errcode' => 401, 'errmsg' => 'Unauthenticated.'], 401);
-            return ajaxError(401, 'Unauthenticated.')->setStatusCode(401);
-        }
-        return redirect()->guest('login');
     }
 }

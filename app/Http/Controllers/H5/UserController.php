@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
+        parent::__construct($request);
         $this->middleware(['wechat.oauth']);
     }
 
@@ -18,6 +18,7 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        return $this->view('h5.user');
+        $user = auth()->check() ? auth()->user() : [];
+        return $this->view('h5.user', compact('user'));
     }
 }

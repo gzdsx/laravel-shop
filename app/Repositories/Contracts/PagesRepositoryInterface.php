@@ -17,13 +17,4 @@ namespace App\Repositories\Contracts;
 interface PagesRepositoryInterface extends RepositoryInterface
 {
 
-    /**
-     * @return $this
-     */
-    public function pages();
-
-    /**
-     * @return $this
-     */
-    public function categories();
 }

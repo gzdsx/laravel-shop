@@ -27,4 +27,10 @@ class MaterialRepository extends BaseRepository implements MaterialRepositoryInt
         // TODO: Implement getModel() method.
         return Material::class;
     }
+
+    public function query()
+    {
+        // TODO: Implement query() method.
+        return Material::query();
+    }
 }

@@ -14,23 +14,18 @@
 namespace App\Traits\Common;
 
 
-use App\Repositories\Contracts\MaterialRepositoryInterface;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 
 trait MaterialTrait
 {
-    use AuthenticatedUser;
-
     /**
-     * @return MaterialRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     * @return Material|\Illuminate\Database\Eloquent\Builder
      */
-    protected function materialRepository()
-    {
-        return app(MaterialRepositoryInterface::class);
+    protected function query(){
+        return Material::query();
     }
 
     /**
@@ -53,15 +48,26 @@ trait MaterialTrait
     protected function storeImage(UploadedFile $file)
     {
         $img = Image::make($file->getRealPath());
+        if ($img->exif('Orientation')){
+            switch ($img->exif('Orientation')) {
+                case 8:
+                    $img->rotate(90);
+                    break;
+                case 3:
+                    $img->rotate(180);
+                    break;
+                case 6:
+                    $img->rotate(-90);
+                    break;
+            }
+        }
         $material = [
             'type' => 'image',
             'extension' => $file->extension(),
             'size' => $file->getSize(),
             'name' => $file->getClientOriginalName(),
             'width' => $img->width(),
-            'height' => $img->height(),
-            'created_at' => time(),
-            'updated_at' => time(),
+            'height' => $img->height()
         ];
 
         $filename = $file->hashName();
@@ -69,9 +75,7 @@ trait MaterialTrait
         $thumbPath = 'thumb/' . date('Y') . '/' . date('m') . '/' . $filename;
 
         //大图
-        if (!is_dir(material_path($imagePath))) {
-            @mkdir(dirname(material_path($imagePath)), 0777, true);
-        }
+        @mkdir(dirname(material_path($imagePath)), 0777, true);
         if ($img->getWidth() > 1600) {
             $scale = 1600 / $img->getWidth();
             $img->resize(1600, $img->getHeight() * $scale)->save(material_path($imagePath));
@@ -80,9 +84,7 @@ trait MaterialTrait
         }
 
         //缩略图
-        if (!is_dir(material_path($thumbPath))) {
-            @mkdir(dirname(material_path($thumbPath)), 0777, true);
-        }
+        @mkdir(dirname(material_path($thumbPath)), 0777, true);
         if ($img->getWidth() > 500) {
             $scale = 500 / $img->getWidth();
             $img->resize(500, $img->getHeight() * $scale)->save(material_path($thumbPath));
@@ -93,7 +95,7 @@ trait MaterialTrait
         $material['source'] = $imagePath;
         $material['thumb'] = $thumbPath;
 
-        return $this->materialRepository()->create($material);
+        return $this->query()->create($material);
     }
 
     /**
@@ -103,9 +105,7 @@ trait MaterialTrait
      */
     protected function sendImageUploadedResponse(Request $request, $material)
     {
-        $image = $material->only(['id', 'name', 'source', 'thumb', 'width', 'height', 'size']);
-        $image['image'] = $image['source'];
-        Arr::forget($image, 'source');
+        $image = $material->only(['id', 'name', 'image', 'thumb', 'width', 'height', 'size']);
         return ajaxReturn(['image' => $image]);
     }
 
@@ -143,9 +143,7 @@ trait MaterialTrait
             'size' => $file->getSize(),
             'name' => $file->getClientOriginalName(),
             'width' => 0,
-            'height' => 0,
-            'created_at' => time(),
-            'updated_at' => time(),
+            'height' => 0
         ];
 
         if (in_array($extension, ['jpg', 'jpeg', 'gif', 'png', 'bmp'])) {
@@ -161,7 +159,7 @@ trait MaterialTrait
         }
 
         $material['source'] = $file->store($material['type'] . '/' . date('Y') . '/' . date('m'));
-        return $this->materialRepository()->create($material);
+        return $this->query()->create($material);
     }
 
     /**
@@ -180,46 +178,6 @@ trait MaterialTrait
      */
     protected function sendFileUploadFailedResponse(Request $request)
     {
-        return ajaxError(1, 'upload file fail');
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getImage(Request $request)
-    {
-        $id = $request->input('id', 0);
-        $image = $this->materialRepository()->where('uid', Auth::id())
-            ->findOrFail($id, ['id', 'name', 'source as image', 'thumb', 'width', 'height', 'size']);
-        return ajaxReturn(['image' => $image]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getFile(Request $request)
-    {
-        $id = $request->input('id');
-        $file = $this->materialRepository()->where('uid', Auth::id())->findOrFail($id);
-        return ajaxReturn(['file' => $file]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchget(Request $request)
-    {
-        $offset = $request->input('offset', 0);
-        $count = $request->input('count', 20);
-
-        $items = $this->materialRepository()->filter($request->all())->where('uid', Auth::id())
-            ->offset($offset)->limit($count)->orderByDesc('id')->get();
-        return ajaxReturn([
-            'items' => $items,
-            'total_count' => $this->materialRepository()->filter($request->all())->where('uid', Auth::id())->count()
-        ]);
+        return ajaxError(400, 'upload file fail');
     }
 }

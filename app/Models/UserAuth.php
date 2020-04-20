@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $id_card_back 身份证背面
  * @property string $id_card_hand 手持身份证
  * @property int $auth_state 认证状态
- * @property \Illuminate\Support\Carbon $created_at 创建时间
- * @property \Illuminate\Support\Carbon $updated_at 更新时间
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAuth newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAuth newQuery()

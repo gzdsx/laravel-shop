@@ -15,77 +15,78 @@ namespace App\Services\Contracts;
 
 
 use App\Models\Address;
+use App\Models\Item;
 use App\Models\Order;
 
 interface OrderServiceInterface
 {
     /**
-     * @param array $items
+     * @param Item[] $items
      * @param Address $address
      * @param array $options
-     * @return mixed
+     * @return Order|\Illuminate\Database\Eloquent\Model
      */
-    public function create(array $items, Address $address, $options = []);
+    public function create($items, $address_id, $remark = null, $coupon = null, $options = []);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function paid(Order $order);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function send(Order $order);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function confirm(Order $order);
 
     /**
      * 买家评价
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function buyerReview(Order $order);
 
     /**
      * 卖家评价
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return mixed
      */
     public function sellerReview(Order $order);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function refunding(Order $order);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function refund(Order $order);
 
     /**
-     * @param Order $order
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
     public function close(Order $order);
 
     /**
-     * @param Order $order
-     * @return mixed
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
+     * @return Order
      */
     public function buyerDelete(Order $order);
 
     /**
-     * @param Order $order
-     * @return mixed
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
+     * @return Order
      */
     public function sellerDelete(Order $order);
 

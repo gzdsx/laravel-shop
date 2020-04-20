@@ -8,32 +8,203 @@
  * @version:    v1.0.0
  * ---------------------------------------------
  * Date: 2019-06-20
- * Time: 17:20
+ * Time: 10:02
  */
 
 namespace App\Traits\Item;
 
 
-use App\Repositories\Contracts\ItemCatlogRepositoryInterface;
-use App\Repositories\Contracts\ItemRepositoryInterface;
+use App\Models\Item;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 trait ItemTrait
 {
+
     /**
-     * @return ItemRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     * @return bool
      */
-    protected function itemRepository()
+    protected function authenticateOwner()
     {
-        return app(ItemRepositoryInterface::class);
+        return false;
     }
 
     /**
-     * @return ItemCatlogRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     * @return bool
      */
-    protected function catlogRepository()
+    protected function withoutGlobalScopes(){
+        return true;
+    }
+
+    /**
+     * @return Item|Builder
+     */
+    public function query()
     {
-        return app(ItemCatlogRepositoryInterface::class);
+        $query = Item::query();
+        if ($this->withoutGlobalScopes()) $query = $query->withoutGlobalScopes();
+        if ($this->authenticateOwner()){
+            $query = $query->withoutGlobalScopes()->withGlobalScope('author', function (Builder $builder) {
+                return $builder->where('uid', Auth::id());
+            });
+        }
+        return $query;
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $attributes = collect($request->input('item',[]));
+        if ($itemid = $request->input('itemid')) {
+            $item = $this->query()->findOrNew($itemid);
+        } else {
+            $item = $this->query()->make();
+        }
+        $item->fill($attributes->except('itemid')->all())->save();
+
+        if ($attributes->has('content')) {
+            if (is_array($attributes->get('content'))) {
+                $item->content->update($attributes->get('content'));
+            } else {
+                $item->content->update(['content' => $attributes->get('content')]);
+            }
+        }
+
+        if ($attributes->has('cates')) {
+            $item->cates()->delete();
+            foreach ($attributes->get('cates') as $catid) {
+                $item->cates()->updateOrCreate(['catid' => $catid]);
+            }
+        }
+
+        if ($attributes->has('images')) {
+            $this->updateImages($item, $attributes->get('images'));
+        }
+
+        if ($attributes->has('skus')) {
+            $this->updateSkus($item, $attributes->get('skus'));
+        }
+        return $this->sendSavedItemResponse($request, $item);
+    }
+
+    /**
+     * @param Item $item
+     * @param array $images
+     * @return mixed
+     */
+    protected function updateImages(&$item, $images)
+    {
+        $images = collect($images);
+        if ($images->count()) {
+            $firstImg = $images->first();
+            $item->thumb = $firstImg['thumb'];
+            $item->image = $firstImg['image'];
+            $item->save();
+
+            $displayorder = 0;
+            $imageIds = $item->images->pluck('id', 'id');
+            foreach ($images as $image) {
+                $imgid = $image['id'];
+                $image['displayorder'] = $displayorder++;
+                if ($imageIds->has($imgid)) {
+                    $image['thumb'] = strip_image_url($image['thumb'] ?? '');
+                    $image['image'] = strip_image_url($image['image'] ?? '');
+                    $item->images()->whereKey($imgid)->update($image);
+                    $imageIds->forget($imgid);
+                } else {
+                    $item->images()->create($image);
+                }
+            }
+            $item->images()->whereKey($imageIds)->delete();
+        } else {
+            $item->images()->delete();
+        }
+        return $item;
+    }
+
+    /**
+     * @param Item $item
+     * @param array $skus
+     */
+    protected function updateSkus($item, $skus)
+    {
+        $skus = collect($skus);
+        $haveSkus = $item->skus()->get('properties')->pluck('properties', 'properties');
+        foreach ($skus as $sku) {
+            $properties = $sku['properties'] ?? '';
+            if ($haveSkus->has($properties)) {
+                $item->skus()->where('properties', $properties)->update($sku);
+                $haveSkus->forget($properties);
+            } else {
+                $item->skus()->create($sku);
+            }
+        }
+
+        foreach ($haveSkus as $properties) {
+            $item->skus()->where('properties', $properties)->delete();
+        }
+    }
+
+
+    /**
+     * @param Request $request
+     * @param Item|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model $item
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendSavedItemResponse(Request $request, $item)
+    {
+        return ajaxReturn(['item' => $item]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function delete(Request $request)
+    {
+        foreach ($this->query()->whereKey($request->input('items',[]))->get() as $item){
+            $item->delete();
+        }
+        return $this->sendDeletedItemResponse($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendDeletedItemResponse(Request $request)
+    {
+        return ajaxReturn();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchUpdate(Request $request)
+    {
+        $items = $request->input('items', []);
+        $params = $request->input('params',[]);
+        foreach ($this->query()->whereKey($items)->get() as $item){
+            $item->fill($params)->save();
+        }
+
+        return $this->sendBatchUpdatedItemResponse($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendBatchUpdatedItemResponse(Request $request)
+    {
+        return ajaxReturn();
     }
 
     /**
@@ -42,14 +213,27 @@ trait ItemTrait
      */
     public function get(Request $request)
     {
-        $itemid = $request->input('itemid', 0);
-        $item = $this->itemRepository()->with(['content', 'images', 'shop', 'user', 'props'])->find($itemid);
-        if (!$item) {
-            abort(404, trans('item.this item has been removed'));
-        }
-        if (!$item->content->content) {
-            $item->content->content = '<p><img src="' . $item->image . '"></p>';
-        }
+        $item = $this->getItemById($request->input('itemid'));
+        return $this->sendGetItemResponse($request, $item);
+    }
+
+    /**
+     * @param $itemid
+     * @return Item|Item[]|Builder|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
+    protected function getItemById($itemid){
+        $item = $this->query()->findOrFail($itemid);
+        $item->load(['images', 'props', 'skus', 'content', 'catlogs']);
+        return $item;
+    }
+
+    /**
+     * @param Request $request
+     * @param Item|\Illuminate\Database\Eloquent\Builder $item
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendGetItemResponse(Request $request, $item)
+    {
         return ajaxReturn(['item' => $item]);
     }
 
@@ -60,82 +244,47 @@ trait ItemTrait
     public function batchget(Request $request)
     {
         $offset = $request->input('offset', 0);
-        $count = $request->input('count', 20);
-        if (!$request->has('sort')) {
-            $request->query->add(['sort' => 'default']);
-        }
-        $items = $this->itemRepository()->filter($request->all())->fetch($offset, $count);
-        return ajaxReturn(['items' => $items]);
+        $count = $request->input('count', 10);
+        $query = $this->query()->orderByDesc('itemid')->filter($request->all());
+        $total = $query->count();
+        $items = $this->query()->offset($offset)->limit($count)->get();
+        return $this->sendBatchGetItemResponse($request, $items, $total);
     }
 
     /**
      * @param Request $request
-     * @param $itemid
+     * @param Item[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection $items
+     * @param int $total
      * @return \Illuminate\Http\JsonResponse
      */
-    public function detail(Request $request, $itemid)
+    protected function sendBatchGetItemResponse(Request $request, $items, $total)
     {
-        $item = $this->itemRepository()->find($itemid);
-        if (!$item) {
-            abort(404, trans('item.this item has been removed'));
-        } else {
-            $item->increment('views');
-            $item->load(['content', 'images']);
-        }
-        return $this->showDetailView($request, $item);
-    }
-
-    /**
-     * @param Request $request
-     * @param $item
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function showDetailView(Request $request, $item)
-    {
-        return ajaxReturn(['item' => $item]);
+        return ajaxReturn(compact('total', 'items'));
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showItems(Request $request)
+    public function paginate(Request $request)
     {
-        if (!$request->input('sort')) {
-            $request->query->add(['sort' => 'default']);
-        }
-        $items = $this->itemRepository()->with(['shop', 'user'])->filter($request->all())
-            ->paginate($request->input('perPage', 20));
-        return $this->showItemsView($request, $items);
+        $paginator = $this->query()->orderByDesc('itemid')->filter($request->all())->paginate($request->input('pagesize', 15));
+        return $this->sendPaginateItemResponse($request, $paginator);
     }
 
     /**
      * @param Request $request
-     * @param $items
+     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $paginator
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function showItemsView(Request $request, $items)
+    protected function sendPaginateItemResponse(Request $request, $paginator)
     {
-        return ajaxReturn(['items' => $items]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function catlog(Request $request)
-    {
-        $catlogs = $this->catlogRepository()->fetchAllFromCache();
-        return $this->showCatlogView($request, $catlogs);
-    }
-
-    /**
-     * @param Request $request
-     * @param $catlogs
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function showCatlogView(Request $request, $catlogs)
-    {
-        return ajaxReturn(['catlogs' => $catlogs]);
+        return ajaxReturn([
+            'total' => $paginator->total(),
+            'currentPage' => $paginator->currentPage(),
+            'lastPage' => $paginator->lastPage(),
+            'pageSize' => $paginator->perPage(),
+            'items' => $paginator->items()
+        ]);
     }
 }

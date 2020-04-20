@@ -14,24 +14,22 @@
 namespace App\Traits\Order;
 
 
+use App\Events\OrderEvent;
 use App\Models\ItemReviews;
-use App\Repositories\Contracts\OrderRepositoryInterface;
+use App\Models\Order;
 use App\Services\Contracts\OrderServiceInterface;
-use App\Traits\Common\AuthenticatedUser;
-use App\WeChat\Message\TemplateMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 trait BoughtTrait
 {
-    use AuthenticatedUser;
 
     /**
-     * @return OrderRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     * @return Order|\Illuminate\Database\Eloquent\Builder
      */
-    protected function orderRepository()
+    protected function query()
     {
-        return app(OrderRepositoryInterface::class);
+        return Order::query();
     }
 
     /**
@@ -49,10 +47,18 @@ trait BoughtTrait
     public function get(Request $request)
     {
         $order = $this->getOrderForRequest($request);
-        $order->load(['items','shipping', 'buyer']);
-        if (!$order->shipping) {
-            $order->setAttribute('shipping', []);
-        }
+        $order->load(['items', 'shipping', 'buyer']);
+
+        return $this->sendGetOrderResponse($request, $order);
+    }
+
+    /**
+     * @param Request $request
+     * @param $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendGetOrderResponse(Request $request, $order)
+    {
         return ajaxReturn(['order' => $order]);
     }
 
@@ -63,17 +69,26 @@ trait BoughtTrait
      */
     public function batchget(Request $request)
     {
-        $offset = $request->input('offset', 0);
-        $count = $request->input('count', 20);
-
-        if (!$request->has('tab')){
-            $request->query->add(['tab'=>$request->input('stateCode')]);
+        if (!$request->has('tab')) {
+            $request->query->add(['tab' => $request->input('stateCode')]);
         }
-        $items = $this->orderRepository()
-            ->with('items')->filter($request->all())
-            ->where('buyer_uid', $request->user()->uid)
-            ->offset($offset)->limit($count)->orderByDesc('order_id')->get();
-        return ajaxReturn(['items' => $items]);
+        $query = Auth::user()->boughts()->with('items')->filter($request->all())->where('buyer_deleted', 0);
+        $total = $query->count();
+        $items = $query->offset($request->input('offset', 0))
+            ->limit($request->input('count', 10))->get();
+
+        return $this->sendBatchGetOrderResponse($request, $items, $total);
+    }
+
+    /**
+     * @param Request $request
+     * @param \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Order[] $items
+     * @param int $total
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendBatchGetOrderResponse(Request $request, $items, $total)
+    {
+        return ajaxReturn(compact('total', 'items'));
     }
 
     /**
@@ -84,14 +99,14 @@ trait BoughtTrait
     {
         $order = $this->getOrderForRequest($request);
         if (!$order->closed) {
-            $closeReason = $request->input('closeReason', '');
+            $reason = $request->input('reason', '');
             $otherReason = $request->input('otherReason', '');
             $order->closeReason()->create([
-                'reason' => $closeReason ? $closeReason : $otherReason,
+                'reason' => $reason ?: $otherReason,
             ]);
             $this->orderService()->close($order);
         }
-        return $this->sendOrderClosedResponse($request, $order);
+        return $this->sendClosedOrderResponse($request, $order);
     }
 
     /**
@@ -99,7 +114,7 @@ trait BoughtTrait
      * @param $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendOrderClosedResponse(Request $request, $order)
+    protected function sendClosedOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -111,23 +126,9 @@ trait BoughtTrait
      */
     public function notice(Request $request)
     {
-        $order_id = $request->input('order_id', 0);
-        $order = $this->user()->boughts()->with(['shop', 'shipping'])->find($order_id);
-
-        $message = new TemplateMessage();
-        $message->setTemplateId('R-29nZ4wQT-6dRsBa5to711IYxBYsKwxTXzA4JnbUfc');
-        $message->setFirst('你有订单买家已完成付款，请及时发货');
-        $message->setRemark('查看订单详情');
-        $message->setDataValue('orderProductPrice', $order->total_fee);
-        $message->setDataValue('orderProductName', $order->items()->first()->title);
-        $message->setDataValue('orderAddress', implode(' ', $order->shipping->only(['province', 'city', 'district', 'street'])));
-        $message->setDataValue('orderName', $order->order_no);
-
-        $order->shop->kefus->map(function ($kefu) use ($message) {
-            $message->setTouser($kefu->openid);
-            $this->officialAccount()->template_message->send($message->getMsgContent());
-        });
-        return $this->sendOrderNoticedResponse($request, $order);
+        $order = $this->orderService()->paid($this->getOrderForRequest($request));
+        event(new OrderEvent($order, 'notice'));
+        return $this->sendNoticedOrderResponse($request, $order);
     }
 
     /**
@@ -135,7 +136,7 @@ trait BoughtTrait
      * @param $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendOrderNoticedResponse(Request $request, $order)
+    protected function sendNoticedOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -147,7 +148,7 @@ trait BoughtTrait
     public function paid(Request $request)
     {
         $order = $this->orderService()->paid($this->getOrderForRequest($request));
-        return $this->sendOrderPaidResponse($request, $order);
+        return $this->sendPaidOrderResponse($request, $order);
     }
 
     /**
@@ -155,7 +156,7 @@ trait BoughtTrait
      * @param $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendOrderPaidResponse(Request $request, $order)
+    protected function sendPaidOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -167,7 +168,7 @@ trait BoughtTrait
     public function confirm(Request $request)
     {
         $order = $this->orderService()->confirm($this->getOrderForRequest($request));
-        return $this->sendOrderConfrimedResponse($request, $order);
+        return $this->sendConfrimedOrderResponse($request, $order);
     }
 
     /**
@@ -175,7 +176,7 @@ trait BoughtTrait
      * @param $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendOrderConfrimedResponse(Request $request, $order)
+    protected function sendConfrimedOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -195,7 +196,7 @@ trait BoughtTrait
 
     /**
      * @param Request $request
-     * @param $order
+     * @param \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|Order $order
      * @return \Illuminate\Http\JsonResponse
      */
     protected function applyRefundOrderSuccess(Request $request, $order)
@@ -210,7 +211,7 @@ trait BoughtTrait
     public function delete(Request $request)
     {
         $order = $this->orderService()->buyerDelete($this->getOrderForRequest($request));
-        return $this->sendOrderDeletedResponse($request, $order);
+        return $this->sendDeletedOrderResponse($request, $order);
     }
 
     /**
@@ -218,7 +219,7 @@ trait BoughtTrait
      * @param $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendOrderDeletedResponse(Request $request, $order)
+    protected function sendDeletedOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -279,11 +280,10 @@ trait BoughtTrait
 
     /**
      * @param Request $request
-     * @return \App\Models\Order|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasMany[]
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasMany[]
      */
-    private function getOrderForRequest(Request $request)
+    protected function getOrderForRequest(Request $request)
     {
-        $order_id = $request->input('order_id');
-        return Auth::user()->boughts()->findOrFail($order_id);
+        return Auth::user()->boughts()->findOrFail($request->input('order_id'));
     }
 }

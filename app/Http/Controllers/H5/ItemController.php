@@ -9,15 +9,15 @@ class ItemController extends BaseController
 {
     use ItemTrait;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
-        //$this->middleware(['wechat.oauth']);
+        parent::__construct($request);
+        $this->middleware(['wechat.oauth']);
     }
 
-    protected function showDetailView(Request $request, $item)
+    public function detail(Request $request, $itemid)
     {
-
-        return $this->view('h5.item', compact('item'));
+        $item = $this->getItemById($itemid);
+        return $this->view('h5.item',compact('item'));
     }
 }

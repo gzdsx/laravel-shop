@@ -18,6 +18,10 @@ interface UserRepositoryInterface extends RepositoryInterface
 {
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder|\App\Models\User
+     */
+    public function query();
+    /**
      * @param \App\Models\User $user
      * @return mixed
      */

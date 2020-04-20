@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('/', 'IndexController@index');
     Route::get('wellcome', 'IndexController@wellcome');
     //系统设置
-    Route::get('settings/{type}', 'SettingsController@index');
+    Route::get('settings', 'SettingsController@index');
     Route::post('settings', 'SettingsController@store');
     //用户管理
     Route::get('user', 'UserController@index');
@@ -55,9 +55,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::post('block/setimage', 'BlockController@setImage');
 
     //文章管理
-    Route::get('post', 'PostController@showPosts');
-    Route::get('post/newpost', 'PostController@newpost');
-    Route::post('post/newpost', 'PostController@store');
+    Route::get('post/', 'PostController@index');
+    Route::get('post/get', 'PostController@get');
+    Route::get('post/batchget', 'PostController@showPosts');
+    Route::post('post/save', 'PostController@store');
     Route::post('post/setimage', 'PostController@setImage');
     Route::post('post/batchdelete', 'PostController@batchDelete');
     Route::post('post/batchresolve', 'PostController@batchResolve');
@@ -66,6 +67,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     //文章分类管理
     Route::get('post/catlog', 'PostCatlogController@index');
     Route::post('post/catlog', 'PostCatlogController@batchUpdate');
+    Route::get('post/catlog/batchget', 'PostCatlogController@batchget');
     Route::get('post/catlog/newcatlog', 'PostCatlogController@newcatlog');
     Route::post('post/catlog/newcatlog', 'PostCatlogController@store');
     Route::get('post/catlog/delete', 'PostCatlogController@delete');
@@ -77,6 +79,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('item', 'ItemController@index');
     Route::get('item/edit', 'ItemController@publish');
     Route::post('item/edit', 'ItemController@store');
+    Route::get('item/batchget', 'ItemController@showItems');
     Route::post('item/batchdelete', 'ItemController@batchDelete');
     Route::post('item/batchonsale', 'ItemController@batchOnSale');
     Route::post('item/batchoffsale', 'ItemController@batchOffSale');
@@ -94,6 +97,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('item/catlog/merge', 'ItemCatlogController@merge');
     Route::post('item/catlog/merge', 'ItemCatlogController@execMerge');
     Route::post('item/catlog/seticon', 'ItemCatlogController@setIcon');
+    Route::get('item/catlog/batchget', 'ItemCatlogController@batchget');
     Route::get('item/catlog/props', 'ItemCatlogController@props');
     Route::post('item/catlog/props', 'ItemCatlogController@batchDeleteProps');
     Route::any('item/catlog/newprops', 'ItemCatlogController@newProps');
@@ -124,25 +128,16 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('wechat/viewimage', 'WechatMaterialController@viewImage');
 
     //页面管理
-    Route::get('pages', 'PagesController@index');
-    Route::post('pages', 'PagesController@batchUpdate');
-    Route::get('pages/newpage', 'PagesController@newpage');
-    Route::post('pages/newpage', 'PagesController@savePage');
-    Route::get('pages/category', 'PagesController@category');
-    Route::post('pages/category', 'PagesController@saveCategory');
+    Route::view('pages', 'admin.pages');
     //素材管理
-    Route::get('material', 'MaterialController@index');
-    Route::post('material', 'MaterialController@batchDelete');
+    Route::view('material', 'admin.material');
     //区域管理
-    Route::get('district', 'DistrictController@index');
-    Route::post('district', 'DistrictController@store');
+    Route::view('district', 'admin.district');
     //快递管理
     Route::get('express', 'ExpressController@index');
     Route::post('express', 'ExpressController@store');
     //友情链接
-    Route::get('link', 'LinkController@index');
-    Route::post('link', 'LinkController@store');
-    Route::post('link/setimage', 'LinkController@setimage');
+    Route::view('link', 'admin.link');
     //退货理由
     Route::get('refundreason', 'RefundReasonController@index');
     Route::post('refundreason', 'RefundReasonController@store');

@@ -79,7 +79,7 @@
                     <th>手机号</th>
                     <th>电子邮箱</th>
                     <th width="100">会员等级</th>
-                    <th width="150">注册日期</th>
+                    <th width="155">注册日期</th>
                     <th width="80">选项</th>
                 </tr>
                 </thead>

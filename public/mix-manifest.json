@@ -1,15 +1,10 @@
 {
-    "/js/h5/address/index.js": "/js/h5/address/index.js?id=7e72b50649365bb0cbaa",
-    "/js/h5/cart/index.js": "/js/h5/cart/index.js?id=36874e08357e266d4748",
-    "/js/h5/catlog/index.js": "/js/h5/catlog/index.js?id=d05a40af8040b9de84fa",
-    "/js/h5/index/index.js": "/js/h5/index/index.js?id=6e2ff5792cc277590da3",
-    "/css/h5/index.css": "/css/h5/index.css?id=281027a4372266044a39",
-    "/js/h5/item/index.js": "/js/h5/item/index.js?id=3c702fc70a7f7d3a6239",
-    "/js/h5/order/buynow/index.js": "/js/h5/order/buynow/index.js?id=e58e67985d3787e84fbd",
-    "/js/h5/order/confirm/index.js": "/js/h5/order/confirm/index.js?id=f6f89810afdc742934ef",
-    "/js/h5/security/index.js": "/js/h5/security/index.js?id=3ce40278ad740988ffb2",
-    "/js/h5/trade/bought/index.js": "/js/h5/trade/bought/index.js?id=be32992a5b326c8ebbf5",
-    "/js/h5/trade/order/index.js": "/js/h5/trade/order/index.js?id=b7526c20459637ffe61a",
-    "/js/h5/trade/sold/order.js": "/js/h5/trade/sold/order.js?id=9c959c472292d1565fa1",
-    "/js/h5/user/index.js": "/js/h5/user/index.js?id=252e4d420326388a05ea"
+    "/js/admin/app.js": "/js/admin/app.js",
+    "/js/h5/cart.js": "/js/h5/cart.js",
+    "/js/h5/catlog.js": "/js/h5/catlog.js",
+    "/js/h5/index.js": "/js/h5/index.js",
+    "/css/admin/index.css": "/css/admin/index.css",
+    "/css/h5/index.css": "/css/h5/index.css",
+    "/js/h5/item.js": "/js/h5/item.js",
+    "/js/h5/user.js": "/js/h5/user.js"
 }

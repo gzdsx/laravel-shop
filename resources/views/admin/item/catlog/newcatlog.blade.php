@@ -74,7 +74,7 @@
                 <tr>
                     <td></td>
                     <td colspan="5">
-                        <input type="submit" class="btn btn-primary w100" value="提交" id="submitButton"@if(!$catlog->catid) disabled="disabled"@endif>
+                        <input type="submit" class="btn btn-primary w100" value="提交" id="submitButton">
                     </td>
                 </tr>
                 </tfoot>
@@ -84,13 +84,5 @@
 @stop
 
 @section('foot')
-    <script type="text/javascript">
-        $(document).on('click keyup', function () {
-            if ($("#name").val().length > 0) {
-                $("#submitButton").enable();
-            } else {
-                $("#submitButton").disable();
-            }
-        });
-    </script>
+
 @stop

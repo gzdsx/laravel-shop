@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $order_state 订单状态,1=未付款,2=已付款,3=已发货,4=交易完成,5=退货中,6=交易关闭
  * @property int $buyer_uid 买家ID
  * @property string|null $buyer_name 买家账号
- * @property string|null $buyer_message 买家留言
+ * @property string|null $remark 买家留言
  * @property float $order_fee 订单费用
  * @property float $shipping_fee 运费
  * @property float $total_fee 付款金额
@@ -43,12 +43,11 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int|null $actions_count
  * @property-read \App\Models\User $buyer
  * @property-read \App\Models\OrderClosed $closeReason
- * @property-read mixed|null $bought_order_state_des
+ * @property-read mixed|null $buyer_state_des
  * @property-read mixed|null $order_state_des
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $pay_state_des
  * @property-read mixed|null $pay_type_des
- * @property-read mixed|null $sold_order_state_des
- * @property-read mixed $trade_state
+ * @property-read mixed|null $seller_state_des
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
  * @property-read int|null $items_count
  * @property-read \App\Models\Refund $refund
@@ -62,7 +61,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBeginsWith($column, $value, $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuyerDeleted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuyerMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuyerName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuyerRate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereBuyerUid($value)
@@ -84,6 +82,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereReceiveState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRefundAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRefundState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereRemark($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerDeleted($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereSellerRate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingAt($value)
@@ -112,19 +111,18 @@ class Order extends Model
     ];
     protected $appends = [
         'order_state_des',
-        'bought_order_state_des',
-        'sold_order_state_des',
+        'buyer_state_des',
+        'seller_state_des',
         'pay_type_des',
-        'pay_state_des',
-        'trade_state'
+        'pay_state_des'
     ];
 
     protected $fillable = [
         'order_id', 'order_type', 'order_no', 'order_state', 'buyer_uid', 'buyer_name',
-        'buyer_message', 'order_fee', 'shipping_fee', 'total_fee', 'pay_type', 'pay_state', 'pay_at',
+        'buyer_message', 'order_fee', 'shipping_fee', 'total_fee', 'total_count', 'pay_type', 'pay_state', 'pay_at',
         'shipping_state', 'shipping_at', 'receive_state', 'receive_at', 'buyer_rate',
         'seller_rate', 'refund_state', 'refund_at', 'closed', 'closed_at', 'buyer_deleted',
-        'seller_deleted', 'finished_at', 'created_at', 'updated_at', 'out_trade_no'
+        'seller_deleted', 'finished_at', 'out_trade_no', 'transaction_id'
     ];
 
     public static function boot()
@@ -158,7 +156,7 @@ class Order extends Model
     public function getOrderStateDesAttribute()
     {
         if (isset($this->attributes['order_state'])) {
-            return trans('order.order_states.' . $this->attributes['order_state']);
+            return trans('trade.order_states.' . $this->attributes['order_state']);
         }
         return null;
     }
@@ -166,10 +164,10 @@ class Order extends Model
     /**
      * @return mixed|null
      */
-    public function getBoughtOrderStateDesAttribute()
+    public function getBuyerStateDesAttribute()
     {
         if (isset($this->attributes['order_state'])) {
-            return trans('order.bought_states.' . $this->attributes['order_state']);
+            return trans('trade.buyer_order_states.' . $this->attributes['order_state']);
         }
         return null;
     }
@@ -177,10 +175,10 @@ class Order extends Model
     /**
      * @return mixed|null
      */
-    public function getSoldOrderStateDesAttribute()
+    public function getSellerStateDesAttribute()
     {
         if (isset($this->attributes['order_state'])) {
-            return trans('order.sold_states.' . $this->attributes['order_state']);
+            return trans('trade.seller_order_states.' . $this->attributes['order_state']);
         }
         return null;
     }
@@ -191,7 +189,7 @@ class Order extends Model
     public function getPayTypeDesAttribute()
     {
         if (isset($this->attributes['pay_type'])) {
-            return trans('order.pay_types.' . $this->attributes['pay_type']);
+            return trans('trade.pay_types.' . $this->attributes['pay_type']);
         }
         return null;
     }
@@ -205,14 +203,6 @@ class Order extends Model
             return trans('payment.pay_states.' . $this->attributes['pay_state']);
         }
         return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTradeStateAttribute()
-    {
-        return $this->attributes['order_state'];
     }
 
     /**
@@ -363,5 +353,13 @@ class Order extends Model
     public function seller()
     {
         return $this->belongsTo(User::class, 'seller_uid', 'uid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'transaction_id', 'transaction_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -21,14 +22,12 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $summary 摘要
  * @property string $image 图片
  * @property array|null $tags 标签
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
  * @property int $allowcomment 允许评论
  * @property int $collections 被收藏数
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PostComment[] $comments 评论数
  * @property int $views 浏览数
  * @property int $likes 点赞数
- * @property int $state
+ * @property int $state 0：待审,1:已审核,-1:审核不过
  * @property string|null $from 来源
  * @property string|null $fromurl 来源地址
  * @property int $contents 内容数
@@ -40,6 +39,8 @@ use Illuminate\Support\Facades\Auth;
  * @property int $click5
  * @property int $click6
  * @property int $click7
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostCatlog $catlog
  * @property-read int|null $comments_count
  * @property-read \App\Models\PostContent $content
@@ -108,11 +109,32 @@ class PostItem extends Model
         'url',
         'h5_url'
     ];
-
     protected $fillable = [
-        'uid', 'catid', 'author', 'type', 'title', 'alias', 'summary', 'image',
-        'tag', 'created_at', 'updated_at', 'allowcomment', 'views', 'state', 'from', 'fromurl'
+        'uid', 'catid', 'author', 'type', 'title', 'alias', 'summary', 'image', 'price',
+        'tag', 'allowcomment', 'views', 'state', 'from', 'fromurl', 'created_at', 'updated_at'
     ];
+    protected $with = ['user','catlog'];
+
+    /**
+     * PostItem constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $attributes = array_merge([
+            'uid' => Auth::id(),
+            'price' => '0',
+            'from' => env('APP_NAME'),
+            'fromurl' => env('APP_URL'),
+            'summary' => '',
+            'type' => 'article',
+            'state' => '1',
+            'author' => '',
+            'created_at' => now(),
+            'allowcomment' => 1
+        ], $attributes);
+        parent::__construct($attributes);
+    }
 
     public static function boot()
     {
@@ -143,7 +165,7 @@ class PostItem extends Model
      */
     public function getTypeDesAttribute()
     {
-        return data_get(trans('post.post_types'), $this->attributes['type']);
+        return $this->type ? __('post.post_types.' . $this->type) : null;
     }
 
     /**
@@ -151,7 +173,7 @@ class PostItem extends Model
      */
     public function getStateDesAttribute()
     {
-        return data_get(trans('post.post_states'), $this->attributes['state']);
+        return $this->state ? __('post.post_states.' . $this->state) : null;
     }
 
     /**
@@ -159,7 +181,7 @@ class PostItem extends Model
      */
     public function getUrlAttribute()
     {
-        return url('post/detail/' . $this->attributes['aid'] . '.html');
+        return $this->aid ? url('post/detail/' . $this->aid . '.html') : null;
     }
 
     /**
@@ -167,7 +189,7 @@ class PostItem extends Model
      */
     public function getH5UrlAttribute()
     {
-        return url('h5/post/detail/' . $this->attributes['aid'] . '.html');
+        return $this->aid ? url('h5/post/detail/' . $this->attributes['aid'] . '.html') : null;
     }
 
     /**

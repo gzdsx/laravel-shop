@@ -19,11 +19,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $image 商品图片
  * @property int $quantity 商品数量
  * @property int $sku_id 属性ID
- * @property string|null $sku_name 商品属性
+ * @property string|null $sku_title 商品属性
  * @property float $promotion_fee 优惠费用
  * @property float $shipping_fee 运费
  * @property float $total_fee 总费用
- * @property float $redpack_amount
+ * @property float $redpack_amount 红包金额
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem newModelQuery()
@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereRedpackAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereShippingFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereSkuId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereSkuName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereSkuTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereTotalFee($value)

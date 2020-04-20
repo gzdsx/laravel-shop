@@ -2,46 +2,18 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Alipay\Alipay;
+
 use App\Http\Controllers\Controller;
-use App\Models\Address;
-use App\Models\BlockItem;
-use App\Models\Item;
-use App\Models\ItemCatlog;
-use App\Models\ItemPush;
-use App\Models\Order;
-use App\Models\PostItem;
-use App\Models\ProductImages;
-use App\Models\ProductNews;
-use App\Models\Shop;
-use App\Models\User;
-use App\Models\UserConnect;
-use App\Models\Wallet;
-use App\Validators\PasswordValidator;
-use App\WeChat\WechatDefaultConfig;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
 
-    use WechatDefaultConfig;
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(){
-        return mix('js/h5/base.js');
-        return [
-            'title' => setting('wechat_subscribe_msg_title'),
-            'description' => setting('wechat_subscribe_msg_text'),
-            'image' => image_url(setting('wechat_subscribe_msg_img')),
-            'url' => setting('wechat_subscribe_msg_url')
-        ];
+    public function index(Request $request){
+        return $this->view('home.index');
     }
 
     public function app(){

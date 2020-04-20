@@ -10,12 +10,12 @@ class AdminRequestException extends Exception
 {
     public $links;
 
-    public function __construct($message = "", $code = 400, array $links=[], Throwable $previous = null)
+    public function __construct($message = "", $code = 400, array $links = [], Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
-        if ($links){
+        if ($links) {
             $this->links = $links;
-        } else{
+        } else {
             $this->links = [
                 [trans('common.go home'), admin_url('wellcome')],
                 [trans('common.go back'), back()->getTargetUrl()]
@@ -37,7 +37,7 @@ class AdminRequestException extends Exception
      */
     public function render(Request $request)
     {
-        if ($request->ajax() || $request->isJson()) {
+        if ($request->ajax()) {
             return ajaxError($this->getCode() ?: 400, $this->getMessage());
         } else {
             return view('errors.admin', ['exception' => $this]);

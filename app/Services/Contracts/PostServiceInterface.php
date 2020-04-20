@@ -14,11 +14,17 @@
 namespace App\Services\Contracts;
 
 
-interface PostServiceInterface extends ServiceInterface
+interface PostServiceInterface
 {
-    public function updateContent($post, $content);
+    /**
+     * @param $aid
+     * @return \App\Models\PostItem
+     */
+    public function find($aid);
+    /**
+     * @param array $attributes
+     * @return \App\Models\PostItem
+     */
+    public function update(array $attributes);
 
-    public function updateImages($post, array $images);
-
-    public function updateMedia($post, array $media);
 }

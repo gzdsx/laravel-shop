@@ -1,225 +1,257 @@
 @import "../base";
 
-a:link, a:active {
-    color: #333;
+html, body {
+    background-color: #EBEBEF;
 }
-
-//.btn-group-sm > .btn, .btn-sm {
-//    padding: 3px 7px;
-//    font-size: 12px;
-//    line-height: 1.5;
-//    border-radius: 2px;
-//}
 
 .iconfont {
     vertical-align: -1px;
     margin-right: 2px;
 }
 
-/*===顶部===*/
-.admin-header {
-    color: #fff;
-    height: 40px;
-    display: block;
-    position: relative;
-}
-
-.admin-header .header {
-    display: block;
-    position: fixed;
-    width: 100%;
-    height: 40px;
-    background-color: #0098CE;
-    z-index: 200;
-}
-
-.admin-header .logo {
-    font-size: 20px;
-    line-height: 40px;
-    float: left;
-    margin-right: 40px;
-    margin-left: 26px;
-}
-
-.admin-header .right-menu {
-    font-size: 12px;
-    overflow: hidden;
-    padding-left: 2px;
-    float: right;
-}
-
-.admin-header .right-menu a {
-    display: inline-block;
-    padding: 0 20px;
-    float: left;
-    font-size: 14px;
-    color: #fff;
-    height: 40px;
-    line-height: 40px;
-    border-left: 1px #008fbf solid;
-    border-right: 1px #008fbf solid;
-    margin-left: -1px;
+.admin-wrapper{
+    display: flex;
 }
 
 /*===侧边栏===*/
 .sidebar {
-    width: 160px;
-    background: #EAEDF1;
-    position: fixed;
-    left: 0;
-    top: 40px;
-    bottom: 0;
-}
-
-.sidebar .sidebar-content {
-    display: block;
+    width: 210px;
     position: relative;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-}
+    a {
+        &,
+        &:link,
+        &:active,
+        &:visited {
+            color: #fff;
+        }
+    }
 
-.sidebar .scroll {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: -20px;
-    bottom: 0;
-    overflow: auto;
-}
+    &-fixed {
+        display: block;
+        position: fixed;
+        background: #383737;
+        color: #efefef;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 210px;
+        overflow: hidden;
+    }
 
-.sidebar .menus {
-    display: block;
-    padding: 10px 0 20px 0;
-}
+    &-scroll {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -20px;
+        bottom: 0;
+        overflow: auto;
+    }
 
-.sidebar dl {
-    display: block;
-}
+    &-profile {
+        padding: 20px 15px;
+        border-bottom: 1px #4D4D4D solid;
+        cursor: pointer;
 
-.sidebar dl dd {
-    font-size: 12px;
-    font-weight: 400;
-}
+        .logo {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 5px;
+        }
 
-.sidebar dl dd a {
-    display: block;
-    padding: 8px 25px;
-    font-size: 14px;
-}
+        .sitename {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 500;
+        }
 
-.sidebar dl dd a:hover {
-    color: #000;
-}
+        .el-dropdown-link {
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+    }
 
-.sidebar dl dd .iconfont {
-    display: inline-block;
-    font-size: 16px;
-    margin-right: 3px;
-    vertical-align: -1px;
-}
+    .v-common-nav {
+        display: block;
+        padding: 20px 10px;
 
-.sidebar dl dt {
-    display: none;
-}
+        &-model {
+            display: block;
+            margin-bottom: 10px;
 
-.sidebar dl ul {
-}
+            &-link {
+                display: flex;
+                font-size: 16px;
+                color: #efefef;
 
-.sidebar dl li {
-    display: block;
-}
+                a {
+                    &,
+                    &:active,
+                    &:visited {
+                        color: #dddddd;
+                        display: block;
+                        flex: 1;
+                    }
+                }
 
-.sidebar dl li a {
-    display: block;
-    padding: 7px 20px 7px 41px;
-    font-size: 12px;
-}
-
-.sidebar dl li a:hover {
-    background: #e2e2e2;
-    color: #000;
-}
-
-.sidebar dl li a.cur, .sidebar dl li a.cur:hover {
-    background-color: #0097D0;
-    color: #fff;
-}
-
-.sidebar dl .on {
-    background-color: #1296DB;
-    color: #fff;
-}
-
-.mainframe {
-    position: fixed;
-    left: 160px;
-    top: 40px;
-    right: 0;
-    bottom: 0;
-    display: block;
-    background-color: #fff;
-    overflow: auto;
-}
-
-.mainframe .main-content {
-    display: block;
-    padding: 0;
-    height: 100%;
-    background-color: #fff;
-}
-
-.content-div {
-    display: block;
-    margin: 10px 0;
-}
-
-.search-container {
-    .row {
-        clear: both;
-        margin: 10px 0;
-
-        .cell {
-            width: 33.3333%;
-            float: left;
-
-            .label {
-                width: 90px;
-                text-align: center;
-                font-size: 12px;
-                float: left;
-                height: 28px;
-                line-height: 28px;
-                color: #666;
-                font-weight: normal;
+                .iconfont {
+                    font-size: 18px;
+                    vertical-align: 0;
+                    margin-right: 1px;
+                }
             }
 
-            .field {
-                margin-left: 91px;
-            }
 
+            .v-common-nav-link-wrapper {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 10px 0 0 23px;
+
+                .v-common-nav-link {
+                    display: block;
+                    font-size: 14px;
+                    line-height: 26px;
+                    font-weight: 300;
+                    width: 80px;
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
         }
     }
 }
 
-/*控制栏*/
-.console-title {
+.mainframe {
     display: block;
-    margin-bottom: 20px;
-    line-height: 1;
+    overflow: auto;
+    flex: 1;
 
-    h2 {
-        font-size: 18px;
-        font-weight: 500;
-        float: left;
-        line-height: 1;
-        padding-top: 2px;
+    &-container {
+        padding: 0;
+        height: 100%;
+        display: block;
+        position: relative;
+        padding-bottom: 60px;
     }
 
+    &-content {
+        display: block;
+        padding: 20px;
+        position: relative;
+    }
+
+    .page-header {
+        height: 48px;
+        font-size: 14px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        border-bottom: 1px #EFEFF4 solid;
+
+        .page-title {
+            font-size: 16px;
+        }
+    }
+
+    .content-block {
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        transition: .2s;
+        background-color: #fff;
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+
+    .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+
+        .el-form-item {
+            margin: 0;
+            padding: 0;
+
+            &__content {
+                line-height: 1;
+            }
+        }
+    }
+
+    .table-edit-header{
+        position: relative;
+        display: block;
+        margin-bottom: 10px;
+
+        .buttons-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+        }
+
+        .table-edit-title{
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+
+    .table-edit-footer{
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    .edit-title{
+        background-color: #F7F7F7;
+        padding: 0 20px;
+        display: flex;
+        height: 30px;
+        margin-bottom: 10px;
+
+        span{
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+
+    .edit-bottom{
+        background-color: #F2F2F2;
+        position: fixed;
+        left: 210px;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
-.catlog-prefix {
-    background: url("#{$image-path}/admin/join.png") left center no-repeat;
-    padding: 0 0 0 30px;
+.el-button--primary{
+    a{
+        &,
+        &:link,
+        &:active,
+        &:visited{
+            color: #fff;
+        }
+    }
 }
+
+.sortable-ghost{
+    border: 1px #409EFF dashed;
+}
+
+.sortable-chosen{
+    border: 1px #409EFF dashed;
+}
+
+@import "../lib/sku";

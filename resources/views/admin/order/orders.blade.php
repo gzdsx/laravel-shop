@@ -35,7 +35,7 @@
                     <div class="field">
                         <select title="" class="form-control custom-select w200" name="order_state">
                             <option value="0">全部</option>
-                            @foreach (trans('order.order_states') as $k=>$v)
+                            @foreach (trans('trade.order_states') as $k=>$v)
                                 <option value="{{$k}}"{{$order_state==$k ? ' selected="selected"' : ''}}>{{$v}}</option>
                             @endforeach
                         </select>
@@ -74,9 +74,9 @@
     <div class="dsxui-tabs-container">
         <ul class="dsxui-tabs">
             <li class="tab-item"><a href="{{admin_url('order?tab=all')}}" class="tab-link{{$tab=='all' ? ' active' : ''}}">全部订单</a></li>
-            <li class="tab-item"><a href="{{admin_url('order?tab=waitPay')}}" class="tab-link{{$tab=='waitPay' ? ' active' : ''}}">等待买家付款</a></li>
-            <li class="tab-item"><a href="{{admin_url('order?tab=waitSend')}}" class="tab-link{{$tab=='waitSend' ? ' active' : ''}}">买家已付款</a></li>
-            <li class="tab-item"><a href="{{admin_url('order?tab=send')}}" class="tab-link{{$tab=='send' ? ' active' : ''}}">卖家已发货</a></li>
+            <li class="tab-item"><a href="{{admin_url('order?tab=waitPay')}}" class="tab-link{{$tab=='waitPay' ? ' active' : ''}}">待付款</a></li>
+            <li class="tab-item"><a href="{{admin_url('order?tab=waitSend')}}" class="tab-link{{$tab=='waitSend' ? ' active' : ''}}">待发货</a></li>
+            <li class="tab-item"><a href="{{admin_url('order?tab=send')}}" class="tab-link{{$tab=='send' ? ' active' : ''}}">待确认</a></li>
             <li class="tab-item"><a href="{{admin_url('order?tab=received')}}" class="tab-link{{$tab=='received' ? ' active' : ''}}">交易成功</a></li>
             <li class="tab-item"><a href="{{admin_url('order?tab=refunding')}}" class="tab-link{{$tab=='refunding' ? ' active' : ''}}">退款中</a></li>
             <li class="tab-item"><a href="{{admin_url('order?tab=closed')}}" class="tab-link{{$tab=='closed' ? ' active' : ''}}">已关闭</a></li>

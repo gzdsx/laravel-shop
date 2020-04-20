@@ -14,19 +14,11 @@
 namespace App\Traits\Common;
 
 
-use App\Repositories\Eloquent\DistrictRepository;
+use App\Models\District;
 use Illuminate\Http\Request;
 
 trait DistrictTrait
 {
-    /**
-     * @return DistrictRepository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    public function districtRepository(){
-        return app(DistrictRepository::class);
-    }
-
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -35,15 +27,17 @@ trait DistrictTrait
     public function get(Request $request)
     {
         $id = $request->input('id', 0);
-        return ajaxReturn(['district' => $this->districtRepository()->findOrFail($id)]);
+        return ajaxReturn(['district' => District::findOrFail($id)]);
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function batchget(Request $request)
     {
         $fid = $request->input('fid', 0);
-        return ajaxReturn(['items' => $this->districtRepository()->where('fid', $fid)->orderBy('displayorder')->get()]);
+        return ajaxReturn(['items' => District::where('fid', $fid)->get()]);
     }
 }

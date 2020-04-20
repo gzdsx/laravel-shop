@@ -16,17 +16,5 @@ namespace App\Repositories\Contracts;
 
 interface ItemRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param \App\Models\Item $item
-     * @param $content
-     * @return \App\Models\Item
-     */
-    public function updateContent($item, $content);
 
-    /**
-     * @param \App\Models\Item $item
-     * @param array $images
-     * @return \App\Models\Item
-     */
-    public function updateImages($item, array $images);
 }

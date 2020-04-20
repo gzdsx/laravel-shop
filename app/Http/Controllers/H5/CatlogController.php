@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\H5;
 
-use App\Repositories\Contracts\ItemCatlogRepositoryInterface;
+
 use Illuminate\Http\Request;
 
 class CatlogController extends BaseController
@@ -14,17 +14,6 @@ class CatlogController extends BaseController
      */
     public function index(Request $request)
     {
-        $catlogs = app(ItemCatlogRepositoryInterface::class)->all();
-        return $this->view('h5.catlog', compact('catlogs'));
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchget(Request $request)
-    {
-        $items = app(ItemCatlogRepositoryInterface::class)->all();
-        return ajaxReturn(['items' => $items]);
+        return $this->view('h5.catlog');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\H5;
 
 use App\Events\OrderEvent;
 use App\Models\Express;
+use App\Models\OrderItem;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,13 +61,14 @@ class SoldController extends BaseController
 
     /**
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function send(Request $request)
     {
         $order = $this->orderRepository()->findOrFail($request->input('order_id'));
+        $order->order_state = 3;
         $order->shipping_state = 1;
         $order->shipping_at = now();
-        $order->order_state = 3;
         $order->save();
 
         if ($order->shipping) {
@@ -81,5 +83,31 @@ class SoldController extends BaseController
 
         event(new OrderEvent($order, 'send'));
         return ajaxReturn();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function editPrice(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        $items = $request->input('items', []);
+        $order_fee = 0;
+        foreach ($items as $item) {
+            $total_fee = $item['price'] * $item['quantity'];
+            OrderItem::where('order_id', $order_id)
+                ->where('itemid', $item['itemid'])
+                ->update([
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                    'total_fee' => $total_fee
+                ]);
+            $order_fee += $total_fee;
+        }
+        $order = $this->orderRepository()->findOrFail($request->input('order_id'));
+        $order->fill(['order_fee' => $order_fee, 'total_fee' => $total_fee, 'order_no' => createOrderNo()])->save();
+        $order->load(['buyer', 'items', 'shipping']);
+        return ajaxReturn(['order' => $order]);
     }
 }

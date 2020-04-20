@@ -22,24 +22,14 @@ abstract class CatlogRepository extends BaseRepository implements CatlogReposito
     /**
      * @param int $fid
      * @param bool $withGlobalScopes
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function fetchAll($fid = 0, $withGlobalScopes = true)
     {
         // TODO: Implement fetchAll() method.
-        if ($withGlobalScopes){
-            return $this->with(['childs' => function (HasMany $hasMany) {
-                return $hasMany->with(['childs'=>function(HasMany $hasMany){
-                    return $hasMany->orderBy('displayorder');
-                }])->orderBy('displayorder');
-            }])->where('fid', $fid)->orderBy('displayorder')->get();
-        }
-
-        return $this->withoutGlobalScopes()->with(['childs' => function (HasMany $hasMany) {
-            return $hasMany->withoutGlobalScopes()->with(['childs'=>function(HasMany $hasMany){
-                return $hasMany->withoutGlobalScopes()->orderBy('displayorder');
-            }])->orderBy('displayorder');
-        }])->where('fid', $fid)->orderBy('displayorder')->get();
+        return $this->with(['children' => function (HasMany $hasMany) {
+            return $hasMany->with(['children']);
+        }])->where('fid', $fid)->get();
     }
 
     /**

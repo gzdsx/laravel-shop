@@ -16,31 +16,5 @@ namespace App\Repositories\Contracts;
 
 interface ShopRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param \App\Models\Shop $shop
-     * @param $content
-     * @return \App\Models\Shop
-     */
-    public function updateContent($shop, $content);
 
-    /**
-     * @param \App\Models\Shop $shop
-     * @param array $auth
-     * @return \App\Models\Shop
-     */
-    public function updateAuth($shop, array $auth);
-
-    /**
-     * @param \App\Models\Shop $shop
-     * @param $uid
-     * @return mixed
-     */
-    public function addCusotmer($shop, $uid);
-
-    /**
-     * @param \App\Models\Shop $shop
-     * @param $id
-     * @return mixed
-     */
-    public function removeCustomer($shop, $id);
 }

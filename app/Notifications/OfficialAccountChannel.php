@@ -25,10 +25,14 @@ class OfficialAccountChannel
      * @param $notifiable
      * @param Notification $notification
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function send($notifiable, Notification $notification)
     {
-        $message = $notification->toOfficialAccount($notifiable);
-        if ($message) $this->officialAccount()->template_message->send($message);
+        $messages = $notification->toOfficialAccount($notifiable);
+        foreach ($messages as $message){
+            $this->officialAccount()->template_message->send($message);
+        }
     }
 }

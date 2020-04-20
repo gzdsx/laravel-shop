@@ -8,20 +8,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('images/common/favicon.png')}}" rel="icon">
-    <link href="{{asset('css/vendor/bootstrap.css')}}" rel="stylesheet">
     <link href="{{asset('css/iconfont/iconfont.css')}}" rel="stylesheet">
-    <link href="{{asset('css/admin/index.css?'.time())}}" rel="stylesheet">
+    <link href="{{asset('css/vendor/bootstrap.css')}}" rel="stylesheet">
+    <link href="{{asset('css/admin/index.css?v='.time())}}" rel="stylesheet">
+    <script src="{{asset('js/env-bootstrap.js')}}"></script>
     @yield('styles')
-    <script src="{{asset('js/manifest.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/vendor.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/base.js')}}" type="text/javascript"></script>
     @yield('scripts')
 </head>
-<body style="padding: 20px;">
-<div id="app">
-    @yield('content')
-</div>
-<div class="blank-20"></div>
+<body>
+<div id="app">@yield('content')</div>
 @yield('foot')
 </body>
 </html>

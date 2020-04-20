@@ -49,8 +49,7 @@ class Cart extends Model
     protected $table = 'cart';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'uid', 'itemid', 'title', 'quantity', 'price',
-        'thumb', 'image', 'sku_id', 'sku_name', 'created_at', 'updated_at'
+        'uid', 'itemid', 'title', 'quantity', 'price', 'thumb', 'image', 'sku_id', 'sku_title'
     ];
 
     public static function boot()
@@ -126,5 +125,13 @@ class Cart extends Model
     public function items()
     {
         return $this->hasMany(Cart::class, 'shop_id', 'shop_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function sku()
+    {
+        return $this->hasOne(ItemSku::class, 'id', 'sku_id');
     }
 }

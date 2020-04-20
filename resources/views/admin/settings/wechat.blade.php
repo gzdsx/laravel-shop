@@ -41,9 +41,9 @@
                 <tr>
                     <td class="cell-label">客服openID:</td>
                     <td class="cell-input">
-                        <input class="form-control" type="text" title="" name="settings[wechat_kefu_openid]" value="{{$settings['wechat_kefu_openid'] ?? ''}}">
+                        <textarea class="form-control h100" title="" name="settings[wechat_kefu_openid]">{{$settings['wechat_kefu_openid'] ?? ''}}</textarea>
                     </td>
-                    <td class="cell-tips">用于客服下单时接收模板消息提醒</td>
+                    <td class="cell-tips">用于客服下单时接收模板消息提醒,填写openID，每行一个</td>
                 </tr>
                 </tbody>
                 <tfoot>

@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 
 class MaterialController extends BaseController
 {
-    protected $materialRepository;
 
-    public function __construct(Request $request, MaterialRepositoryInterface $materialRepository)
-    {
-        parent::__construct($request);
-        $this->materialRepository = $materialRepository;
+    /**
+     * @return MaterialRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     */
+    public function materialRepository(){
+        return app(MaterialRepositoryInterface::class);
     }
 
     /**
@@ -22,19 +22,22 @@ class MaterialController extends BaseController
      */
     public function index(Request $request)
     {
-        if (!$request->has('type')) {
-            $request->query->add(['type' => 'image']);
-        }
-        $items = $this->materialRepository->with(['user'])->filter($request->all())->orderByDesc('id')->paginate();
-        return $this->view('admin.common.material', [
-            'items' => $items,
-            'pagination' => $items->appends($request->except('page'))->render(),
-            'type' => $request->input('type'),
-            'uid' => $request->input('uid'),
-            'username' => $request->input('username'),
-            'name' => $request->input('name'),
-            'time_begin' => $request->input('time_begin'),
-            'time_end' => $request->input('time_end')
+        return $this->view('admin.material');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchget(Request $request){
+        $type = $request->input('type','image');
+        $result = $this->materialRepository()->with('user')
+            ->where('type',$type)->filter($request->except('type'))->paginate();
+        return ajaxReturn([
+            'items'=>$result->items(),
+            'total'=>$result->total(),
+            'per_page'=>$result->perPage(),
+            'current_page' => $result->currentPage()
         ]);
     }
 
@@ -42,10 +45,10 @@ class MaterialController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $items = $request->input('items', []);
-        $this->materialRepository->whereKey($items)->delete();
+        $this->materialRepository()->whereKey($items)->delete();
         return ajaxReturn();
     }
 }

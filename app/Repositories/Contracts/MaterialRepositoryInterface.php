@@ -16,5 +16,8 @@ namespace App\Repositories\Contracts;
 
 interface MaterialRepositoryInterface extends RepositoryInterface
 {
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\App\Models\Material
+     */
+    public function query();
 }

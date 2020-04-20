@@ -21,6 +21,15 @@ use Illuminate\Support\Facades\Hash;
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     /**
+     * @return User|\Illuminate\Database\Eloquent\Builder
+     */
+    public function query()
+    {
+        // TODO: Implement query() method.
+        return User::query();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|string
      */
     public function model()

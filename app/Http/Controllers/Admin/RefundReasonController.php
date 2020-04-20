@@ -37,7 +37,7 @@ class RefundReasonController extends BaseController
             $this->refundReasonRepository->whereKey($delete)->delete();
         }
 
-        $items = $this->request->input('items');
+        $items = $request->input('items');
         if ($items) {
             foreach ($items as $id => $item) {
                 if ($id > 0) {

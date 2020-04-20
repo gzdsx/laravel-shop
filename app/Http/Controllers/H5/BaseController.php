@@ -10,7 +10,7 @@ class BaseController extends Controller
 {
     use WechatDefaultConfig;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware(function (Request $request, $next){
             $issetOfficialAccount = $this->officialAccount()->config->get('app_id') && $this->officialAccount()->config->get('secret');

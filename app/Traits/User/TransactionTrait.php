@@ -14,17 +14,17 @@
 namespace App\Traits\User;
 
 
+use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;
 use Illuminate\Http\Request;
 
 trait TransactionTrait
 {
     /**
-     * @return TransactionRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     * @return Transaction|\Illuminate\Database\Eloquent\Builder
      */
-    protected function transactionRepository()
-    {
-        return app(TransactionRepositoryInterface::class);
+    protected function query(){
+        return Transaction::query();
     }
 
     /**
@@ -33,7 +33,7 @@ trait TransactionTrait
      */
     public function showTransactions(Request $request)
     {
-        $items = $this->transactionRepository()->orderByDesc('transaction_id')
+        $items = $this->query()->orderByDesc('transaction_id')
             ->paginate($request->input('perPage', 15));
         return $this->showTransactionsView($request, $items);
     }

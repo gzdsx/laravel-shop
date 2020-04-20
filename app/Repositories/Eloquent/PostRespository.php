@@ -20,6 +20,15 @@ use App\Repositories\Contracts\PostRepositoryInterface;
 class PostRespository extends BaseRepository implements PostRepositoryInterface
 {
     /**
+     * @return PostItem|\Illuminate\Database\Eloquent\Builder|mixed
+     */
+    public function query()
+    {
+        // TODO: Implement query() method.
+        return PostItem::query();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|string
      */
     public function model()
@@ -29,64 +38,90 @@ class PostRespository extends BaseRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param PostItem $postItem
-     * @param $content
-     * @return PostItem
+     * @param $id
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function updateContent($postItem, $content)
+    public function find($id, $columns = ['*'])
     {
-        // TODO: Implement updateContent() method.
-        if (is_string($content)) {
-            $postItem->content->update(['content' => $content]);
-        } else {
-            $postItem->content->update($content);
-        }
-        return $postItem;
+        return $this->query()->with(['catlog', 'content', 'media', 'images', 'user'])->findOrFail($id, $columns);
     }
 
     /**
-     * @param PostItem $postItem
-     * @param array $images
-     * @return PostItem
+     * @param array $attributes
+     * @return PostItem|\Illuminate\Database\Eloquent\Model
      */
-    public function updateImages($postItem, array $images)
+    public function store(array $attributes)
+    {
+        // TODO: Implement store() method.
+        $attributes = collect($attributes);
+        if ($attributes->has('aid')) {
+            $post = $this->query()->findOrNew($attributes->get('aid'));
+        } else {
+            $post = $this->query()->make();
+        }
+        $attributes->forget('aid');
+        $post->fill($attributes->all())->save();
+
+        if ($attributes->has('content')) {
+            $content = $attributes->get('content');
+            if (is_array($content)) $content = $content['content'] ?? '';
+            $post->content->update(['content' => $content]);
+            if ($attributes->has('summary')) {
+                $post->update(['summary' => mbsubstr(strip_html($content), 300)]);
+            }
+        }
+
+        if ($attributes->has('images')) {
+            $this->updateImages($post, $attributes->get('images'));
+        }
+
+        if ($attributes->has('media')) {
+            $this->updateMedia($post, $attributes->get('media'));
+        }
+
+        return $post;
+    }
+
+    /**
+     * @param \App\Models\PostItem $post
+     * @param array $images
+     */
+    protected function updateImages($post, array $images)
     {
         // TODO: Implement updateImages() method.
-        if ($images) {
+        $images = collect($images);
+        $imageIds = $post->images->pluck('id', 'id');
+        if ($images->count()) {
             $displayorder = 0;
-            $imageIds = $postItem->images->pluck('id');
             foreach ($images as $image) {
-                if (!$postItem->image) $postItem->image = $image['thumb'];
-                $imgid = $image['id'];
+                $imgid = $image['id'] ?? 0;
+                unset($image['id']);
                 $image['displayorder'] = $displayorder++;
                 if ($imageIds->has($imgid)) {
-                    $postItem->images()->where('id', $imgid)->update($image);
+                    isset($image['thumb']) && $image['thumb'] = strip_image_url($image['thumb']);
+                    isset($image['image']) && $image['image'] = strip_image_url($image['image']);
+                    $post->images()->whereKey($imgid)->update($image);
                     $imageIds->forget($imgid);
                 } else {
-                    $postItem->images()->create($image);
+                    $post->images()->create($image);
                 }
             }
-            $postItem->images()->whereIn('id', $imageIds)->delete();
-        } else {
-            $postItem->images()->delete();
         }
-        $postItem->save();
-        return $postItem;
+        $post->images()->whereKey($imageIds->keys())->delete();
     }
 
     /**
-     * @param PostItem $postItem
-     * @param array $media
-     * @return PostItem
+     * @param \App\Models\PostItem $post
+     * @param array $attributes
      */
-    public function updateMedia($postItem, array $media)
+    protected function updateMedia($post, array $attributes)
     {
         // TODO: Implement updateMedia() method.
-        if ($postItem->media) {
-            $postItem->media->update($media);
+        if ($post->media) {
+            $post->media->update($attributes);
         } else {
-            $postItem->media()->create($media);
+            $post->media()->create($attributes);
         }
-        return $postItem;
     }
 }

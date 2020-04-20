@@ -17,10 +17,10 @@ class SettingsController extends BaseController
     }
 
     /**
-     * @param $type
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index($type)
+    public function index(Request $request)
     {
 
         $settings = [];
@@ -28,7 +28,7 @@ class SettingsController extends BaseController
             $svalue = json_decode($setting->svalue, true);
             $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
         }
-        return $this->view('admin.settings.' . $type, compact('settings', 'type'));
+        return $this->view('admin.settings',compact('settings'));
     }
 
     /**

@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $province 省，州
  * @property string|null $country 国籍
  * @property string|null $avatar 头像地址
- * @property \Illuminate\Support\Carbon $created_at 登录时间
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at 登录时间
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserConnect miniProgram()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserConnect newModelQuery()

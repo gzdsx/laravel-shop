@@ -15,6 +15,10 @@ class ItemFilter extends ModelFilter
      */
     public $relations = [];
 
+    /**
+     * @param $q
+     * @return ItemFilter
+     */
     public function q($q)
     {
         return $this->where('title', 'like', "%$q%");
@@ -25,11 +29,19 @@ class ItemFilter extends ModelFilter
         return $this->where('title', 'like', "%$q%");
     }
 
+    /**
+     * @param $uid
+     * @return ItemFilter
+     */
     public function uid($uid)
     {
         return $this->where('uid', $uid);
     }
 
+    /**
+     * @param $name
+     * @return ItemFilter|Builder
+     */
     public function shopName($name)
     {
         return $this->whereHas('shop', function (Builder $builder) use ($name) {
@@ -37,11 +49,19 @@ class ItemFilter extends ModelFilter
         });
     }
 
+    /**
+     * @param $shop
+     * @return ItemFilter
+     */
     public function shop($shop)
     {
         return $this->where('shop_id', '=', $shop);
     }
 
+    /**
+     * @param $name
+     * @return ItemFilter|Builder
+     */
     public function sellerName($name)
     {
         return $this->whereHas('user', function (Builder $builder) use ($name) {
@@ -49,23 +69,47 @@ class ItemFilter extends ModelFilter
         });
     }
 
+    /**
+     * @param $state
+     * @return $this|ItemFilter
+     */
     public function saleState($state)
     {
-        if ($state == 'on_sale') {
-            return $this->where('on_sale', 1);
-        }
-        if ($state == 'off_sale') {
-            return $this->where('on_sale', 0);
+        if (is_numeric($state)){
+            return $this->where('on_sale',$state);
+        }else{
+            if ($state == 'on_sale') {
+                return $this->where('on_sale', 1);
+            }
+            if ($state == 'off_sale') {
+                return $this->where('on_sale', 0);
+            }
         }
 
         return $this;
     }
 
+    /**
+     * @param $state
+     * @return ItemFilter
+     */
+    public function onSale($state){
+        return $this->where('on_sale',$state);
+    }
+
+    /**
+     * @param $title
+     * @return ItemFilter
+     */
     public function title($title)
     {
         return $this->where('title', 'LIKE', "%$title%");
     }
 
+    /**
+     * @param $price
+     * @return $this|ItemFilter
+     */
     public function minPrice($price)
     {
         if ($price) {
@@ -74,6 +118,10 @@ class ItemFilter extends ModelFilter
         return $this;
     }
 
+    /**
+     * @param $price
+     * @return $this|ItemFilter
+     */
     public function maxPrice($price)
     {
         if ($price) {
@@ -82,14 +130,22 @@ class ItemFilter extends ModelFilter
         return $this;
     }
 
+    /**
+     * @param $itemid
+     * @return ItemFilter
+     */
     public function itemid($itemid)
     {
         return $this->where('itemid', $itemid);
     }
 
+    /**
+     * @param $catid
+     * @return $this|ItemFilter
+     */
     public function catid($catid)
     {
-        if ($catid) {
+        if ($catid > 0) {
             return $this->whereIn('catid', app(ItemCatlogRepository::class)->fetchAllIds($catid));
         }
         return $this;
@@ -112,6 +168,10 @@ class ItemFilter extends ModelFilter
         return $this->orderByDesc('itemid');
     }
 
+    /**
+     * @param $tab
+     * @return $this|ItemFilter
+     */
     public function tab($tab)
     {
         if ($tab == 'onSale') {
@@ -119,7 +179,7 @@ class ItemFilter extends ModelFilter
         }
 
         if ($tab == 'offShelf') {
-            return $this->where('on_sale', 1);
+            return $this->where('on_sale', 0);
         }
 
         if ($tab == 'soldOut') {
@@ -128,6 +188,10 @@ class ItemFilter extends ModelFilter
         return $this;
     }
 
+    /**
+     * @param $type
+     * @return ItemFilter
+     */
     public function type($type){
         return $this->where('type', $type);
     }

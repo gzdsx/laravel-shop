@@ -5,36 +5,54 @@ namespace App\Http\Controllers\Home;
 use App\Events\OrderEvent;
 use App\Jobs\SendEmail;
 use App\Models\Item;
+use App\Models\ItemCatlog;
+use App\Models\Message;
 use App\Models\Order;
 use App\Models\PostItem;
 use App\Models\User;
-use App\Notifications\OrderStateNotification;
+use App\Notifications\SystemMessageNotification;
+use App\Repositories\Contracts\ItemRepositoryInterface;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use ChinaPay\Exception\ChinaPayException;
+use ChinaPay\Factory;
+use ChinaPay\Payment\PayContentBuilder;
+use ChinaPay\Signing\Application;
+use ChinaPay\Signing\SignContentBuilder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
     public function index(Request $request)
     {
-//        $redpackData = [
-//            'mch_billno'   => createTransactionNo(),
-//            'send_name'    => '红包来啦!',
-//            're_openid'    => 'oj0Got63sWfQiSzCuRhHgrvkgpXY',
-//            'total_num'    => 1,  //固定为1，可不传
-//            'total_amount' => 100,  //单位为分，不小于100
-//            'wishing'      => '感谢您参加粗耕购物节活动',
-//            'client_ip'    => request()->getClientIp(),  //可不传，不传则由 SDK 取当前客户端 IP
-//            'act_name'     => '一起拼团赢红包',
-//            'remark'       => '邀请好友来粗耕购物获得红包',
-//            // ...
-//        ];
-//        return $this->payment()->redpack->sendNormal($redpackData);
-        //SendEmail::dispatch()->delay(now()->addMinutes(3));
-        //SendEmail::dispatch()->delay(now()->addMinutes(3));
-        //SendEmail::dispatch()->delay(now()->addMinutes(3));
+//        return DB::connection('cugeng')->table('item')
+//            ->where('on_sale',1)->orderByDesc('itemid')->take(100)->get();
 
-        //User::find('1042159')->notify(new OrderStateNotification(Order::first()));
-        $order = Order::orderByDesc('order_id')->first();
-        event(new OrderEvent($order, 'created'));
+//        $builder = new SignContentBuilder();
+//        $builder->setMerOrderNo(time());
+//        $builder->setMerBgUrl(url('test'));
+//        $builder->setCardTranData('{"CertType":"01","CertNo":"123","CVV2":"756","CardNo":"1234567890123456"}');
+//
+//        try {
+//            $res = Factory::signing([
+//                'mer_id'=>'000092004078494',
+//                'security_ini'=>__DIR__.'/security.ini'
+//            ])->test()->requestSign($builder->getBizContent());
+//            return $res;
+//        } catch (ChinaPayException $exception){
+//            return $exception->getMessage();
+//        }
+
+//        ItemCatlog::updateCache();
+//        return ItemCatlog::fetchWithCache();
+
+
+//        $collect = collect(['a'=>1,'b'=>3]);
+//
+//        return $collect->keys();
+        return app(ItemRepositoryInterface::class)->orderByDesc('itemid')->get();
     }
 }

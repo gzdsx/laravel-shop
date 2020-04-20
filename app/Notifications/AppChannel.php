@@ -14,7 +14,12 @@
 namespace App\Notifications;
 
 
+use Illuminate\Notifications\Notification;
+
 class AppChannel
 {
-
+    public function send($notifiable, Notification $notification)
+    {
+        //
+    }
 }

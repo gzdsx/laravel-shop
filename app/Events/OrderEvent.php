@@ -20,9 +20,9 @@ class OrderEvent
     public $type;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * OrderEvent constructor.
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
+     * @param string $type
      */
     public function __construct(Order $order, $type = 'created')
     {

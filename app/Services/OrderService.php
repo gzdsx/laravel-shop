@@ -16,8 +16,12 @@ namespace App\Services;
 
 use App\Events\OrderEvent;
 use App\Models\Address;
+use App\Models\Item;
+use App\Models\ItemSku;
 use App\Models\Order;
+use App\Models\Transaction;
 use App\Services\Contracts\OrderServiceInterface;
+use App\Support\TradeUtil;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -25,67 +29,124 @@ class OrderService implements OrderServiceInterface
 {
 
     /**
-     * @param array $items
+     * @param Item[] $items
      * @param Address $address
      * @param array $options
      * @return mixed
      * @throws \Exception
      */
-    public function create(array $items, Address $address, $options = [])
+    public function create($items, $address_id, $remark = null, $coupon = null, $options = [])
     {
         // TODO: Implement create() method.
         if (empty($items)) {
             abort(400, 'invaild items value');
         }
 
-        if (!$address) {
+        if (!$address_id) {
             abort(400, 'invaild addressId value');
         }
 
         $buyer = Auth::user();
         DB::beginTransaction();
         try {
-            $order_no = createOrderNo();
+            $order_no = TradeUtil::createOrderNo();
             $order = $buyer->boughts()->create([
                 'buyer_name' => $buyer->username,
-                'buyer_message' => $options['buyer_message'] ?? null,
+                'remark' => $remark,
                 'order_no' => $order_no,
                 'order_state' => 1,
             ]);
 
-            $order_fee = 0;
-            $shippine_fee = 0;
-            $subject = $detail = '';
+            $totalCount = 0;
+            $orderFee = 0;
+            $shippingFee = 0;
+
+            $subject = $detail = null;
             foreach ($items as $item) {
-                if (!$item->quantity) $item->quantity = 1;
-                $simple_fee = $item->price * $item->quantity;
-                $order_fee += $simple_fee;
-                $order->items()->create([
-                    'itemid' => $item->itemid,
-                    'title' => $item->title,
-                    'price' => $item->price,
-                    'thumb' => $item->thumb,
-                    'image' => $item->image,
-                    'quantity' => $item->quantity,
-                    'total_fee' => $simple_fee,
-                    'redpack_amount' => $item->redpack_amount
-                ]);
+                if ($item->sku_id) {
+                    $sku = ItemSku::find($item->sku_id);
+                    if ($item->quantity < $sku->stock) {
+                        $simpleFee = $item->quantity * $sku->price;
+                        $orderFee += $simpleFee;
+                        $order->items()->create([
+                            'itemid' => $item->itemid,
+                            'title' => $item->title,
+                            'thumb' => $item->thumb,
+                            'image' => $item->image,
+                            'quantity' => $item->quantity,
+                            'price' => $sku->price,
+                            'sku_id' => $sku->id,
+                            'sku_title' => $sku->title,
+                            'total_fee' => $item->quantity,
+                            'redpack_amount' => $item->redpack_amount
+                        ]);
+                        $sku->stock -= $item->quantity;
+                        $sku->save();
 
-                $item->increment('sold', $item->quantity);
+                        $totalCount += $item->quantity;
+                        //更新库存
+                        $sold = $item->sold + $item->quantity;
+                        $stock = $item->stock - $item->quantity;
+                        Item::where('itemid',$item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
 
-                if (!$subject) $subject = $item->title;
-                if (!$detail) $detail = $item->subtitle ?: $item->title;
+                        if (!$subject) $subject = $item->title;
+                        if (!$detail) $detail = $item->subtitle ?? $item->title;
+                    }
+                } else {
+                    if ($item->quantity < $item->stock) {
+                        $simpleFee = $item->quantity * $item->price;
+                        $orderFee += $simpleFee;
+                        $order->items()->create([
+                            'itemid' => $item->itemid,
+                            'title' => $item->title,
+                            'thumb' => $item->thumb,
+                            'image' => $item->image,
+                            'quantity' => $item->quantity,
+                            'price' => $item->price,
+                            'total_fee' => $simpleFee,
+                            'redpack_amount' => $item->get('redpack_amount') ?? 0
+                        ]);
+
+                        $totalCount += $item->quantity;
+                        //更新库存
+                        $sold = $item->sold + $item->quantity;
+                        $stock = $item->stock - $item->quantity;
+                        Item::where('itemid',$item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
+
+                        if (!$subject) $subject = $item->title;
+                        if (!$detail) $detail = $item->subtitle ?? $item->title;
+                    }
+                }
+
             }
 
-            //更新订单价格
-            $total_fee = $order_fee + $shippine_fee;
+            //创建交易流水
+            $totalFee = $orderFee + $shippingFee;
+            $transaction = Transaction::create([
+                'payer_uid' => $buyer->uid,
+                'payer_name' => $buyer->username,
+                'transaction_type' => 'shopping',
+                'transaction_state' => 1,
+                'subject' => $subject,
+                'detail' => $detail,
+                'amount' => $totalFee,
+                'out_trade_no' => $order_no,
+                'transaction_no' => TradeUtil::createTransactionNo()
+            ]);
+
+            //dd($transaction);
+
+            //更新订单价格和数量
             $order->update([
-                'order_fee' => $order_fee,
-                'shipping_fee' => $shippine_fee,
-                'total_fee' => $total_fee
+                'order_fee' => $orderFee,
+                'shipping_fee' => $shippingFee,
+                'total_fee' => $totalFee,
+                'total_count' => $totalCount,
+                'transaction_id' => $transaction->transaction_id
             ]);
 
             //更新配送信息
+            $address = Address::find($address_id);
             $order->shipping->update($address->only(['name', 'tel', 'province', 'city', 'district', 'street', 'postalcode']));
 
             //添加操作记录
@@ -95,12 +156,12 @@ class OrderService implements OrderServiceInterface
                 'content' => trans('auction.order submitted success')
             ]);
             DB::commit();
-            //event(new OrderEvent($order, 'created'));
-            $order->load(['buyer', 'shipping', 'items']);
+            event(new OrderEvent($order, 'created'));
             return $order;
         } catch (\Exception $exception) {
             DB::rollBack();
-            abort($exception->getCode(), $exception->getMessage());
+            abort(400, $exception->getMessage());
+            return false;
         }
     }
 
@@ -115,19 +176,19 @@ class OrderService implements OrderServiceInterface
         if ($order->order_state == 1) {
             $order->order_state = 2;
             $order->pay_state = 1;
-            $order->pay_at = time();
+            $order->pay_at = now();
             if ($order->transaction) {
                 $order->transaction->transaction_state = 2;
                 $order->transaction->pay_state = 2;
-                $order->transaction->pay_at = time();
+                $order->transaction->pay_at = now();
             }
             $order->push();
             //拍下减库存
-            if ($order->shop->reduce_type == 2) {
-                $order->items()->with(['item'])->get()->map(function ($item) {
-                    $item->item->decreaseStock($item->quantity);
-                });
-            }
+//            if ($order->shop->reduce_type == 2) {
+//                $order->items()->with(['item'])->get()->map(function ($item) {
+//                    $item->item->decreaseStock($item->quantity);
+//                });
+//            }
             event(new OrderEvent($order, 'paid'));
         }
         return $order;
@@ -165,12 +226,12 @@ class OrderService implements OrderServiceInterface
         if ($order->order_state == 3) {
             $order->order_state = 4;
             $order->receive_state = 1;
-            $order->receive_at = time();
+            $order->receive_at = now();
             if ($order->transaction) {
                 $order->transaction->transaction_state = 4;
             }
             $order->push();
-            event(new OrderEvent($order, 'confirmed'));
+            event(new OrderEvent($order, 'confirm'));
         }
         return $order;
     }
@@ -251,10 +312,10 @@ class OrderService implements OrderServiceInterface
     public function close(Order $order)
     {
         // TODO: Implement close() method.
-        if (!$order->closed && !$order->pay_state) {
+        if (!$order->closed) {
             $order->order_state = 6;
             $order->closed = 1;
-            $order->closed_at = time();
+            $order->closed_at = now();
             if ($order->transaction) {
                 $order->transaction->transaction_state = 6;
             }

@@ -14,10 +14,9 @@ use Laravel\Passport\HasApiTokens;
  * App\Models\User
  *
  * @property int $uid
- * @property int $gid
- * @property int $admingid 管理员ID
+ * @property int $gid 管理权限
  * @property int $admincp 是否允许登录后台
- * @property string $username 用户名
+ * @property string|null $username 用户名
  * @property string|null $email 邮箱
  * @property string|null $mobile 手机号
  * @property string|null $password 密码
@@ -29,15 +28,17 @@ use Laravel\Passport\HasApiTokens;
  * @property int $auth_state 头像验证状态
  * @property int $freeze 冻结账户
  * @property int $exp 经验值，积分
- * @property int $exp1
- * @property int $exp2
- * @property int $exp3
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property int $exp1 积分1
+ * @property int $exp2 积分2
+ * @property int $exp3 积分3
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\Account $account
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\UserAuth $auth
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
+ * @property-read int|null $boughts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $collectedPosts
@@ -49,6 +50,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserField[] $fields
  * @property-read int|null $fields_count
  * @property-read string|null $avatar
+ * @property-read mixed $state_des
  * @property-read \App\Models\UserGroup $group
  * @property-read \App\Models\UserInfo $info
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
@@ -73,7 +75,6 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAdmincp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAdmingid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAuthState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatarState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBeginsWith($column, $value, $boolean = 'and')
@@ -106,16 +107,17 @@ class User extends Authenticatable
     protected $table = 'user';
     protected $primaryKey = 'uid';
     protected $hidden = [
-        'password', 'remember_token', 'api_token'
+        'password', 'remember_token'
     ];
     protected $fillable = [
-        'uid', 'gid', 'admingid', 'admincp', 'username', 'email', 'mobile',
+        'uid', 'gid', 'admincp', 'username', 'email', 'mobile',
         'password', 'remember_token', 'state', 'newpm', 'email_state',
-        'avatar_state', 'auth_state', 'freeze', 'exp', 'exp1', 'exp2', 'exp3', 'created_at', 'updated_at'
+        'avatar_state', 'auth_state', 'freeze', 'exp', 'exp1', 'exp2', 'exp3'
     ];
 
     protected $appends = [
-        'avatar'
+        'avatar',
+        'state_des'
     ];
 
     public static function boot()
@@ -153,6 +155,10 @@ class User extends Authenticatable
             return avatar($this->attributes['uid']);
         }
         return null;
+    }
+
+    public function getStateDesAttribute(){
+        return is_null($this->state) ? null : null;
     }
 
     /**

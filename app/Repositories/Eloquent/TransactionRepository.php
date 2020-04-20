@@ -19,6 +19,10 @@ use App\Repositories\Contracts\TransactionRepositoryInterface;
 
 class TransactionRepository extends BaseRepository implements TransactionRepositoryInterface
 {
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|string
+     */
     public function model()
     {
         // TODO: Implement model() method.

@@ -197,22 +197,26 @@
         line-height: 1;
     }
 
-    .bottom-fixed-bar{
-        display: block;
-        background-color: #fff;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 5;
+    .state-info{
+        padding: 20px 0;
     }
 }
 
-.order-action-toolbar{
+.bottom-fixed-bar{
+    display: block;
+    background-color: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+}
+
+.order-edit-bar{
     display: flex;
     padding: 10px;
 
-    .order-action-button{
+    .order-edit-button{
         font-size: 12px;
         padding: 7px 10px;
         border-radius: 10px;

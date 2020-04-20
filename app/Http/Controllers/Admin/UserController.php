@@ -28,21 +28,8 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        $this->assign(array_merge([
-            'uid' => '',
-            'username' => '',
-            'mobile' => '',
-            'email' => '',
-            'time_begin' => '',
-            'time_end' => '',
-            'gid' => ''
-        ], $request->all()));
-        $users = $this->userRepository->filter($request->all())->paginate(20);
-        return $this->view('admin.user.users', [
-            'users' => $users,
-            'pagination' => $users->appends($request->except('page'))->render(),
-            'userGroups' => $this->groupRepository->getUserGroups()
-        ]);
+        return $this->view('admin.user');
+
     }
 
     /**

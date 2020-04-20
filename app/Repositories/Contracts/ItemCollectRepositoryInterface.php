@@ -16,5 +16,5 @@ namespace App\Repositories\Contracts;
 
 interface ItemCollectRepositoryInterface extends RepositoryInterface
 {
-    public function addCollect($itemid);
+
 }

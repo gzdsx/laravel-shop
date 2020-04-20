@@ -17,23 +17,13 @@ namespace App\Repositories\Contracts;
 interface PostRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param $postItem
-     * @param $content
-     * @return \App\Models\PostItem
+     * @return \App\Models\PostItem|\Illuminate\Database\Eloquent\Builder|mixed
      */
-    public function updateContent($postItem, $content);
+    public function query();
 
     /**
-     * @param $postItem
-     * @param array $images
-     * @return \App\Models\PostItem
+     * @param array $attributes
+     * @return @return \App\Models\PostItem
      */
-    public function updateImages($postItem, array $images);
-
-    /**
-     * @param $postItem
-     * @param array $attibutes
-     * @return \App\Models\PostItem
-     */
-    public function updateMedia($postItem, array $media);
+    public function store(array $attributes);
 }

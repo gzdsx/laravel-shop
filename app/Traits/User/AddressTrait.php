@@ -14,7 +14,6 @@
 namespace App\Traits\User;
 
 
-use App\Repositories\Contracts\AddressRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,26 +21,17 @@ trait AddressTrait
 {
 
     /**
-     * @return AddressRepositoryInterface|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    protected function addressRepository()
-    {
-        return app(AddressRepositoryInterface::class);
-    }
-
-    /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-
         $address_id = $request->input('address_id');
         if ($address_id) {
-            $this->addressRepository()->whereKey($address_id)->update($request->input('address', []));
-            $address = $this->addressRepository()->find($address_id);
+            $address = Auth::user()->addresses()->findOrNew($address_id);
         } else {
-            $address = $this->addressRepository()->create($request->input('address', []));
+            $address = Auth::user()->addresses()->make();
         }
+        $address->fill($request->input('address', []))->save();
         return $this->sendAddressSavedResponse($request, $address);
     }
 
@@ -61,8 +51,8 @@ trait AddressTrait
     public function setDefault(Request $request)
     {
         $address_id = $request->input('address_id', 0);
-        $this->addressRepository()->where('uid', Auth::id())->update(['isdefault' => 0]);
-        $this->addressRepository()->whereKey($address_id)->update(['isdefault' => 1]);
+        Auth::user()->addresses()->update(['isdefault'=>0]);
+        Auth::user()->addresses()->whereKey($address_id)->update(['isdefault' => 1]);
         return ajaxReturn();
     }
 
@@ -72,8 +62,7 @@ trait AddressTrait
      */
     public function delete(Request $request)
     {
-        $address_id = $request->input('address_id', 0);
-        $this->addressRepository()->where('uid', Auth::id())->where('address_id', $address_id)->delete();
+        Auth::user()->addresses()->whereKey($request->input('address_id', 0))->delete();
         return ajaxReturn();
     }
 
@@ -85,9 +74,9 @@ trait AddressTrait
     {
         $address_id = $request->get('address_id', 0);
         if ($address_id) {
-            $address = $this->addressRepository()->where('uid', Auth::id())->findOrFail($address_id);
+            $address = Auth::user()->addresses()->findOrFail($address_id);
         } else {
-            $address = $this->addressRepository()->where('uid', Auth::id())->orderByDesc('isdefault')->firstOrFail();
+            $address = Auth::user()->addresses()->orderByDesc('isdefault')->firstOrFail();
         }
 
         return ajaxReturn(['address' => $address]);
@@ -98,7 +87,7 @@ trait AddressTrait
      */
     public function batchget(Request $request)
     {
-        $items = $this->addressRepository()->where('uid', Auth::id())->orderBy('address_id')->get();
+        $items = Auth::user()->addresses()->orderByDesc('isdefault')->orderBy('address_id')->get();
         return ajaxReturn(['items' => $items]);
     }
 }

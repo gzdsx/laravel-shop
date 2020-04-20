@@ -1,29 +1,19 @@
 <?php
-/**
- * ============================================================================
- * Copyright (c) 2015-2020 贵州大师兄信息技术有限公司 All rights reserved.
- * siteַ: https://www.gzdsx.cn
- * ============================================================================
- * @author:     David Song<songdewei@163.com>
- * @version:    v1.0.0
- * ---------------------------------------------
- * Date: 2020/03/15
- * Time: 下午4:29
- */
-
-use App\Repositories\Contracts\SettingsRepositoryInterface;
 
 if (!function_exists('setting')) {
     /**
      * @param null $name
      * @param string $value
-     * @return \Illuminate\Support\Collection|mixed|string|null
+     * @return bool|\Illuminate\Contracts\Cache\Repository|mixed|string|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     function setting($name = null, $value = '')
     {
         try {
             static $_settings;
-            if (!$_settings) $_settings = app(SettingsRepositoryInterface::class)->fetchFromCache();
+            if (!$_settings) {
+                $_settings = collect(cache('settings',[]));
+            }
             if (is_null($name)) {
                 return $_settings;
             } else {
@@ -112,17 +102,6 @@ function strip_html($str)
 }
 
 /**
- * 打印数组
- * @param mixed $array
- */
-function print_array($array)
-{
-    echo '<pre>';
-    print_r($array);
-    echo '</pre>';
-}
-
-/**
  * 格式化文件尺寸
  * @param number $size
  * @return string
@@ -181,60 +160,6 @@ function clean_style($str)
     $str = preg_replace('/\s*font-family:[^;"]*;?/i', "", $str);
     $str = preg_replace('/<span style="Times New Roman&quot;">\s\n<\/span>/i', "", $str);
     return $str;
-}
-
-/**
- * 选择图片
- * @param $imgFile
- * @return bool
- */
-function remove_exif($imgFile)
-{
-    if (!function_exists('exif_read_data')) {
-        return false;
-    }
-    $img = @imagecreatefromjpeg($imgFile);
-    if ($img === false) {
-        return false;
-    }
-    $exif = @exif_read_data($imgFile);
-    if (!empty($exif['Orientation'])) {
-        switch ($exif['Orientation']) {
-            case 8:
-                $image = imagerotate($img, 90, 0);
-                break;
-            case 3:
-                $image = imagerotate($img, 180, 0);
-                break;
-            case 6:
-                $image = imagerotate($img, -90, 0);
-                break;
-        }
-    }
-    imagedestroy($img);
-    if (isset($image)) {
-        imagejpeg($image, $imgFile);
-        imagedestroy($image);
-    }
-    return true;
-}
-
-/**
- * @param array $params
- * @return array
- */
-function editor_params($params = [])
-{
-    $defaults = [
-        '_token' => csrf_token()
-    ];
-
-    if (is_array($params)) {
-        foreach ($params as $key => $value) {
-            $defaults[$key] = $value;
-        }
-    }
-    return $defaults;
 }
 
 /**
@@ -315,8 +240,8 @@ function admin_has_priv($priv)
     }
 
     return true;
-    $privileges = session()->get('adminprivileges', []);
-    return in_array($priv, $privileges);
+//    $privileges = session()->get('adminprivileges', []);
+//    return in_array($priv, $privileges);
 }
 
 /**
@@ -347,14 +272,16 @@ function ajaxReturn(array $data = [])
 /**
  * @param int $errcode
  * @param string $errmsg
- * @param null $data
+ * @param array $data
  * @return \Illuminate\Http\JsonResponse
  */
-function ajaxError(int $errcode, string $errmsg, $data = null)
+function ajaxError(int $errcode, string $errmsg, $data = [])
 {
     $return = [
         'errcode' => $errcode,
-        'errmsg' => $errmsg
+        'errmsg' => $errmsg,
+        'return_code' => $errcode,
+        'return_msg' => 'FAIL'
     ];
     if (is_array($data) && !empty($data)) {
         $return = array_merge($return, $data);

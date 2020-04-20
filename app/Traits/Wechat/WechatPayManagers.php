@@ -13,8 +13,9 @@
 
 namespace App\Traits\Wechat;
 
-use App\Models\Order;
-use App\Traits\Common\AuthenticatedUser;
+
+use App\Models\Transaction;
+use App\Models\UserConnect;
 use App\WeChat\Order\UnifiedOrder;
 use App\WeChat\Response\UnifiedOrderResponse;
 use App\WeChat\WechatDefaultConfig;
@@ -22,28 +23,38 @@ use Illuminate\Http\Request;
 
 trait WechatPayManagers
 {
-    use AuthenticatedUser, WechatDefaultConfig;
+    use WechatDefaultConfig;
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return string
+     */
+    protected function configName()
+    {
+        return 'default';
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @param $openid
+     * @return UnifiedOrderResponse|\Illuminate\Http\JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPayConfig(Request $request)
     {
-
-
-        $appid = $request->input('appid');
-        $openid = $request->input('openid');
-        if (!$appid){
-            $appid = $this->user()->connects()->where('openid',$openid)->first()->appid;
+        $transaction = Transaction::findOrFail($request->input('transaction_id'));
+        $openid = session('wechat_user.openid');
+        if (!$openid){
+            $connect = UserConnect::where('uid', $transaction->payer_uid)->first();
+            if ($connect) {
+                $openid = $connect->openid;
+            } else {
+                abort(400, 'missing openid value');
+            }
         }
-        $payment = $this->payment($appid);
 
-        $order_id = $request->input('order_id');
-        $order = Order::find($order_id);
-        $transaction = $order->transaction;
-
+        $payment = $this->payment($this->configName());
         $unifiedOrder = new UnifiedOrder();
         $unifiedOrder->setBody($transaction->detail)
             ->setOutTradeNo($transaction->out_trade_no)
@@ -52,34 +63,48 @@ trait WechatPayManagers
             ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
             ->setNotifyUrl($payment->config->get('notify_url'));
 
+        //$unifiedOrder = $this->test();
         $res = new UnifiedOrderResponse($payment->order->unify($unifiedOrder->getBizContent()));
         if ($res->tradeSuccess()) {
-            $transaction->prepay_id = $res->prepayId();
-            $transaction->save();
-
-            return $this->sendConfigResponse($request, $res, $payment);
+            return $this->sendConfigResponse($request, $payment, $res);
         } else {
-            return $this->sendConfigFailedResponse($request, $res);
+            return $this->sendConfigFailedResponse($request, $payment, $res);
         }
     }
 
+    protected function testUnifiedOrder()
+    {
+        $payment = $this->payment($this->configName());
+        $unifiedOrder = new UnifiedOrder();
+        $unifiedOrder->setBody('订单支付测试')
+            ->setOutTradeNo(time())
+            ->setTotalFee(1)
+            ->setOpenid('orT_zvy-cnPpKsKr_HDLaLWvAL6w')
+            ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
+            ->setNotifyUrl($payment->config->get('notify_url'));
+        return $unifiedOrder;
+    }
+
     /**
-     * @param UnifiedOrderResponse $unifiedResponse
+     * @param Request $request
      * @param \EasyWeChat\Payment\Application $payment
+     * @param UnifiedOrderResponse $unifiedResponse
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendConfigResponse(Request $request, UnifiedOrderResponse $unifiedResponse, $payment)
+    protected function sendConfigResponse(Request $request, $payment, UnifiedOrderResponse $unifiedResponse)
     {
         return ajaxReturn(['config' => $payment->jssdk->bridgeConfig($unifiedResponse->prepayId(), false)]);
     }
 
     /**
      * @param Request $request
+     * @param \EasyWeChat\Payment\Application $payment
      * @param UnifiedOrderResponse $unifiedResponse
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendConfigFailedResponse(Request $request, UnifiedOrderResponse $unifiedResponse)
+    protected function sendConfigFailedResponse(Request $request, $payment, UnifiedOrderResponse $unifiedResponse)
     {
-        return ajaxError(400, $unifiedResponse->errCodeDes(), ['extra'=>$unifiedResponse->all()]);
+        dd($unifiedResponse);
+        return ajaxError(400, $unifiedResponse->errCodeDes(), ['extra' => $unifiedResponse->all()]);
     }
 }
