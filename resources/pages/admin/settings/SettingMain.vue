@@ -26,6 +26,11 @@
                             <setting-water :settings="settings"></setting-water>
                         </div>
                     </el-tab-pane>
+                    <el-tab-pane label="微信设置">
+                        <div class="tab-content">
+                            <setting-wechat :settings="settings"></setting-wechat>
+                        </div>
+                    </el-tab-pane>
                 </el-tabs>
             </div>
         </div>
@@ -42,6 +47,7 @@
     import SettingRegister from "./SettingRegister";
     import SettingAttach from "./SettingAttach";
     import SettingWater from "./SettingWater";
+    import SettingWechat from "./SettingWechat";
 
     export default {
         name: "SettingMain",
@@ -50,7 +56,8 @@
             SettingBasic,
             SettingRegister,
             SettingAttach,
-            SettingWater
+            SettingWater,
+            SettingWechat
         },
         data: function () {
             return {
