@@ -39,7 +39,7 @@ class OrderEventListener
             $message->setTemplateId('_ezyNqtHKGHjpeqIA-IuMJuR8QI6L_3JE_dHQzxz9tQ');
             $message->setFirst('尊敬的商家，您有一笔新订单！');
             $message->setRemark('点击查看订单详情！');
-            $message->setUrl(url('h5/sold/#/order/detail/'.$order->order_id));
+            $message->setUrl(url('h5/sold/order/detail/'.$order->order_id.'.html'));
             $message->setDataValue('keyword1', $order->total_fee.'元');
             $message->setDataValue('keyword2', $item->title);
             $message->setDataValue('keyword3', $order->order_no);
@@ -58,7 +58,7 @@ class OrderEventListener
             $message->setTemplateId('QGCqaDZqAatTb-y2rY5spw2uYJlCsLL_DJu9e7ylvEw');
             $message->setFirst('尊敬的商家，您有一笔订单客户已完成付款！');
             $message->setRemark('点击查看订单详情！');
-            $message->setUrl(url('h5/sold/#/order/detail/'.$order->order_id));
+            $message->setUrl(url('h5/sold/order/detail/'.$order->order_id.'.html'));
             $message->setDataValue('keyword1', $order->order_no);
             $message->setDataValue('keyword2', $item->title);
             $message->setDataValue('keyword3', $order->total_fee.'元');
