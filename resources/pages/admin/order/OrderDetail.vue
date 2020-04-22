@@ -75,7 +75,7 @@
                     </tbody>
                 </table>
 
-                <template v-if="order.pay_state">
+                <template v-if="order.pay_state&&transaction">
                     <div class="edit-title">
                         <span>付款信息</span>
                     </div>

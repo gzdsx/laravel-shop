@@ -217,7 +217,7 @@
                         this.item.skus = [];
                     }
                     const {attr_list, skus, catlogs} = response.data.item;
-                    if (attr_list !== null) {
+                    if (attr_list !== null && attr_list !== undefined) {
                         if (attr_list.length) {
                             this.showAttrs = true;
                             this.defaultAttrList = attr_list;

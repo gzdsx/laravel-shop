@@ -50,7 +50,7 @@ trait WechatPayManagers
         $unifiedOrder->setBody($transaction->detail)
             ->setOutTradeNo($transaction->out_trade_no)
             ->setTotalFee($transaction->amount * 100)
-            ->setTotalFee(1)
+            //->setTotalFee(1)
             ->setOpenid($openid)
             ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
             ->setNotifyUrl($payment->config->get('notify_url'));

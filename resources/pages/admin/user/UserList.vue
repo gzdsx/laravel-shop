@@ -27,7 +27,7 @@
                         <el-tab-pane label="全部" name="all"></el-tab-pane>
                         <el-tab-pane label="审核通过" name="1"></el-tab-pane>
                         <el-tab-pane label="等待审核" name="0"></el-tab-pane>
-                        <el-tab-pane label="审核不过" name="-1"></el-tab-pane>
+                        <el-tab-pane label="禁止登录" name="-1"></el-tab-pane>
                     </el-tabs>
                 </div>
                 <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
@@ -53,7 +53,9 @@
                     </el-table-column>
                 </el-table>
                 <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">批量删除</el-button>
+                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
+                        批量删除
+                    </el-button>
                     <el-button size="small" :disabled="selectionIds.length===0">批量修改</el-button>
                     <div class="flex"></div>
                     <el-pagination
@@ -72,9 +74,10 @@
 
 <script>
     import AdminFrame from "../common/AdminFrame";
+
     export default {
         name: "UserList",
-        components:{
+        components: {
             AdminFrame
         },
         data: function () {
@@ -82,14 +85,14 @@
                 itemList: [],
                 total: 0,
                 pageSize: 15,
-                currentPage:1,
+                offset: 0,
                 catlogs: [],
-                selectionIds:[],
+                selectionIds: [],
                 searchFields: {
                     title: '',
                     catid: '',
-                    username:'',
-                    state:''
+                    username: '',
+                    state: ''
                 }
             }
         },
@@ -98,10 +101,10 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/user/batchget',{
-                    params:{
+                this.$axios.get('/webapi/user/batchget', {
+                    params: {
                         ...this.searchFields,
-                        page:this.currentPage
+                        page: this.currentPage
                     }
                 }).then(response => {
                     const {items, per_page, total} = response.data;
@@ -109,29 +112,29 @@
                     this.total = total;
                 });
             },
-            handleSelectionChange:function (val) {
+            handleSelectionChange: function (val) {
                 this.selectionIds = val;
             },
-            handleDelete:function () {
-                var items = this.selectionIds.map((d)=>d.uid);
-                this.$confirm('此操作将永久删除所选文章, 是否继续?', '提示', {
+            handleDelete: function () {
+                var items = this.selectionIds.map((d) => d.uid);
+                this.$confirm('此操作将永久删除所选用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/admin/post/batchdelete',{items}).then(response=>{
+                    this.$axios.post('/webapi/user/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });
             },
-            handlerPageChange:function (page) {
-                this.currentPage = page;
+            handlerPageChange: function (page) {
+                this.offset = (page - 1) * this.pageSize;
                 this.fetchList();
             },
-            handleSearch:function () {
+            handleSearch: function () {
                 this.fetchList();
             },
-            handleTabClick:function (tab) {
+            handleTabClick: function (tab) {
                 this.searchFields.state = tab.name;
                 this.fetchList();
             }

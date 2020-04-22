@@ -18,7 +18,7 @@
         <tr>
             <td class="cell-label">文字说明:</td>
             <td class="cell-input">
-                <el-input type="textarea" rows="3" v-model="settings.wechat_subscribe_msg_text"></el-input>
+                <el-input type="textarea" rows="5" v-model="settings.wechat_subscribe_msg_text"></el-input>
             </td>
             <td class="cell-tips">关注公众号时自动回复文字说明</td>
         </tr>
