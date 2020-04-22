@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="order-list" v-if="orderList.length>0">
-            <div class="order-item" v-for="(order,index) in orderList" :key="order.order_id">
+            <div class="order-item" v-for="(order,index) in orderList" :key="index">
                 <div class="order-item-top">
                     <div class="flex">单号:{{order.order_no}}</div>
                     <div style="color: #ff6034;">{{order.buyer_state_des}}</div>
@@ -64,14 +64,10 @@
                 this.fetchList();
             },
             onPay: function (order) {
-                this.orderList.forEach((o, i) => {
-                    if (o.order_id === order.order_id) {
-                        o.order_state = 2;
-                        o.pay_state = 1;
-                    }
-                });
+                this.fetchList();
             },
             onDelete: function (index) {
+                //console.log('onDeleteonDeleteonDeleteonDeleteonDelete');
                 this.orderList.splice(index, 1);
             }
         }

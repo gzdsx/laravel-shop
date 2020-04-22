@@ -1,17 +1,22 @@
 <template>
     <order-view :order="order" v-if="order"></order-view>
     <div class="container" v-else>
-        <div class="buynow">
+        <div class="auction">
             <div class="cell-arrow-right" @click="showPopup=true">
                 <div class="address" v-if="address">
-                    <div>
-                        <span>{{address.name}}</span>
-                        <span>{{address.tel}}</span>
+                    <div class="icon-wrapper">
+                        <i class="iconfont icon-location"></i>
                     </div>
-                    <p>{{address.full_address}}</p>
+                    <div class="flex">
+                        <div>
+                            <span>{{address.name}}</span>
+                            <span>{{address.tel}}</span>
+                        </div>
+                        <p>{{address.full_address}}</p>
+                    </div>
                 </div>
                 <div class="address" v-else>
-                    <div class="addaddress">
+                    <div class="btn-add-addr">
                         <span class="iconfont icon-add"></span>
                         <span>添加收货地址</span>
                     </div>

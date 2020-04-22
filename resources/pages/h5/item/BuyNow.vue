@@ -3,17 +3,22 @@
         <template v-if="order">
             <order-view :order="order"></order-view>
         </template>
-        <div class="buynow" v-else>
-            <div class="cell-arrow-right" @click="showAddress=true">
-                <div class="address" v-if="address.address_id">
-                    <div>
-                        <span>{{address.name}}</span>
-                        <span>{{address.tel}}</span>
+        <div class="auction" v-else>
+            <div class="cell-arrow-right" @click="showPopup=true">
+                <div class="address" v-if="address">
+                    <div class="icon-wrapper">
+                        <i class="iconfont icon-location"></i>
                     </div>
-                    <p>{{address.full_address}}</p>
+                   <div class="flex">
+                       <div>
+                           <span>{{address.name}}</span>
+                           <span>{{address.tel}}</span>
+                       </div>
+                       <p>{{address.full_address}}</p>
+                   </div>
                 </div>
                 <div class="address" v-else>
-                    <div class="addaddress">
+                    <div class="btn-add-addr">
                         <span class="iconfont icon-add"></span>
                         <span>添加收货地址</span>
                     </div>
@@ -26,6 +31,7 @@
                     <div class="bg-cover image" :style="'background-image: url('+item.thumb+')'"></div>
                     <div class="data">
                         <div class="goods-title">{{item.title}}</div>
+                        <div class="goods-sku" v-if="sku">{{sku.title}}</div>
                         <div class="flex"></div>
                         <div class="display-flex">
                             <div class="goods-price">￥{{item.price}}</div>
@@ -33,6 +39,7 @@
                                 <van-stepper
                                         :default-value="quantity"
                                         v-model="quantity"
+                                        :max="sku ? sku.stock : item.stock"
                                 />
                             </div>
                         </div>
@@ -69,7 +76,7 @@
                     button-text="提交订单"
                     @submit="onSubmit"
             />
-            <van-popup v-model="showAddress" position="bottom">
+            <van-popup v-model="showPopup" position="bottom">
                 <address-view @select="handleSelectedAddress"></address-view>
             </van-popup>
         </div>
@@ -88,16 +95,16 @@
             OrderView
         },
         props: {
-            item: {}
+            item: {},
+            quantity:1,
+            sku:null
         },
         data: function () {
             return {
-                item: {},
-                quantity: 1,
                 address: {},
                 order: null,
                 remark: null,
-                showAddress: false,
+                showPopup: false,
             }
         },
         mounted() {
@@ -112,7 +119,7 @@
                 this.showAddress = false;
             },
             onSubmit: function () {
-                if (!this.address.address_id) {
+                if (!this.address) {
                     this.$toast.fail('请选择收货地址');
                     return false;
                 }
@@ -121,7 +128,8 @@
                     itemid: this.item.itemid,
                     quantity: this.quantity,
                     address_id: this.address.address_id,
-                    remark: this.remark
+                    remark: this.remark,
+                    sku_id: this.sku ? this.sku.id : 0
                 }).then(response => {
                     console.log(response.data);
                     const order = response.data.order;

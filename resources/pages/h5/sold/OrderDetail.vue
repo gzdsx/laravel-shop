@@ -23,7 +23,7 @@
                     <div>{{order.shipping.tel}}</div>
                 </div>
                 <div>
-                    {{order.shipping.address_text}}
+                    {{order.shipping.full_address}}
                 </div>
             </div>
         </div>
@@ -32,10 +32,12 @@
             <div class="bg-cover goods-image" :style="'background-image: url('+item.thumb+')'"></div>
             <div class="goods-center">
                 <div class="goods-title">{{item.title}}</div>
+                <div class="flex"></div>
             </div>
             <div class="goods-right">
                 <p>￥{{item.price}}</p>
                 <i>x{{item.quantity}}</i>
+                <p v-if="order.order_state===1"><a @click="handleShowEdit(item)" style="color: dodgerblue;">修改价格</a></p>
             </div>
         </div>
         <div class="order-info-cell">
@@ -63,15 +65,12 @@
             <div class="order-data-cell">发货时间: {{order.shipping_at}}</div>
             <div class="order-data-cell">收 货 人: {{order.shipping.name}}</div>
             <div class="order-data-cell">联系电话: {{order.shipping.tel}}</div>
-            <div class="order-data-cell">收货地址: {{order.shipping.address_text}}</div>
+            <div class="order-data-cell">收货地址: {{order.shipping.full_address}}</div>
             <div class="h20"></div>
         </div>
-        <van-cell v-if="order.order_state===1">
-            <van-button @click="onClickButton" round block type="info">修改价格</van-button>
-        </van-cell>
-        <send-view :expresses="expresses" @send="onSend" v-if="order.order_state===2"/>
-        <van-popup position="bottom" title="修改价格" v-model="show" closeable>
-            <edit-price :order="order" @save="onSave"></edit-price>
+        <send-view @send="handleSend" v-if="order.order_state===2"/>
+        <van-popup position="bottom" title="修改价格" v-model="showPopup" closeable>
+            <edit-price :item="editItem" @save="handleSavePrice"></edit-price>
         </van-popup>
     </div>
 </template>
@@ -81,49 +80,45 @@
     import EditPrice from "./EditPrice";
 
     export default {
-        name: "Order",
+        name: "OrderDetail",
         components: {
             SendView,
             EditPrice
         },
         data: function () {
             return {
-                order,
-                expresses: [],
-                show: false
+                order_id,
+                order: {},
+                showPopup: false,
+                editItem: {}
             }
         },
         props: {},
         mounted() {
-            var columns = [];
-            expresses.map((d, i) => {
-                columns.push({
-                    text: d.name,
-                    id: d.id
-                });
-            });
-            this.expresses = columns;
+            this.getOrder();
         },
         methods: {
-            onSend: function (c) {
-                console.log({
-                    ...c,
-                    order_id: this.order.order_id
-                });
-                this.$axios.post('/h5/trade/sold/send', {
+            handleSend: function (c) {
+                this.$axios.post('/webapi/sold/send', {
                     ...c,
                     order_id: this.order.order_id
                 }).then(response => {
                     this.$toast.success('发货成功');
-                    this.order.order_state = 3;
+                    this.getOrder();
                 });
             },
-            onSave:function (order) {
-                this.show = false;
-                this.order = order;
+            handleSavePrice: function (item) {
+                this.getOrder();
+                this.showPopup = false;
             },
-            onClickButton:function () {
-                this.show = true;
+            handleShowEdit(item){
+                this.editItem = item;
+                this.showPopup = true;
+            },
+            getOrder() {
+                this.$get('/webapi/sold/get?order_id=' + this.order_id).then(response => {
+                    this.order = response.data.order;
+                });
             }
         }
     }

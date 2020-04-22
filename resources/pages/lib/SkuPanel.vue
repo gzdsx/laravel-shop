@@ -139,7 +139,7 @@
             }
         },
         watch: {
-            attrValues(val){
+            attrValues(val) {
                 this.buildAttrInfo();
                 this.handleAttrInfoChange();
             },
@@ -195,7 +195,7 @@
                 this.renderTable();
             },
             handleValueChange: function (value) {
-                console.log('handleValueChange');
+                //console.log('handleValueChange');
                 if (value) {
                     if (value === this.editingValue.attr_value) return;
                     if (_.findIndex(this.editingAttr.attr_values, (o) => o.attr_value === value) !== -1) {
@@ -225,7 +225,10 @@
                     if (attr.attr_title) {
                         var attr_values = [];
                         attr.attr_values.map(function (val) {
-                            if (val.attr_value) attr_values.push(val);
+                            if (val.attr_value) attr_values.push({
+                                ...val,
+                                attr_title: attr.attr_title
+                            });
                         });
 
                         if (attr_values.length > 0) {
@@ -260,15 +263,17 @@
                 this.attrList = attrList;
                 if (attrValues.length > 0) {
                     this.attrValues = this.combine(attrValues.reverse());
-                }else {
+                } else {
                     this.attrValues = [];
                 }
+                //console.log('attrValues');
+                //console.log(attrValues);
             },
             buildAttrInfo: function () {
                 var _this = this;
                 var attrInfo = [];
                 this.attrValues.map((row, i) => {
-                    var title = row.map((r) => r.attr_value).join(',');
+                    var title = row.map((r) => r.attr_title+':'+r.attr_value).join(',');
                     var properties = row.map((r) => r.attr_id).join('-');
                     if (_this.defaultAttrInfo[properties]) {
                         attrInfo.push(_this.defaultAttrInfo[properties]);

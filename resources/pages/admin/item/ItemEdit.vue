@@ -100,13 +100,15 @@
                         <tr>
                             <td class="cell-label w80"><i class="star">*</i>产品价格</td>
                             <td>
-                                <el-input type="text" class="w200" v-model="item.price" :min="0" :max="99999999"></el-input>
+                                <el-input type="text" class="w200" v-model="item.price" :min="0"
+                                          :max="99999999"></el-input>
                             </td>
                         </tr>
                         <tr>
                             <td class="cell-label"><i class="star">*</i>产品库存</td>
                             <td>
-                                <el-input type="number" class="w200" v-model="item.stock" :min="0" :max="99999999"></el-input>
+                                <el-input type="number" class="w200" v-model="item.stock" :min="0"
+                                          :max="99999999"></el-input>
                             </td>
                         </tr>
                         <tr>
@@ -175,6 +177,7 @@
         },
         data: function () {
             return {
+                itemid: 0,
                 item: {
                     images: [],
                     content: {},
@@ -192,14 +195,14 @@
             }
         },
         mounted() {
-            var itemid = this.$route.params.itemid;
-            if (itemid) this.fetchItem(itemid);
+            this.itemid = this.$route.params.itemid;
+            this.fetchItem();
             this.fetchFreightTemplates();
             this.fetchCatlogs();
         },
         methods: {
             fetchItem: function (itemid) {
-                this.$axios.get('/webapi/item/get?itemid=' + itemid).then(response => {
+                this.$axios.get('/webapi/item/get?itemid=' + this.itemid).then(response => {
                     console.log(response.data);
                     this.item = response.data.item;
                     if (!this.item.images) {
@@ -214,7 +217,7 @@
                         this.item.skus = [];
                     }
                     const {attr_list, skus, catlogs} = response.data.item;
-                    if (attr_list !== null){
+                    if (attr_list !== null) {
                         if (attr_list.length) {
                             this.showAttrs = true;
                             this.defaultAttrList = attr_list;
@@ -228,9 +231,11 @@
                         this.defaultAttrInfo = defaultAttrInfo;
                     }
 
-                    // if (typeof catlogs == 'object'){
-                    //     this.item.cates = catlogs.map((c)=>c.catid);
-                    // }
+                    this.item.cates = [];
+                    if (typeof catlogs == 'object'){
+                        this.item.cates = catlogs.map((c)=>c.catid);
+                    }
+
                     this.$forceUpdate();
                 });
             },
@@ -342,7 +347,10 @@
 
                 this.item.on_sale = type;
 
-                this.$axios.post('/webapi/item/update', this.item).then(response => {
+                this.$post('/webapi/item/update', {
+                    itemid: this.itemid,
+                    item: this.item
+                }).then(response => {
                     if (response.errcode) {
                         this.$toast(response.data.errmsg);
                     } else {

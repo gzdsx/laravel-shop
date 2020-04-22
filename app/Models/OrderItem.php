@@ -52,9 +52,8 @@ class OrderItem extends Model
     protected $table = 'order_item';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'order_id', 'itemid', 'title', 'price', 'promotion_price',
-        'discount', 'thumb', 'image', 'quantity', 'sku_id',
-        'sku_name', 'promotion_fee', 'shipping_fee', 'total_fee'
+        'order_id', 'itemid', 'title', 'price', 'promotion_price', 'discount',
+        'thumb', 'image', 'quantity', 'sku_id', 'sku_title', 'promotion_fee', 'shipping_fee', 'total_fee'
     ];
 
     public $timestamps = false;

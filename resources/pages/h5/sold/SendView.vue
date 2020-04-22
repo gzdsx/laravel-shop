@@ -7,7 +7,7 @@
                 placeholder="请选择快递公司"
                 :rules="[{ required: true,message:'请选择快递公司' }]"
                 readonly
-                @click="show=true"
+                @click="showPopup=true"
         />
         <van-field
                 v-model="express_no"
@@ -24,7 +24,7 @@
                 提交
             </van-button>
         </div>
-        <van-popup position="bottom" v-model="show">
+        <van-popup position="bottom" v-model="showPopup">
             <van-picker
                     :columns="expresses"
                     show-toolbar
@@ -43,25 +43,42 @@
         },
         data: function () {
             return {
-                show: false,
+                showPopup: false,
                 express_id: 0,
+                express_code: '',
                 express_name: '',
-                express_no: ''
+                express_no: '',
+                expresses: []
             }
         },
+        mounted() {
+            this.fetchExpress();
+        },
         methods: {
+            fetchExpress() {
+                this.$get('/webapi/express/getall').then(response => {
+                    this.expresses = response.data.items.map((d) => {
+                        return {
+                            text: d.name,
+                            value: d
+                        }
+                    });
+                });
+            },
             onSubmit: function (c) {
-                var content = {
+                this.$emit('send', {
                     express_id: this.express_id,
                     express_name: this.express_name,
-                    express_no: this.express_no
-                };
-                this.$emit('send', content);
+                    express_no: this.express_no,
+                    express_code: this.express_code,
+                });
             },
             onConfirm: function (c) {
-                this.express_id = c.id;
-                this.express_name = c.text;
-                this.show = false;
+                const {id, name, code} = c.value;
+                this.express_id = id;
+                this.express_name = name;
+                this.express_code = code;
+                this.showPopup = false;
             },
             onScan: function () {
                 var _this = this;

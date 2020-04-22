@@ -231,7 +231,8 @@ trait BoughtTrait
             $order->save();
 
             if ($transaction = $order->transaction) {
-                $transaction->transaction_state = 5;
+                $transaction->transaction_state = 6;
+                $transaction->pay_state = 2;
                 $transaction->save();
 
                 $res =  $this->payment()->refund->byTransactionId(

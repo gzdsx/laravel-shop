@@ -89,10 +89,10 @@
                 });
             },
             onDelete: function () {
-                this.$axios.get('/webapi/bought/delete', {
+                this.$axios.post('/webapi/bought/delete', {
                     order_id: this.order.order_id
                 }).then(response => {
-                    this.$emit('refund', this.order);
+                    this.$emit('delete', this.order);
                 });
             }
         }

@@ -1,5 +1,5 @@
 <template>
-    <buy-now :item="item" v-if="showBuynow"></buy-now>
+    <buy-now :item="item" :quantity="quantity" :sku="sku" v-if="showBuynow"></buy-now>
     <div class="container" v-else>
         <div class="swipe-wrapper">
             <van-swipe class="swipe" :autoplay="3000" indicator-color="white">
@@ -27,32 +27,61 @@
             <van-goods-action-icon icon="chat-o" text="客服"/>
             <van-goods-action-icon icon="cart-o" text="购物车" url="/h5/cart"/>
             <van-goods-action-button type="warning" text="加入购物车" @click="handleAddToCart"/>
-            <van-goods-action-button type="danger" text="立即购买" @click="handleSubmit"/>
+            <van-goods-action-button type="danger" text="立即购买" @click="handleBuyNow"/>
         </van-goods-action>
+
+        <van-popup v-model="showSku" position="bottom">
+            <sku-view :item="item" @addcart="onAddToCart" @buynow="onBuyNow"></sku-view>
+        </van-popup>
     </div>
 </template>
 
 <script>
     import BuyNow from "./BuyNow";
+    import SkuView from "./SkuView";
 
     export default {
         name: "ItemDetail",
         components: {
-            BuyNow
+            BuyNow,
+            SkuView
         },
         data: function () {
             return {
                 item,
                 showBuynow: false,
+                showSku: false,
+                sku:null,
+                quantity: 1
             }
         },
         methods: {
             handleAddToCart: function () {
-                this.$axios.post('/webapi/cart/create', {itemid: item.itemid}).then(response => {
+                if (this.item.skus.length > 0) {
+                    this.showSku = true;
+                } else {
+                    this.addToCart(this.item.itemid, 1);
+                }
+            },
+            handleBuyNow: function () {
+                if (this.item.skus.length > 0) {
+                    this.showSku = true;
+                } else {
+                    this.showBuynow = true;
+                }
+
+            },
+            onAddToCart(d){
+                this.addToCart(this.item.itemid, d.quantity,d.sku.id);
+            },
+            addToCart(itemid, quantity, sku_id = 0) {
+                this.$post('/webapi/cart/create', {itemid, quantity, sku_id}).then(response => {
                     this.$toast.success('已加入购物车');
                 });
             },
-            handleSubmit: function () {
+            onBuyNow(d){
+                this.quantity = d.quantity;
+                this.sku = d.sku;
                 this.showBuynow = true;
             }
         }

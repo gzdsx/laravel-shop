@@ -82,7 +82,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
     Route::post('cart/update', 'CartController@update');
     Route::get('bought/get', 'BoughtController@get');
     Route::get('bought/batchget', 'BoughtController@batchget');
-    Route::post('bought/close', 'BoughtController@close');
+    Route::any('bought/close', 'BoughtController@close');
     Route::post('bought/confirm', 'BoughtController@confirm');
     Route::post('bought/delete', 'BoughtController@delete');
     Route::post('bought/notice', 'BoughtController@notice');
@@ -90,6 +90,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
 
     Route::get('sold/get', 'SoldController@get');
     Route::get('sold/batchget', 'SoldController@batchget');
+    Route::post('sold/editprice', 'SoldController@editPrice');
+    Route::post('sold/send', 'SoldController@send');
     Route::get('transaction/getall', 'TransactionController@getAll');
     Route::post('transaction/delete', 'TransactionController@delete');
 

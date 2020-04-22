@@ -1,6 +1,6 @@
 <template>
-    <van-form @submit="onSubmit">
-        <div v-for="(item,index) in order.items" :key="index">
+    <van-form @submit="handleSubmit">
+        <div>
             <van-cell>
                 <div class="display-flex">
                     <div class="w60">商品</div>
@@ -39,15 +39,13 @@
             return {}
         },
         props: {
-            order: Object
+            item: Object
         },
         methods: {
-            onSubmit: function (c) {
-                this.$axios.post('/h5/trade/sold/editprice', {
-                    order_id: this.order.order_id,
-                    items: this.order.items
-                }).then(response => {
-                    this.$emit('save', response.data.order);
+            handleSubmit: function (c) {
+                const {id, price, quantity} = this.item;
+                this.$post('/webapi/sold/editprice', {id, price, quantity}).then(response => {
+                    this.$emit('save', this.item);
                 });
             }
         }
