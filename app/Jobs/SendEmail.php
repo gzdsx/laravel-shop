@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\User;
+use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\Message\TemplateMessage;
-use App\WeChat\WechatDefaultConfig;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

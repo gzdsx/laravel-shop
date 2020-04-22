@@ -41,7 +41,8 @@ class Ad extends Model
         'data' => 'array'
     ];
     protected $appends = [
-        'type_desc'
+        'type_des',
+        'state_des'
     ];
 
     protected $fillable = [
@@ -53,8 +54,16 @@ class Ad extends Model
     /**
      * @return mixed|null
      */
-    public function getTypeDescAttribute()
+    public function getTypeDesAttribute()
     {
-        return data_get(trans('ad.ad_types'), $this->attributes['type']);
+        return __('ad.ad_types.' . $this->type);
+    }
+
+    /**
+     * @return array|string|null
+     */
+    public function getStateDesAttribute()
+    {
+        return __('ad.ad_states.' . $this->available);
     }
 }

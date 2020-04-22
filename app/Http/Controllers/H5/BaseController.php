@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\H5;
 
 use App\Http\Controllers\Controller;
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
@@ -12,6 +12,7 @@ class BaseController extends Controller
 
     public function __construct(Request $request)
     {
+        parent::__construct($request);
         $this->middleware(function (Request $request, $next){
             $issetOfficialAccount = $this->officialAccount()->config->get('app_id') && $this->officialAccount()->config->get('secret');
             if ($issetOfficialAccount){

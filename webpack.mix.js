@@ -12,8 +12,8 @@ mix.webpackConfig({
     },
     // output: {
     //     publicPath: '/',
-    //     filename: '[name].[chunkhash:20].js',
-    //     chunkFilename : '[name].js?id=[chunkhash:20]'
+    //     filename: '[name].[chunkhash:10].js',
+    //     chunkFilename : '[name].[chunkhash:10].js'
     // }
 });
 
@@ -36,19 +36,11 @@ mix.options({
 // mix.js('resources/js/vue-bootstrap.js', 'public/js/lib');
 // mix.js('resources/js/vue-components.js', 'public/js');
 
-mix.js('resources/pages/h5/index.js', 'public/js/h5');
-mix.js('resources/pages/h5/user.js', 'public/js/h5');
-mix.js('resources/pages/h5/cart.js', 'public/js/h5');
-mix.js('resources/pages/h5/catlog.js', 'public/js/h5');
-mix.js('resources/pages/h5/item.js', 'public/js/h5');
-// mix.js('resources/h5/order/buynow/index.js', 'public/js/h5/order/buynow');
-// mix.js('resources/h5/order/confirm/index.js', 'public/js/h5/order/confirm');
-// mix.js('resources/h5/address/index.js', 'public/js/h5/address');
-// mix.js('resources/h5/trade/bought/index.js', 'public/js/h5/trade/bought');
-// mix.js('resources/h5/trade/order/index.js', 'public/js/h5/trade/order');
-// mix.js('resources/h5/trade/sold/order.js', 'public/js/h5/trade/sold');
-// mix.js('resources/h5/feedback/index.js', 'public/js/h5/feedback');
-// mix.js('resources/h5/security/index.js', 'public/js/h5/security');
+// mix.js('resources/pages/h5/index.js', 'public/js/h5');
+// mix.js('resources/pages/h5/user.js', 'public/js/h5');
+// mix.js('resources/pages/h5/cart.js', 'public/js/h5');
+// mix.js('resources/pages/h5/catlog.js', 'public/js/h5');
+// mix.js('resources/pages/h5/item.js', 'public/js/h5');
 
 //后台
 mix.js('resources/pages/admin/app.js', 'public/js/admin');
@@ -56,8 +48,9 @@ mix.js('resources/pages/admin/app.js', 'public/js/admin');
 // mix.sass('resources/sass/bootstrap.scss', 'public/css/vendor');
 // mix.sass('resources/sass/element-ui.scss', 'public/css/vendor');
 // mix.sass('resources/sass/shop/index.scss', 'public/css/shop');
-mix.sass('resources/sass/admin/index.scss', 'public/css/admin');
-mix.sass('resources/sass/h5/index.scss', 'public/css/h5');
+// mix.sass('resources/sass/admin/index.scss', 'public/css/admin');
+// mix.sass('resources/sass/admin/login.scss', 'public/css/admin');
+// mix.sass('resources/sass/h5/index.scss', 'public/css/h5');
 //less
 // mix.less('resources/sass/vant.less', 'public/css/vendor');
 

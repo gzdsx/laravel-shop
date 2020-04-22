@@ -8,7 +8,7 @@
         <div class="order-edit-button" v-if="order.order_state===2" @click="onNotice">提醒卖家发货</div>
         <div class="order-edit-button" v-if="order.order_state===3" @click="onConfirm">确认收货</div>
         <div class="order-edit-button" v-if="order.order_state===4&&order.buyer_rate===0">评价</div>
-        <div class="order-edit-button" v-if="order.order_state===6">删除订单</div>
+        <div class="order-edit-button" v-if="order.order_state===6" @click="onDelete">删除订单</div>
     </div>
 </template>
 
@@ -86,6 +86,13 @@
                     });
                 }).catch(() => {
                     // on cancel
+                });
+            },
+            onDelete: function () {
+                this.$axios.get('/webapi/bought/delete', {
+                    order_id: this.order.order_id
+                }).then(response => {
+                    this.$emit('refund', this.order);
                 });
             }
         }

@@ -1,6 +1,7 @@
 <?php namespace App\ModelFilters;
 
 use EloquentFilter\ModelFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderFilter extends ModelFilter
 {
@@ -41,18 +42,14 @@ class OrderFilter extends ModelFilter
 
     public function keyword($keyword)
     {
-        return $this->whereHas('items', function ($query) use ($keyword) {
+        return $this->whereHas('items', function (Builder $query) use ($keyword) {
             return $query->where('title', 'LIKE', "%$keyword%");
         });
     }
 
     public function orderState($state)
     {
-        if ($state) {
-            return $this->where('order_state', $state);
-        }
-
-        return $this;
+        return $this->where('order_state', $state);
     }
 
     public function buyerRate($rate)

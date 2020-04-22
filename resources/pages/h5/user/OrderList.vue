@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <div class="order-list">
-            <div class="order-item" v-for="order in orderList" :key="order.order_id">
+        <div class="order-list" v-if="orderList.length>0">
+            <div class="order-item" v-for="(order,index) in orderList" :key="order.order_id">
                 <div class="order-item-top">
                     <div class="flex">单号:{{order.order_no}}</div>
                     <div style="color: #ff6034;">{{order.buyer_state_des}}</div>
@@ -25,8 +25,13 @@
                         :order="order"
                         @cancel="onCancel"
                         @pay="onPay(order)"
+                        @delete="onDelete(index)"
                 ></order-edit-bar>
             </div>
+        </div>
+        <div class="no-order" v-else>
+            <span class="iconfont icon-form_light"></span>
+            <p>没有订单信息</p>
         </div>
     </div>
 </template>
@@ -42,7 +47,7 @@
         data: function () {
             return {
                 orderList: [],
-                tab:'all'
+                tab: 'all'
             }
         },
         mounted() {
@@ -50,12 +55,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/bought/batchget?tab='+this.tab).then(response => {
+                this.$axios.get('/webapi/bought/batchget?tab=' + this.tab).then(response => {
                     //console.log(response.data);
                     this.orderList = response.data.items;
                 });
             },
-            onCancel:function(order){
+            onCancel: function (order) {
                 this.fetchList();
             },
             onPay: function (order) {
@@ -65,6 +70,9 @@
                         o.pay_state = 1;
                     }
                 });
+            },
+            onDelete: function (index) {
+                this.orderList.splice(index, 1);
             }
         }
     }

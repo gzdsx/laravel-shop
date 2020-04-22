@@ -17,7 +17,7 @@ namespace App\Services\Wechat;
 use App\Repositories\Contracts\UserConnectRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Contracts\WechatServiceInterface;
-use App\Traits\Wechat\SyncWechatHeadImg;
+use App\Traits\WeChat\SyncWechatHeadImg;
 use Illuminate\Support\Collection;
 
 class WechatAppService implements WechatServiceInterface

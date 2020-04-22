@@ -113,18 +113,14 @@
                 this.selectionIds = val;
             },
             handleDelete:function () {
-                var items = this.selectionIds.map((d)=>d.aid);
+                var items = this.selectionIds.map((d)=>d.uid);
                 this.$confirm('此操作将永久删除所选文章, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.$axios.post('/admin/post/batchdelete',{items}).then(response=>{
-                        this.itemList = this.itemList.filter((d)=>{
-                            if (_.indexOf(items, d.aid) === -1){
-                                return d;
-                            }
-                        });
+                        this.fetchList();
                     });
                 });
             },

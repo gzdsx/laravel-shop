@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $postalcode
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $address_text
+ * @property-read string $full_address
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderShipping newQuery()

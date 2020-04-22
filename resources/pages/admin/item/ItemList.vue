@@ -149,11 +149,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.$axios.post('/webapi/item/delete', {items}).then(response => {
-                        this.itemList = this.itemList.filter((d) => {
-                            if (_.indexOf(items, d.itemid) === -1) {
-                                return d;
-                            }
-                        });
+                        this.fetchList();
                     });
                 });
             },

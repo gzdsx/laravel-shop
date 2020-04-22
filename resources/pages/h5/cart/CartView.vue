@@ -1,11 +1,12 @@
 <template>
-    <div class="container" style="background-color: #fff; padding-bottom: 50px;">
-        <div class="cart">
-            <van-checkbox-group v-model="result" @change="onChange">
-                <van-swipe-cell :right-width="65" v-for="item in itemList" :key="item.id">
+    <confirm-order :items="result" v-if="showConfirm"></confirm-order>
+    <div class="container" style="padding-bottom: 50px;" v-else>
+        <div class="cart" style="background-color: #fff;" v-if="itemList.length>0">
+            <van-checkbox-group v-model="result" @change="handleChange" ref="checkboxGroup">
+                <van-swipe-cell :right-width="65" v-for="(item,index) in itemList" :key="index">
                     <div class="cart-item">
                         <div class="checkbox-view">
-                            <van-checkbox :name="item.itemid"/>
+                            <van-checkbox :name="item"/>
                         </div>
                         <div class="bg-cover image" :style="'background-image: url('+item.thumb+')'"></div>
                         <div class="data">
@@ -23,17 +24,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="delete-cell" slot="right" @click="onDelete(item.itemid)">删除</div>
+                    <div class="delete-cell" slot="right" @click="handleDelete(item.itemid)">删除</div>
                 </van-swipe-cell>
             </van-checkbox-group>
+        </div>
+        <div class="cart-empty" v-else>
+            <span class="iconfont icon-cart_light"></span>
+            <p>购物车是空的</p>
         </div>
         <van-submit-bar
                 :price="totalFee"
                 button-text="结算"
-                @submit="onSubmit"
+                @submit="handleSubmit"
                 style="bottom: 50px"
         >
-            <van-checkbox v-model="checked" @change="onCheckAll">全选</van-checkbox>
+            <van-checkbox v-model="checked" @click="handleCheckAll">全选</van-checkbox>
         </van-submit-bar>
         <tab-bar active-index="2"/>
     </div>
@@ -41,17 +46,21 @@
 
 <script>
     import TabBar from "../components/TabBar";
+    import ConfirmOrder from "./ConfirmOrder";
 
     export default {
         name: "CartView",
         components: {
-            'tab-bar': TabBar
+            TabBar,
+            ConfirmOrder
         },
         data: function () {
             return {
                 itemList: [],
                 result: [],
-                checked: false
+                checked: false,
+                showConfirm: false,
+                totalFee: 0
             }
         },
         mounted() {
@@ -63,36 +72,26 @@
                     this.itemList = response.data.items;
                 });
             },
-            onSubmit: function () {
+            handleSubmit: function () {
                 //console.log(this.result);
                 if (this.result.length === 0) {
                     this.$toast.success('请选择结算商品');
                     return false;
                 }
-                // this.$axios.post('/h5/auction/settlement',{items:this.result}).then(response=>{
-                //     console.log(response.data);
-                // });
-                window.location.href = '/h5/order/confirm?items=' + this.result.join(',');
+                this.showConfirm = true;
             },
-            onChange: function () {
-                if (this.result.length === this.itemList.length) {
-                    this.checked = true;
-                } else {
-                    this.checked = false;
-                }
+            handleChange: function (c) {
+                this.checked = this.result.length === this.itemList.length;
+                //console.log(this.result);
             },
-            onCheckAll: function () {
+            handleCheckAll: function () {
                 if (this.checked) {
-                    var result = [];
-                    this.itemList.map((d, i) => {
-                        result.push(d.itemid);
-                    });
-                    this.result = result;
+                    this.$refs.checkboxGroup.toggleAll(true);
                 } else {
-                    this.result = [];
+                    this.$refs.checkboxGroup.toggleAll(false);
                 }
             },
-            onDelete: function (itemid) {
+            handleDelete: function (itemid) {
                 this.$axios.post('/webapi/cart/delete', {items: [itemid]}).then(response => {
                     this.itemList = this.itemList.filter(function (d) {
                         return d.itemid !== itemid;
@@ -104,15 +103,11 @@
                 this.$axios.post('/webapi/cart/update', {itemid, quantity});
             }
         },
-        computed: {
-            totalFee: function () {
-                var total = 0;
-                this.itemList.map((d, i) => {
-                    if (_.indexOf(this.result, d.itemid) !== -1) {
-                        total += d.price * d.quantity;
-                    }
-                });
-                return parseInt(total * 100);
+        watch: {
+            result(val) {
+                //var totalFee = val.reduce((a, b) => a + b.price * b.quantity, 0);
+                this.totalFee = val.reduce((a, b) => a + b.price * b.quantity, 0).toFixed(2)*100;
+                //console.log(this.totalFee);
             }
         }
     }

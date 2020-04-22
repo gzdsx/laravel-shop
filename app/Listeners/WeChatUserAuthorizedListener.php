@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 
 use App\Services\Wechat\OfficialAccountService;
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Support\Facades\Auth;
 use Overtrue\LaravelWeChat\Events\WeChatUserAuthorized;
 use Illuminate\Queue\InteractsWithQueue;

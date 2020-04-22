@@ -118,8 +118,8 @@ return [
             'app_id' => env('WECHAT_PAYMENT_APPID', ''),
             'mch_id' => env('WECHAT_PAYMENT_MCH_ID', ''),
             'key' => env('WECHAT_PAYMENT_KEY', ''),
-            'cert_path' => env('WECHAT_PAYMENT_CERT_PATH', base_path('cert/1574285001/apiclient_cert.pem')),    // XXX: 绝对路径！！！！
-            'key_path' => env('WECHAT_PAYMENT_KEY_PATH', base_path('cert/1574285001/apiclient_key.pem')),      // XXX: 绝对路径！！！！
+            'cert_path' => env('WECHAT_PAYMENT_CERT_PATH', base_path('cert/1578493261/apiclient_cert.pem')),    // XXX: 绝对路径！！！！
+            'key_path' => env('WECHAT_PAYMENT_KEY_PATH', base_path('cert/1578493261/apiclient_key.pem')),      // XXX: 绝对路径！！！！
             'notify_url' => env('WECHAT_PAYMENT_NOTIFY_URL',''), // 默认支付结果通知地址
             'trade_type' => 'JSAPI'
         ]

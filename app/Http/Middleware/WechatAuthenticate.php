@@ -6,7 +6,7 @@ use App\Events\UserEvent;
 use App\Models\User;
 use App\Models\UserConnect;
 use App\Models\UserGroup;
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\WechatOauthUser;
 use Closure;
 use GuzzleHttp\Client;

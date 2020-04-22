@@ -1379,6 +1379,24 @@ body, html {
   border-radius: 10px;
 }
 
+.cell-arrow-right {
+  position: relative;
+}
+.cell-arrow-right::after {
+  position: absolute;
+  content: " ";
+  width: 12px;
+  height: 12px;
+  border-top: 1px #aaa solid;
+  border-right: 1px #aaa solid;
+  top: 50%;
+  right: 5px;
+  margin-top: -6px;
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  z-index: 1;
+}
+
 .goods-info {
   display: block;
   padding: 10px;
@@ -1623,6 +1641,20 @@ body, html {
   height: 100%;
 }
 
+.cart-empty {
+  color: #666;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+.cart-empty .iconfont {
+  font-size: 50px;
+  color: #999;
+}
+
 .buynow .address {
   position: relative;
   padding: 15px;
@@ -1809,6 +1841,20 @@ body, html {
   z-index: 10;
   border: 1px #dddddd solid;
   border-radius: 10px;
+}
+
+.no-order {
+  color: #666;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+.no-order .iconfont {
+  font-size: 50px;
+  color: #999;
 }
 
 .order-detail {

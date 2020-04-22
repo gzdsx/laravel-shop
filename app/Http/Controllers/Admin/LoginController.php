@@ -18,6 +18,7 @@ class LoginController extends Controller
      */
     public function __construct(Request $request)
     {
+        parent::__construct($request);
         $this->middleware(function (Request $req, $next){
             if (Auth::check()){
                 if (Auth::user()->uid == session()->get('adminid')){

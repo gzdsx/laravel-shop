@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Notify;
 
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Wechat\OfficialAccountService;
+use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\Message\WechatServerMessage;
-use App\WeChat\WechatDefaultConfig;
 use EasyWeChat\Kernel\Messages\Article;
 use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Media;
@@ -20,15 +20,12 @@ use Illuminate\Support\Str;
 
 class WechatServerController extends Controller
 {
-    use XmlToArrayTrait;
-    protected $userRepository;
-
-    public function __construct(Request $request, UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     use WechatDefaultConfig;
+
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+    }
 
     /**
      * @param Request $request
@@ -66,7 +63,7 @@ class WechatServerController extends Controller
 //                }
 //            }
 
-            return $this->wellComeMsg();
+            return '欢迎关注大师兄';
         }, Message::EVENT);
         return $app->server->serve();
     }

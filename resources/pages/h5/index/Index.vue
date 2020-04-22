@@ -20,6 +20,10 @@
 
     export default {
         name: "Index",
+        components: {
+            TabBar,
+            ItemGridView
+        },
         data: function () {
             return {
                 images: [],
@@ -29,17 +33,13 @@
         },
         mounted() {
             var $this = this;
-            this.$axios.get('/webapi/block/item/batchget?block_id=1').then(function (response) {
+            this.$get('/webapi/block/item/batchget?block_id=1').then(function (response) {
                 $this.images = response.data.items;
             });
 
-            this.$axios.get('/webapi/item/batchget').then(function (response) {
+            this.$get('/webapi/item/batchget').then(function (response) {
                 $this.items = response.data.items;
             });
-        },
-        components: {
-            'tab-bar': TabBar,
-            'item-grid-view': ItemGridView
         },
         methods: {
             sendPack: function () {

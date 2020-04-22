@@ -35,6 +35,9 @@ class TransactionFilter extends ModelFilter
         if ($state == 'unpaid') {
             return $this->where('pay_state', 0);
         }
+        if (is_numeric($state)){
+            return $this->where('pay_state', $state);
+        }
         return $this;
     }
 

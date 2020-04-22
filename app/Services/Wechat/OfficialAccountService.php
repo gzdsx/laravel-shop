@@ -17,7 +17,7 @@ namespace App\Services\Wechat;
 use App\Models\User;
 use App\Models\UserConnect;
 use App\Services\Contracts\WechatServiceInterface;
-use App\Traits\Wechat\SyncWechatHeadImg;
+use App\Traits\WeChat\SyncWechatHeadImg;
 use Illuminate\Support\Collection;
 
 class OfficialAccountService implements WechatServiceInterface

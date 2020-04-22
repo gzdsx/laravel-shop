@@ -15,8 +15,8 @@
             <td class="cell-label">水印类型:</td>
             <td class="cell-input">
                 <div class="input-group">
-                    <el-radio value="1" v-model="settings.water_type">图片水印</el-radio>
-                    <el-radio value="0" v-model="settings.water_type">文字水印</el-radio>
+                    <el-radio label="1" v-model="settings.water_type">图片水印</el-radio>
+                    <el-radio label="0" v-model="settings.water_type">文字水印</el-radio>
                 </div>
             </td>
             <td class="cell-tips"></td>

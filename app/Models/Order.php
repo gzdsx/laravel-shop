@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
  * @property float $order_fee 订单费用
  * @property float $shipping_fee 运费
  * @property float $total_fee 付款金额
+ * @property int $total_count 商品数量
  * @property int $pay_type 付款方式，1=在线支付，2=货到付款
  * @property int $pay_state 支付状态，1=已支付，0=未支付
  * @property \Illuminate\Support\Carbon|null $pay_at 付款时间
@@ -37,6 +38,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $buyer_deleted 买家已删除
  * @property int $seller_deleted 卖家已删除
  * @property \Illuminate\Support\Carbon|null $finished_at 成交时间
+ * @property int $transaction_id 关联流水记录
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderAction[] $actions
@@ -53,6 +55,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\Refund $refund
  * @property-read \App\Models\User $seller
  * @property-read \App\Models\OrderShipping $shipping
+ * @property-read \App\Models\Transaction $transaction
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order filter($input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newQuery()
@@ -88,7 +91,9 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereShippingState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTotalCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTotalFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order whereUpdatedAt($value)
  * @mixin \Eloquent
  */

@@ -16,7 +16,7 @@ class MaterialController extends Controller
      */
     public function get(Request $request)
     {
-        $material = $this->materialRepository()->query()
+        $material = $this->query()
             ->where('uid', auth()->id())->findOrFail($request->input('id'));
         return ajaxReturn(['material' => $material]);
     }
@@ -27,7 +27,7 @@ class MaterialController extends Controller
      */
     public function batchget(Request $request)
     {
-        $query = $this->materialRepository()->query()->where('uid',auth()->id())
+        $query = $this->query()->where('uid',auth()->id())
             ->where('type',$request->input('type','image'));
         return ajaxReturn([
             'total'=>$query->count(),
@@ -42,7 +42,7 @@ class MaterialController extends Controller
      * @throws \Exception
      */
     public function delete(Request $request){
-        $items = $this->materialRepository()->query()->whereKey($request->input('items',[]))->get();
+        $items = $this->query()->whereKey($request->input('items',[]))->get();
         foreach ($items as $item){
             $item->delete();
         }

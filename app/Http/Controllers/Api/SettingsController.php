@@ -31,7 +31,7 @@ class SettingsController extends BaseController
     {
         foreach ($request->input('settings', []) as $skey => $svalue) {
             if (is_array($svalue)) $svalue = json_encode($svalue);
-            Settings::updateOrCreate(['skey' => $skey], ['svalue' => $svalue]);
+            Settings::findOrNew($skey, ['svalue' => $svalue])->save();
         }
 
         $this->updateCache();

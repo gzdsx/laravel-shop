@@ -84,6 +84,21 @@
     }
 }
 
+.no-order{
+    color: #666;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+
+    .iconfont{
+        font-size: 50px;
+        color: #999;
+    }
+}
+
 
 .order-detail{
     display: block;

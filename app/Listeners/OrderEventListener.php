@@ -3,8 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\OrderEvent;
+use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\Message\TemplateMessage;
-use App\WeChat\WechatDefaultConfig;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

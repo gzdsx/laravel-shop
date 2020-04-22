@@ -92,9 +92,6 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "repositories": {
-    "xy113/chinapay": {
-      "type": "path",
-      "url": "/Users/songdewei/Sites/chinapay"
-    }
+
   }
 }

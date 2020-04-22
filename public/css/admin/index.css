@@ -1490,7 +1490,7 @@ html, body {
   flex-wrap: wrap;
 }
 .mainframe .form-inline .el-form-item {
-  margin: 0;
+  margin: 0 10px 0 0;
   padding: 0;
 }
 .mainframe .form-inline .el-form-item__content {
@@ -1506,6 +1506,9 @@ html, body {
   top: 0;
   right: 0;
   display: flex;
+}
+.mainframe .table-edit-header .button-item {
+  margin-left: 5px;
 }
 .mainframe .table-edit-header .table-edit-title {
   font-size: 16px;
@@ -1549,6 +1552,70 @@ html, body {
 
 .sortable-chosen {
   border: 1px #409EFF dashed;
+}
+
+.order-list {
+  display: block;
+}
+
+.order-table {
+  margin-bottom: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px #e7e8e9 solid;
+}
+.order-table:hover {
+  border-color: #ccc;
+}
+.order-table thead th {
+  background-color: #F7F7F7;
+  padding: 12px 10px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+}
+.order-table tbody td {
+  padding: 12px 10px;
+  font-size: 14px;
+  font-weight: 400;
+  vertical-align: top;
+}
+.order-table tbody td p {
+  margin-bottom: 5px;
+}
+.order-table col {
+  vertical-align: top;
+}
+.order-table .col-checkbox {
+  margin-right: 5px;
+}
+.order-table .col-order-time {
+  margin-right: 10px;
+  font-weight: 500;
+}
+.order-table .col-freight {
+  font-size: 12px;
+  color: #999;
+}
+.order-table .order-item {
+  display: flex;
+}
+.order-table .order-item .thumb {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 10px;
+}
+.order-table .order-item .item-info {
+  display: flex;
+  flex-direction: column;
+}
+.order-table .order-item .title {
+  margin-bottom: 5px;
+}
+.order-table .order-item .sku {
+  color: #888;
 }
 
 .sku-wrapper {

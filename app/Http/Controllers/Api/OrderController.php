@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Models\Cart;
 use App\Models\Item;
 use App\Services\Contracts\OrderServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends BaseController
 {
@@ -53,6 +55,26 @@ class OrderController extends BaseController
     }
 
     public function settlement(Request $request){
+        $items = $request->input('items',[]);
+        $data = [];
+        Cart::where('uid',Auth::id())
+            ->whereIn('itemid',$items)->with(['item'])
+            ->get()->map(function (Cart $cart) use (&$data){
+                if ($cart->item){
+                    $cart->item->setAttribute('quantity',$cart->quantity);
+                    $cart->item->setAttribute('sku_id',$cart->sku_id);
+                   $data[] = $cart->item;
+                }
+            });
 
+        try {
+            $order = $this->orderService->create($data, $request->input('address_id'), $request->input('remark'));
+            $order->load(['buyer','shipping','items','transaction']);
+            //从购物车删除
+            Cart::where('uid',Auth::id())->whereIn('itemid',$items)->delete();
+            return ajaxReturn(['order'=>$order]);
+        }catch (\Exception $exception){
+            return ajaxError(400, $exception->getMessage());
+        }
     }
 }

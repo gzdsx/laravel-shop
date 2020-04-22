@@ -87,7 +87,7 @@ class OrderService implements OrderServiceInterface
                         //更新库存
                         $sold = $item->sold + $item->quantity;
                         $stock = $item->stock - $item->quantity;
-                        Item::where('itemid',$item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
+                        Item::where('itemid', $item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
 
                         if (!$subject) $subject = $item->title;
                         if (!$detail) $detail = $item->subtitle ?? $item->title;
@@ -111,7 +111,7 @@ class OrderService implements OrderServiceInterface
                         //更新库存
                         $sold = $item->sold + $item->quantity;
                         $stock = $item->stock - $item->quantity;
-                        Item::where('itemid',$item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
+                        Item::where('itemid', $item->itemid)->update(['sold' => $sold, 'stock' => $stock]);
 
                         if (!$subject) $subject = $item->title;
                         if (!$detail) $detail = $item->subtitle ?? $item->title;
@@ -282,21 +282,17 @@ class OrderService implements OrderServiceInterface
         return $order;
     }
 
-    /**
-     * 退款完成
-     * @param Order $order
-     * @return Order
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
-     */
-    public function refund(Order $order)
+    public function refund($order_id, $refund)
     {
         // TODO: Implement refund() method.
+        $order = Auth::user()->boughts()->find($order_id);
         if ($order->refund_state !== 2) {
             $order->order_state = 6;
             $order->refund_state = 2;
-            $order->refund_at = time();
+            $order->refund_at = now();
             if ($transaction = $order->transaction) {
                 $transaction->transaction_state = 6;
+
             }
             $order->push();
             event(new OrderEvent($order, 'refunded'));

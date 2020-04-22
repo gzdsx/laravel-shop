@@ -3,7 +3,7 @@
 namespace App\Console;
 
 
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 

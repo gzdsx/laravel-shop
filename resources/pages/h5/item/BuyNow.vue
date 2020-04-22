@@ -4,17 +4,19 @@
             <order-view :order="order"></order-view>
         </template>
         <div class="buynow" v-else>
-            <div class="address" @click="handleShowAddress" v-if="address.address_id">
-                <div>
-                    <span>{{address.name}}</span>
-                    <span>{{address.tel}}</span>
+            <div class="cell-arrow-right" @click="showAddress=true">
+                <div class="address" v-if="address.address_id">
+                    <div>
+                        <span>{{address.name}}</span>
+                        <span>{{address.tel}}</span>
+                    </div>
+                    <p>{{address.full_address}}</p>
                 </div>
-                <p>{{address.full_address}}</p>
-            </div>
-            <div class="address" @click="handleShowAddress" v-else>
-                <div class="addaddress">
-                    <span class="iconfont icon-add"></span>
-                    <span>添加收货地址</span>
+                <div class="address" v-else>
+                    <div class="addaddress">
+                        <span class="iconfont icon-add"></span>
+                        <span>添加收货地址</span>
+                    </div>
                 </div>
             </div>
             <div class="h10"></div>

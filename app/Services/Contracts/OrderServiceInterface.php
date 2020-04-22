@@ -67,10 +67,11 @@ interface OrderServiceInterface
     public function refunding(Order $order);
 
     /**
-     * @param Order|\Illuminate\Database\Eloquent\Model $order
-     * @return Order
+     * @param $order_id
+     * @param $refund
+     * @return mixed
      */
-    public function refund(Order $order);
+    public function refund($order_id, $refund);
 
     /**
      * @param Order|\Illuminate\Database\Eloquent\Model $order

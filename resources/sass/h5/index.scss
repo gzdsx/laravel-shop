@@ -37,6 +37,24 @@ body, html {
     border-radius: 10px;
 }
 
+.cell-arrow-right{
+    position: relative;
+    &::after{
+        position: absolute;
+        content: " ";
+        width: 12px;
+        height: 12px;
+        border-top: 1px #aaa solid;
+        border-right: 1px #aaa solid;
+        top: 50%;
+        right: 5px;
+        margin-top: -6px;
+        transform: rotate(45deg);
+        transform-origin: 0 0;
+        z-index: 1;
+    }
+}
+
 @import "goods";
 @import "user";
 @import "cart";

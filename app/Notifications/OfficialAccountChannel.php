@@ -14,7 +14,7 @@
 namespace App\Notifications;
 
 
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Notifications\Notification;
 
 class OfficialAccountChannel

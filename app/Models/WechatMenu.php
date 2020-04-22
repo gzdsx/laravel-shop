@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $appid
  * @property string|null $pagepath
  * @property int $displayorder
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\WechatMenu[] $childs
- * @property-read int|null $childs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\WechatMenu[] $children
+ * @property-read int|null $children_count
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $type_des
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\WechatMenu newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\WechatMenu newQuery()
@@ -47,7 +47,7 @@ class WechatMenu extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function childs()
+    public function children()
     {
         return $this->hasMany(WechatMenu::class, 'fid', 'id');
     }

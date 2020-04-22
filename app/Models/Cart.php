@@ -19,12 +19,13 @@ use Illuminate\Support\Facades\Auth;
  * @property string $thumb
  * @property string $image
  * @property int $sku_id
- * @property string|null $sku_name
+ * @property string|null $sku_title
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Item $item
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $items
  * @property-read int|null $items_count
+ * @property-read \App\Models\ItemSku $sku
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart groupByShop()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart newModelQuery()
@@ -37,7 +38,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereSkuId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereSkuName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereSkuTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart whereUid($value)

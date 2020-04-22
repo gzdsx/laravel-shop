@@ -9,9 +9,18 @@ import PostEdit from "./post/PostEdit";
 import PostCatlog from "./post/PostCatlog";
 import PagesList from "./pages/PagesList";
 import PagesEdit from "./pages/PagesEdit";
-import MaterialList from "./material/MaterialList";
+import MaterialList from "./other/MaterialList";
 import LinkList from "./link/LinkList";
-import DistrictList from "./district/DistrictList";
+import DistrictList from "./other/DistrictList";
+import OrderList from "./order/OrderList";
+import OrderDetail from "./order/OrderDetail";
+import TransactionList from "./transaction/TransactionList";
+import WechatMenu from "./wechat/WechatMenu";
+import WechatMaterial from "./wechat/WechatMaterial";
+import Express from "./other/Express";
+import BlockList from "./block/BlockList";
+import BlockItem from "./block/BlockItem";
+import Ad from "./other/Ad";
 
 
 const router = new VueRouter({
@@ -29,7 +38,7 @@ const router = new VueRouter({
         {
             path: '/user',
             component: UserList,
-            children:[
+            children: [
                 {
                     path: 'list',
                     component: UserList,
@@ -48,16 +57,27 @@ const router = new VueRouter({
         {path: '/post/edit/:aid', component: PostEdit},
         {path: '/post/catlog', component: PostCatlog},
         //pages
-        {path:'/pages',component:PagesList},
-        {path:'/pages/list',component:PagesList},
-        {path:'/pages/edit',component:PagesEdit},
-        {path:'/pages/edit/:pageid',component:PagesEdit},
-        {path:'/material',component:MaterialList},
-        {path:'/link',component:LinkList},
-        {path:'/district',component:DistrictList},
+        {path: '/pages', component: PagesList},
+        {path: '/pages/list', component: PagesList},
+        {path: '/pages/edit', component: PagesEdit},
+        {path: '/pages/edit/:pageid', component: PagesEdit},
+        {path: '/material', component: MaterialList},
+        {path: '/link', component: LinkList},
+        {path: '/district', component: DistrictList},
+        {path: '/order', component: OrderList},
+        {path: '/order/list', component: OrderList},
+        {path: '/order/detail/:order_id', component: OrderDetail},
+        {path: '/transaction', component: TransactionList},
+        {path: '/transaction/list', component: TransactionList},
+        {path: '/wechat/menu', component: WechatMenu},
+        {path: '/wechat/material', component: WechatMaterial},
+        {path: '/express', component: Express},
+        {path: '/block/list', component: BlockList},
+        {path: '/block/item/:block_id', component: BlockItem},
+        {path: '/ad', component: Ad},
         {
             path: '*',
-            component: ()=>require('./error/404')
+            component: () => require('./error/404')
         }
     ]
 });

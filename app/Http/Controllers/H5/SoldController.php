@@ -7,14 +7,13 @@ use App\Models\Express;
 use App\Models\OrderItem;
 use App\Repositories\Contracts\OrderRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SoldController extends BaseController
 {
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        parent::__construct();
+        parent::__construct($request);
         $this->middleware('wechat.oauth');
     }
 

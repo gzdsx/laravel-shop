@@ -15,14 +15,16 @@ namespace App\Traits\Order;
 
 
 use App\Events\OrderEvent;
-use App\Models\ItemReviews;
 use App\Models\Order;
 use App\Services\Contracts\OrderServiceInterface;
+use App\Traits\WeChat\WechatDefaultConfig;
+use App\WeChat\Response\RefundOrderResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 trait BoughtTrait
 {
+    use WechatDefaultConfig;
 
     /**
      * @return Order|\Illuminate\Database\Eloquent\Builder
@@ -75,7 +77,7 @@ trait BoughtTrait
         $query = Auth::user()->boughts()->with('items')->filter($request->all())->where('buyer_deleted', 0);
         $total = $query->count();
         $items = $query->offset($request->input('offset', 0))
-            ->limit($request->input('count', 10))->get();
+            ->limit($request->input('count', 10))->orderByDesc('order_id')->get();
 
         return $this->sendBatchGetOrderResponse($request, $items, $total);
     }
@@ -100,11 +102,19 @@ trait BoughtTrait
         $order = $this->getOrderForRequest($request);
         if (!$order->closed) {
             $reason = $request->input('reason', '');
-            $otherReason = $request->input('otherReason', '');
+            $otherReason = $request->input('otherReason', '拍错了,不想要了');
             $order->closeReason()->create([
                 'reason' => $reason ?: $otherReason,
             ]);
-            $this->orderService()->close($order);
+
+            $order->order_state = 6;
+            $order->closed = 1;
+            $order->closed_at = now();
+            if ($order->transaction) {
+                $order->transaction->transaction_state = 6;
+            }
+            $order->push();
+            event(new OrderEvent($order, 'closed'));
         }
         return $this->sendClosedOrderResponse($request, $order);
     }
@@ -147,7 +157,20 @@ trait BoughtTrait
      */
     public function paid(Request $request)
     {
-        $order = $this->orderService()->paid($this->getOrderForRequest($request));
+        $order = $this->getOrderForRequest($request);
+        if ($order->order_state == 1) {
+            $order->order_state = 2;
+            $order->pay_state = 1;
+            $order->pay_at = now();
+            if ($order->transaction) {
+                $order->transaction->transaction_state = 2;
+                $order->transaction->pay_state = 2;
+                $order->transaction->pay_at = now();
+            }
+            $order->push();
+            //拍下减库存
+            event(new OrderEvent($order, 'paid'));
+        }
         return $this->sendPaidOrderResponse($request, $order);
     }
 
@@ -167,7 +190,17 @@ trait BoughtTrait
      */
     public function confirm(Request $request)
     {
-        $order = $this->orderService()->confirm($this->getOrderForRequest($request));
+        $order = $this->getOrderForRequest($request);
+        if ($order->order_state == 3) {
+            $order->order_state = 4;
+            $order->receive_state = 1;
+            $order->receive_at = now();
+            if ($order->transaction) {
+                $order->transaction->transaction_state = 4;
+            }
+            $order->push();
+            event(new OrderEvent($order, 'confirm'));
+        }
         return $this->sendConfrimedOrderResponse($request, $order);
     }
 
@@ -185,12 +218,34 @@ trait BoughtTrait
      * 申请退款
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
     public function refund(Request $request)
     {
         $order = $this->getOrderForRequest($request);
-        $order->refund()->create($request->input('refund', []));
-        $this->orderService()->refunding($order);
+        if (!$order->refund_state) {
+            $refund = $order->refund()->create($request->input('refund', []));
+            $order->order_state = 6;
+            $order->refund_state = 1;
+            $order->refund_at = now();
+            $order->save();
+
+            if ($transaction = $order->transaction) {
+                $transaction->transaction_state = 5;
+                $transaction->save();
+
+                $res =  $this->payment()->refund->byTransactionId(
+                    $transaction->extra['transaction_id'],
+                    $refund->refund_no,
+                    $transaction->extra['total_fee'],
+                    $transaction->extra['total_fee']);
+                $response = new RefundOrderResponse($res);
+                if (!$response->tradeSuccess()){
+                    return ajaxError(400, $response->errCodeDes());
+                }
+            }
+            event(new OrderEvent($order, 'refunding'));
+        }
         return $this->applyRefundOrderSuccess($request, $order);
     }
 
@@ -210,7 +265,11 @@ trait BoughtTrait
      */
     public function delete(Request $request)
     {
-        $order = $this->orderService()->buyerDelete($this->getOrderForRequest($request));
+        $order = $this->getOrderForRequest($request);
+        if ($order) {
+            $order->buyer_deleted = 1;
+            $order->save();
+        }
         return $this->sendDeletedOrderResponse($request, $order);
     }
 
@@ -231,49 +290,6 @@ trait BoughtTrait
     public function evaluate(Request $request)
     {
         $order_id = $request->input('order_id');
-        $order = $this->user()->boughts()->find($order_id);
-
-        if ($order) {
-            $rate_type = $request->input('rate_type', 1);
-            $message = $request->input('message', '');
-            $images = $request->input('images', []);
-            $product_score = $request->input('product_score', 0);
-            $wuliu_score = $request->input('wuliu_score', 0);
-            $service_score = $request->input('service_score', 0);
-
-            if (!$order->buyer_rate) {
-                $shop = $order->shop;
-                foreach ($order->items as $item) {
-
-                    ItemReviews::insert([
-                        'uid' => $this->user()->uid,
-                        'itemid' => $item->itemid,
-                        'order_id' => $order->order_id,
-                        'stars' => 0,
-                        'message' => $message,
-                        'images' => serialize($images),
-                        'image_count' => count($images),
-                        'created_at' => time()
-                    ]);
-                    Item::where('itemid', $item->itemid)->increment('reviews');
-
-                    if ($shop) {
-                        $shop->evaluates()->create([
-                            'uid' => $this->user()->uid,
-                            'order_id' => $order->order_id,
-                            'stars' => 0,
-                            'message' => $message,
-                            'created_at' => time(),
-                            'product_score' => $product_score,
-                            'wuliu_score' => $wuliu_score,
-                            'service_score' => $service_score
-                        ]);
-                    }
-                }
-                $order->buyer_rate = 1;
-                $order->save();
-            }
-        }
 
         return ajaxReturn();
     }

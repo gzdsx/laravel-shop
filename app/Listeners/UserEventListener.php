@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserEvent;
-use App\WeChat\WechatDefaultConfig;
+use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

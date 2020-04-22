@@ -20,6 +20,27 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 Vue.prototype.$axios = Axios;
+Vue.prototype.$get = (path,params=[])=>{
+    return new Promise((resolve, reject) => {
+        Axios.get(path,{params}).then(response=>{
+            resolve(response);
+        }).catch(reason => {
+            reject(reason);
+        });
+    });
+};
+
+Vue.prototype.$post = (path,data={})=>{
+    return new Promise((resolve, reject) => {
+        Axios.post(path,data).then(response=>{
+            resolve(response);
+        }).catch(reason => {
+            reject(reason);
+        });
+    });
+};
+Vue.prototype.$domain = "/";
+
 window._ = require('lodash');
 window.Vue = Vue;
 window.VueRouter = VueRouter;

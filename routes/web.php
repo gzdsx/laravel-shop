@@ -12,7 +12,6 @@
 */
 
 require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
 require __DIR__.'/misc.php';
 require __DIR__.'/user.php';
 require __DIR__.'/cms.php';
@@ -23,4 +22,12 @@ Route::group(['namespace' => 'Home'], function () {
     Route::get('app', 'IndexController@app');
     Route::get('upgrade', 'UpgradeController@index');
     Route::any('test', 'TestController@index');
+});
+
+//后台管理
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+    Route::get('login', 'LoginController@showLoginForm');
+    Route::post('login', 'LoginController@login');
+    Route::get('logout', 'LoginController@logout');
+    Route::get('/', 'IndexController@index');
 });
