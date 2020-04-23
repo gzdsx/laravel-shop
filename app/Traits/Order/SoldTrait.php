@@ -18,6 +18,7 @@ use App\Events\OrderEvent;
 use App\Models\Express;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Support\TradeUtil;
 use Illuminate\Http\Request;
 
 trait SoldTrait
@@ -34,23 +35,25 @@ trait SoldTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request){
+    public function get(Request $request)
+    {
         $order = $this->query()->findOrFail($request->input('order_id'));
-        $order->load(['buyer','shipping','items','transaction']);
+        $order->load(['buyer', 'shipping', 'items', 'transaction']);
 
-        return ajaxReturn(['order'=>$order]);
+        return ajaxReturn(['order' => $order]);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchget(Request $request){
-        $query = $this->query()->filter($request->all())->with(['items']);
+    public function batchget(Request $request)
+    {
+        $query = $this->query()->filter($request->all())->with(['items'])->where('seller_deleted', 0);
         return ajaxReturn([
-            'total'=>$query->count(),
-            'items'=>$query->offset($request->input('offset',0))
-                ->limit($request->input('count',10))->orderByDesc('order_id')->get()
+            'total' => $query->count(),
+            'items' => $query->offset($request->input('offset', 0))
+                ->limit($request->input('count', 10))->orderByDesc('order_id')->get()
         ]);
     }
 
@@ -58,19 +61,27 @@ trait SoldTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editPrice(Request $request){
+    public function editPrice(Request $request)
+    {
         $item = OrderItem::find($request->input('id'));
-        if ($item){
-            $price = $request->input('price');
-            $quantity = $request->input('quantity');
-            $total_fee = $price*$quantity+$item->shipping_fee;
-            $item->fill(compact('price','quantity','total_fee'))->save();
-
+        if ($item) {
             $order = $this->query()->find($item->order_id);
-            $order->total_fee = $order->items()->sum('total_fee');
-            $order->total_count = $order->items()->sum('quantity');
-            $order->order_fee = $order->total_fee - $order->shipping_fee;
-            $order->save();
+            if ($order->pay_state == 0){
+                $price = $request->input('price');
+                $quantity = $request->input('quantity');
+                $total_fee = $price * $quantity + $item->shipping_fee;
+                $item->fill(compact('price', 'quantity', 'total_fee'))->save();
+
+
+                $order->total_fee = $order->items()->sum('total_fee');
+                $order->total_count = $order->items()->sum('quantity');
+                $order->order_fee = $order->total_fee - $order->shipping_fee;
+                $order->order_no = TradeUtil::createOrderNo();
+                $order->save();
+
+                $order->transaction->out_trade_no = $order->order_no;
+                $order->transaction->save();
+            }
         }
         return ajaxReturn();
     }
@@ -79,7 +90,8 @@ trait SoldTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function send(Request $request){
+    public function send(Request $request)
+    {
         $order = $this->query()->findOrFail($request->input('order_id'));
         $order->order_state = 3;
         $order->shipping_state = 1;
@@ -94,6 +106,29 @@ trait SoldTrait
         }
 
         event(new OrderEvent($order, 'send'));
+        return ajaxReturn();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function forceDelete(Request $request)
+    {
+        $orders = $this->query()->whereKey($request->input('items',[]))->get();
+        foreach ($orders as $order){
+            $order->delete();
+        }
+        return ajaxReturn();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request){
+        $this->query()->whereKey($request->input('items',[]))->update(['seller_deleted'=>1]);
         return ajaxReturn();
     }
 }

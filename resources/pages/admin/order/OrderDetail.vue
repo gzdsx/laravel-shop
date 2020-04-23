@@ -112,6 +112,7 @@
                     <thead>
                     <tr>
                         <th>宝贝</th>
+                        <th></th>
                         <th class="align-center">单价</th>
                         <th class="align-center">数量</th>
                         <th class="align-center">实付款</th>
@@ -127,6 +128,11 @@
                                     <div class="sku">{{item.sku_title}}</div>
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <p v-if="order.order_state===1">
+                                <a style="color: #0b90ef;" @click="handleShowEdit(item)">修改价格</a>
+                            </p>
                         </td>
                         <td>
                             <div class="align-center">￥{{item.price}}</div>
@@ -157,7 +163,8 @@
                         <tr>
                             <td class="cell-label">快递公司</td>
                             <td>
-                                <el-select size="medium" class="w300" v-model="express.express_name" @change="handleChange">
+                                <el-select size="medium" class="w300" v-model="express.express_name"
+                                           @change="handleChange">
                                     <el-option
                                             v-for="(exp,index) in expresses"
                                             :label="exp.name"
@@ -186,6 +193,46 @@
                 </template>
             </div>
         </div>
+        <el-dialog :visible.sync="showDialog" width="35%" title="修改商品价格">
+            <table class="dsxui-formtable">
+                <colgroup>
+                    <col class="w80">
+                    <col class="w200">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td class="cell-label">商品名称</td>
+                    <td class="cell-input" colspan="2">
+                        {{item.title}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="cell-label">商品单价</td>
+                    <td class="cell-input">
+                        <el-input type="number" v-model="item.price" size="medium"></el-input>
+                    </td>
+                    <td class="cell-tips"></td>
+                </tr>
+                <tr>
+                    <td class="cell-label">商品数量</td>
+                    <td class="cell-input">
+                        <el-input type="number" v-model="item.quantity" size="medium"></el-input>
+                    </td>
+                    <td class="cell-tips"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <el-button type="primary" size="medium" class="w100" @click="handleSavePrice">确定</el-button>
+                    </td>
+                    <td></td>
+                </tr>
+                </tfoot>
+            </table>
+        </el-dialog>
     </admin-frame>
 </template>
 
@@ -210,7 +257,9 @@
                     express_code: '',
                     express_name: '',
                     express_no: ''
-                }
+                },
+                showDialog: false,
+                item: {}
             }
         },
         mounted() {
@@ -256,6 +305,27 @@
                     express: this.express
                 }).then(response => {
                     this.$showToast('发货成功');
+                    this.getOrder();
+                });
+            },
+            handleShowEdit(item) {
+                this.item = item;
+                this.showDialog = true;
+            },
+            handleSavePrice() {
+                if (!this.item.price) {
+                    this.$showToast('请填写价格');
+                    return false;
+                }
+
+                if (!this.item.quantity) {
+                    this.$showToast('请填写数量');
+                    return false;
+                }
+
+                this.showDialog = false;
+                const {id, price, quantity} = this.item;
+                this.$post('/admin/order/editprice', {id, price, quantity}).then(response => {
                     this.getOrder();
                 });
             }

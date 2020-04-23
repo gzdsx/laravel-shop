@@ -1888,6 +1888,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: "OrderDetail",
   components: {
@@ -1906,7 +1953,9 @@ var _default = {
         express_code: '',
         express_name: '',
         express_no: ''
-      }
+      },
+      showDialog: false,
+      item: {}
     };
   },
   mounted: function mounted() {
@@ -1965,6 +2014,36 @@ var _default = {
 
         _this3.getOrder();
       });
+    },
+    handleShowEdit: function handleShowEdit(item) {
+      this.item = item;
+      this.showDialog = true;
+    },
+    handleSavePrice: function handleSavePrice() {
+      var _this4 = this;
+
+      if (!this.item.price) {
+        this.$showToast('请填写价格');
+        return false;
+      }
+
+      if (!this.item.quantity) {
+        this.$showToast('请填写数量');
+        return false;
+      }
+
+      this.showDialog = false;
+      var _this$item = this.item,
+          id = _this$item.id,
+          price = _this$item.price,
+          quantity = _this$item.quantity;
+      this.$post('/admin/order/editprice', {
+        id: id,
+        price: price,
+        quantity: quantity
+      }).then(function (response) {
+        _this4.getOrder();
+      });
     }
   }
 };
@@ -2013,7 +2092,8 @@ var _default = {
         order_no: '',
         buyer_name: '',
         tab: 'all'
-      }
+      },
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -2023,35 +2103,35 @@ var _default = {
     fetchList: function fetchList() {
       var _this = this;
 
+      this.loading = true;
       this.$get('/admin/order/batchget', _objectSpread({}, this.searchFields, {
-        offset: this.offset
+        offset: this.offset,
+        count: 10
       })).then(function (response) {
         _this.orderList = response.data.items;
+        _this.total = response.data.total;
+        _this.loading = false;
       });
-    },
-    handleSelectionChange: function handleSelectionChange(val) {
-      this.selectionIds = val;
     },
     handleDelete: function handleDelete() {
       var _this2 = this;
 
-      var items = this.selectionIds.map(function (d) {
-        return d.order_id;
-      });
       this.$confirm('此操作将永久删除所选订单, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(function () {
+        _this2.loading = true;
+
         _this2.$axios.post('/admin/order/delete', {
-          items: items
+          items: _this2.selectionIds
         }).then(function (response) {
           _this2.fetchList();
         });
       });
     },
     handlerPageChange: function handlerPageChange(page) {
-      this.offset = (page - 1) * this.pagesize;
+      this.offset = (page - 1) * this.pageSize;
       this.fetchList();
     },
     handleSearch: function handleSearch() {
@@ -13477,372 +13557,514 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("admin-frame", [
-    _c("header", { staticClass: "page-header" }, [
-      _c(
-        "div",
-        { staticClass: "flex" },
-        [
-          _c(
-            "el-breadcrumb",
-            { attrs: { separator: "/" } },
-            [
-              _c("el-breadcrumb-item", [_vm._v("订单管理")]),
-              _vm._v(" "),
-              _c("el-breadcrumb-item", [_vm._v("订单详情")])
-            ],
-            1
-          )
-        ],
-        1
-      ),
+  return _c(
+    "admin-frame",
+    [
+      _c("header", { staticClass: "page-header" }, [
+        _c(
+          "div",
+          { staticClass: "flex" },
+          [
+            _c(
+              "el-breadcrumb",
+              { attrs: { separator: "/" } },
+              [
+                _c("el-breadcrumb-item", [_vm._v("订单管理")]),
+                _vm._v(" "),
+                _c("el-breadcrumb-item", [_vm._v("订单详情")])
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          [
+            _c(
+              "router-link",
+              { attrs: { to: "/order/list" } },
+              [
+                _c("el-button", { attrs: { type: "primary", size: "small" } }, [
+                  _vm._v("返回列表")
+                ])
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
-      _c(
-        "div",
-        [
-          _c(
-            "router-link",
-            { attrs: { to: "/order/list" } },
-            [
-              _c("el-button", { attrs: { type: "primary", size: "small" } }, [
-                _vm._v("返回列表")
-              ])
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mainframe-content" }, [
-      _c(
-        "div",
-        { staticClass: "content-block" },
-        [
-          _c("div", { staticClass: "edit-title" }, [
-            _c("span", [_vm._v("收货信息")])
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "dsxui-formtable" }, [
-            _c("colgroup", [
-              _c("col", { attrs: { width: "80" } }),
-              _vm._v(" "),
-              _c("col")
+      _c("div", { staticClass: "mainframe-content" }, [
+        _c(
+          "div",
+          { staticClass: "content-block" },
+          [
+            _c("div", { staticClass: "edit-title" }, [
+              _c("span", [_vm._v("收货信息")])
             ]),
             _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("买家账号")]),
+            _c("table", { staticClass: "dsxui-formtable" }, [
+              _c("colgroup", [
+                _c("col", { attrs: { width: "80" } }),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.buyer.username))])
+                _c("col")
               ]),
               _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("收货人")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.shipping.name))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("联系电话")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.shipping.tel))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("收货地址")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.shipping.full_address))])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "edit-title" }, [
-            _c("span", [_vm._v("订单信息")])
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "dsxui-formtable" }, [
-            _c("colgroup", [
-              _c("col", { attrs: { width: "80" } }),
-              _vm._v(" "),
-              _c("col")
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("订单编号")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.order.order_no))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("创建时间")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.order.created_at))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("订单状态")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.order.buyer_state_des))])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", { staticClass: "cell-label" }, [_vm._v("付款状态")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.order.pay_state_des))])
-              ]),
-              _vm._v(" "),
-              _vm.order.pay_state
-                ? _c("tr", [
-                    _c("td", { staticClass: "cell-label" }, [
-                      _vm._v("付款时间")
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.order.pay_at))])
-                  ])
-                : _vm._e()
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.order.pay_state && _vm.transaction
-            ? [
-                _c("div", { staticClass: "edit-title" }, [
-                  _c("span", [_vm._v("付款信息")])
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("买家账号")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.buyer.username))])
                 ]),
                 _vm._v(" "),
-                _c("table", { staticClass: "dsxui-formtable" }, [
-                  _c("colgroup", [
-                    _c("col", { attrs: { width: "80" } }),
-                    _vm._v(" "),
-                    _c("col")
-                  ]),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("收货人")]),
                   _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", { staticClass: "cell-label" }, [
-                        _vm._v("付款方式")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm.transaction.pay_type_des))])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "cell-label" }, [
-                        _vm._v("付款单号")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(_vm._s(_vm.transaction.extra.transaction_id))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "cell-label" }, [
-                        _vm._v("付款金额")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          _vm._s(_vm.transaction.extra.total_fee / 100) + "元"
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm.transaction.pay_state
-                      ? _c("tr", [
-                          _c("td", { staticClass: "cell-label" }, [
-                            _vm._v("商户单号")
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(_vm._s(_vm.transaction.extra.out_trade_no))
-                          ])
-                        ])
-                      : _vm._e()
-                  ])
+                  _c("td", [_vm._v(_vm._s(_vm.shipping.name))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("联系电话")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.shipping.tel))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("收货地址")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.shipping.full_address))])
                 ])
-              ]
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "edit-title" }, [
-            _c("span", [_vm._v("商品信息")])
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "order-table" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("宝贝")]),
-                _vm._v(" "),
-                _c("th", { staticClass: "align-center" }, [_vm._v("单价")]),
-                _vm._v(" "),
-                _c("th", { staticClass: "align-center" }, [_vm._v("数量")]),
-                _vm._v(" "),
-                _c("th", { staticClass: "align-center" }, [_vm._v("实付款")])
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.order.items, function(item, idx) {
-                return _c("tr", [
-                  _c("td", [
-                    _c("div", { staticClass: "order-item" }, [
-                      _c("img", {
-                        staticClass: "thumb",
-                        attrs: { src: item.thumb, alt: "" }
-                      }),
+            _c("div", { staticClass: "edit-title" }, [
+              _c("span", [_vm._v("订单信息")])
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "dsxui-formtable" }, [
+              _c("colgroup", [
+                _c("col", { attrs: { width: "80" } }),
+                _vm._v(" "),
+                _c("col")
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("订单编号")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.order.order_no))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("创建时间")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.order.created_at))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("订单状态")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.order.buyer_state_des))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", { staticClass: "cell-label" }, [_vm._v("付款状态")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.order.pay_state_des))])
+                ]),
+                _vm._v(" "),
+                _vm.order.pay_state
+                  ? _c("tr", [
+                      _c("td", { staticClass: "cell-label" }, [
+                        _vm._v("付款时间")
+                      ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "flex" }, [
-                        _c("div", { staticClass: "title" }, [
-                          _vm._v(_vm._s(item.title))
+                      _c("td", [_vm._v(_vm._s(_vm.order.pay_at))])
+                    ])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.order.pay_state && _vm.transaction
+              ? [
+                  _c("div", { staticClass: "edit-title" }, [
+                    _c("span", [_vm._v("付款信息")])
+                  ]),
+                  _vm._v(" "),
+                  _c("table", { staticClass: "dsxui-formtable" }, [
+                    _c("colgroup", [
+                      _c("col", { attrs: { width: "80" } }),
+                      _vm._v(" "),
+                      _c("col")
+                    ]),
+                    _vm._v(" "),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", { staticClass: "cell-label" }, [
+                          _vm._v("付款方式")
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "sku" }, [
-                          _vm._v(_vm._s(item.sku_title))
+                        _c("td", [_vm._v(_vm._s(_vm.transaction.pay_type_des))])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "cell-label" }, [
+                          _vm._v("付款单号")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm.transaction.extra.transaction_id))
                         ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "align-center" }, [
-                      _vm._v("￥" + _vm._s(item.price))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("div", { staticClass: "align-center" }, [
-                      _vm._v("x" + _vm._s(item.quantity))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    idx === 0
-                      ? _c("div", { staticClass: "align-center" }, [
-                          _c("p", [
-                            _c("strong", [
-                              _vm._v("￥" + _vm._s(_vm.order.total_fee))
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "cell-label" }, [
+                          _vm._v("付款金额")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(_vm.transaction.extra.total_fee / 100) + "元"
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm.transaction.pay_state
+                        ? _c("tr", [
+                            _c("td", { staticClass: "cell-label" }, [
+                              _vm._v("商户单号")
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.transaction.extra.out_trade_no))
                             ])
+                          ])
+                        : _vm._e()
+                    ])
+                  ])
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "edit-title" }, [
+              _c("span", [_vm._v("商品信息")])
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "order-table" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("宝贝")]),
+                  _vm._v(" "),
+                  _c("th"),
+                  _vm._v(" "),
+                  _c("th", { staticClass: "align-center" }, [_vm._v("单价")]),
+                  _vm._v(" "),
+                  _c("th", { staticClass: "align-center" }, [_vm._v("数量")]),
+                  _vm._v(" "),
+                  _c("th", { staticClass: "align-center" }, [_vm._v("实付款")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.order.items, function(item, idx) {
+                  return _c("tr", [
+                    _c("td", [
+                      _c("div", { staticClass: "order-item" }, [
+                        _c("img", {
+                          staticClass: "thumb",
+                          attrs: { src: item.thumb, alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "flex" }, [
+                          _c("div", { staticClass: "title" }, [
+                            _vm._v(_vm._s(item.title))
                           ]),
                           _vm._v(" "),
-                          _c("p", { staticClass: "col-freight" }, [
-                            _vm._v(
-                              "(含运费: ￥" +
-                                _vm._s(_vm.order.shipping_fee) +
-                                ")"
-                            )
+                          _c("div", { staticClass: "sku" }, [
+                            _vm._v(_vm._s(item.sku_title))
                           ])
                         ])
-                      : _vm._e()
-                  ])
-                ])
-              }),
-              0
-            )
-          ]),
-          _vm._v(" "),
-          _vm.order.order_state === 2
-            ? [
-                _c("div", { staticClass: "edit-title" }, [
-                  _c("span", [_vm._v("发货")])
-                ]),
-                _vm._v(" "),
-                _c("table", { staticClass: "dsxui-formtable" }, [
-                  _c("colgroup", [
-                    _c("col", { attrs: { width: "80" } }),
-                    _vm._v(" "),
-                    _c("col")
-                  ]),
-                  _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", { staticClass: "cell-label" }, [
-                        _vm._v("快递公司")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "el-select",
-                            {
-                              staticClass: "w300",
-                              attrs: { size: "medium" },
-                              on: { change: _vm.handleChange },
-                              model: {
-                                value: _vm.express.express_name,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.express, "express_name", $$v)
-                                },
-                                expression: "express.express_name"
-                              }
-                            },
-                            _vm._l(_vm.expresses, function(exp, index) {
-                              return _c("el-option", {
-                                key: index,
-                                attrs: { label: exp.name, value: exp }
-                              })
-                            }),
-                            1
-                          )
-                        ],
-                        1
-                      )
+                      ])
                     ]),
                     _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "cell-label" }, [
-                        _vm._v("快递单号")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c("el-input", {
-                            staticClass: "w300",
-                            attrs: { size: "medium" },
-                            model: {
-                              value: _vm.express.express_no,
-                              callback: function($$v) {
-                                _vm.$set(_vm.express, "express_no", $$v)
+                    _c("td", [
+                      _vm.order.order_state === 1
+                        ? _c("p", [
+                            _c(
+                              "a",
+                              {
+                                staticStyle: { color: "#0b90ef" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.handleShowEdit(item)
+                                  }
+                                }
                               },
-                              expression: "express.express_no"
-                            }
-                          })
-                        ],
-                        1
-                      )
+                              [_vm._v("修改价格")]
+                            )
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _c("tr", [
-                      _c("td"),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "el-button",
-                            {
-                              attrs: { size: "medium", type: "primary" },
-                              on: { click: _vm.handleSubmit }
-                            },
-                            [_vm._v("发货")]
-                          )
-                        ],
-                        1
-                      )
+                    _c("td", [
+                      _c("div", { staticClass: "align-center" }, [
+                        _vm._v("￥" + _vm._s(item.price))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", { staticClass: "align-center" }, [
+                        _vm._v("x" + _vm._s(item.quantity))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      idx === 0
+                        ? _c("div", { staticClass: "align-center" }, [
+                            _c("p", [
+                              _c("strong", [
+                                _vm._v("￥" + _vm._s(_vm.order.total_fee))
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "col-freight" }, [
+                              _vm._v(
+                                "(含运费: ￥" +
+                                  _vm._s(_vm.order.shipping_fee) +
+                                  ")"
+                              )
+                            ])
+                          ])
+                        : _vm._e()
                     ])
                   ])
-                ])
-              ]
-            : _vm._e()
-        ],
-        2
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _vm.order.order_state === 2
+              ? [
+                  _c("div", { staticClass: "edit-title" }, [
+                    _c("span", [_vm._v("发货")])
+                  ]),
+                  _vm._v(" "),
+                  _c("table", { staticClass: "dsxui-formtable" }, [
+                    _c("colgroup", [
+                      _c("col", { attrs: { width: "80" } }),
+                      _vm._v(" "),
+                      _c("col")
+                    ]),
+                    _vm._v(" "),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", { staticClass: "cell-label" }, [
+                          _vm._v("快递公司")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "el-select",
+                              {
+                                staticClass: "w300",
+                                attrs: { size: "medium" },
+                                on: { change: _vm.handleChange },
+                                model: {
+                                  value: _vm.express.express_name,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.express, "express_name", $$v)
+                                  },
+                                  expression: "express.express_name"
+                                }
+                              },
+                              _vm._l(_vm.expresses, function(exp, index) {
+                                return _c("el-option", {
+                                  key: index,
+                                  attrs: { label: exp.name, value: exp }
+                                })
+                              }),
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", { staticClass: "cell-label" }, [
+                          _vm._v("快递单号")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c("el-input", {
+                              staticClass: "w300",
+                              attrs: { size: "medium" },
+                              model: {
+                                value: _vm.express.express_no,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.express, "express_no", $$v)
+                                },
+                                expression: "express.express_no"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td"),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "el-button",
+                              {
+                                attrs: { size: "medium", type: "primary" },
+                                on: { click: _vm.handleSubmit }
+                              },
+                              [_vm._v("发货")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              : _vm._e()
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "el-dialog",
+        {
+          attrs: {
+            visible: _vm.showDialog,
+            width: "35%",
+            title: "修改商品价格"
+          },
+          on: {
+            "update:visible": function($event) {
+              _vm.showDialog = $event
+            }
+          }
+        },
+        [
+          _c("table", { staticClass: "dsxui-formtable" }, [
+            _c("colgroup", [
+              _c("col", { staticClass: "w80" }),
+              _vm._v(" "),
+              _c("col", { staticClass: "w200" }),
+              _vm._v(" "),
+              _c("col")
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", { staticClass: "cell-label" }, [_vm._v("商品名称")]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "cell-input", attrs: { colspan: "2" } },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.item.title) +
+                        "\n                "
+                    )
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "cell-label" }, [_vm._v("商品单价")]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "cell-input" },
+                  [
+                    _c("el-input", {
+                      attrs: { type: "number", size: "medium" },
+                      model: {
+                        value: _vm.item.price,
+                        callback: function($$v) {
+                          _vm.$set(_vm.item, "price", $$v)
+                        },
+                        expression: "item.price"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("td", { staticClass: "cell-tips" })
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", { staticClass: "cell-label" }, [_vm._v("商品数量")]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  { staticClass: "cell-input" },
+                  [
+                    _c("el-input", {
+                      attrs: { type: "number", size: "medium" },
+                      model: {
+                        value: _vm.item.quantity,
+                        callback: function($$v) {
+                          _vm.$set(_vm.item, "quantity", $$v)
+                        },
+                        expression: "item.quantity"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("td", { staticClass: "cell-tips" })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tfoot", [
+              _c("tr", [
+                _c("td"),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "el-button",
+                      {
+                        staticClass: "w100",
+                        attrs: { type: "primary", size: "medium" },
+                        on: { click: _vm.handleSavePrice }
+                      },
+                      [_vm._v("确定")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("td")
+              ])
+            ])
+          ])
+        ]
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -14039,185 +14261,216 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._l(_vm.orderList, function(order, index) {
-              return _c("div", { key: index }, [
-                _c("table", { staticClass: "order-table" }, [
-                  _c("colgroup", [
-                    _c("col"),
-                    _vm._v(" "),
-                    _c("col", { attrs: { width: "100" } }),
-                    _vm._v(" "),
-                    _c("col", { attrs: { width: "70" } }),
-                    _vm._v(" "),
-                    _c("col", { attrs: { width: "145" } }),
-                    _vm._v(" "),
-                    _c("col", { attrs: { width: "120" } }),
-                    _vm._v(" "),
-                    _c("col", { attrs: { width: "105" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", [
-                        _c("div", { staticClass: "display-flex" }, [
-                          _c(
-                            "div",
-                            { staticClass: "col-checkbox" },
-                            [_c("el-checkbox")],
-                            1
-                          ),
+            _c(
+              "el-container",
+              {
+                directives: [
+                  {
+                    name: "loading",
+                    rawName: "v-loading",
+                    value: _vm.loading,
+                    expression: "loading"
+                  }
+                ]
+              },
+              [
+                _c(
+                  "el-checkbox-group",
+                  {
+                    model: {
+                      value: _vm.selectionIds,
+                      callback: function($$v) {
+                        _vm.selectionIds = $$v
+                      },
+                      expression: "selectionIds"
+                    }
+                  },
+                  _vm._l(_vm.orderList, function(order, index) {
+                    return _c("div", { key: index }, [
+                      _c("table", { staticClass: "order-table" }, [
+                        _c("colgroup", [
+                          _c("col"),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-order-time" }, [
-                            _vm._v(_vm._s(order.created_at))
-                          ]),
+                          _c("col", { attrs: { width: "100" } }),
                           _vm._v(" "),
-                          _c("div", [
-                            _vm._v("订单号:" + _vm._s(order.order_no))
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("th"),
-                      _vm._v(" "),
-                      _c("th"),
-                      _vm._v(" "),
-                      _c("th"),
-                      _vm._v(" "),
-                      _c("th"),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "align-right" }, [
-                        _c("span", {
-                          staticClass: "iconfont icon-delete_light font-16;",
-                          staticStyle: { cursor: "pointer" }
-                        })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(order.items, function(item, idx) {
-                      return _c("tr", [
-                        _c("td", [
-                          _c("div", { staticClass: "order-item" }, [
-                            _c("img", {
-                              staticClass: "thumb",
-                              attrs: { src: item.thumb, alt: "" }
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "flex" }, [
-                              _c("div", { staticClass: "title" }, [
-                                _vm._v(_vm._s(item.title))
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "sku" }, [
-                                _vm._v(_vm._s(item.sku_title))
-                              ])
-                            ])
-                          ])
+                          _c("col", { attrs: { width: "70" } }),
+                          _vm._v(" "),
+                          _c("col", { attrs: { width: "145" } }),
+                          _vm._v(" "),
+                          _c("col", { attrs: { width: "120" } }),
+                          _vm._v(" "),
+                          _c("col", { attrs: { width: "105" } })
                         ]),
                         _vm._v(" "),
-                        _c("td", [
-                          _c("div", { staticClass: "align-center" }, [
-                            _vm._v("￥" + _vm._s(item.price))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("div", { staticClass: "align-center" }, [
-                            _vm._v("x" + _vm._s(item.quantity))
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          idx === 0
-                            ? _c("div", { staticClass: "align-center" }, [
-                                _c("p", [
-                                  _c("strong", [
-                                    _vm._v("￥" + _vm._s(order.total_fee))
-                                  ])
+                        _c("thead", [
+                          _c("tr", [
+                            _c("th", [
+                              _c("div", { staticClass: "display-flex" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "col-checkbox" },
+                                  [
+                                    _c("el-checkbox", {
+                                      attrs: { label: order.order_id }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-order-time" }, [
+                                  _vm._v(_vm._s(order.created_at))
                                 ]),
                                 _vm._v(" "),
-                                _c("p", { staticClass: "col-freight" }, [
-                                  _vm._v(
-                                    "(含运费: ￥" +
-                                      _vm._s(order.shipping_fee) +
-                                      ")"
-                                  )
+                                _c("div", [
+                                  _vm._v("订单号:" + _vm._s(order.order_no))
                                 ])
                               ])
-                            : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("th"),
+                            _vm._v(" "),
+                            _c("th"),
+                            _vm._v(" "),
+                            _c("th"),
+                            _vm._v(" "),
+                            _c("th"),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "align-right" })
+                          ])
                         ]),
                         _vm._v(" "),
-                        _c("td", [
-                          idx === 0
-                            ? _c(
-                                "div",
-                                { staticClass: "align-center" },
-                                [
-                                  _c("p", [
-                                    _vm._v(_vm._s(order.seller_state_des))
-                                  ]),
+                        _c(
+                          "tbody",
+                          _vm._l(order.items, function(item, idx) {
+                            return _c("tr", [
+                              _c("td", [
+                                _c("div", { staticClass: "order-item" }, [
+                                  _c("img", {
+                                    staticClass: "thumb",
+                                    attrs: { src: item.thumb, alt: "" }
+                                  }),
                                   _vm._v(" "),
-                                  _c(
-                                    "router-link",
-                                    {
-                                      attrs: {
-                                        to: "/order/detail/" + order.order_id
-                                      }
-                                    },
-                                    [_vm._v("详情")]
-                                  )
-                                ],
-                                1
-                              )
-                            : _vm._e()
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          idx === 0
-                            ? _c(
-                                "div",
-                                { staticClass: "align-center" },
-                                [
-                                  order.order_state === 2
-                                    ? _c(
-                                        "router-link",
-                                        {
-                                          attrs: {
-                                            to:
-                                              "/order/detail/" + order.order_id
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "el-button",
-                                            {
-                                              attrs: {
-                                                size: "mini",
-                                                type: "primary"
-                                              }
-                                            },
-                                            [_vm._v("发货")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    : _vm._e()
-                                ],
-                                1
-                              )
-                            : _vm._e()
-                        ])
+                                  _c("div", { staticClass: "flex" }, [
+                                    _c("div", { staticClass: "title" }, [
+                                      _vm._v(_vm._s(item.title))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "sku" }, [
+                                      _vm._v(_vm._s(item.sku_title))
+                                    ])
+                                  ])
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("div", { staticClass: "align-center" }, [
+                                  _vm._v("￥" + _vm._s(item.price))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("div", { staticClass: "align-center" }, [
+                                  _vm._v("x" + _vm._s(item.quantity))
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                idx === 0
+                                  ? _c("div", { staticClass: "align-center" }, [
+                                      _c("p", [
+                                        _c("strong", [
+                                          _vm._v("￥" + _vm._s(order.total_fee))
+                                        ])
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("p", { staticClass: "col-freight" }, [
+                                        _vm._v(
+                                          "(含运费: ￥" +
+                                            _vm._s(order.shipping_fee) +
+                                            ")"
+                                        )
+                                      ])
+                                    ])
+                                  : _vm._e()
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                idx === 0
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "align-center" },
+                                      [
+                                        _c("p", [
+                                          _vm._v(_vm._s(order.seller_state_des))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c(
+                                          "router-link",
+                                          {
+                                            attrs: {
+                                              to:
+                                                "/order/detail/" +
+                                                order.order_id
+                                            }
+                                          },
+                                          [_vm._v("详情")]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e()
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                idx === 0
+                                  ? _c(
+                                      "div",
+                                      { staticClass: "align-center" },
+                                      [
+                                        order.order_state === 2
+                                          ? _c(
+                                              "router-link",
+                                              {
+                                                attrs: {
+                                                  to:
+                                                    "/order/detail/" +
+                                                    order.order_id
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "el-button",
+                                                  {
+                                                    attrs: {
+                                                      size: "mini",
+                                                      type: "primary"
+                                                    }
+                                                  },
+                                                  [_vm._v("发货")]
+                                                )
+                                              ],
+                                              1
+                                            )
+                                          : _vm._e()
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e()
+                              ])
+                            ])
+                          }),
+                          0
+                        )
                       ])
-                    }),
-                    0
-                  )
-                ])
-              ])
-            })
+                    ])
+                  }),
+                  0
+                )
+              ],
+              1
+            )
           ],
-          2
+          1
         ),
         _vm._v(" "),
         _c(

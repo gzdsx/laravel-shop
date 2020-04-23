@@ -89,6 +89,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('order/batchget', 'OrderController@batchget');
     Route::post('order/editprice', 'OrderController@editPrice');
     Route::post('order/send', 'OrderController@send');
+    Route::post('order/delete', 'OrderController@forceDelete');
     //付款记录
     Route::get('transaction/batchget', 'TransactionController@batchget');
     Route::post('transaction/delete', 'TransactionController@delete');

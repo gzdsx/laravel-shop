@@ -58,76 +58,81 @@
                         </thead>
                     </table>
 
-                    <div v-for="(order,index) in orderList" :key="index">
-                        <table class="order-table">
-                            <colgroup>
-                                <col>
-                                <col width="100">
-                                <col width="70">
-                                <col width="145">
-                                <col width="120">
-                                <col width="105">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th>
-                                    <div class="display-flex">
-                                        <div class="col-checkbox">
-                                            <el-checkbox></el-checkbox>
-                                        </div>
-                                        <div class="col-order-time">{{order.created_at}}</div>
-                                        <div>订单号:{{order.order_no}}</div>
-                                    </div>
-                                </th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th class="align-right">
-                                    <span class="iconfont icon-delete_light font-16;" style="cursor: pointer;"></span>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item,idx) in order.items">
-                                <td>
-                                    <div class="order-item">
-                                        <img :src="item.thumb" class="thumb" alt="">
-                                        <div class="flex">
-                                            <div class="title">{{item.title}}</div>
-                                            <div class="sku">{{item.sku_title}}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="align-center">￥{{item.price}}</div>
-                                </td>
-                                <td>
-                                    <div class="align-center">x{{item.quantity}}</div>
-                                </td>
-                                <td>
-                                    <div class="align-center" v-if="idx===0">
-                                        <p><strong>￥{{order.total_fee}}</strong></p>
-                                        <p class="col-freight">(含运费: ￥{{order.shipping_fee}})</p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="align-center" v-if="idx===0">
-                                        <p>{{order.seller_state_des}}</p>
-                                        <router-link :to="'/order/detail/'+order.order_id">详情</router-link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="align-center" v-if="idx===0">
-                                        <router-link :to="'/order/detail/'+order.order_id" v-if="order.order_state===2">
-                                            <el-button size="mini" type="primary">发货</el-button>
-                                        </router-link>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <el-container v-loading="loading">
+                        <el-checkbox-group v-model="selectionIds">
+                            <div v-for="(order,index) in orderList" :key="index">
+                                <table class="order-table">
+                                    <colgroup>
+                                        <col>
+                                        <col width="100">
+                                        <col width="70">
+                                        <col width="145">
+                                        <col width="120">
+                                        <col width="105">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="display-flex">
+                                                <div class="col-checkbox">
+                                                    <el-checkbox :label="order.order_id"></el-checkbox>
+                                                </div>
+                                                <div class="col-order-time">{{order.created_at}}</div>
+                                                <div>订单号:{{order.order_no}}</div>
+                                            </div>
+                                        </th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th class="align-right">
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item,idx) in order.items">
+                                        <td>
+                                            <div class="order-item">
+                                                <img :src="item.thumb" class="thumb" alt="">
+                                                <div class="flex">
+                                                    <div class="title">{{item.title}}</div>
+                                                    <div class="sku">{{item.sku_title}}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="align-center">￥{{item.price}}</div>
+                                        </td>
+                                        <td>
+                                            <div class="align-center">x{{item.quantity}}</div>
+                                        </td>
+                                        <td>
+                                            <div class="align-center" v-if="idx===0">
+                                                <p><strong>￥{{order.total_fee}}</strong></p>
+                                                <p class="col-freight">(含运费: ￥{{order.shipping_fee}})</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="align-center" v-if="idx===0">
+                                                <p>{{order.seller_state_des}}</p>
+                                                <router-link :to="'/order/detail/'+order.order_id">详情</router-link>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="align-center" v-if="idx===0">
+                                                <router-link :to="'/order/detail/'+order.order_id"
+                                                             v-if="order.order_state===2">
+                                                    <el-button size="mini" type="primary">发货</el-button>
+                                                </router-link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </el-checkbox-group>
+                    </el-container>
                 </div>
                 <div class="table-edit-footer">
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
@@ -166,8 +171,9 @@
                 searchFields: {
                     order_no: '',
                     buyer_name: '',
-                    tab:'all'
-                }
+                    tab: 'all'
+                },
+                loading: true
             }
         },
         mounted() {
@@ -175,30 +181,31 @@
         },
         methods: {
             fetchList() {
+                this.loading = true;
                 this.$get('/admin/order/batchget', {
                     ...this.searchFields,
-                    offset: this.offset
+                    offset: this.offset,
+                    count: 10
                 }).then(response => {
                     this.orderList = response.data.items;
+                    this.total = response.data.total;
+                    this.loading = false;
                 });
             },
-            handleSelectionChange: function (val) {
-                this.selectionIds = val;
-            },
             handleDelete: function () {
-                var items = this.selectionIds.map((d) => d.order_id);
                 this.$confirm('此操作将永久删除所选订单, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/admin/order/delete', {items}).then(response => {
+                    this.loading = true;
+                    this.$axios.post('/admin/order/delete', {items: this.selectionIds}).then(response => {
                         this.fetchList();
                     });
                 });
             },
             handlerPageChange: function (page) {
-                this.offset = (page - 1) * this.pagesize;
+                this.offset = (page - 1) * this.pageSize;
                 this.fetchList();
             },
             handleSearch: function () {

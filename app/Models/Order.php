@@ -148,6 +148,7 @@ class Order extends Model
             $order->closeReason()->delete();
             $order->refund()->delete();
             $order->shipping()->delete();
+            $order->transaction()->delete();
         });
 
         static::addGlobalScope('visiable', function (Builder $builder) {
