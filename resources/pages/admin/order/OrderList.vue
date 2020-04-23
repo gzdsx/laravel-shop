@@ -58,7 +58,7 @@
                         </thead>
                     </table>
 
-                    <el-container v-loading="loading">
+                    <el-container style="flex-direction: column;" v-loading="loading">
                         <el-checkbox-group v-model="selectionIds">
                             <div v-for="(order,index) in orderList" :key="index">
                                 <table class="order-table">
