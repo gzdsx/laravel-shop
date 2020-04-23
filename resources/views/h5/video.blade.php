@@ -11,8 +11,9 @@
                         <div class="bg-cover video-thumb" style="background-image: url({{$item->image}});"></div>
                         <div class="video-data">
                             <div class="video-title">{{$item->title}}</div>
-                            <div class="video-content">{{$item->content}}</div>
+                            <div class="video-content">{{$item->created_at->format('Y-m-d')}}</div>
                             <div class="flex"></div>
+                            <div class="video-content">{{$item->content}}</div>
                         </div>
                     </div>
                 </a>
