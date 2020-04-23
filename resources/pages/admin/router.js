@@ -10,7 +10,7 @@ import PostCatlog from "./post/PostCatlog";
 import PagesList from "./pages/PagesList";
 import PagesEdit from "./pages/PagesEdit";
 import MaterialList from "./other/MaterialList";
-import LinkList from "./link/LinkList";
+import LinkList from "./other/LinkList";
 import DistrictList from "./other/DistrictList";
 import OrderList from "./order/OrderList";
 import OrderDetail from "./order/OrderDetail";

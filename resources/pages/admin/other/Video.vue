@@ -20,8 +20,13 @@
                 </header>
                 <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="id" width="45" type="selection"></el-table-column>
+                    <el-table-column label="图片" width="70">
+                        <template slot-scope="scope">
+                            <el-image class="w50 h50" fit="cover" :src="scope.row.image"></el-image>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="title" width="200" label="视频标题"></el-table-column>
-                    <el-table-column prop="link" width="200" label="视频链接"></el-table-column>
+                    <el-table-column prop="link" label="视频链接"></el-table-column>
                     <el-table-column prop="content" label="视频介绍"></el-table-column>
                     <el-table-column prop="created_at" label="添加时间" width="170"></el-table-column>
                     <el-table-column width="50" label="选项">
