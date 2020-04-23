@@ -63,7 +63,7 @@ class WechatServerController extends Controller
 //                }
 //            }
 
-            return '欢迎关注大师兄';
+            return $this->wellComeMsg();
         }, Message::EVENT);
         return $app->server->serve();
     }
@@ -87,6 +87,7 @@ class WechatServerController extends Controller
 
     /**
      * @return News
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function wellComeMsg()
     {
