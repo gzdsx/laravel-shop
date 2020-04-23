@@ -14,4 +14,11 @@ class VideoController extends BaseController
 
         return $this->view('h5.video', compact('items'));
     }
+
+    public function detail(Request $request, $id){
+        $video = Video::findOrFail($id);
+        $items = Video::orderByDesc('id')->limit(5)->get();
+
+        return $this->view('h5.video_detail',compact('video','items'));
+    }
 }

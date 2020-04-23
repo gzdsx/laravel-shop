@@ -1,8 +1,13 @@
 @extends('layouts.h5')
 
-@section('title', '牛王视频')
+@section('title', $video->title)
 
 @section('content')
+    <div class="video-detail">
+        <div class="player">{!! $video->link !!}</div>
+        <div class="video-content">{!! $video->content !!}</div>
+    </div>
+
     <div class="video-list">
         @foreach ($items as $item)
             <div class="video-list-item">

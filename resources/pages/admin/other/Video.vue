@@ -46,7 +46,7 @@
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
-                    <col style="width: 300px;">
+                    <col style="width: 450px;">
                     <col>
                 </colgroup>
                 <tbody>
@@ -70,7 +70,7 @@
                 <tr>
                     <td class="cell-label">视频链接</td>
                     <td class="cell-input">
-                        <el-input size="medium" v-model="video.link"></el-input>
+                        <el-input type="textarea" rows="3" v-model="video.link"></el-input>
                     </td>
                     <td class="cell-tips"></td>
                 </tr>
