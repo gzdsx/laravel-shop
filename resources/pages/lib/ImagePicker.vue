@@ -22,28 +22,30 @@
                 </el-upload>
             </div>
         </el-container>
-        <el-container style="flex-wrap: wrap;">
-            <div class="image-wrapper" v-for="(item,index) in itemList" :key="index">
-                <el-image
-                        @click="handlePicked(item)"
-                        :src="item.thumb"
-                        fit="cover"
-                        style="width: 120px; height: 120px;"
-                ></el-image>
+        <el-container style="flex-direction: column;" v-loading="loading">
+            <el-container style="flex-wrap: wrap; height: 390px;">
+                <div class="image-wrapper" v-for="(item,index) in itemList" :key="index">
+                    <el-image
+                            @click="handlePicked(item)"
+                            :src="item.thumb"
+                            fit="cover"
+                            style="width: 120px; height: 120px;"
+                    ></el-image>
+                </div>
+            </el-container>
+            <div class="display-flex" v-show="total>pageSize">
+                <div class="flex"></div>
+                <el-pagination
+                        background
+                        layout="prev, pager, next"
+                        :total="total"
+                        :page-size="pageSize"
+                        @current-change="handlerPageChange"
+                >
+                </el-pagination>
+                <div class="flex"></div>
             </div>
         </el-container>
-        <div class="display-flex">
-            <div class="flex"></div>
-            <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="total"
-                    :page-size="pageSize"
-                    @current-change="handlerPageChange"
-            >
-            </el-pagination>
-            <div class="flex"></div>
-        </div>
     </el-dialog>
 </template>
 
@@ -69,7 +71,8 @@
                 visible: false,
                 formData: {
                     '_token': document.head.querySelector('meta[name="csrf-token"]').content
-                }
+                },
+                loading: true
             }
         },
         mounted() {
@@ -78,7 +81,7 @@
             visible(val) {
                 if (val) {
                     if (this.itemList === undefined || this.itemList.length === 0)
-                    this.fetchList();
+                        this.fetchList();
                 }
                 this.$emit('change', val);
             },
@@ -88,6 +91,7 @@
         },
         methods: {
             fetchList: function () {
+                this.loading = true;
                 this.$axios.get('/webapi/material/batchget', {
                     params: {
                         type: 'image',
@@ -97,6 +101,7 @@
                 }).then(response => {
                     this.total = response.data.total;
                     this.itemList = response.data.items;
+                    this.loading = false;
                 });
             },
             handleClose: function () {

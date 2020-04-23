@@ -50,7 +50,7 @@
                         </router-link>
                     </div>
                 </div>
-                <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" style="width: 100%" v-loading="loading" @selection-change="handleSelectionChange">
                     <el-table-column prop="itemid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -73,10 +73,12 @@
                     </el-table-column>
                 </el-table>
                 <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="handleDelete">批量删除</el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0">批量上架</el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0">批量下架</el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0">批量修改</el-button>
+                    <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="handleDelete">
+                        批量删除
+                    </el-button>
+                    <el-button size="small" :disabled="selectionIds.length === 0" @click="handleOnSale">批量上架</el-button>
+                    <el-button size="small" :disabled="selectionIds.length === 0" @click="handleOffShelf">批量下架
+                    </el-button>
                     <div class="flex"></div>
                     <el-pagination
                             background
@@ -104,8 +106,8 @@
                 catlogs: [],
                 itemList: [],
                 total: 0,
+                offset: 0,
                 pageSize: 15,
-                currentPage: 1,
                 selectionIds: [],
                 searchFields: {
                     title: '',
@@ -113,6 +115,7 @@
                     itemid: '',
                     tab: ''
                 },
+                loading:true
             }
         },
         mounted() {
@@ -121,16 +124,17 @@
         },
         methods: {
             fetchList: function () {
+                this.loading = true;
                 this.$axios.get('/admin/item/batchget', {
                     params: {
                         ...this.searchFields,
-                        page: this.currentPage
+                        offset: this.offset
                     }
                 }).then(response => {
-                    const {items, total, per_page, current_page} = response.data;
+                    const {items, total} = response.data;
                     this.itemList = items;
                     this.total = total;
-                    this.pageSize = per_page;
+                    this.loading = false;
                 });
             },
             fetchCatlogs: function () {
@@ -154,15 +158,35 @@
                 });
             },
             handlerPageChange: function (page) {
-                this.currentPage = page;
+                this.offset = (page - 1) * this.pageSize;
                 this.fetchList();
             },
             handleSearch: function () {
+                this.offset = 0;
                 this.fetchList();
             },
             handleTabClick: function (tab) {
                 this.searchFields.tab = tab.name;
+                this.offset = 0;
                 this.fetchList();
+            },
+            handleOnSale() {
+                var items = this.selectionIds.map((d) => d.itemid);
+                this.$axios.post('/admin/item/batchupdate', {
+                    items,
+                    params: {on_sale: 1}
+                }).then(response => {
+                    this.fetchList();
+                });
+            },
+            handleOffShelf() {
+                var items = this.selectionIds.map((d) => d.itemid);
+                this.$axios.post('/admin/item/batchupdate', {
+                    items,
+                    params: {on_sale: 0}
+                }).then(response => {
+                    this.fetchList();
+                });
             }
         }
     }

@@ -67,9 +67,9 @@ trait ItemTrait
     {
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 10);
-        $query = $this->query()->orderByDesc('itemid')->filter($request->all());
+        $query = $this->query()->filter($request->all());
         $total = $query->count();
-        $items = $this->query()->offset($offset)->limit($count)->get();
+        $items = $query->offset($offset)->limit($count)->orderByDesc('itemid')->get();
         return $this->sendBatchGetItemResponse($request, $items, $total);
     }
 

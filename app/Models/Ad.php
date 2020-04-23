@@ -18,7 +18,8 @@ use Illuminate\Support\Arr;
  * @property int $available 是否可用
  * @property string|null $begin_at
  * @property string|null $end_at
- * @property-read mixed|null $type_desc
+ * @property-read array|string|null $state_des
+ * @property-read mixed|null $type_des
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Ad query()

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\Item $item
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cart[] $items
  * @property-read int|null $items_count
- * @property-read \App\Models\ItemSku $sku
+ * @property-read \App\Models\ItemSku|null $sku
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart groupByShop()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cart newModelQuery()

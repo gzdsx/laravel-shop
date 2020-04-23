@@ -42,26 +42,6 @@ class ItemFilter extends ModelFilter
      * @param $name
      * @return ItemFilter|Builder
      */
-    public function shopName($name)
-    {
-        return $this->whereHas('shop', function (Builder $builder) use ($name) {
-            return $builder->where('shop_name', 'LIKE', "%$name%");
-        });
-    }
-
-    /**
-     * @param $shop
-     * @return ItemFilter
-     */
-    public function shop($shop)
-    {
-        return $this->where('shop_id', '=', $shop);
-    }
-
-    /**
-     * @param $name
-     * @return ItemFilter|Builder
-     */
     public function sellerName($name)
     {
         return $this->whereHas('user', function (Builder $builder) use ($name) {
@@ -112,10 +92,7 @@ class ItemFilter extends ModelFilter
      */
     public function minPrice($price)
     {
-        if ($price) {
-            return $this->where('price', '>', floatval($price));
-        }
-        return $this;
+        return $this->where('price', '>', floatval($price));
     }
 
     /**
@@ -124,10 +101,7 @@ class ItemFilter extends ModelFilter
      */
     public function maxPrice($price)
     {
-        if ($price) {
-            return $this->where('price', '<', floatval($price));
-        }
-        return $this;
+        return $this->where('price', '<', floatval($price));
     }
 
     /**
@@ -186,13 +160,5 @@ class ItemFilter extends ModelFilter
             return $this->where('stock', 0);
         }
         return $this;
-    }
-
-    /**
-     * @param $type
-     * @return ItemFilter
-     */
-    public function type($type){
-        return $this->where('type', $type);
     }
 }

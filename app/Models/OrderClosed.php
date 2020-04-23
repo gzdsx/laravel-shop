@@ -11,15 +11,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $order_id 订单ID
  * @property string|null $reason 关闭原因
- * @property string|null $closed_at 关闭时间
+ * @property \Illuminate\Support\Carbon|null $created_at 关闭时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 关闭时间
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereClosedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderClosed whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class OrderClosed extends Model

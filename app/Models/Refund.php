@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RefundImage[] $images
  * @property-read int|null $images_count
  * @property-read \App\Models\Order $order
- * @property-read \App\Models\RefundShipping $shipping
+ * @property-read \App\Models\RefundShipping|null $shipping
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Refund newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Refund query()

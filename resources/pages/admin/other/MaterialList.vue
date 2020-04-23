@@ -38,7 +38,7 @@
                     </el-tabs>
                 </div>
 
-                <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="id" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -93,7 +93,8 @@
                     uid:'',
                     username:'',
                     type:'image'
-                }
+                },
+                loading:true
             }
         },
         mounted() {
@@ -101,6 +102,7 @@
         },
         methods:{
             fetchList: function () {
+                this.loading = true;
                 this.$axios.get('/admin/material/batchget',{
                     params:{
                         ...this.searchFields,
@@ -110,6 +112,7 @@
                     const {items, total} = response.data;
                     this.itemList = items;
                     this.total = total;
+                    this.loading = false;
                 });
             },
             handleSelectionChange:function (val) {

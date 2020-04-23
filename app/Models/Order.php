@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderAction[] $actions
  * @property-read int|null $actions_count
  * @property-read \App\Models\User $buyer
- * @property-read \App\Models\OrderClosed $closeReason
+ * @property-read \App\Models\OrderClosed|null $closeReason
  * @property-read mixed|null $buyer_state_des
  * @property-read mixed|null $order_state_des
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $pay_state_des
@@ -52,10 +52,10 @@ use Illuminate\Support\Facades\Auth;
  * @property-read mixed|null $seller_state_des
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
  * @property-read int|null $items_count
- * @property-read \App\Models\Refund $refund
+ * @property-read \App\Models\Refund|null $refund
  * @property-read \App\Models\User $seller
- * @property-read \App\Models\OrderShipping $shipping
- * @property-read \App\Models\Transaction $transaction
+ * @property-read \App\Models\OrderShipping|null $shipping
+ * @property-read \App\Models\Transaction|null $transaction
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order filter($input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Order newQuery()

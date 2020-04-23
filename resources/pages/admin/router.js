@@ -21,6 +21,7 @@ import Express from "./other/Express";
 import BlockList from "./block/BlockList";
 import BlockItem from "./block/BlockItem";
 import Ad from "./other/Ad";
+import Video from "./other/Video";
 
 
 const router = new VueRouter({
@@ -75,6 +76,7 @@ const router = new VueRouter({
         {path: '/block/list', component: BlockList},
         {path: '/block/item/:block_id', component: BlockItem},
         {path: '/ad', component: Ad},
+        {path: '/video', component: Video},
         {
             path: '*',
             component: () => require('./error/404')

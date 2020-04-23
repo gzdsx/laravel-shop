@@ -18,4 +18,5 @@ Route::group(['namespace' => 'H5'], function () {
     Route::get('user', 'UserController@index');
     Route::get('item/detail/{itemid}.html', 'ItemController@detail');
     Route::get('sold/order/detail/{orderid}.html','SoldController@index');
+    Route::get('video','VideoController@index');
 });

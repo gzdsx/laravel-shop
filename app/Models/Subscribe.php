@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $subscribe_uid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $subscribeUser
+ * @property-read \App\Models\User|null $subscribeUser
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Subscribe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Subscribe newQuery()

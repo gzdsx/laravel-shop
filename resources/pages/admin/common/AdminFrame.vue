@@ -173,6 +173,9 @@
                                 <div class="v-common-nav-link">
                                     <router-link to="/ad">广告管理</router-link>
                                 </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/video">视频管理</router-link>
+                                </div>
                             </div>
                         </div>
                     </div>

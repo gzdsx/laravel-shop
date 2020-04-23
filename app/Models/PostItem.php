@@ -43,7 +43,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostCatlog $catlog
  * @property-read int|null $comments_count
- * @property-read \App\Models\PostContent $content
+ * @property-read \App\Models\PostContent|null $content
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
  * @property-read mixed $state_des
  * @property-read mixed $type_des
@@ -52,7 +52,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostLog[] $logs
  * @property-read int|null $logs_count
- * @property-read \App\Models\PostMedia $media
+ * @property-read \App\Models\PostMedia|null $media
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostItem filter($input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostItem newModelQuery()

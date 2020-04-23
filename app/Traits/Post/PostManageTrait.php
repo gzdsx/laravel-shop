@@ -62,7 +62,7 @@ trait PostManageTrait
             $this->updateMedia($post, $attributes->get('media'));
         }
 
-        return $this->sendSavedResponse($request, $post);
+        return $this->sendSavedPostResponse($request, $post);
     }
 
     /**
@@ -112,7 +112,7 @@ trait PostManageTrait
      * @param $post
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendSavedResponse(Request $request, $post)
+    protected function sendSavedPostResponse(Request $request, $post)
     {
         return ajaxReturn(['post' => $post]);
     }
@@ -122,21 +122,21 @@ trait PostManageTrait
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $items = $request->input('items', []);
         foreach ($this->query()->whereKey($items)->get() as $item) {
             $item->delete();
         }
 
-        return $this->sendBatchDeletedResponse($request);
+        return $this->sendDeletedPostResponse($request);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendBatchDeletedResponse(Request $request)
+    protected function sendDeletedPostResponse(Request $request)
     {
         return ajaxReturn();
     }
@@ -150,14 +150,14 @@ trait PostManageTrait
         $items = $request->input('items', []);
         $params = $request->input('params', []);
         $this->query()->whereKey($items)->update($params);
-        return $this->sendBatchUpdatedResponse($request);
+        return $this->sendBatchUpdatedPostResponse($request);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendBatchUpdatedResponse(Request $request)
+    protected function sendBatchUpdatedPostResponse(Request $request)
     {
         return ajaxReturn();
     }

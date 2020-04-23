@@ -27,16 +27,12 @@ use Laravel\Passport\HasApiTokens;
  * @property int $avatar_state 头像验证状态
  * @property int $auth_state 头像验证状态
  * @property int $freeze 冻结账户
- * @property int $exp 经验值，积分
- * @property int $exp1 积分1
- * @property int $exp2 积分2
- * @property int $exp3 积分3
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\Account $account
+ * @property-read \App\Models\Account|null $account
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Models\UserAuth $auth
+ * @property-read \App\Models\UserAuth|null $auth
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
  * @property-read int|null $boughts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
@@ -52,7 +48,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read string|null $avatar
  * @property-read mixed $state_des
  * @property-read \App\Models\UserGroup $group
- * @property-read \App\Models\UserInfo $info
+ * @property-read \App\Models\UserInfo|null $info
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
  * @property-read int|null $logs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Material[] $materials
@@ -63,7 +59,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $post_collects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
- * @property-read \App\Models\UserStat $stat
+ * @property-read \App\Models\UserStat|null $stat
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Subscribe[] $subscribes
  * @property-read int|null $subscribes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
@@ -82,10 +78,6 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmailState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEndsWith($column, $value, $boolean = 'and')
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereExp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereExp1($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereExp2($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereExp3($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereFreeze($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLike($column, $value, $boolean = 'and')

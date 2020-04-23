@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('item/batchget', 'ItemController@batchget');
     Route::post('item/update', 'ItemController@update');
     Route::post('item/delete', 'ItemController@delete');
+    Route::post('item/batchupdate', 'ItemController@batchUpdate');
     //商品分类
     Route::get('item/catlog/get', 'ItemCatlogController@get');
     Route::get('item/catlog/getall', 'ItemCatlogController@getAll');
@@ -43,6 +44,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('post/batchget', 'PostController@batchget');
     Route::post('post/update', 'PostController@update');
     Route::post('post/delete', 'PostController@batchDelete');
+    Route::post('post/batchupdate', 'PostController@batchUpdate');
     //文章分类
     Route::get('post/catlog/getall', 'PostCatlogController@getAll');
     Route::post('post/catlog/upgrade', 'PostCatlogController@upgrade');
@@ -109,4 +111,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('ad/batchget', 'AdController@batchget');
     Route::post('ad/update', 'AdController@update');
     Route::post('ad/delete', 'AdController@delete');
+    //视频
+    Route::get('video/batchget','VideoController@batchGet');
+    Route::post('video/update','VideoController@update');
+    Route::post('video/delete','VideoController@delete');
 });

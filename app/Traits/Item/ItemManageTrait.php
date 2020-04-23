@@ -26,7 +26,7 @@ trait ItemManageTrait
      */
     protected function query()
     {
-        return Item::query()->withoutGlobalScopes(['available']);
+        return Item::query()->withoutGlobalScopes();
     }
 
     /**
@@ -35,7 +35,7 @@ trait ItemManageTrait
      */
     public function update(Request $request)
     {
-        $attributes = collect($request->input('item',[]));
+        $attributes = collect($request->input('item', []));
         if ($itemid = $request->input('itemid')) {
             $item = $this->query()->findOrNew($itemid);
         } else {
@@ -144,7 +144,7 @@ trait ItemManageTrait
      */
     public function delete(Request $request)
     {
-        foreach ($this->query()->whereKey($request->input('items',[]))->get() as $item){
+        foreach ($this->query()->whereKey($request->input('items', []))->get() as $item) {
             $item->delete();
         }
         return $this->sendDeletedItemResponse($request);
@@ -166,8 +166,8 @@ trait ItemManageTrait
     public function batchUpdate(Request $request)
     {
         $items = $request->input('items', []);
-        $params = $request->input('params',[]);
-        foreach ($this->query()->whereKey($items)->get() as $item){
+        $params = $request->input('params', []);
+        foreach ($this->query()->whereKey($items)->get() as $item) {
             $item->fill($params)->save();
         }
 

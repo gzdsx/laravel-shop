@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int|null $cates_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemCatlog[] $catlogs
  * @property-read int|null $catlogs_count
- * @property-read \App\Models\ItemContent $content
+ * @property-read \App\Models\ItemContent|null $content
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
  * @property-read array|string|null $sale_state_des
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url

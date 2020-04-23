@@ -46,7 +46,8 @@
                         </router-link>
                     </div>
                 </div>
-                <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" v-loading="loading" style="width: 100%"
+                          @selection-change="handleSelectionChange">
                     <el-table-column prop="aid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -77,7 +78,10 @@
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
                         批量删除
                     </el-button>
-                    <el-button size="small" :disabled="selectionIds.length===0">批量修改</el-button>
+                    <el-button size="small" :disabled="selectionIds.length===0" @click="handleBatchUpdate(1)">审核通过
+                    </el-button>
+                    <el-button size="small" :disabled="selectionIds.length===0" @click="handleBatchUpdate(-1)">审核不过
+                    </el-button>
                     <div class="flex"></div>
                     <el-pagination
                             background
@@ -115,7 +119,8 @@
                     username: '',
                     state: ''
                 },
-                post:{}
+                post: {},
+                loading: true
             }
         },
         mounted() {
@@ -124,6 +129,7 @@
         },
         methods: {
             fetchList: function () {
+                this.loading = true;
                 this.$axios.get('/admin/post/batchget', {
                     params: {
                         ...this.searchFields,
@@ -133,6 +139,7 @@
                     const {items, per_page, total} = response.data;
                     this.itemList = items;
                     this.total = total;
+                    this.loading = false;
                 });
             },
             fetchCatlogs: function () {
@@ -168,6 +175,12 @@
             },
             handleChangeImage: function (p) {
                 this.post = p;
+            },
+            handleBatchUpdate(state) {
+                var items = this.selectionIds.map((d) => d.aid);
+                this.$axios.post('/admin/post/batchupdate', {items, params: {state}}).then(response => {
+                    this.fetchList();
+                });
             }
         }
     }
