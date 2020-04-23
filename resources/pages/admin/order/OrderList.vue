@@ -175,7 +175,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/webapi/sold/batchget', {
+                this.$get('/admin/order/batchget', {
                     ...this.searchFields,
                     offset: this.offset
                 }).then(response => {
@@ -192,7 +192,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/sold/delete', {items}).then(response => {
+                    this.$axios.post('/admin/order/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

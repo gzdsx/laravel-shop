@@ -102,12 +102,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$get('/webapi/express/getall').then(response => {
+                this.$get('/admin/express/getall').then(response => {
                     this.itemList = response.data.items;
                 });
             },
             handleUpdate(cb) {
-                this.$post('/webapi/express/update', {
+                this.$post('/admin/express/update', {
                     id: this.id,
                     express: this.express
                 }).then(response => {
@@ -122,7 +122,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/express/delete', {items}).then(response => {
+                    this.$post('/admin/express/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

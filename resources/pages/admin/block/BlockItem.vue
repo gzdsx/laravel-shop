@@ -144,12 +144,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$get('/webapi/block/item/batchget?block_id=' + this.block_id).then(response => {
+                this.$get('/admin/block/item/batchget?block_id=' + this.block_id).then(response => {
                     this.itemList = response.data.items;
                 });
             },
             handleUpdate(cb) {
-                this.$post('/webapi/block/item/update', {
+                this.$post('/admin/block/item/update', {
                     id: this.id,
                     item: this.item
                 }).then(response => {
@@ -164,7 +164,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/block/item/delete', {items}).then(response => {
+                    this.$post('/admin/block/item/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

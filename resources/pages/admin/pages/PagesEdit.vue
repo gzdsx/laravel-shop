@@ -97,14 +97,14 @@
             this.fetchCatlogs();
             var pageid = this.$route.params.pageid;
             if (pageid){
-                this.$axios.get('/webapi/pages/get?pageid='+pageid).then(response=>{
+                this.$axios.get('/admin/pages/get?pageid='+pageid).then(response=>{
                     this.pages = response.data.pages;
                 });
             }
         },
         methods: {
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/pages/catlog/batchget').then(response => {
+                this.$axios.get('/admin/pages/catlog/batchget').then(response => {
                     this.catlogs = response.data.items;
                 });
             },
@@ -119,7 +119,7 @@
                     return false;
                 }
 
-                this.$axios.post('/webapi/pages/update', {
+                this.$axios.post('/admin/pages/update', {
                     pages: this.pages,
                     pageid: this.pageid
                 }).then(response => {

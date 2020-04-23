@@ -101,7 +101,7 @@
         },
         methods:{
             fetchList: function () {
-                this.$axios.get('/webapi/material/batchget',{
+                this.$axios.get('/admin/material/batchget',{
                     params:{
                         ...this.searchFields,
                         offset:this.offset
@@ -122,7 +122,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/material/delete',{items}).then(response=>{
+                    this.$axios.post('/admin/material/delete',{items}).then(response=>{
                         this.fetchList();
                     });
                 });

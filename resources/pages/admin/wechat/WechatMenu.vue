@@ -208,17 +208,17 @@
         },
         methods: {
             fetchList: function () {
-                this.$get('/webapi/wechat/menu/getall').then(response => {
+                this.$get('/admin/wechat/menu/getall').then(response => {
                     this.itemList = response.data.items;
                 });
             },
             fetchTypes: function () {
-                this.$get('/webapi/wechat/menu/getalltypes').then(response => {
+                this.$get('/admin/wechat/menu/getalltypes').then(response => {
                     this.types = response.data.items;
                 });
             },
             handleUpdate(cb) {
-                this.$post('/webapi/wechat/menu/update', {
+                this.$post('/admin/wechat/menu/update', {
                     id: this.id,
                     menu: this.menu
                 }).then(response => {
@@ -231,7 +231,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/wechat/menu/delete', {id}).then(response => {
+                    this.$post('/admin/wechat/menu/delete', {id}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -271,7 +271,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/wechat/menu/apply').then(response => {
+                    this.$post('/admin/wechat/menu/apply').then(response => {
                         if (response.data.errcode) {
                             this.$showToast(response.data.errmsg);
                         } else {

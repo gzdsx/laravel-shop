@@ -11,45 +11,24 @@
  * Time: 22:58
  */
 
-namespace App\Traits\Cms;
+namespace App\Traits\Post;
 
 
 use App\Models\PostItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-trait PostTrait
+trait PostManageTrait
 {
 
-    /**
-     * @return bool
-     */
-    protected function authenticate()
-    {
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function withoutGlobalScopes(){
-        return true;
-    }
+    use PostTrait;
 
     /**
      * @return PostItem|Builder
      */
-    public function query()
+    protected function query()
     {
-        $query = PostItem::query();
-        if ($this->withoutGlobalScopes()) $query = $query->withoutGlobalScopes();
-        if ($this->authenticate()){
-            $query = $query->withoutGlobalScopes()->withGlobalScope('author', function (Builder $builder) {
-                return $builder->where('uid', Auth::id());
-            });
-        }
-        return $query;
+        return PostItem::query()->withoutGlobalScopes();
     }
 
     /**
@@ -58,7 +37,6 @@ trait PostTrait
      */
     public function update(Request $request)
     {
-
         $attributes = collect($request->input('post', []));
         if ($aid = $request->input('aid', 0)) {
             $post = $this->query()->findOrNew($aid);
@@ -182,77 +160,5 @@ trait PostTrait
     protected function sendBatchUpdatedResponse(Request $request)
     {
         return ajaxReturn();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function get(Request $request)
-    {
-        $post = $this->query()->findOrFail($request->input('aid'));
-        $post->load(['user', 'content', 'images', 'media', 'catlog']);
-
-        return $this->sendGetPostResponse($request, $post);
-    }
-
-    /**
-     * @param Request $request
-     * @param PostItem|\Illuminate\Database\Eloquent\Builder $post
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendGetPostResponse(Request $request, $post)
-    {
-        return ajaxReturn(['post' => $post]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchget(Request $request)
-    {
-        $query = $this->query()->filter($request->all());
-        $total = $query->count();
-        $items = $query->offset($request->input('offset', 0))
-            ->limit($request->input('count', 15))->get();
-        return $this->sendBatchGetPostResponse($request, $items, $total);
-    }
-
-    /**
-     * @param Request $request
-     * @param PostItem[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[] $items
-     * @param int $total
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendBatchGetPostResponse(Request $request, $items, $total)
-    {
-        return ajaxReturn(compact('total', 'items'));
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function paginate(Request $request)
-    {
-        $paginator = $this->query()->filter($request->all())->paginate($request->input('pagesize', 15));
-        return $this->sendPaginatePostResponse($request, $paginator);
-    }
-
-    /**
-     * @param Request $request
-     * @param \Illuminate\Contracts\Pagination\LengthAwarePaginator $paginator
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendPaginatePostResponse(Request $request, $paginator)
-    {
-        return ajaxReturn([
-            'total' => $paginator->total(),
-            'pageSize' => $paginator->perPage(),
-            'currentPage' => $paginator->currentPage(),
-            'lastPage' => $paginator->lastPage(),
-            'items' => $paginator->items(),
-        ]);
     }
 }

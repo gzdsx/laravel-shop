@@ -70,7 +70,7 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/pages/batchget',{
+                this.$axios.get('/admin/pages/batchget',{
                     params:{
                         catid:this.catid
                     }
@@ -79,7 +79,7 @@
                 });
             },
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/pages/catlog/batchget').then(response => {
+                this.$axios.get('/admin/pages/catlog/batchget').then(response => {
                     this.catlogs = response.data.items;
                 });
             },
@@ -93,7 +93,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/pages/delete',{items}).then(response=>{
+                    this.$axios.post('/admin/pages/delete',{items}).then(response=>{
                         this.fetchList();
                     });
                 });

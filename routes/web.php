@@ -16,6 +16,7 @@ require __DIR__.'/misc.php';
 require __DIR__.'/user.php';
 require __DIR__.'/cms.php';
 require __DIR__.'/webapi.php';
+require __DIR__.'/admin.php';
 //首页
 Route::get('/', 'H5\IndexController@index');
 Route::group(['namespace' => 'Home'], function () {
@@ -24,10 +25,4 @@ Route::group(['namespace' => 'Home'], function () {
     Route::any('test', 'TestController@index');
 });
 
-//后台管理
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
-    Route::get('login', 'LoginController@showLoginForm');
-    Route::post('login', 'LoginController@login');
-    Route::get('logout', 'LoginController@logout');
-    Route::get('/', 'IndexController@index');
-});
+

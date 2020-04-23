@@ -236,14 +236,14 @@
         },
         methods: {
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/item/catlog/getall').then(response => {
+                this.$axios.get('/admin/item/catlog/getall').then(response => {
                     this.catlogs = response.data.items;
                 });
             },
             updateCatlog: function (cb) {
                 var data = {catlog: this.params};
                 if (this.catid > 0) data.catid = this.catid;
-                this.$axios.post('/webapi/item/catlog/update', data).then(response => {
+                this.$axios.post('/admin/item/catlog/update', data).then(response => {
                     if (cb) cb(response.data);
                 });
             },
@@ -278,18 +278,18 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/item/catlog/delete', {catid}).then(response => {
+                    this.$axios.post('/admin/item/catlog/delete', {catid}).then(response => {
                         this.fetchCatlogs();
                     });
                 });
             },
             handleUpgrade: function (catid) {
-                this.$axios.post('/webapi/item/catlog/upgrade', {catid}).then(response => {
+                this.$axios.post('/admin/item/catlog/upgrade', {catid}).then(response => {
                     this.fetchCatlogs();
                 });
             },
             handleDowngrade: function (catid) {
-                this.$axios.post('/webapi/item/catlog/downgrade', {catid}).then(response => {
+                this.$axios.post('/admin/item/catlog/downgrade', {catid}).then(response => {
                     this.fetchCatlogs();
                 });
             },

@@ -34,8 +34,7 @@
     "overtrue/laravel-wechat": "^5.0",
     "prettus/l5-repository": "^2.6",
     "simplesoftwareio/simple-qrcode": "^2.0",
-    "tucker-eric/eloquentfilter": "^2.2",
-    "xy113/chinapay": "^1.1"
+    "tucker-eric/eloquentfilter": "^2.2"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.4",
@@ -63,7 +62,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Tests\\": "tests/",
+      "ChinaPay\\": "ChinaPay/src"
     }
   },
   "extra": {
@@ -91,7 +91,6 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "repositories": {
-
-  }
+  "repositories": [
+  ]
 }

@@ -195,14 +195,17 @@
             }
         },
         mounted() {
-            this.itemid = this.$route.params.itemid;
-            this.fetchItem();
+            let itemid = this.$route.params.itemid;
+            if (itemid){
+                this.fetchItem();
+                this.itemid = itemid;
+            }
             this.fetchFreightTemplates();
             this.fetchCatlogs();
         },
         methods: {
             fetchItem: function (itemid) {
-                this.$axios.get('/webapi/item/get?itemid=' + this.itemid).then(response => {
+                this.$axios.get('/admin/item/get?itemid=' + this.itemid).then(response => {
                     console.log(response.data);
                     this.item = response.data.item;
                     if (!this.item.images) {
@@ -240,7 +243,7 @@
                 });
             },
             fetchFreightTemplates: function () {
-                this.$axios.get('/webapi/freighttemplate/getall').then(response => {
+                this.$axios.get('/admin/freighttemplate/getall').then(response => {
                     this.freightTemplates = response.data.items;
                 });
             },
@@ -347,7 +350,7 @@
 
                 this.item.on_sale = type;
 
-                this.$post('/webapi/item/update', {
+                this.$post('/admin/item/update', {
                     itemid: this.itemid,
                     item: this.item
                 }).then(response => {
@@ -365,7 +368,7 @@
                 this.item.cates = val;
             },
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/item/catlog/getall').then(response => {
+                this.$axios.get('/admin/item/catlog/getall').then(response => {
                     this.catlogNodes = this.serilazeProps(response.data.items);
                 });
             },

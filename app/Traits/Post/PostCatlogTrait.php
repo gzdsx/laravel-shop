@@ -11,7 +11,7 @@
  * Time: 5:37 下午
  */
 
-namespace App\Traits\Cms;
+namespace App\Traits\Post;
 
 
 use App\Models\PostCatlog;

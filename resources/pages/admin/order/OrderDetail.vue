@@ -220,7 +220,7 @@
         },
         methods: {
             getOrder: function () {
-                this.$get('/webapi/sold/get?order_id=' + this.order_id).then(response => {
+                this.$get('/admin/order/get?order_id=' + this.order_id).then(response => {
                     this.order = response.data.order;
                     const {shipping, transaction, items, buyer} = response.data.order;
                     this.shipping = shipping;
@@ -230,7 +230,7 @@
                 });
             },
             fetchExpress: function () {
-                this.$get('/webapi/express/getall').then(response => {
+                this.$get('/admin/express/getall').then(response => {
                     this.expresses = response.data.items;
                 });
             },
@@ -251,7 +251,7 @@
                     return false;
                 }
 
-                this.$post('/webapi/sold/send', {
+                this.$post('/admin/order/send', {
                     order_id: this.order_id,
                     express: this.express
                 }).then(response => {

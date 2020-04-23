@@ -45,6 +45,7 @@ class OfficialAccountService implements WechatServiceInterface
         if (!$wechatUserInfo->get('nickname')){
             abort(400, 'nickname empty');
         }
+
         $connect = UserConnect::where('openid', $openid)->first();
         if ($connect) {
             $user = $connect->user;

@@ -74,12 +74,12 @@
         },
         methods:{
             submit:function () {
-                this.$axios.post('/webapi/settings/update',{settings:this.settings}).then(response=>{
+                this.$axios.post('/admin/settings/update',{settings:this.settings}).then(response=>{
                     this.$showToast('配置更新成功');
                 });
             },
             fetchAll:function () {
-                this.$axios.get('/webapi/settings/getall',{settings:this.settings}).then(response=>{
+                this.$axios.get('/admin/settings/getall',{settings:this.settings}).then(response=>{
                     this.settings = response.data.settings;
                 });
             }

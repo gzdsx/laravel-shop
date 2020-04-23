@@ -95,7 +95,7 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/transaction/getall', {
+                this.$axios.get('/admin/transaction/batchget', {
                     params: {
                         ...this.searchFields,
                         offset: this.offset,
@@ -118,7 +118,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/transaction/delete', {items}).then(response => {
+                    this.$axios.post('/admin/transaction/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

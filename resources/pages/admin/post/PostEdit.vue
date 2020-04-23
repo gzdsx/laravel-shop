@@ -155,12 +155,12 @@
         },
         methods: {
             getPost: function () {
-                this.$axios.get('/webapi/post/get?aid=' + this.aid).then(response => {
+                this.$axios.get('/admin/post/get?aid=' + this.aid).then(response => {
                     this.post = response.data.post;
                 });
             },
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/post/catlog/getall').then(response => {
+                this.$axios.get('/admin/post/catlog/getall').then(response => {
                     this.catlogs = response.data.items;
                 });
             },
@@ -181,7 +181,7 @@
                     this.$showToast('请选择文章分类');
                     return false;
                 }
-                this.$axios.post('/webapi/post/update', {
+                this.$axios.post('/admin/post/update', {
                     aid:this.aid,
                     post:this.post
                 }).then(response => {

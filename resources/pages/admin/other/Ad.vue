@@ -170,12 +170,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$get('/webapi/ad/batchget').then(response => {
+                this.$get('/admin/ad/batchget').then(response => {
                     this.itemList = response.data.items;
                 });
             },
             handleUpdate(cb) {
-                this.$post('/webapi/ad/update', {
+                this.$post('/admin/ad/update', {
                     id: this.id,
                     ad: this.ad
                 }).then(response => {
@@ -190,7 +190,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/ad/delete', {items}).then(response => {
+                    this.$post('/admin/ad/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

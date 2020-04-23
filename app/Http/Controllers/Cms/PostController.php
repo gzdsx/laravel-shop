@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Traits\Cms\PostTrait;
+use App\Traits\Post\PostManageTrait;
 use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
-    use PostTrait;
+    use PostManageTrait;
 
     /**
      * @param Request $request

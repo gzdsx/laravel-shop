@@ -97,12 +97,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/link/batchget?type=item&catid=' + this.catid).then(response => {
+                this.$axios.get('/admin/link/batchget?type=item&catid=' + this.catid).then(response => {
                     this.itemList = response.data.items;
                 });
             },
             fetchCatlogs: function () {
-                this.$axios.get('/webapi/link/batchget?type=category').then(response => {
+                this.$axios.get('/admin/link/batchget?type=category').then(response => {
                     this.catlogs = response.data.items;
                 });
             },
@@ -116,7 +116,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/link/delete', {items}).then(response => {
+                    this.$axios.post('/admin/link/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -140,7 +140,7 @@
                     return false;
                 }
 
-                this.$axios.post('/webapi/link/update', this.link).then(response => {
+                this.$axios.post('/admin/link/update', this.link).then(response => {
                     this.$showToast('链接保存成功');
                     this.showDialog = false;
                     this.fetchList();
@@ -152,7 +152,7 @@
             },
             handleConfirmImage:function (data) {
                 this.link.image = data.image;
-                this.$axios.post('/webapi/link/update', this.link);
+                this.$axios.post('/admin/link/update', this.link);
             }
         }
     }

@@ -81,7 +81,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/webapi/wechat/material/batchget', {
+                this.$get('/admin/wechat/material/batchget', {
                     type: this.type,
                     offset: this.offset
                 }).then(response => {
@@ -99,7 +99,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/wechat/material/delete', {items}).then(response => {
+                    this.$axios.post('/admin/wechat/material/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -118,7 +118,7 @@
                 this.fetchList();
             },
             getImageUrl(media_id) {
-                return '/webapi/wechat/material/viewimage?media_id=' + media_id
+                return '/admin/wechat/material/viewimage?media_id=' + media_id
             }
         }
     }

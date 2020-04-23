@@ -96,12 +96,12 @@
         },
         methods: {
             fetchList: function () {
-                this.$get('/webapi/block/batchget').then(response => {
+                this.$get('/admin/block/batchget').then(response => {
                     this.itemList = response.data.items;
                 });
             },
             handleUpdate(cb) {
-                this.$post('/webapi/block/update', {
+                this.$post('/admin/block/update', {
                     block_id: this.block_id,
                     block: this.block
                 }).then(response => {
@@ -116,7 +116,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/webapi/block/delete', {items}).then(response => {
+                    this.$post('/admin/block/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

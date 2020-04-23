@@ -101,7 +101,7 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/webapi/user/batchget', {
+                this.$axios.get('/admin/user/batchget', {
                     params: {
                         ...this.searchFields,
                         page: this.currentPage
@@ -122,7 +122,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/webapi/user/delete', {items}).then(response => {
+                    this.$axios.post('/admin/user/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });

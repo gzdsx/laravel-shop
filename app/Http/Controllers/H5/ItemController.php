@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\H5;
 
-use App\Traits\Item\ItemTrait;
+use App\Traits\Item\ItemManageTrait;
 use Illuminate\Http\Request;
 
 class ItemController extends BaseController
 {
-    use ItemTrait;
+    use ItemManageTrait;
 
     public function __construct(Request $request)
     {

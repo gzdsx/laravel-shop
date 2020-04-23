@@ -12,7 +12,7 @@ class TransactionController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getAll(Request $request)
+    public function batchget(Request $request)
     {
         $paginator = Transaction::filter($request->all())->with('payer')->paginate();
         return ajaxReturn([
