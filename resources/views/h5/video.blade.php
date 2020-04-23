@@ -8,7 +8,7 @@
             <div class="video-list-item">
                 <a href="{{$item->link}}">
                     <div class="display-flex">
-                        <div class="bg-cover video-thumb" style="'background-image: url({{$item->image}});'"></div>
+                        <div class="bg-cover video-thumb" style="background-image: url({{$item->image}});"></div>
                         <div class="video-data">
                             <div class="video-title">{{$item->title}}</div>
                             <div class="video-content">{{$item->content}}</div>
