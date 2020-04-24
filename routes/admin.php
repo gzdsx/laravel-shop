@@ -38,7 +38,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('item/attrs/delete', 'ItemAttrController@deleteAttrs');
     Route::post('item/attrs/update', 'ItemAttrController@updateAttrs');
     //运费模板
+    Route::get('freighttemplate/get', 'FreightTemplateController@get');
     Route::get('freighttemplate/getall', 'FreightTemplateController@getAll');
+    Route::post('freighttemplate/delete', 'FreightTemplateController@delete');
+    Route::post('freighttemplate/update', 'FreightTemplateController@update');
     //文章管理
     Route::get('post/get', 'PostController@get');
     Route::get('post/batchget', 'PostController@batchget');
@@ -72,6 +75,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     //用户管理
     Route::get('user/get', 'UserController@get');
     Route::get('user/batchget', 'UserController@batchget');
+    Route::post('user/batchupdate', 'UserController@batchUpdate');
     //系统设置
     Route::get('settings/getall', 'SettingsController@getAll');
     Route::post('settings/update', 'SettingsController@update');

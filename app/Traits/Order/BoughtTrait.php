@@ -14,11 +14,9 @@
 namespace App\Traits\Order;
 
 
-use App\Events\OrderEvent;
 use App\Models\Order;
 use App\Services\Contracts\OrderServiceInterface;
 use App\Traits\WeChat\WechatDefaultConfig;
-use App\WeChat\Response\RefundOrderResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -107,14 +105,7 @@ trait BoughtTrait
                 'reason' => $reason ?: $otherReason,
             ]);
 
-            $order->order_state = 6;
-            $order->closed = 1;
-            $order->closed_at = now();
-            if ($order->transaction) {
-                $order->transaction->transaction_state = 6;
-            }
-            $order->push();
-            event(new OrderEvent($order, 'closed'));
+            $this->orderService()->close($order);
         }
         return $this->sendClosedOrderResponse($request, $order);
     }
@@ -130,28 +121,6 @@ trait BoughtTrait
     }
 
     /**
-     * 提醒卖家发货
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function notice(Request $request)
-    {
-        $order = $this->orderService()->paid($this->getOrderForRequest($request));
-        event(new OrderEvent($order, 'notice'));
-        return $this->sendNoticedOrderResponse($request, $order);
-    }
-
-    /**
-     * @param Request $request
-     * @param $order
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function sendNoticedOrderResponse(Request $request, $order)
-    {
-        return ajaxReturn(['order' => $order]);
-    }
-
-    /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -159,17 +128,7 @@ trait BoughtTrait
     {
         $order = $this->getOrderForRequest($request);
         if ($order->order_state == 1) {
-            $order->order_state = 2;
-            $order->pay_state = 1;
-            $order->pay_at = now();
-            if ($order->transaction) {
-                $order->transaction->transaction_state = 2;
-                $order->transaction->pay_state = 2;
-                $order->transaction->pay_at = now();
-            }
-            $order->push();
-            //拍下减库存
-            event(new OrderEvent($order, 'paid'));
+            $this->orderService()->paid($order);
         }
         return $this->sendPaidOrderResponse($request, $order);
     }
@@ -185,22 +144,35 @@ trait BoughtTrait
     }
 
     /**
+     * 提醒卖家发货
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function notice(Request $request)
+    {
+        $order = $this->getOrderForRequest($request);
+        $this->orderService()->notice($order);
+        return $this->sendNoticedOrderResponse($request, $order);
+    }
+
+    /**
+     * @param Request $request
+     * @param $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendNoticedOrderResponse(Request $request, $order)
+    {
+        return ajaxReturn(['order' => $order]);
+    }
+
+    /**
      * 确认订单
      * @return \Illuminate\Http\JsonResponse
      */
     public function confirm(Request $request)
     {
         $order = $this->getOrderForRequest($request);
-        if ($order->order_state == 3) {
-            $order->order_state = 4;
-            $order->receive_state = 1;
-            $order->receive_at = now();
-            if ($order->transaction) {
-                $order->transaction->transaction_state = 4;
-            }
-            $order->push();
-            event(new OrderEvent($order, 'confirm'));
-        }
+        $this->orderService()->confirm($order);
         return $this->sendConfrimedOrderResponse($request, $order);
     }
 
@@ -224,28 +196,8 @@ trait BoughtTrait
     {
         $order = $this->getOrderForRequest($request);
         if (!$order->refund_state) {
-            $refund = $order->refund()->create($request->input('refund', []));
-            $order->order_state = 6;
-            $order->refund_state = 1;
-            $order->refund_at = now();
-            $order->save();
-
-            if ($transaction = $order->transaction) {
-                $transaction->transaction_state = 6;
-                $transaction->pay_state = 2;
-                $transaction->save();
-
-                $res =  $this->payment()->refund->byTransactionId(
-                    $transaction->extra['transaction_id'],
-                    $refund->refund_no,
-                    $transaction->extra['total_fee'],
-                    $transaction->extra['total_fee']);
-                $response = new RefundOrderResponse($res);
-                if (!$response->tradeSuccess()){
-                    return ajaxError(400, $response->errCodeDes());
-                }
-            }
-            event(new OrderEvent($order, 'refunding'));
+            $order->refund()->create($request->input('refund', []));
+            $this->orderService()->refund($order);
         }
         return $this->applyRefundOrderSuccess($request, $order);
     }

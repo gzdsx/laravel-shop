@@ -1,0 +1,36 @@
+{
+  "name": "xy113/chinapay",
+  "version": "1.3.0",
+  "keywords": [
+    "chinapay",
+    "银联支付"
+  ],
+  "description": "chinapay kit",
+  "license": "MIT",
+  "type": "library",
+  "homepage": "https://github.com/xy113/chinapay",
+  "authors": [
+    {
+      "name": "xy113",
+      "email": "songdewei@163.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "ext-bcmath": "*",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "ChinaPay\\": "src/"
+    },
+    "files": [
+    ]
+  },
+  "extra": {
+
+  }
+}

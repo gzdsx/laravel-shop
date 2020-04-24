@@ -14,10 +14,9 @@
 namespace App\Traits\Order;
 
 
-use App\Events\OrderEvent;
-use App\Models\Express;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\Contracts\OrderServiceInterface;
 use App\Support\TradeUtil;
 use Illuminate\Http\Request;
 
@@ -29,6 +28,14 @@ trait SoldTrait
     protected function query()
     {
         return Order::query();
+    }
+
+    /**
+     * @return OrderServiceInterface|\Illuminate\Contracts\Foundation\Application|mixed
+     */
+    protected function orderService()
+    {
+        return app(OrderServiceInterface::class);
     }
 
     /**
@@ -66,7 +73,7 @@ trait SoldTrait
         $item = OrderItem::find($request->input('id'));
         if ($item) {
             $order = $this->query()->find($item->order_id);
-            if ($order->pay_state == 0){
+            if ($order->pay_state == 0) {
                 $price = $request->input('price');
                 $quantity = $request->input('quantity');
                 $total_fee = $price * $quantity + $item->shipping_fee;
@@ -74,6 +81,7 @@ trait SoldTrait
 
 
                 $order->total_fee = $order->items()->sum('total_fee');
+                $order->shipping_fee = $order->items()->sum('shipping_fee');
                 $order->total_count = $order->items()->sum('quantity');
                 $order->order_fee = $order->total_fee - $order->shipping_fee;
                 $order->order_no = TradeUtil::createOrderNo();
@@ -93,20 +101,17 @@ trait SoldTrait
     public function send(Request $request)
     {
         $order = $this->query()->findOrFail($request->input('order_id'));
-        $order->order_state = 3;
-        $order->shipping_state = 1;
-        $order->shipping_at = now();
-        $order->save();
+        if (!$order->shipping_state) {
+            if ($order->shipping) {
+                $order->shipping->express_code = $request->input('express_code');
+                $order->shipping->express_name = $request->input('express_name');
+                $order->shipping->express_no = $request->input('express_no');
+                $order->shipping->save();
+            }
 
-        if ($order->shipping) {
-            $order->shipping->express_code = $request->input('express_code');
-            $order->shipping->express_name = $request->input('express_name');
-            $order->shipping->express_no = $request->input('express_no');
-            $order->shipping->save();
+            $this->orderService()->send($order);
         }
-
-        event(new OrderEvent($order, 'send'));
-        return ajaxReturn();
+        return ajaxReturn(['order' => $order]);
     }
 
     /**
@@ -116,8 +121,8 @@ trait SoldTrait
      */
     public function forceDelete(Request $request)
     {
-        $orders = $this->query()->whereKey($request->input('items',[]))->get();
-        foreach ($orders as $order){
+        $orders = $this->query()->whereKey($request->input('items', []))->get();
+        foreach ($orders as $order) {
             $order->delete();
         }
         return ajaxReturn();
@@ -127,8 +132,9 @@ trait SoldTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request){
-        $this->query()->whereKey($request->input('items',[]))->update(['seller_deleted'=>1]);
+    public function delete(Request $request)
+    {
+        $this->query()->whereKey($request->input('items', []))->update(['seller_deleted' => 1]);
         return ajaxReturn();
     }
 }

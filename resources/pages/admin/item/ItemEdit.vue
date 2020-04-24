@@ -197,8 +197,8 @@
         mounted() {
             let itemid = this.$route.params.itemid;
             if (itemid){
-                this.fetchItem();
                 this.itemid = itemid;
+                this.fetchItem();
             }
             this.fetchFreightTemplates();
             this.fetchCatlogs();

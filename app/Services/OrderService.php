@@ -14,19 +14,24 @@
 namespace App\Services;
 
 
-use App\Events\OrderEvent;
+use App\Jobs\OrderProcessNotice;
 use App\Models\Address;
+use App\Models\FreightTemplate;
 use App\Models\Item;
 use App\Models\ItemSku;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Services\Contracts\OrderServiceInterface;
 use App\Support\TradeUtil;
+use App\Traits\WeChat\WechatDefaultConfig;
+use App\WeChat\Response\RefundOrderResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService implements OrderServiceInterface
 {
+
+    use WechatDefaultConfig;
 
     /**
      * @param Item[] $items
@@ -66,8 +71,10 @@ class OrderService implements OrderServiceInterface
                 if ($item->sku_id) {
                     $sku = ItemSku::find($item->sku_id);
                     if ($item->quantity < $sku->stock) {
-                        $simpleFee = $item->quantity * $sku->price;
+                        $freight = $this->computeFreight($item);
+                        $simpleFee = $item->quantity * $sku->price + $freight;
                         $orderFee += $simpleFee;
+                        $shippingFee += $freight;
                         $order->items()->create([
                             'itemid' => $item->itemid,
                             'title' => $item->title,
@@ -78,6 +85,7 @@ class OrderService implements OrderServiceInterface
                             'sku_id' => $sku->id,
                             'sku_title' => $sku->title,
                             'total_fee' => $item->quantity,
+                            'shipping_fee' => $freight,
                             'redpack_amount' => $item->redpack_amount
                         ]);
                         $sku->stock -= $item->quantity;
@@ -94,8 +102,10 @@ class OrderService implements OrderServiceInterface
                     }
                 } else {
                     if ($item->quantity < $item->stock) {
-                        $simpleFee = $item->quantity * $item->price;
+                        $freight = $this->computeFreight($item);
+                        $simpleFee = $item->quantity * $item->price + $freight;
                         $orderFee += $simpleFee;
+                        $shippingFee += $freight;
                         $order->items()->create([
                             'itemid' => $item->itemid,
                             'title' => $item->title,
@@ -104,6 +114,7 @@ class OrderService implements OrderServiceInterface
                             'quantity' => $item->quantity,
                             'price' => $item->price,
                             'total_fee' => $simpleFee,
+                            'shipping_fee' => $freight,
                             'redpack_amount' => $item->get('redpack_amount') ?? 0
                         ]);
 
@@ -156,13 +167,39 @@ class OrderService implements OrderServiceInterface
                 'content' => trans('auction.order submitted success')
             ]);
             DB::commit();
-            event(new OrderEvent($order, 'created'));
+            dispatch(new OrderProcessNotice($order, 'created'));
             return $order;
         } catch (\Exception $exception) {
             DB::rollBack();
             abort(400, $exception->getMessage());
             return false;
         }
+    }
+
+    /**
+     * 计算运费
+     * @param $item
+     * @return float|int|mixed
+     */
+    protected function computeFreight($item)
+    {
+        $shippingFee = 0;
+        $template = FreightTemplate::find($item->freight_template_id);
+        if ($template) {
+            $shippingFee = $template->start_fee;
+
+            if ($item->quantity > $template->free_quantity) {
+                $shippingFee = 0;
+            } else {
+                if ($item->quantity > $template->start_quantity) {
+                    $shippingFee += ceil(($item->quantity - $template->start_quantity) / $template->growth_quantity) * $template->growth_fee;
+                }
+
+                if ($shippingFee > $template->free_amount) $shippingFee = 0;
+            }
+        }
+
+        return $shippingFee;
     }
 
     /**
@@ -177,20 +214,32 @@ class OrderService implements OrderServiceInterface
             $order->order_state = 2;
             $order->pay_state = 1;
             $order->pay_at = now();
+            $order->save();
+
             if ($order->transaction) {
                 $order->transaction->transaction_state = 2;
-                $order->transaction->pay_state = 2;
+                $order->transaction->pay_state = 1;
                 $order->transaction->pay_at = now();
             }
-            $order->push();
             //拍下减库存
 //            if ($order->shop->reduce_type == 2) {
 //                $order->items()->with(['item'])->get()->map(function ($item) {
 //                    $item->item->decreaseStock($item->quantity);
 //                });
 //            }
-            event(new OrderEvent($order, 'paid'));
+            dispatch(new OrderProcessNotice($order, 'paid'));
         }
+        return $order;
+    }
+
+    /**
+     * @param Order $order
+     * @return Order
+     */
+    public function notice(Order $order)
+    {
+        // TODO: Implement notice() method.
+        dispatch(new OrderProcessNotice($order, 'notice'));
         return $order;
     }
 
@@ -205,12 +254,12 @@ class OrderService implements OrderServiceInterface
         if ($order->order_state == 2) {
             $order->order_state = 3;
             $order->shipping_state = 1;
-            $order->shipping_at = time();
+            $order->shipping_at = now();
             if ($order->transaction) {
                 $order->transaction->transaction_state = 3;
             }
             $order->push();
-            event(new OrderEvent($order, 'send'));
+            dispatch(new OrderProcessNotice($order, 'send'));
         }
         return $order;
     }
@@ -231,7 +280,7 @@ class OrderService implements OrderServiceInterface
                 $order->transaction->transaction_state = 4;
             }
             $order->push();
-            event(new OrderEvent($order, 'confirm'));
+            dispatch(new OrderProcessNotice($order, 'confirm'));
         }
         return $order;
     }
@@ -248,7 +297,7 @@ class OrderService implements OrderServiceInterface
         if ($order->order_state == 4 && !$order->buyer_rate) {
             $order->buyer_rate = 1;
             $order->save();
-            event(new OrderEvent($order, 'rate'));
+            dispatch(new OrderProcessNotice($order, 'rate'));
         }
         return $order;
     }
@@ -264,38 +313,47 @@ class OrderService implements OrderServiceInterface
     }
 
     /**
-     * 申请退款
      * @param Order $order
-     * @return Order
+     * @return Order|\Illuminate\Http\JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    public function refunding(Order $order)
+    public function refund(Order $order)
     {
         // TODO: Implement refund() method.
-        $order->order_state = 5;
-        $order->refund_state = 1;
-        $order->refund_at = time();
-        if ($order->transaction) {
-            $order->transaction->transaction_state = 5;
-        }
-        $order->push();
-        event(new OrderEvent($order, 'refunding'));
-        return $order;
-    }
+        if ($order->refund_state == 0) {
+            //未发货直接退款
+            if ($order->order_state == 2) {
+                $order->order_state = 6;
+                $order->refund_state = 1;
+                $order->refund_at = now();
+                $order->save();
 
-    public function refund($order_id, $refund)
-    {
-        // TODO: Implement refund() method.
-        $order = Auth::user()->boughts()->find($order_id);
-        if ($order->refund_state !== 2) {
-            $order->order_state = 6;
-            $order->refund_state = 2;
-            $order->refund_at = now();
-            if ($transaction = $order->transaction) {
-                $transaction->transaction_state = 6;
+                if ($transaction = $order->transaction) {
+                    $transaction->transaction_state = 6;
+                    $transaction->pay_state = 2;
+                    $transaction->save();
 
+                    $res = $this->payment()->refund->byTransactionId(
+                        $transaction->extra['transaction_id'],
+                        $order->refund->refund_no,
+                        $transaction->extra['total_fee'],
+                        $transaction->extra['total_fee']);
+                    $response = new RefundOrderResponse($res);
+                    if (!$response->tradeSuccess()) {
+                        abort(400, $response->errCodeDes());
+                    }
+                }
+                dispatch(new OrderProcessNotice($order, 'refunded'));
+            } else {
+                $order->order_state = 5;
+                $order->refund_state = 1;
+                $order->refund_at = now();
+                if ($transaction = $order->transaction) {
+                    $transaction->transaction_state = 5;
+                }
+                $order->push();
+                dispatch(new OrderProcessNotice($order, 'refunding'));
             }
-            $order->push();
-            event(new OrderEvent($order, 'refunded'));
         }
         return $order;
     }
@@ -316,7 +374,7 @@ class OrderService implements OrderServiceInterface
                 $order->transaction->transaction_state = 6;
             }
             $order->push();
-            event(new OrderEvent($order, 'closed'));
+            dispatch(new OrderProcessNotice($order, 'closed'));
         }
         return $order;
     }

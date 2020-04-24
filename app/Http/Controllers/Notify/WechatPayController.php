@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Notify;
 
-use App\Events\OrderEvent;
+
+use App\Jobs\OrderProcessNotice;
 use App\Models\Transaction;
 use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\Response\QueryOrderResponse;
@@ -39,39 +40,12 @@ class WechatPayController extends Controller
                             $transaction->order->pay_state = 1;
                             $transaction->order->pay_at = now();
                             $transaction->order->save();
-                            event(new OrderEvent($transaction->order, 'paid'));
+                            dispatch(new OrderProcessNotice($transaction->order, 'paid'));
                         }
                     }
                 }
             }
         });
         return $response;
-    }
-
-    /**
-     * @param QueryOrderResponse $response
-     * @param $order
-     * @param $transaction
-     * @return array|\EasyWeChat\Kernel\Support\Collection|object|\Psr\Http\Message\ResponseInterface|string
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
-    private function sendTemplateMessage(QueryOrderResponse $response, $order, $transaction)
-    {
-        $res = $this->miniProgram()->template_message->send([
-            'touser' => $response->openid(),
-            'template_id' => 'roTzzH27Tyl3dFCNG2MM7yRfMG-zrFYD0tO1XTwPM10',
-            'page' => 'pages/bought/detail?order_id=' . $order->order_id,
-            'form_id' => $transaction->prepayId->prepay_id,
-            'data' => [
-                'keyword1' => $order->order_no,
-                'keyword2' => @date('Y-m-d H:i:s'),
-                'keyword3' => $transaction->subject,
-                'keyword4' => formatAmount($response->totalFee() / 100) . '元',
-                'keyword5' => '您的商品很快就飞奔到您手上咯！',
-                // ...
-            ]
-        ]);
-
-        return $res;
     }
 }

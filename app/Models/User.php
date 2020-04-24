@@ -46,7 +46,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserField[] $fields
  * @property-read int|null $fields_count
  * @property-read string|null $avatar
- * @property-read mixed $state_des
+ * @property-read array|string|null $state_des
  * @property-read \App\Models\UserGroup $group
  * @property-read \App\Models\UserInfo|null $info
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
@@ -149,8 +149,12 @@ class User extends Authenticatable
         return null;
     }
 
-    public function getStateDesAttribute(){
-        return is_null($this->state) ? null : null;
+    /**
+     * @return array|string|null
+     */
+    public function getStateDesAttribute()
+    {
+        return is_null($this->state) ? null : __('user.user_states.' . $this->state);
     }
 
     /**

@@ -183,21 +183,23 @@ class SecssUtil
             }
             $merPkcs12 = file_get_contents($this->signFile);
             if (empty($merPkcs12)) {
-                $this->errCode = CP_GET_PRI_KEY_ERROR;
-                $this->writeLog("in SecssUitl->init 读取pfx证书文件失败.pfxFile=[" . $this->signFile . "]");
+                //$this->errCode = CP_GET_PRI_KEY_ERROR;
+                $this->errCode = '读取pfx证书文件失败';
+                //$this->writeLog("in SecssUitl->init 读取pfx证书文件失败.pfxFile=[" . $this->signFile . "]");
                 return false;
             }
             $pkcs12 = openssl_pkcs12_read($merPkcs12, $this->MerPrivateKey, $this->signFilePassword);
             if (!$pkcs12) {
-                $this->errCode = CP_GET_PRI_KEY_ERROR;
-                $this->writeLog("in SecssUitl->init 解析pfx证书内容错误.pfxFile=[" . $this->signFile . "]");
+                //$this->errCode = CP_GET_PRI_KEY_ERROR;
+                $this->errCode = '解析pfx证书内容错误';
+                //$this->writeLog("in SecssUitl->init 解析pfx证书内容错误.pfxFile=[" . $this->signFile . "]");
                 return false;
             }
-
             $x509data = $this->MerPrivateKey['cert'];
             if (!openssl_x509_read($x509data)) {
-                $this->errCode = CP_GET_PRI_KEY_ERROR;
-                $this->writeLog("in SecssUitl->init 读取pfx证书公钥错误.pfxFile=[" . $this->signFile . "]");
+                //$this->errCode = CP_GET_PRI_KEY_ERROR;
+                $this->errCode = '读取pfx证书公钥错误';
+                //$this->writeLog("in SecssUitl->init 读取pfx证书公钥错误.pfxFile=[" . $this->signFile . "]");
                 return false;
             }
             $certdata = openssl_x509_parse($x509data);
@@ -261,7 +263,7 @@ class SecssUtil
             ));
             $tempSignRawData = mb_convert_encoding($signRawData, "UTF-8", $charSet);
             $this->writeLog("in SecssUitl->sign 待签名数据=[" . $tempSignRawData . "]");
-            //echo $tempSignRawData.'<br><br>';
+            //dd($tempSignRawData);
             $sign_falg = openssl_sign($tempSignRawData, $signature, $this->MerPrivateKey['pkey'], $this->shaMethod);
             if (!$sign_falg) {
                 $this->errCode = CP_SIGN_GOES_WRONG;
@@ -325,6 +327,7 @@ class SecssUtil
             $tempVerifySignData = mb_convert_encoding($verifySignData, "UTF-8", $charSet);
             $this->writeLog("in SecssUitl->verify  待验证签名数据 =[" . $tempVerifySignData . "]");
             //echo $tempVerifySignData.'<br><br>';
+            //dd($tempVerifySignData);
             $result = openssl_verify($tempVerifySignData, base64_decode($orgSignMsg), $this->CPPublicKey, $this->shaMethod);
             if ($result == 1) {
                 $this->errCode = CP_SUCCESS;

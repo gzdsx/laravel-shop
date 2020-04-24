@@ -18,21 +18,27 @@ namespace ChinaPay;
  * @package ChinaPay
  *
  * @method static \ChinaPay\Payment\Application payment() 支付
+ * @method static \ChinaPay\PaySms\Application paySms() 支付短信
  * @method static \ChinaPay\Query\Application query() 查询
  * @method static \ChinaPay\ElementQuery\Application elementQuery() 要素查询
  * @method static \ChinaPay\Signing\Application signing() 签约
  * @method static \ChinaPay\SignQuery\Application signQuery() 签约查询
  * @method static \ChinaPay\Rescission\Application rescission() 解约
+ * @method static \ChinaPay\SignSms\Application signSms() 签约短信
+ * @method static \ChinaPay\SignAndPay\Application signAndPay() 签约并支付
  */
 class Factory
 {
     private static $appMap = [
         'payment' => \ChinaPay\Payment\Application::class,
+        'paySms' => \ChinaPay\PaySms\Application::class,
         'query' => \ChinaPay\Query\Application::class,
         'elementQuery' => \ChinaPay\ElementQuery\Application::class,
         'signing' => \ChinaPay\Signing\Application::class,
         'signQuery' => \ChinaPay\SignQuery\Application::class,
         'rescission' => \ChinaPay\Rescission\Application::class,
+        'signSms' => \ChinaPay\SignSms\Application::class,
+        'signAndPay' => \ChinaPay\SignAndPay\Application::class,
     ];
 
     /**

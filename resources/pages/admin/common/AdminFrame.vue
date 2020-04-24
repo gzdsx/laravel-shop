@@ -41,12 +41,15 @@
                             <div class="v-common-nav-model-link">
                                 <router-link to="/settings">
                                     <span class="iconfont icon-shoplight"></span>
-                                    <span>店铺</span>
+                                    <span>设置</span>
                                 </router-link>
                             </div>
                             <div class="v-common-nav-link-wrapper">
                                 <div class="v-common-nav-link">
                                     <router-link to="/settings">店铺设置</router-link>
+                                </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/freight/index">运费模板</router-link>
                                 </div>
                             </div>
                         </div>

@@ -30,7 +30,7 @@
                         <el-tab-pane label="禁止登录" name="-1"></el-tab-pane>
                     </el-tabs>
                 </div>
-                <el-table :data="itemList" style="width: 100%" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="aid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -56,7 +56,15 @@
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
                         批量删除
                     </el-button>
-                    <el-button size="small" :disabled="selectionIds.length===0">批量修改</el-button>
+                    <el-button size="small" :disabled="selectionIds.length===0" @click="handleBatchUpdate({state:1})">
+                        审核通过
+                    </el-button>
+                    <el-button size="small" :disabled="selectionIds.length===0" @click="handleBatchUpdate({freeze:0})">
+                        禁止登录
+                    </el-button>
+                    <el-button size="small" :disabled="selectionIds.length===0" @click="handleBatchUpdate({freeze:1})">
+                        允许登录
+                    </el-button>
                     <div class="flex"></div>
                     <el-pagination
                             background
@@ -93,7 +101,8 @@
                     catid: '',
                     username: '',
                     state: ''
-                }
+                },
+                loading:true
             }
         },
         mounted() {
@@ -101,15 +110,17 @@
         },
         methods: {
             fetchList: function () {
+                this.loading = true;
                 this.$axios.get('/admin/user/batchget', {
                     params: {
                         ...this.searchFields,
-                        page: this.currentPage
+                        offset: this.offset
                     }
                 }).then(response => {
-                    const {items, per_page, total} = response.data;
+                    const {items, total} = response.data;
                     this.itemList = items;
                     this.total = total;
+                    this.loading = false;
                 });
             },
             handleSelectionChange: function (val) {
@@ -137,6 +148,12 @@
             handleTabClick: function (tab) {
                 this.searchFields.state = tab.name;
                 this.fetchList();
+            },
+            handleBatchUpdate: function (params) {
+                var items = this.selectionIds.map((d) => d.uid);
+                this.$axios.post('/admin/user/batchupdate', {items, params}).then(response => {
+                    this.fetchList();
+                });
             }
         }
     }

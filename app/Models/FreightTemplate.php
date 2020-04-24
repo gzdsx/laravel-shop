@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\FreightTemplate
  *
  * @property int $template_id 模板ID
- * @property int $shop_id 门店ID
  * @property string|null $template_name 模板名称
  * @property int $valuation 计价方式
  * @property int $start_quantity 默认数量
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereFreeQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereGrowthFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereGrowthQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereStartFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereStartQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\FreightTemplate whereTemplateId($value)

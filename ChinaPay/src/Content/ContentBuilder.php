@@ -43,6 +43,7 @@ abstract class ContentBuilder
             if ($v == '' || $v == null) continue;
             $this->content[$k] = $v;
         }
+        $this->secssUtil = new SecssUtil();
     }
 
     /**
@@ -53,7 +54,6 @@ abstract class ContentBuilder
     public function setSecurityPropFile($securityPropFile)
     {
         $this->securityPropFile = $securityPropFile;
-        $this->secssUtil = new SecssUtil();
         if (!$this->secssUtil->init($securityPropFile)) {
             throw new ChinaPayException($this->secssUtil->getErrMsg(), $this->secssUtil->getErrCode());
         }
@@ -137,11 +137,11 @@ abstract class ContentBuilder
      */
     public function setCardTranData($value)
     {
-//        $data = base64_encode(json_encode($value, JSON_UNESCAPED_UNICODE));
-//        if ($this->secssUtil->encryptData($data)){
-//            //$this->content['CardTranData'] = $this->secssUtil->getEncValue();
-//        }
-        $this->content['CardTranData'] = json_encode($value, JSON_UNESCAPED_UNICODE);
+        $data = base64_encode(json_encode($value, JSON_UNESCAPED_UNICODE));
+        if ($this->secssUtil->encryptData($data)){
+            $this->content['CardTranData'] = $this->secssUtil->getEncValue();
+        }
+        //$this->content['CardTranData'] = json_encode($value, JSON_UNESCAPED_UNICODE);
         return $this;
     }
 

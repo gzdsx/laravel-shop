@@ -64,7 +64,8 @@
         </div>
         <div class="h40"></div>
         <div class="edit-bottom">
-            <el-button type="primary" @click="submit">立即发布</el-button>
+            <el-button class="w100" @click="$router.go(-1)">取消</el-button>
+            <el-button class="w100" type="primary" @click="submit">保存</el-button>
         </div>
     </admin-frame>
 </template>

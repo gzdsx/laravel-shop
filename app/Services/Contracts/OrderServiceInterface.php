@@ -38,6 +38,12 @@ interface OrderServiceInterface
      * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
+    public function notice(Order $order);
+
+    /**
+     * @param Order|\Illuminate\Database\Eloquent\Model $order
+     * @return Order
+     */
     public function send(Order $order);
 
     /**
@@ -64,14 +70,7 @@ interface OrderServiceInterface
      * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
-    public function refunding(Order $order);
-
-    /**
-     * @param $order_id
-     * @param $refund
-     * @return mixed
-     */
-    public function refund($order_id, $refund);
+    public function refund(Order $order);
 
     /**
      * @param Order|\Illuminate\Database\Eloquent\Model $order

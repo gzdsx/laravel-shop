@@ -43,6 +43,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemCatlog[] $catlogs
  * @property-read int|null $catlogs_count
  * @property-read \App\Models\ItemContent|null $content
+ * @property-read \App\Models\FreightTemplate|null $freight
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $h5_url
  * @property-read array|string|null $sale_state_des
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
@@ -290,7 +291,8 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function catlogs(){
+    public function catlogs()
+    {
         return $this->hasManyThrough(
             ItemCatlog::class,
             ItemCate::class,
@@ -299,5 +301,13 @@ class Item extends Model
             'itemid',
             'catid'
         );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function freight()
+    {
+        return $this->hasOne(FreightTemplate::class, 'template_id', 'freight_template_id');
     }
 }

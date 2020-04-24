@@ -22,6 +22,8 @@ import BlockList from "./block/BlockList";
 import BlockItem from "./block/BlockItem";
 import Ad from "./other/Ad";
 import Video from "./other/Video";
+import FreightList from "./freight/FreightList";
+import FreightSet from "./freight/FreightSet";
 
 
 const router = new VueRouter({
@@ -31,11 +33,10 @@ const router = new VueRouter({
             component: AdminIndex,
             meta: {title: '后台管理中心'},
         },
-        {
-            path: '/settings',
-            component: SettingMain,
-            meta: {title: '店铺设置'}
-        },
+        {path: '/settings', component: SettingMain, meta: {title: '店铺设置'}},
+        {path: '/freight/index', component: FreightList, meta: {title: '运费设置'}},
+        {path: '/freight/edit', component: FreightSet, meta: {title: '编辑模板'}},
+        {path: '/freight/edit/:template_id', component: FreightSet, meta: {title: '编辑模板'}},
         {
             path: '/user',
             component: UserList,

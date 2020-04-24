@@ -49,21 +49,40 @@
             </div>
         </div>
         <el-dialog :visible.sync="showDialog" width="35%" title="编辑链接">
-            <el-form label-width="100px">
-                <el-form-item label="网站名称">
-                    <el-input v-model="link.title" size="medium" class="w300"></el-input>
-                </el-form-item>
-                <el-form-item label="网站链接">
-                    <el-input v-model="link.url" size="medium" class="w300"></el-input>
-                </el-form-item>
-                <el-form-item label="显示顺序">
-                    <el-input v-model="link.displayorder" size="medium" class="w300"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button size="medium" @click="showDialog = false">取 消</el-button>
-                <el-button size="medium" type="primary" @click="handleSubmit">确 定</el-button>
-              </span>
+            <table class="dsxui-formtable">
+                <colgroup>
+                    <col class="w80">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>网站名称</td>
+                    <td>
+                        <el-input v-model="link.title" size="medium" class="w300"></el-input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>网站链接</td>
+                    <td>
+                        <el-input v-model="link.url" size="medium" class="w300"></el-input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>显示顺序</td>
+                    <td>
+                        <el-input v-model="link.displayorder" size="medium" class="w300"></el-input>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <el-button size="medium" type="primary" @click="handleSubmit" class="w100">确 定</el-button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
         </el-dialog>
         <image-picker v-model="showPicker" @confirm="handleConfirmImage"></image-picker>
     </admin-frame>
