@@ -8,21 +8,28 @@
         </header>
         <div class="mainframe-content">
             <div class="content-block">
-                <div class="form-inline">
-                    <el-form :inline="true">
-                        <el-form-item label="素材名称">
-                            <el-input size="medium" class="w150" v-model="searchFields.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="用户ID">
-                            <el-input size="medium" class="w150" v-model="searchFields.uid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="用户名称">
-                            <el-input size="medium" class="w150" v-model="searchFields.username"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                <div class="dsxui-form-inline">
+                    <div class="form-item">
+                        <div class="form-item-label">素材名称</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" v-model="searchFields.name"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">用户ID</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" v-model="searchFields.uid"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">用户名称</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" v-model="searchFields.username"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
+                    </div>
                 </div>
             </div>
 

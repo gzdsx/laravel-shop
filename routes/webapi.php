@@ -17,6 +17,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
     Route::get('item/batchget', 'ItemController@batchget');
     Route::get('item/catlog/get', 'ItemCatlogController@get');
     Route::get('item/catlog/getall', 'ItemCatlogController@getAll');
+    Route::get('item/catlog/search', 'ItemCatlogController@search');
 
     //post
     Route::get('post/get', 'PostController@get');

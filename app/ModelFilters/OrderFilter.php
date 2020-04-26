@@ -47,6 +47,12 @@ class OrderFilter extends ModelFilter
         });
     }
 
+    public function title($title){
+        return $this->whereHas('items', function (Builder $query) use ($title) {
+            return $query->where('title', 'LIKE', "%$title%");
+        });
+    }
+
     public function orderState($state)
     {
         return $this->where('order_state', $state);

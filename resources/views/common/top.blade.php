@@ -12,7 +12,12 @@
                     </a>
                 </li>
                 <li class="pipe">|</li>
-                <li><a href="{{url('user/collect')}}"><span class="iconfont icon-favorfill"></span> <span>收藏夹</span></a></li>
+                <li>
+                    <a href="{{url('user/#/collect')}}">
+                        <span class="iconfont icon-favorfill"></span>
+                        <span>收藏夹</span>
+                    </a>
+                </li>
                 <li class="pipe">|</li>
                 <li><a href="{{url('pages/detail/42.html')}}">联系客服</a></li>
             </ul>

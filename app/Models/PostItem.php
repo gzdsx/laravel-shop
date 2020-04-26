@@ -173,7 +173,7 @@ class PostItem extends Model
      */
     public function getStateDesAttribute()
     {
-        return $this->state ? __('post.post_states.' . $this->state) : null;
+        return is_numeric($this->state) ? __('post.post_states.' . $this->state) : null;
     }
 
     /**

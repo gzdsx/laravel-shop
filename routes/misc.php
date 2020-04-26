@@ -11,19 +11,6 @@
  * Time: 19:41
  */
 
-//素材
-Route::group(['namespace' => 'Material', 'prefix' => 'material', 'middleware' => 'auth'], function () {
-    //image
-    Route::get('getimage', 'ImageController@getImage');
-    Route::get('imagepicker', 'ImageController@imagePicker');
-    Route::post('uploadimg', 'ImageController@uploadImg');
-    Route::get('batchget', 'ImageController@batchget');
-    //file
-    Route::get('getfile', 'FileController@getFile');
-    Route::get('filepicker', 'FileController@filePicker');
-    Route::post('uploadfile', 'FileController@uploadFile');
-});
-
 //杂项
 Route::group(['namespace' => 'Misc'], function () {
     Route::get('map/picker', 'MapController@index');

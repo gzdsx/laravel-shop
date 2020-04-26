@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\Item;
+use App\Models\ItemCollect;
+use App\Models\PostCollect;
 use App\Support\VideoParser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

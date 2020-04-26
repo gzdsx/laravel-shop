@@ -2,78 +2,34 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\ItemCollect;
+use App\Models\PostCollect;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CollectController extends BaseController
 {
 
-    public function __construct(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchgetPosts(Request $request)
     {
-        parent::__construct($request);
-        $this->assign(['menu'=>'collect']);
-    }
-
-    /**
-     * @param string $type
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index(Request $request){
-
-        return $this->item($request);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function item(Request $request){
         $q = $request->input('q');
-        $items = $this->user()->collectedItems()->with('item')->when($q, function (Builder $builder) use ($q){
-            return $builder->where('title', 'LIKE', "%$q%");
-        })->orderByDesc('id')->paginate(10);
-        return $this->view('user.collect.item', [
-            'q'=>$q,
-            'items'=>$items,
-            'pagination'=>$items->appends($q ? ['q'=>$q] : [])->render()
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function shop(Request $request){
-        $q = $request->input('q');
-        $items = $this->user()->subscribedShops()->with('shop')->when($q, function (Builder $builder) use ($q){
-            return $builder->whereHas('shop', function (Builder $builder) use ($q){
-                return $builder->where('shop_name', 'LIKE',"%$q%");
+        $query = PostCollect::where('uid', Auth::id())->with('post');
+        if ($q){
+            $query->whereHas('post', function (Builder $builder) use ($q) {
+                return $builder->where('title', 'like', "%$q%");
             });
-        })->orderByDesc('id')->paginate(10);
+        }
 
-        return $this->view('user.collect.shop',[
-            'q'=>$q,
-            'items'=>$items,
-            'pagination'=>$items->appends($q ? ['q'=>$q] : [])->render()
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function post(Request $request){
-        $q = $request->input('q');
-        $items = $this->user()->collectedPosts()->with('post')->when($q, function (Builder $builder) use ($q){
-            return $builder->whereHas('post', function (Builder $builder) use ($q){
-                return $builder->where('title', 'LIKE',"%$q%");
-            });
-        })->orderByDesc('id')->paginate(10);
-
-        return $this->view('user.collect.post',[
-            'q'=>$q,
-            'items'=>$items,
-            'pagination'=>$items->appends($q ? ['q'=>$q] : [])->render()
+        return ajaxReturn([
+            'total' => $query->count(),
+            'items' => $query->offset($request->input('offset', 0))
+                ->limit($request->input('count', 15))
+                ->orderByDesc('id')->get()
         ]);
     }
 
@@ -81,9 +37,9 @@ class CollectController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteItem(Request $request){
-        $id = $request->input('id', 0);
-        $this->user()->collectedItems()->where('id', $id)->delete();
+    public function deletePost(Request $request)
+    {
+        PostCollect::where(['uid' => Auth::id(), 'id' => $request->input('id')])->delete();
         return ajaxReturn();
     }
 
@@ -91,19 +47,31 @@ class CollectController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteShop(Request $request){
-        $id = $request->input('id', 0);
-        $this->user()->subscribedShops()->where('id', $id)->delete();
-        return ajaxReturn();
+    public function batchgetItems(Request $request)
+    {
+        $q = $request->input('q');
+        $query = ItemCollect::where('uid', Auth::id())->with('item');
+        if ($q){
+            $query->whereHas('item', function (Builder $builder) use ($q) {
+                return $builder->where('title', 'like', "%$q%");
+            });
+        }
+
+        return ajaxReturn([
+            'total' => $query->count(),
+            'items' => $query->offset($request->input('offset', 0))
+                ->limit($request->input('count', 15))
+                ->orderByDesc('id')->get()
+        ]);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deletePost(Request $request){
-        $id = $request->input('id', 0);
-        $this->user()->collectedPosts()->where('id', $id)->delete();
+    public function deleteItem(Request $request)
+    {
+        ItemCollect::where(['uid' => Auth::id(), 'id' => $request->input('id')])->delete();
         return ajaxReturn();
     }
 }

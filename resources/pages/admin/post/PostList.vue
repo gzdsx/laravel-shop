@@ -9,13 +9,23 @@
 
         <div class="mainframe-content">
             <div class="content-block">
-                <div class="form-inline">
-                    <el-form :inline="true">
-                        <el-form-item label="文章标题">
-                            <el-input size="medium" class="w150" v-model="searchFields.title"></el-input>
-                        </el-form-item>
-                        <el-form-item label="目录分类">
-                            <el-select class="w150" size="medium" placeholder="请选择" value=""
+                <div class="dsxui-form-inline">
+                    <div class="form-item">
+                        <div class="form-item-label">文章标题</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" v-model="searchFields.title"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">文章作者</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" v-model="searchFields.auth"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">目录分类</div>
+                        <div class="form-item-input">
+                            <el-select class="w200" size="medium" placeholder="请选择" value=""
                                        v-model="searchFields.catid">
                                 <el-option
                                         v-for="(catlog,index) in catlogs"
@@ -24,11 +34,11 @@
                                         :value="catlog.catid">
                                 </el-option>
                             </el-select>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
+                    </div>
                 </div>
             </div>
 
@@ -163,14 +173,16 @@
                 });
             },
             handlerPageChange: function (page) {
-                this.offset = (page - 1) * this.pagesize;
+                this.offset = (page - 1) * this.pageSize;
                 this.fetchList();
             },
             handleSearch: function () {
+                this.offset = 0;
                 this.fetchList();
             },
             handleTabClick: function (tab) {
                 this.searchFields.state = tab.name;
+                this.offset = 0;
                 this.fetchList();
             },
             handleChangeImage: function (p) {

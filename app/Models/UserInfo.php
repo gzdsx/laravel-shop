@@ -49,8 +49,8 @@ class UserInfo extends Model
     protected $table = 'user_info';
     protected $primaryKey = 'uid';
     protected $fillable = [
-        'uid', 'gender', 'birthday', 'blood', 'star', 'country', 'province',
-        'city', 'district', 'town', 'street', 'introduction', 'tags', 'created_at', 'updated_at'
+        'uid','fullname', 'gender', 'birthday', 'blood', 'star', 'country', 'province',
+        'city', 'district', 'town', 'street', 'introduction', 'tags'
     ];
 
     /**

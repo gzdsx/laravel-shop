@@ -34,8 +34,8 @@ trait PostTrait
      */
     public function get(Request $request)
     {
-        $post = $this->query()->findOrFail($request->input('aid'));
-        $post->load(['user', 'content', 'images', 'media', 'catlog']);
+        $post = $this->query()->findOrNew($request->input('aid'));
+        $post->load(['user', 'content', 'images', 'media']);
 
         return $this->sendGetPostResponse($request, $post);
     }

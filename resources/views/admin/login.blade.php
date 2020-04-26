@@ -24,7 +24,7 @@
                 <h3>管理账号</h3>
                 <input type="text" name="account"
                        class="form-control{{$errors->has('account') ? ' is-invalid' : ''}}" value="{{old('account')}}"
-                       placeholder="邮箱/手机号">
+                       placeholder="邮箱/手机号" required>
                 @if ($errors->has('account'))
                     <div class="invalid-feedback" role="alert" id="accountFeedback">{{$errors->first('account')}}</div>
                 @endif
@@ -33,7 +33,7 @@
                 <h3>登录密码</h3>
                 <input type="password" name="password"
                        class="form-control{{$errors->has('password') ? ' is-invalid' : ''}}" value="{{old('password')}}"
-                       placeholder="密码">
+                       placeholder="密码" required>
                 @if ($errors->has('password'))
                     <div class="invalid-feedback" role="alert" id="accountFeedback">{{$errors->first('password')}}</div>
                 @endif

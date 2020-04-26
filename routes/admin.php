@@ -29,6 +29,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     //商品分类
     Route::get('item/catlog/get', 'ItemCatlogController@get');
     Route::get('item/catlog/getall', 'ItemCatlogController@getAll');
+    Route::get('item/catlog/search', 'ItemCatlogController@search');
     Route::post('item/catlog/upgrade', 'ItemCatlogController@upgrade');
     Route::post('item/catlog/downgrade', 'ItemCatlogController@downgrade');
     Route::post('item/catlog/update', 'ItemCatlogController@update');
@@ -116,6 +117,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('ad/batchget', 'AdController@batchget');
     Route::post('ad/update', 'AdController@update');
     Route::post('ad/delete', 'AdController@delete');
+    Route::post('ad/batchupdate', 'AdController@batchUpdate');
     //视频
     Route::get('video/batchget','VideoController@batchGet');
     Route::post('video/update','VideoController@update');

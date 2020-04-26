@@ -16,97 +16,7 @@
         <div class="mainframe-content">
             <div class="content-block">
                 <div class="edit-title">
-                    <span>收货信息</span>
-                </div>
-                <table class="dsxui-formtable">
-                    <colgroup>
-                        <col width="80">
-                        <col>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                        <td class="cell-label">买家账号</td>
-                        <td>{{buyer.username}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">收货人</td>
-                        <td>{{shipping.name}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">联系电话</td>
-                        <td>{{shipping.tel}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">收货地址</td>
-                        <td>{{shipping.full_address}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="edit-title">
                     <span>订单信息</span>
-                </div>
-                <table class="dsxui-formtable">
-                    <colgroup>
-                        <col width="80">
-                        <col>
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                        <td class="cell-label">订单编号</td>
-                        <td>{{order.order_no}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">创建时间</td>
-                        <td>{{order.created_at}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">订单状态</td>
-                        <td>{{order.buyer_state_des}}</td>
-                    </tr>
-                    <tr>
-                        <td class="cell-label">付款状态</td>
-                        <td>{{order.pay_state_des}}</td>
-                    </tr>
-                    <tr v-if="order.pay_state">
-                        <td class="cell-label">付款时间</td>
-                        <td>{{order.pay_at}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <template v-if="order.pay_state&&transaction">
-                    <div class="edit-title">
-                        <span>付款信息</span>
-                    </div>
-                    <table class="dsxui-formtable">
-                        <colgroup>
-                            <col width="80">
-                            <col>
-                        </colgroup>
-                        <tbody>
-                        <tr>
-                            <td class="cell-label">付款方式</td>
-                            <td>{{transaction.pay_type_des}}</td>
-                        </tr>
-                        <tr>
-                            <td class="cell-label">付款单号</td>
-                            <td>{{transaction.extra.transaction_id}}</td>
-                        </tr>
-                        <tr>
-                            <td class="cell-label">付款金额</td>
-                            <td>{{(transaction.extra.total_fee)/100}}元</td>
-                        </tr>
-                        <tr v-if="transaction.pay_state">
-                            <td class="cell-label">商户单号</td>
-                            <td>{{transaction.extra.out_trade_no}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </template>
-
-                <div class="edit-title">
-                    <span>商品信息</span>
                 </div>
                 <table class="order-table">
                     <thead>
@@ -149,6 +59,72 @@
                     </tr>
                     </tbody>
                 </table>
+                <table class="dsxui-formtable">
+                    <colgroup>
+                        <col width="80">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td class="cell-label">订单编号</td>
+                        <td>{{order.order_no}}</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">创建时间</td>
+                        <td>{{order.created_at}}</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">订单状态</td>
+                        <td>{{order.buyer_state_des}}</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">付款状态</td>
+                        <td>{{order.pay_state_des}}</td>
+                    </tr>
+                    <tr v-if="order.pay_state">
+                        <td class="cell-label">付款时间</td>
+                        <td>{{order.pay_at}}</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">买家账号</td>
+                        <td>{{buyer.username}}</td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">收货信息</td>
+                        <td>{{shipping.full_address}} {{shipping.name}} {{shipping.tel}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <template v-if="order.pay_state&&transaction">
+                    <div class="edit-title">
+                        <span>付款信息</span>
+                    </div>
+                    <table class="dsxui-formtable">
+                        <colgroup>
+                            <col width="80">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td class="cell-label">付款方式</td>
+                            <td>{{transaction.pay_type_des}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-label">付款单号</td>
+                            <td>{{transaction.extra.transaction_id}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-label">付款金额</td>
+                            <td>{{(transaction.extra.total_fee)/100}}元</td>
+                        </tr>
+                        <tr v-if="transaction.pay_state">
+                            <td class="cell-label">商户单号</td>
+                            <td>{{transaction.extra.out_trade_no}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </template>
 
                 <template v-if="order.order_state===2">
                     <div class="edit-title">

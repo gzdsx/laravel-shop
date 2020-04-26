@@ -177,18 +177,13 @@ select.form-control:not([size]):not([multiple]) {
 
 .page-item {
     font-size: 12px;
-}
 
-.page-item.active {
-    .page-link {
-        background-color: #0098CE;
-        border-color: #0098CE;
+    &.active{
+        .page-link {
+            background-color: #0098CE;
+            border-color: #0098CE;
+        }
     }
-}
-
-
-.pagination {
-    font-size: 12px;
 }
 
 /*==jQuery UI==*/
@@ -197,80 +192,6 @@ select.form-control:not([size]):not([multiple]) {
     visibility: visible !important;
     display: block !important;
     background: none !important;
-}
-
-/**滑动图片**/
-.swiper-div {
-    display: block;
-    overflow: hidden;
-    position: relative;
-
-    .swiper {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        height: 100%;
-        display: block;
-
-        .swiper-wrapper {
-            height: 100%;
-
-            .swiper-slide {
-                display: block;
-                overflow: hidden;
-                height: 100%;
-                position: relative;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    display: block;
-                }
-
-                .bg {
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    top: 0;
-                }
-            }
-        }
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #fff;
-    }
-}
-
-/* This is a compiled file, you should be editing the file in the templates directory */
-.pace {
-    pointer-events: none;
-    user-select: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translate3d(0, -50px, 0);
-    transition: transform .5s ease-out;
-
-    .pace-active {
-        transform: translate3d(0, 0, 0);
-    }
-
-    .pace-progress {
-        display: block;
-        position: fixed;
-        z-index: 2000;
-        top: 0;
-        right: 100%;
-        width: 100%;
-        height: 2px;
-        background: #22df80;
-        pointer-events: none;
-    }
 }
 
 .bg-cover {

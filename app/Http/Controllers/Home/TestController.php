@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Events\OrderEvent;
 use App\Jobs\OrderProcessNotice;
 use App\Jobs\SendEmail;
+use App\Jobs\TestJob;
 use App\Models\Item;
 use App\Models\ItemCatlog;
 use App\Models\Message;
@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Notifications\SystemMessageNotification;
 use App\Repositories\Contracts\ItemRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Traits\WeChat\WechatDefaultConfig;
 use ChinaPay\Exception\ChinaPayException;
 use ChinaPay\Factory;
 use ChinaPay\Payment\PayContentBuilder;
@@ -21,7 +22,6 @@ use ChinaPay\SecssUtil;
 use ChinaPay\Signing\Application;
 use ChinaPay\Signing\SignContentBuilder;
 use ChinaPay\SignQuery\SignQueryContentBuilder;
-use ChinaPay\Sms\SmsContentBuilder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -30,12 +30,13 @@ use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
+    use WechatDefaultConfig;
+
     public function index(Request $request)
     {
-        $order = Order::orderByDesc('order_id')->first();
-        for ($i=0;$i<30;$i++){
-            dispatch(new OrderProcessNotice($order, 'created'))->delay(now()->addMinutes(10));
-        }
+
+        //return $this->officialAccount()->customer_service->online();
+        return $this->officialAccount()->customer_service_session->create('kf2001@guizhoudashixiong','orT_zvy-cnPpKsKr_HDLaLWvAL6w');
 
         return 'ok';
 

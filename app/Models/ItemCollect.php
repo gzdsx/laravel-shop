@@ -54,11 +54,11 @@ class ItemCollect extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function item()
     {
-        return $this->belongsTo(Item::class, 'itemid', 'itemid');
+        return $this->hasOne(Item::class, 'itemid', 'itemid');
     }
 
     /**

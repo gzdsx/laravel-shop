@@ -10,18 +10,22 @@
         </header>
         <div class="mainframe-content">
             <div class="content-block">
-                <div class="form-inline">
-                    <el-form :inline="true">
-                        <el-form-item label="订单编号">
-                            <el-input size="medium" class="w150" v-model="searchFields.order_no"></el-input>
-                        </el-form-item>
-                        <el-form-item label="买家账号">
-                            <el-input size="medium" class="w150" v-model="searchFields.buyer_name"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                <div class="dsxui-form-inline">
+                    <div class="form-item">
+                        <div class="form-item-label">订单编号</div>
+                        <el-input size="medium" class="w200" v-model="searchFields.order_no"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">买家账号</div>
+                        <el-input size="medium" class="w200" v-model="searchFields.buyer_name"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">商品名称</div>
+                        <el-input size="medium" class="w200" v-model="searchFields.title"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
+                    </div>
                 </div>
             </div>
             <div class="content-block">
@@ -75,10 +79,10 @@
                                         <th>
                                             <div class="display-flex">
                                                 <div class="col-checkbox">
-                                                    <el-checkbox :label="order.order_id"></el-checkbox>
+                                                    <el-checkbox :label="order.order_id">{{''}}</el-checkbox>
                                                 </div>
                                                 <div class="col-order-time">{{order.created_at}}</div>
-                                                <div>订单号:{{order.order_no}}</div>
+                                                <div class="col-order-no">订单号:{{order.order_no}}</div>
                                             </div>
                                         </th>
                                         <th></th>

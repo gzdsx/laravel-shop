@@ -1,4 +1,4 @@
-<footer class="footer-common">
+<footer class="global-footer">
     <div class="container">
         <p class="align-center">
             <a href="javascript:;">关于我们</a><span>|</span>

@@ -1,0 +1,161 @@
+.header {
+    display: block;
+
+    .banner {
+        display: block;
+        padding: 20px 0;
+        position: relative;
+    }
+
+    .global-logo {
+        height: 60px;
+        float: left;
+        width: 240px;
+    }
+
+    .global-logo img {
+        height: 60px;
+        width: auto;
+        display: block;
+    }
+
+    .global-search-box {
+        height: 60px;
+        width: 600px;
+        float: left;
+        position: relative;
+        padding-top: 3px;
+
+        .input-box {
+            height: 34px;
+            border: 2px #41CC24 solid;
+            width: 500px;
+            position: relative;
+        }
+
+        .text {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border: 0;
+            background: none;
+            width: 460px;
+            height: 30px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #333;
+            padding: 0 10px;
+        }
+
+        .btn {
+            background-color: #41CC24;
+            color: #fff;
+            position: absolute;
+            border: none;
+            width: 60px;
+            cursor: pointer;
+            border-radius: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            -webkit-appearance: none;
+            line-height: 18px;
+        }
+
+        .hot {
+            display: block;
+            padding-top: 10px;
+            font-size: 12px;
+            line-height: 1.0;
+            color: #666;
+        }
+    }
+
+    .phone {
+        height: 60px;
+        overflow: hidden;
+        padding-top: 12px;
+
+        span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .phone-num {
+            font-size: 22px;
+            font-weight: bold;
+            color: #41CC24
+        }
+    }
+
+    .apps {
+        position: absolute;
+        top: 15px;
+        right: 0;
+
+        li {
+            float: left;
+            margin-left: 20px;
+
+            .pic {
+                height: 50px;
+                text-align: center;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    display: block;
+                    margin: 0 auto;
+                }
+            }
+
+            p {
+                padding-top: 5px;
+                text-align: center;
+                display: block;
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+
+.global-nav {
+    background-color: #41CC24;
+    color: #fff;
+    display: block;
+    height: 38px;
+    clear: both;
+
+    .nav {
+        width: 1180px;
+        display: flex;
+        height: 38px;
+        position: relative;
+        margin: 0 auto;
+        ul {
+            float: left;
+
+            li {
+                height: 38px;
+                float: left;
+
+                a {
+                    display: block;
+                    padding: 0 20px;
+                    line-height: 38px;
+                    color: #fff;
+                    font-size: 14px;
+                }
+
+                a.cur {
+                    background-color: #D10025;
+                }
+            }
+        }
+    }
+}

@@ -54,7 +54,7 @@ trait ItemManageTrait
         if ($attributes->has('cates')) {
             $item->cates()->delete();
             foreach ($attributes->get('cates') as $catid) {
-                $item->cates()->updateOrCreate(['catid' => $catid]);
+                $item->cates()->create(['catid' => $catid]);
             }
         }
 

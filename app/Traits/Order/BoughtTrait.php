@@ -19,6 +19,7 @@ use App\Services\Contracts\OrderServiceInterface;
 use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 trait BoughtTrait
 {
@@ -171,6 +172,10 @@ trait BoughtTrait
      */
     public function confirm(Request $request)
     {
+        $password = $request->input('password');
+        if (!Hash::check($password, Auth::user()->getAuthPassword())){
+            abort(422, __('user.password incorrect'));
+        }
         $order = $this->getOrderForRequest($request);
         $this->orderService()->confirm($order);
         return $this->sendConfrimedOrderResponse($request, $order);

@@ -1,4 +1,4 @@
-@extends('layouts.mall')
+@extends('layouts.default')
 
 @section('title', $pageData['title'])
 
@@ -11,7 +11,7 @@
                     <ul>
                         @if (isset($pageList[$category['pageid']]))
                             @foreach($pageList[$category['pageid']] as $page)
-                                <li><a href="{{page_url($page['pageid'])}}">{{$page['title']}}</a></li>
+                                <li><a href="{{$page->url}}">{{$page['title']}}</a></li>
                             @endforeach
                         @endif
                     </ul>

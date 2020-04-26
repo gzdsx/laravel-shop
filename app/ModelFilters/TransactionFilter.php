@@ -12,6 +12,11 @@ class TransactionFilter extends ModelFilter
      */
     public $relations = [];
 
+    public function q($q){
+        return $this->where('subject','like',"%$q%")
+            ->orWhere('transaction_no','like',"%$q%");
+    }
+
     public function subject($subject)
     {
         return $this->where('subject', 'like', "%$subject%");
@@ -53,12 +58,18 @@ class TransactionFilter extends ModelFilter
 
     public function payType($type)
     {
+        if ($type == 'all') return $this;
         return $this->where('pay_type', $type);
     }
 
     public function transactionNo($transaction_no)
     {
         return $this->where('transaction_no', $transaction_no);
+    }
+
+    public function transactionType($type){
+        if ($type == 'all') return $this;
+        return $this->where('transaction_type', $type);
     }
 
     public function timeBegin($time)
@@ -74,6 +85,30 @@ class TransactionFilter extends ModelFilter
         if ($time) {
             return $this->where('created_at', '<', strtotime($time) + 86400);
         }
+        return $this;
+    }
+
+    public function dateRange($range){
+        if ($range == '3days'){
+            return $this->whereDate('created_at','>', now()->subDays(3));
+        }
+
+        if ($range == '7days'){
+            return $this->whereDate('created_at','>', now()->subDays(7));
+        }
+
+        if ($range == 'oneMonth'){
+            return $this->whereDate('created_at','>', now()->subDays(30));
+        }
+
+        if ($range == 'threeMonth'){
+            return $this->whereDate('created_at','>', now()->subDays(90));
+        }
+
+        if ($range == 'oneYear'){
+            return $this->whereDate('created_at','>', now()->subDays(365));
+        }
+
         return $this;
     }
 }

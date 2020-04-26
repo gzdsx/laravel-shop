@@ -7,10 +7,9 @@
     <meta name="description" content="@yield('description', setting('description'))">
     <link rel="icon" href="{{asset('images/common/favicon.png')}}">
     <link href="{{asset('css/vendor/bootstrap.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/iconfont/iconfont.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/auth/index.css')}}" rel="stylesheet" type="text/css">
-    <script src="{{asset('js/manifest.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/base.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/base.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/env-bootstrap.js')}}" type="text/javascript"></script>
 </head>
 <body>
 <header class="header">

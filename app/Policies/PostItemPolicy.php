@@ -18,19 +18,6 @@ class PostItemPolicy
     }
 
     /**
-     * Determine whether the user can view any post items.
-     *
-     * @param \App\Models\User $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        if ($user->isAdmin()) {
-            return true;
-        }
-    }
-
-    /**
      * Determine whether the user can view the post item.
      *
      * @param \App\Models\User $user
@@ -108,6 +95,13 @@ class PostItemPolicy
      */
     public function own(User $user, PostItem $postItem)
     {
+        return $user->uid == $postItem->uid;
+    }
+
+    public function preview(User $user, PostItem $postItem){
+        if ($user->isAdmin()) {
+            return true;
+        }
         return $user->uid == $postItem->uid;
     }
 }

@@ -9,7 +9,7 @@ html, body {
     margin-right: 2px;
 }
 
-.admin-wrapper{
+.admin-wrapper {
     display: flex;
 }
 
@@ -17,6 +17,7 @@ html, body {
 .sidebar {
     width: 210px;
     position: relative;
+
     a {
         &,
         &:link,
@@ -109,7 +110,7 @@ html, body {
                 display: flex;
                 align-items: center;
                 flex-wrap: wrap;
-                padding: 10px 0 0 23px;
+                padding: 10px 0 0 20px;
 
                 .v-common-nav-link {
                     display: block;
@@ -118,8 +119,21 @@ html, body {
                     font-weight: 300;
                     width: 80px;
 
-                    a:hover {
-                        text-decoration: underline;
+                    a {
+                        padding: 3px 6px;
+                        border-radius: 7px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .router-link-exact-active {
+                        background-color: #00aaee;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
                     }
                 }
             }
@@ -185,7 +199,7 @@ html, body {
         }
     }
 
-    .table-edit-header{
+    .table-edit-header {
         position: relative;
         display: block;
         margin-bottom: 10px;
@@ -197,36 +211,36 @@ html, body {
             display: flex;
         }
 
-        .button-item{
+        .button-item {
             margin-left: 5px;
         }
 
-        .table-edit-title{
+        .table-edit-title {
             font-size: 16px;
             font-weight: 600;
         }
     }
 
-    .table-edit-footer{
+    .table-edit-footer {
         display: flex;
         margin-top: 20px;
         align-items: center;
     }
 
-    .edit-title{
+    .edit-title {
         background-color: #F7F7F7;
         padding: 0 20px;
         display: flex;
         height: 30px;
         margin-bottom: 10px;
 
-        span{
+        span {
             font-size: 14px;
             line-height: 30px;
         }
     }
 
-    .edit-bottom{
+    .edit-bottom {
         background-color: #F2F2F2;
         position: fixed;
         left: 210px;
@@ -239,102 +253,25 @@ html, body {
     }
 }
 
-.el-button--primary{
-    a{
+.el-button--primary {
+    a {
         &,
         &:link,
         &:active,
-        &:visited{
+        &:visited {
             color: #fff;
         }
     }
 }
 
-.sortable-ghost{
+.sortable-ghost {
     border: 1px #409EFF dashed;
 }
 
-.sortable-chosen{
+.sortable-chosen {
     border: 1px #409EFF dashed;
 }
 
-.order-list{
-    display: block;
-}
 
-.order-table{
-    margin-bottom: 10px;
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px #e7e8e9 solid;
-    &:hover{
-        border-color: #ccc;
-    }
-
-    thead{
-        th{
-            background-color: #F7F7F7;
-            padding: 12px 10px;
-            font-size: 14px;
-            font-weight: 400;
-            text-align: left;
-        }
-    }
-
-    tbody{
-        td{
-            padding: 12px 10px;
-            font-size: 14px;
-            font-weight: 400;
-            vertical-align: top;
-
-            p{
-                margin-bottom: 5px;
-            }
-        }
-    }
-
-    col{
-        vertical-align: top;
-    }
-
-    .col-checkbox{
-        margin-right: 5px;
-    }
-
-    .col-order-time{
-        margin-right: 10px;
-        font-weight: 500;
-    }
-
-    .col-freight{
-        font-size: 12px;
-        color: #999;
-    }
-
-    .order-item{
-        display: flex;
-
-        .thumb{
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        .item-info{
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title{
-            margin-bottom: 5px;
-        }
-
-        .sku{
-            color: #888;
-        }
-    }
-}
-
+@import "order";
 @import "../lib/sku";

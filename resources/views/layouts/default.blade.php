@@ -12,29 +12,57 @@
     <link rel="icon" href="{{asset('images/common/favicon.png')}}">
     <link href="{{asset('css/vendor/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/iconfont/iconfont.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{asset('css/style.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/index/index.css?v='.time())}}" rel="stylesheet" type="text/css">
     @yield('styles')
     <script src="{{asset('js/env-bootstrap.js')}}" type="text/javascript"></script>
     @yield('scripts')
 </head>
 <body>
-
-@yield('content')
-
-<div id="footer">
-    <div class="area">
-        <div class="bottomNav">
-            <a href="javascript:;">关于我们</a><span>|</span>
-            <a href="javascript:;">联系方式</a><span>|</span>
-            <a href="javascript:;">广告服务</a><span>|</span>
-            <a href="javascript:;">法律援助</a><span>|</span>
-            <a href="javascript:;">加入我们</a><span>|</span>
-            <a href="javascript:;">支付方式</a><span>|</span>
-            <a href="javascript:;">技术支持</a>
+@include('common.top')
+<div class="header">
+    <div class="area banner">
+        <div class="global-logo">
+            <img src="{{asset('images/common/logo.png')}}">
         </div>
-
-        <div class="copyright">{{setting('copyright')}}   {{setting('icp')}}</div>
+        <div class="global-search-box">
+            <form method="get" action="{{url('search')}}">
+                <div class="input-box">
+                    <input type="text" class="text" placeholder="商品名称" name="q" value="{{request('q')}}">
+                    <input type="submit" class="btn" value="搜索">
+                </div>
+            </form>
+            <div class="hot">
+                热门搜索:
+                <a href="{{url('item/search?q=花菜')}}">花菜</a>、
+                <a href="{{url('item/search?q=胡萝卜')}}">胡萝卜</a>、
+                <a href="{{url('item/search?q=五花肉')}}">五花肉</a>
+            </div>
+        </div>
+        {{--<ul class="apps">--}}
+        {{--<li>--}}
+        {{--<div class="pic showqrcode"><img src="{{asset('images/common/weixin_qrcode.jpg')}}"></div>--}}
+        {{--<p>在微信关注我们</p>--}}
+        {{--</li>--}}
+        {{--<li>--}}
+        {{--<div class="pic showqrcode"><img src="{{asset('images/common/app_qrcode.jpg')}}"></div>--}}
+        {{--<p>下载粗耕APP</p>--}}
+        {{--</li>--}}
+        {{--</ul>--}}
     </div>
 </div>
+<div class="global-nav">
+    <div class="nav">
+        <ul>
+            <li><a href="{{url('/')}}">首页</a></li>
+            <li><a href="{{url('youxuan')}}">正品优选</a></li>
+            <li><a href="{{url('user/#/bought')}}">我的订单</a></li>
+        </ul>
+    </div>
+</div>
+@yield('content')
+
+@include('common.footer')
+
+@yield('foot')
 </body>
 </html>

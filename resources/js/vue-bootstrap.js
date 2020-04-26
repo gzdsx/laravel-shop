@@ -19,6 +19,7 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+window.Axios = Axios;
 Vue.prototype.$axios = Axios;
 Vue.prototype.$get = (path,params=[])=>{
     return new Promise((resolve, reject) => {

@@ -167,6 +167,10 @@
     text-align: right !important;
 }
 
+.align-items-center{
+    align-items: center;
+}
+
 /*百分比宽度*/
 .w-5 {
     width: 5% !important;
@@ -898,8 +902,6 @@
             border-bottom: 3px #DB051C solid;
         }
     }
-
-
 }
 
 .dsxui-listtable {
@@ -956,11 +958,6 @@
         color: #666;
     }
 
-    label {
-        margin: 0;
-        padding: 0;
-    }
-
     .child-item-icon {
         display: inline-block;
         width: 8px;
@@ -1015,13 +1012,6 @@
     .cell-tips {
         color: #666;
         padding-left: 15px;
-    }
-
-    .label, label {
-        margin: 0;
-        padding: 0;
-        padding-right: 15px;
-        line-height: 2;
     }
 
     li {
@@ -1140,7 +1130,7 @@
 }
 
 .dsxui-row {
-    display: block;
+    display: flex;
 
     .dsxui-col {
         display: inline-block;
@@ -1148,5 +1138,25 @@
         box-sizing: border-box;
         line-height: 2;
         min-height: 20px;
+    }
+}
+
+.dsxui-form-inline{
+    display: flex;
+    align-items: center;
+
+    .form-item{
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+
+        &-label{
+            margin-right: 5px;
+        }
+
+        &-input{
+            display: flex;
+            align-items: center;
+        }
     }
 }

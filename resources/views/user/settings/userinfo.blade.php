@@ -10,7 +10,7 @@
         <div class="alert alert-success" role="alert">资料修改成功</div>
     @endif
     <div class="avatar-div">
-        <div class="avatar"><img id="avatar-image" src="{{avatar($uid)}}"></div>
+        <div class="avatar"><img id="avatar-image" src="{{auth()->user()->avatar}}"></div>
         <div class="avatar-content">
             <a id="picker">
                 修改头像
@@ -124,7 +124,6 @@
         uploader.on( 'uploadSuccess', function( file , response) {
             setTimeout(function () {
                 DSXUI.hideSpinner();
-                $("#avatar-image").attr('src', '{{avatar($uid)}}&'+Math.random());
             }, 500);
         });
 

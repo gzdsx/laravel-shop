@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -59,13 +60,17 @@ class Handler extends ExceptionHandler
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
+        if ($exception instanceof AuthorizationException){
+
+        }
+
         if ($request->ajax()) {
             if (method_exists($exception,'getStatusCode')){
                 $errcode = $exception->getStatusCode();
             }else{
-                $errcode = $exception->getCode() == 0 ? 400 : $exception->getCode();
+                $errcode = $exception->getCode();
             }
-            return ajaxError($errcode, $exception->getMessage(), ['trace'=>$exception->getTrace()]);
+            return ajaxError($errcode ?? 422, $exception->getMessage(), ['trace'=>$exception->getTrace()]);
         }
 
         return parent::render($request, $exception);

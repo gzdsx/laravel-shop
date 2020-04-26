@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
@@ -37,11 +37,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct(Request $request, UserRepositoryInterface $userRepository)
+    public function __construct(Request $request)
     {
         parent::__construct($request);
         $this->middleware('guest');
-        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -60,7 +59,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'username' => 'required|string|username|unique:user',
             'mobile' => 'required|string|mobile|unique:user',
-            'password' => 'required|string|password|confirmed',
+            'password' => 'required|string|pwd|confirmed',
         ]);
     }
 
@@ -72,6 +71,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return $this->userRepository->create($data);
+        return User::create($data);
     }
 }

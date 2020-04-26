@@ -39,10 +39,10 @@ class PostCollect extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function post()
     {
-        return $this->belongsTo(PostItem::class, 'aid', 'aid');
+        return $this->hasOne(PostItem::class, 'aid', 'aid');
     }
 }

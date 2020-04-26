@@ -46,4 +46,14 @@ class AdController extends BaseController
         Ad::whereKey($request->input('items', []))->delete();
         return ajaxReturn();
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchUpdate(Request $request)
+    {
+        Ad::whereKey($request->input('items', []))->update($request->input('params', []));
+        return ajaxReturn();
+    }
 }

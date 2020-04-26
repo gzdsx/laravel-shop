@@ -26,12 +26,11 @@ trait AddressTrait
     public function store(Request $request)
     {
         $address_id = $request->input('address_id');
-        if ($address_id) {
-            $address = Auth::user()->addresses()->findOrNew($address_id);
-        } else {
-            $address = Auth::user()->addresses()->make();
-        }
+        $address = Auth::user()->addresses()->findOrNew($address_id);
         $address->fill($request->input('address', []))->save();
+        if ($address->isdefault == 1) {
+            Auth::user()->addresses()->where('address_id', '<>', $address_id)->update(['isdefault' => 0]);
+        }
         return $this->sendAddressSavedResponse($request, $address);
     }
 
@@ -51,7 +50,7 @@ trait AddressTrait
     public function setDefault(Request $request)
     {
         $address_id = $request->input('address_id', 0);
-        Auth::user()->addresses()->update(['isdefault'=>0]);
+        Auth::user()->addresses()->update(['isdefault' => 0]);
         Auth::user()->addresses()->whereKey($address_id)->update(['isdefault' => 1]);
         return ajaxReturn();
     }

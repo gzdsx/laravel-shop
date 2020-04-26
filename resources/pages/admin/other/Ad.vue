@@ -36,10 +36,10 @@
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
                         批量删除
                     </el-button>
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0">
+                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleBatchUpdate({available:1})">
                         启用
                     </el-button>
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0">
+                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleBatchUpdate({available:0})">
                         停用
                     </el-button>
                 </div>
@@ -223,6 +223,12 @@
             },
             handleSelectImage(data) {
                 this.ad.data.image = data.image;
+            },
+            handleBatchUpdate(params){
+                var items = this.selectionIds.map((d) => d.id);
+                this.$post('/admin/ad/batchupdate',{items,params}).then(response=>{
+                    this.fetchList();
+                });
             },
             resetData() {
                 this.id = '';

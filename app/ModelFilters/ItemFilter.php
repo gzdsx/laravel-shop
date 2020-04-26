@@ -1,7 +1,6 @@
 <?php namespace App\ModelFilters;
 
 
-use App\Repositories\Eloquent\ItemCatlogRepository;
 use EloquentFilter\ModelFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -55,9 +54,9 @@ class ItemFilter extends ModelFilter
      */
     public function saleState($state)
     {
-        if (is_numeric($state)){
-            return $this->where('on_sale',$state);
-        }else{
+        if (is_numeric($state)) {
+            return $this->where('on_sale', $state);
+        } else {
             if ($state == 'on_sale') {
                 return $this->where('on_sale', 1);
             }
@@ -73,8 +72,9 @@ class ItemFilter extends ModelFilter
      * @param $state
      * @return ItemFilter
      */
-    public function onSale($state){
-        return $this->where('on_sale',$state);
+    public function onSale($state)
+    {
+        return $this->where('on_sale', $state);
     }
 
     /**
@@ -120,7 +120,9 @@ class ItemFilter extends ModelFilter
     public function catid($catid)
     {
         if ($catid > 0) {
-            return $this->whereIn('catid', app(ItemCatlogRepository::class)->fetchAllIds($catid));
+            return $this->whereHas('cates', function (Builder $builder) use ($catid) {
+                return $builder->where('catid', $catid);
+            });
         }
         return $this;
     }

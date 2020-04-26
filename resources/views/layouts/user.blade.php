@@ -7,12 +7,10 @@
     <meta name="description" content="@yield('description', setting('description'))">
     <meta name="csrf-token" content="{{csrf_token()}}">
     <link href="{{asset('images/common/favicon.png')}}" rel="icon">
-    <link href="{{asset('css/vendor/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/user/index.css')}}" rel="stylesheet" type="text/css">
     @yield('styles')
-    <script src="{{asset('js/manifest.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/vendor.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/base.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/lib/vue-bootstrap.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/lib/element-ui.js')}}" type="text/javascript"></script>
     @yield('scripts')
 </head>
 <body>
@@ -25,7 +23,6 @@
             <a href="{{url('/')}}">网站首页</a>
             <a href="{{url('user/userinfo')}}">账户中心</a>
             <a href="{{url('user/transaction')}}">财务中心</a>
-            <a href="{{url('seller')}}" target="_blank">我是卖家</a>
         </div>
     </div>
 </div>
@@ -58,7 +55,7 @@
     </div>
     <div class="mainframe">
         <div class="main-content">
-            @yield('content', '')
+            <div id="app">@yield('content', '')</div>
         </div>
     </div>
 </div>

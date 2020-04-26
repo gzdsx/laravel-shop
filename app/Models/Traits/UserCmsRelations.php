@@ -28,7 +28,7 @@ trait UserCmsRelations
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function postCollects(){
         return $this->hasMany(PostCollect::class, 'uid', 'uid');

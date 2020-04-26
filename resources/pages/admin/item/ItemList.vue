@@ -8,31 +8,31 @@
         </header>
         <div class="mainframe-content">
             <div class="content-block">
-                <div class="form-inline">
-                    <el-form :inline="true">
-                        <el-form-item label="产品名称">
-                            <el-input size="medium" class="w150" v-model="searchFields.title"></el-input>
-                        </el-form-item>
-                        <el-form-item label="产品ID">
-                            <el-input size="medium" class="w150" v-model="searchFields.itemid"></el-input>
-                        </el-form-item>
-                        <el-form-item label="目录分类">
-                            <el-select class="w150"
-                                       size="medium"
-                                       placeholder="请选择"
-                                       v-model="searchFields.catid">
-                                <el-option
-                                        v-for="(catlog,index) in catlogs"
-                                        :key="index"
-                                        :label="catlog.name"
-                                        :value="catlog.catid">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                <div class="dsxui-form-inline">
+                    <div class="form-item">
+                        <div class="form-item-label">产品名称</div>
+                        <el-input size="medium" class="w200" clearable v-model="searchFields.title"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">产品ID</div>
+                        <el-input size="medium" class="w200" clearable v-model="searchFields.itemid"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">目录分类</div>
+                        <div class="form-item-input">
+                            <el-cascader
+                                    :options="nodes"
+                                    size="medium"
+                                    class="w200"
+                                    @change="handleCascaderChange"
+                                    :clearable="true"
+                                    style="height: 36px;"
+                            ></el-cascader>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
+                    </div>
                 </div>
             </div>
 
@@ -50,7 +50,8 @@
                         </router-link>
                     </div>
                 </div>
-                <el-table :data="itemList" style="width: 100%" v-loading="loading" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" style="width: 100%" v-loading="loading"
+                          @selection-change="handleSelectionChange">
                     <el-table-column prop="itemid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -115,7 +116,8 @@
                     itemid: '',
                     tab: ''
                 },
-                loading:true
+                loading: true,
+                nodes: []
             }
         },
         mounted() {
@@ -139,7 +141,7 @@
             },
             fetchCatlogs: function () {
                 this.$axios.get('/admin/item/catlog/getall').then(response => {
-                    this.catlogs = response.data.items;
+                    this.nodes = this.serilazeProps(response.data.items);
                 });
             },
             handleSelectionChange: function (val) {
@@ -187,6 +189,25 @@
                 }).then(response => {
                     this.fetchList();
                 });
+            },
+            serilazeProps: function (arr) {
+                function t(a) {
+                    return a.map(function (c) {
+                        var obj = {
+                            value: c.catid,
+                            label: c.name,
+                        };
+                        if (c.children.length > 0) {
+                            obj.children = t(c.children);
+                        }
+                        return obj;
+                    });
+                }
+
+                return t(arr);
+            },
+            handleCascaderChange(v) {
+                this.searchFields.catid = v[1];
             }
         }
     }

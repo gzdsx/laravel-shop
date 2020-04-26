@@ -24,13 +24,11 @@
                         <td class="cell-label w80">选择类目</td>
                         <td>
                             <el-cascader
+                                    :options="nodes"
                                     size="medium"
+                                    class="w500"
                                     v-model="item.cates"
-                                    style="display: flex;width: 500px;"
-                                    :options="catlogNodes"
-                                    @change="handleSelectCatlog"
-                            >
-                            </el-cascader>
+                            ></el-cascader>
                         </td>
                     </tr>
                     <tr>
@@ -61,7 +59,7 @@
                                     >
                                         <el-image :src="img.thumb" fit="cover" class="image-item"></el-image>
                                         <div class="iconfont icon-close_light del-icon"
-                                             @click="item.images.splice(idx,1)"></div>
+                                             @click.stop="item.images.splice(idx,1)"></div>
                                     </div>
                                 </vuedraggable>
                                 <div class="dsxui-uploader-button" @click="showImagePicker=true"
@@ -191,22 +189,38 @@
                 changeImage: false,
                 changeImageIndex: 0,
                 showAttrs: false,
-                catlogNodes: []
+                props: {
+                    lazy: true,
+                    label: 'name',
+                    value: 'catid',
+                    lazyLoad(node, resolve) {
+                        console.log(node);
+                        const {level} = node;
+                        const fid = node.data ? node.data.catid : 0;
+                        Axios.get('/admin/item/catlog/search?fid=' + fid).then(response => {
+                            resolve(response.data.items.map(c => ({
+                                ...c,
+                                leaf: level >= 1
+                            })));
+                        });
+                    }
+                },
+                nodes: []
             }
         },
         mounted() {
             let itemid = this.$route.params.itemid;
-            if (itemid){
+            if (itemid) {
                 this.itemid = itemid;
                 this.fetchItem();
+                this.fetchCatlogs();
             }
             this.fetchFreightTemplates();
-            this.fetchCatlogs();
         },
         methods: {
             fetchItem: function (itemid) {
                 this.$axios.get('/admin/item/get?itemid=' + this.itemid).then(response => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     this.item = response.data.item;
                     if (!this.item.images) {
                         this.item.images = [];
@@ -235,10 +249,9 @@
                     }
 
                     this.item.cates = [];
-                    if (typeof catlogs == 'object'){
-                        this.item.cates = catlogs.map((c)=>c.catid);
+                    if (typeof catlogs == 'object') {
+                        this.item.cates = catlogs.map((c) => c.catid);
                     }
-
                     this.$forceUpdate();
                 });
             },
@@ -280,7 +293,7 @@
                 }
             },
             handleSubmit: function (type) {
-                //console.log(this.item);return ;
+                //console.log(this.cates);return ;
                 const {title, cates, skus, images, price, stock} = this.item;
                 if (cates === undefined || cates.length === 0) {
                     this.$showToast('请选择目录分类');
@@ -364,12 +377,9 @@
                     console.log(reason.response);
                 });
             },
-            handleSelectCatlog: function (val) {
-                this.item.cates = val;
-            },
             fetchCatlogs: function () {
                 this.$axios.get('/admin/item/catlog/getall').then(response => {
-                    this.catlogNodes = this.serilazeProps(response.data.items);
+                    this.nodes = this.serilazeProps(response.data.items);
                 });
             },
             serilazeProps: function (arr) {
@@ -388,6 +398,7 @@
 
                 return t(arr);
             }
+
         },
         watch: {}
     }

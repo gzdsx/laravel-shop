@@ -15,31 +15,28 @@
 Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/', 'IndexController@index');
     //Settings
-    Route::get('userinfo', 'SettingsController@userinfo');
-    Route::post('userinfo', 'SettingsController@saveInfo');
-    Route::any('security', 'SettingsController@security');
-    Route::post('bindmobile', 'SettingsController@bindMobile');
-    Route::post('bindemail', 'SettingsController@bindEmail');
-    Route::post('resetpass', 'SettingsController@resetPassword');
-    Route::post('avatar', 'SettingsController@avatar');
+    Route::get('info', 'UserController@info');
+    Route::post('info/update', 'UserController@updateInfo');
+    Route::post('avatar/update', 'UserController@updateAvatar');
+    Route::post('security/update_mobile', 'SecurityController@updateMobile');
+    Route::post('security/update_email', 'SecurityController@updateEmail');
+    Route::post('security/update_password', 'SecurityController@updatePassword');
     //Order
-    Route::get('bought', 'BoughtController@index');
+    Route::get('bought/get', 'BoughtController@get');
+    Route::get('bought/batchget', 'BoughtController@batchget');
+    Route::post('bought/notice', 'BoughtController@notice');
+    Route::post('bought/confirm', 'BoughtController@confirm');
     //账单
-    Route::get('transaction', 'TransactionController@index');
+    Route::get('transaction/batchget', 'TransactionController@batchget');
     //address
-    Route::get('address', 'AddressController@index');
-    Route::post('address/store', 'AddressController@store');
+    Route::get('address/get', 'AddressController@get');
+    Route::get('address/batchget', 'AddressController@batchget');
+    Route::post('address/update', 'AddressController@store');
     Route::post('address/setdefault', 'AddressController@setDefault');
     Route::post('address/delete', 'AddressController@delete');
-    Route::get('address/getaddress', 'AddressController@get');
-    Route::get('address/getaddresslist', 'AddressController@batchget');
-    Route::get('address/frame', 'AddressController@frame');
     //collect
-    Route::get('collect', 'ItemCollectController@showCollectedItems');
-    Route::get('collect/item', 'ItemCollectController@showCollectedItems');
-    Route::post('collect/item/delete', 'ItemCollectController@delete');
-    Route::get('collect/shop', 'CollectController@shop');
-    Route::post('collect/shop/delete', 'CollectController@deleteShop');
-    Route::get('collect/post', 'CollectController@post');
+    Route::get('collect/post/batchget', 'CollectController@batchgetPosts');
     Route::post('collect/post/delete', 'CollectController@deletePost');
+    Route::get('collect/item/batchget', 'CollectController@batchgetItems');
+    Route::post('collect/item/delete', 'CollectController@deleteItem');
 });

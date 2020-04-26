@@ -45,13 +45,17 @@ mix.js('resources/pages/h5/sold.js', 'public/js/h5');
 
 //后台
 mix.js('resources/pages/admin/app.js', 'public/js/admin');
+mix.js('resources/pages/user/app.js', 'public/js/user');
 //sass
 // mix.sass('resources/sass/bootstrap.scss', 'public/css/vendor');
 // mix.sass('resources/sass/element-ui.scss', 'public/css/vendor');
-// mix.sass('resources/sass/shop/index.scss', 'public/css/shop');
-// mix.sass('resources/sass/admin/index.scss', 'public/css/admin');
+mix.sass('resources/sass/index/index.scss', 'public/css/index');
+mix.sass('resources/sass/admin/index.scss', 'public/css/admin');
 // mix.sass('resources/sass/admin/login.scss', 'public/css/admin');
 mix.sass('resources/sass/h5/index.scss', 'public/css/h5');
+mix.sass('resources/sass/errors/index.scss', 'public/css/errors');
+mix.sass('resources/sass/auth/index.scss', 'public/css/auth');
+mix.sass('resources/sass/user/index.scss', 'public/css/user');
 //less
 // mix.less('resources/sass/vant.less', 'public/css/vendor');
 

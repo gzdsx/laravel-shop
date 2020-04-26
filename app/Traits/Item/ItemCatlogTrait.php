@@ -54,6 +54,16 @@ trait ItemCatlogTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+    public function search(Request $request)
+    {
+        $fid = $request->input('fid', 0);
+        return ajaxReturn(['items' => $this->query()->where('fid', $fid)->get()]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request)
     {
         $catid = $request->input('catid', 0);

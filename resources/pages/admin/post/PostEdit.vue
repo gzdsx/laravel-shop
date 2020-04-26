@@ -138,25 +138,33 @@
                     images: [],
                     content: {},
                     media: {},
-                    type:'article',
-                    allowcomment:1
+                    type: 'article',
+                    allowcomment: 1
                 },
                 catlogs: {},
                 showPicker: false
             }
         },
         mounted() {
-            const aid = this.$route.params.aid;
+            this.aid = this.$route.params.aid||0;
+            this.getPost();
             this.fetchCatlogs();
-            if (aid) {
-                this.aid = aid;
-                this.getPost();
-            }
         },
         methods: {
             getPost: function () {
                 this.$axios.get('/admin/post/get?aid=' + this.aid).then(response => {
                     this.post = response.data.post;
+                    if (!this.post.content) {
+                        this.post.content = {};
+                    }
+
+                    if (!this.post.images) {
+                        this.post.images = [];
+                    }
+
+                    if (!this.post.media) {
+                        this.post.media = {};
+                    }
                 });
             },
             fetchCatlogs: function () {
@@ -182,8 +190,8 @@
                     return false;
                 }
                 this.$axios.post('/admin/post/update', {
-                    aid:this.aid,
-                    post:this.post
+                    aid: this.aid,
+                    post: this.post
                 }).then(response => {
                     this.$showToast('文章更新成功', () => this.$router.go(0));
                 }).catch(reason => {

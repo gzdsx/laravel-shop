@@ -1,37 +1,34 @@
-@extends('layouts.user')
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>@yield('title', '用户中心')</title>
+    <meta name="keywords" content="@yield('keywords', setting('keywords'))">
+    <meta name="description" content="@yield('description', setting('description'))">
+    <meta name="csrf-token" content="{{csrf_token()}}">
+    <link href="{{asset('images/common/favicon.png')}}" rel="icon">
+    <link href="{{asset('css/iconfont/iconfont.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/vendor/element-ui.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/user/index.css?v='.time())}}" rel="stylesheet" type="text/css">
+    <script src="{{asset('js/lib/vue-bootstrap.js?v=1')}}" type="text/javascript"></script>
+    <script src="{{asset('js/lib/element-ui.js')}}" type="text/javascript"></script>
+    <script type="text/javascript">window.user=@json($user);window.account=@json($account);</script>
+</head>
+<body>
+@include('common.top')
 
-@section('title', '用户中心')
-
-@section('content')
-    <div class="wellcome-div">
-        <div class="txt">{{$username}}, 欢迎你!</div>
-    </div>
-    <div class="mcenter-content-div" style="height:120px;">
-        <div class="headimg-div">
-            <div class="avatar"><img src="{{avatar($uid)}}"></div>
-            <div class="a-setting"><a href="{{url('user/userinfo')}}">设置头像</a></div>
+<div class="membercp-header">
+    <div class="area header">
+        <strong class="logo"><img src="{{asset('images/common/grzx_logo.png')}}"></strong>
+        <div class="right-menu">
+            <a href="{{url('/')}}">网站首页</a>
+            <a href="#/userinfo">账户中心</a>
+            <a href="#/transaction">财务中心</a>
         </div>
-        <div class="user-account">
-            <div class="row">
-                <div class="item">账户余额：<i>{{$wallet['balance'] or ''}}</i></div>
-                <div class="item">可用积分：<i>{{$wallet['integral'] or ''}}</i></div>
-                <div class="item">账户状态：<i>正常</i></div>
-            </div>
-            <div class="row">
-                <div class="item">
-                    <a href="{{url('user/userinfo')}}"><span class="iconfont icon-my"></span>修改个人资料</a>
-                </div>
-                <div class="item" onclick="Plugins.showMapView()"><span class="iconfont icon-mobile"></span>手机已绑定</div>
-                <div class="item"><span class="iconfont icon-mail"></span>邮箱已绑定</div>
-            </div>
-        </div>
     </div>
-    <div id="coord"></div>
-    <div class="mcenter-content-div">
-        <div class="console-title"><strong>每日任务</strong></div>
-    </div>
-
-    <div class="mcenter-content-div">
-        <div class="console-title"><strong>邀请好友</strong></div>
-    </div>
-@stop
+</div>
+<div style="height: 30px; display: block; clear: both;"></div>
+<div id="app"></div>
+@include('common.footer')
+<script type="text/javascript" src="{{asset('js/user/app.js?v='.time())}}"></script>
+</body>
+</html>

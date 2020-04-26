@@ -2,10 +2,6 @@
 
 @section('title', '账户注册')
 
-@section('styles')
-    <link href="{{asset('bootstrap/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
-@stop
-
 @section('content')
 <div class="form-body">
     <div class="container">
