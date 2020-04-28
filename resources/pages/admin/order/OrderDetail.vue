@@ -100,7 +100,7 @@
                     <div class="edit-title">
                         <span>付款信息</span>
                     </div>
-                    <table class="dsxui-formtable">
+                    <table class="dsxui-formtable" v-if="transaction.pay_type==='wechatpay'">
                         <colgroup>
                             <col width="80">
                             <col>
@@ -117,6 +117,30 @@
                         <tr>
                             <td class="cell-label">付款金额</td>
                             <td>{{(transaction.extra.total_fee)/100}}元</td>
+                        </tr>
+                        <tr v-if="transaction.pay_state">
+                            <td class="cell-label">商户单号</td>
+                            <td>{{transaction.extra.out_trade_no}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="dsxui-formtable" v-if="transaction.pay_type==='alipay'">
+                        <colgroup>
+                            <col width="80">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td class="cell-label">付款方式</td>
+                            <td>{{transaction.pay_type_des}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-label">付款单号</td>
+                            <td>{{transaction.extra.trade_no}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cell-label">付款金额</td>
+                            <td>{{(transaction.extra.total_amount)}}元</td>
                         </tr>
                         <tr v-if="transaction.pay_state">
                             <td class="cell-label">商户单号</td>

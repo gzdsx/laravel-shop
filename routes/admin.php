@@ -47,7 +47,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('post/get', 'PostController@get');
     Route::get('post/batchget', 'PostController@batchget');
     Route::post('post/update', 'PostController@update');
-    Route::post('post/delete', 'PostController@batchDelete');
+    Route::post('post/delete', 'PostController@delete');
     Route::post('post/batchupdate', 'PostController@batchUpdate');
     //文章分类
     Route::get('post/catlog/getall', 'PostCatlogController@getAll');

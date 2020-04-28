@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Auth;
  * @property float $shipping_fee 运费
  * @property string|null $unit 单位
  * @property int $freight_template_id 运费模板
- * @property array|null $attr_list 商品属性
+ * @property array|null $attrs 商品属性
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ItemReviews[] $buyerReviews
@@ -60,7 +60,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item whereAttrList($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item whereAttrs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item whereBeginsWith($column, $value, $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item whereCatid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Item whereCollections($value)
@@ -99,11 +99,11 @@ class Item extends Model
     protected $fillable = [
         'uid', 'title', 'subtitle', 'merchant_code', 'thumb', 'image', 'price',
         'market_price', 'redpack_amount', 'isdiscount', 'on_sale', 'is_best', 'stock',
-        'sold', 'views', 'shipping_fee', 'unit', 'freight_template_id', 'attr_list'
+        'sold', 'views', 'shipping_fee', 'unit', 'freight_template_id', 'attrs'
     ];
     protected $appends = ['url', 'h5_url', 'sale_state_des'];
     protected $casts = [
-        'attr_list' => 'array',
+        'attrs' => 'array',
         'price' => 'float',
         'market_price' => 'float'
     ];

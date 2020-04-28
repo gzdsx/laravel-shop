@@ -38,6 +38,9 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+        $redirect = request()->input('redirect');
+        if (!$redirect) $redirect = url()->previous();
+        session(compact('redirect'));
         return $this->view('auth.login');
     }
 
@@ -56,17 +59,12 @@ class LoginController extends Controller
     /**
      * @param Request $request
      * @param $user
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return string
      */
     public function authenticated(Request $request, $user)
     {
         event(new UserEvent($user, 'loggedin'));
-        $redirect = $request->input('redirect');
-        if ($redirect) {
-            return redirect($redirect);
-        } else {
-            return redirect()->intended();
-        }
+        return redirect()->to(session('redirect'));
     }
 
     /**
@@ -107,9 +105,9 @@ class LoginController extends Controller
     {
         $redirect = $request->input('redirect');
         if ($redirect) {
-            return redirect($redirect);
+            return redirect()->to($redirect);
         } else {
-            return redirect()->intended();
+            return redirect()->to(url()->previous());
         }
     }
 
@@ -124,13 +122,13 @@ class LoginController extends Controller
     /**
      * @return string
      */
-    public function redirectPath()
+    public function redirectTo()
     {
-        $redirect = \request()->input('redirect');
+        $redirect = request()->input('redirect');
         if ($redirect) {
-            return $redirect;
+            return redirect()->to($redirect);
         } else {
-            return redirect()->intended()->getTargetUrl();
+            return redirect()->to(url()->previous());
         }
     }
 }

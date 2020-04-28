@@ -67,10 +67,7 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <div class="display-flex" style="align-items: center;">
-                                            <div class="col-checkbox">
-                                                <el-checkbox :label="order.order_id">{{''}}</el-checkbox>
-                                            </div>
+                                        <div class="display-flex align-items-center">
                                             <div class="col-order-time">{{order.created_at}}</div>
                                             <div class="col-order-no">订单号:{{order.order_no}}</div>
                                         </div>
@@ -80,7 +77,7 @@
                                     <th></th>
                                     <th></th>
                                     <th class="align-right">
-
+                                        <a v-if="order.closed"><span class="iconfont icon-delete1 font-18" @click="handleDelete(order)"></span></a>
                                     </th>
                                 </tr>
                                 </thead>
@@ -115,6 +112,13 @@
                                     </td>
                                     <td>
                                         <div class="align-center" v-if="idx===0">
+                                            <template v-if="order.order_state===1">
+                                                <a :href="'/order/pay?order_id='+order.order_id" target="_blank">
+                                                    <el-button size="mini" type="primary">立即支付</el-button>
+                                                </a>
+                                                <p class="ac-link"><a @click="handleCloseOrder(order)">取消订单</a></p>
+                                            </template>
+
                                             <el-button size="mini"
                                                        type="primary"
                                                        v-if="order.order_state===2"
@@ -139,9 +143,6 @@
                 </el-container>
             </div>
             <div class="table-edit-footer">
-                <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
-                    批量删除
-                </el-button>
                 <div class="flex"></div>
                 <el-pagination
                         background
@@ -190,14 +191,15 @@
                     this.loading = false;
                 });
             },
-            handleDelete: function () {
-                this.$confirm('此操作将永久删除所选订单, 是否继续?', '提示', {
+            handleDelete: function (order) {
+                const {order_id} = order;
+                this.$confirm('确认要删除此订单吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     this.loading = true;
-                    this.$axios.post('/user/bought/delete', {items: this.selectionIds}).then(response => {
+                    this.$axios.post('/user/bought/delete', {order_id}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -217,6 +219,19 @@
             handleNotice: function (order_id) {
                 this.$post('/user/bought/notice', {order_id}).then(response => {
                     this.$showToast('已成功提醒卖家发货');
+                });
+            },
+            handleCloseOrder(order){
+                const {order_id} = order;
+                this.$confirm('确认要取消此订单吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.loading = true;
+                    this.$axios.post('/user/bought/close', {order_id}).then(response => {
+                        this.fetchList();
+                    });
                 });
             }
         }

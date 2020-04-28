@@ -4,10 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -60,17 +62,20 @@ class Handler extends ExceptionHandler
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        if ($exception instanceof AuthorizationException){
-
+        if ($exception instanceof HttpExceptionInterface){
+            $errcode = $exception->getStatusCode();
+        }else{
+            $errcode = $exception->getCode();
         }
 
         if ($request->ajax()) {
-            if (method_exists($exception,'getStatusCode')){
-                $errcode = $exception->getStatusCode();
-            }else{
-                $errcode = $exception->getCode();
-            }
-            return ajaxError($errcode ?? 422, $exception->getMessage(), ['trace'=>$exception->getTrace()]);
+            return ajaxError(
+                $errcode > 0 ? $errcode : 500,
+                $exception->getMessage(),
+                [
+                    'extra'=>parent::convertExceptionToArray($exception)
+                ]
+            );
         }
 
         return parent::render($request, $exception);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Misc;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ class AvatarController extends Controller
         $uid  = $data['uid'];
         $size = $data['size'];
         $size = in_array($size, array('middel','small')) ? $size : 'big';
-        $avatar = config('filesystems.disks.public.root').'/avatar/'.$uid.'/'.$size.'.png';
+        $avatar = material_path('avatar/'.$uid.'/'.$size.'.png');
 
         if (!is_file($avatar)) {
             $avatar = public_path('/images/common/avatar_default.png');

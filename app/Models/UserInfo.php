@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserInfo
  *
  * @property int $uid
+ * @property string|null $fullname
  * @property int $gender
  * @property string|null $birthday
  * @property int $blood
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereCountry($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereDistrict($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereFullname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereIntroduction($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserInfo whereProvince($value)

@@ -129,7 +129,7 @@
                     <tr>
                         <td class="cell-label w80">宝贝详情</td>
                         <td>
-                            <kind-editor v-model="item.content.content"></kind-editor>
+                            <kind-editor v-model="item.content.content" ref="keditor"></kind-editor>
                         </td>
                     </tr>
                     <tr>
@@ -213,6 +213,8 @@
             if (itemid) {
                 this.itemid = itemid;
                 this.fetchItem();
+            }else {
+                this.item.content.content = this.$refs.keditor.getCookie();
             }
             this.fetchCatlogs();
             this.fetchFreightTemplates();
@@ -233,11 +235,11 @@
                     if (!this.item.skus) {
                         this.item.skus = [];
                     }
-                    const {attr_list, skus, catlogs} = response.data.item;
-                    if (attr_list !== null && attr_list !== undefined) {
-                        if (attr_list.length) {
+                    const {attrs, skus, catlogs} = response.data.item;
+                    if (attrs !== null && attrs !== undefined) {
+                        if (attrs.length) {
                             this.showAttrs = true;
-                            this.defaultAttrList = attr_list;
+                            this.defaultAttrList = attrs;
                         }
                     }
                     if (skus.length > 0) {
@@ -252,7 +254,6 @@
                     if (typeof catlogs == 'object') {
                         this.item.cates = catlogs.map((c) => c.catid);
                     }
-                    this.$forceUpdate();
                 });
             },
             fetchFreightTemplates: function () {
@@ -285,7 +286,7 @@
             },
             handleSkuChange: function (data) {
                 this.item.skus = data.sku_list;
-                this.item.attr_list = data.attr_list;
+                this.item.attrs = data.attr_list;
             },
             handleAttrChange: function (attrs) {
                 if (attrs.length === 0) {
@@ -362,7 +363,7 @@
                 }
 
                 this.item.on_sale = type;
-
+                this.$refs.keditor.removeCookie();
                 this.$post('/admin/item/update', {
                     itemid: this.itemid,
                     item: this.item
@@ -397,8 +398,7 @@
                 }
 
                 return t(arr);
-            }
-
+            },
         },
         watch: {}
     }

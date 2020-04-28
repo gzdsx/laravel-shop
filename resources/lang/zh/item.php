@@ -18,7 +18,7 @@ return [
     'item in sale' => '出售中的宝贝',
     'item catlog' => '商品分类',
     'item catlog manage' => '商品分类管理',
-    'this item has been removed' => '商品过期或不存在',
+    'this item has been removed' => '商品过期或已删除',
     'insufficient inventory' => '商品库存不足',
     'item publish success' => '宝贝发布成功',
     'prop_types' => [

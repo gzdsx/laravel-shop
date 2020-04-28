@@ -333,7 +333,7 @@
             handleSearchAttrTitles(queryString, cb) {
                 var _this = this;
                 if (queryString == null) queryString = '';
-                this.$axios.get('/webapi/item/attrs/search?attr_title=' + queryString).then(response => {
+                this.$axios.get('/admin/item/attrs/search?attr_title=' + queryString).then(response => {
                     var attrs = [];
                     response.data.items.map((attr) => {
                         if (_.findIndex(_this.tmpAttrList, (o) => o.attr_title === attr.attr_title) === -1) {
@@ -354,7 +354,7 @@
             handleSearchAttrValues: function (queryString, cb) {
                 var attr_title = this.editingAttr.attr_title;
                 if (queryString == null) queryString = '';
-                this.$axios.get('/webapi/item/attrs/search?attr_title=' + attr_title + '&attr_value=' + queryString)
+                this.$axios.get('/admin/item/attrs/search?attr_title=' + attr_title + '&attr_value=' + queryString)
                     .then(response => {
                         var attrs = [];
                         response.data.items.map((attr) => {
@@ -369,7 +369,7 @@
                     });
             },
             updateAttrs: function (params, cb) {
-                this.$axios.post('/webapi/item/attrs/update', params).then(response => {
+                this.$axios.post('/admin/item/attrs/update', params).then(response => {
                     if (cb) cb(response.data);
                 });
             },

@@ -20,7 +20,7 @@
     <div class="area header">
         <strong class="logo"><img src="{{asset('images/common/grzx_logo.png')}}"></strong>
         <div class="right-menu">
-            <a href="{{url('/')}}">网站首页</a>
+            <a href="{{url('/')}}">店铺首页</a>
             <a href="#/userinfo">账户中心</a>
             <a href="#/transaction">财务中心</a>
         </div>

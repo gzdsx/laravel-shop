@@ -74,5 +74,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
         Route::get('transaction/batchget', 'TransactionController@batchget');
         Route::post('transaction/delete', 'TransactionController@delete');
         Route::get('wechatpay/getconfig', 'WechatPayController@getPayConfig');
+
+        Route::get('kindeditor/manager', 'KindeditorController@manager');
+        Route::post('kindeditor/upload', 'KindeditorController@upload');
     });
 });

@@ -163,4 +163,22 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'payee_uid', 'uid');
     }
+
+    /**
+     * @param $out_trade_no
+     * @return \Illuminate\Database\Eloquent\Builder|Transaction|Model|object|null
+     */
+    public static function findByOutTradeNo($out_trade_no)
+    {
+        return Transaction::where('out_trade_no', $out_trade_no)->first();
+    }
+
+    /**
+     * @param $transaction_no
+     * @return \Illuminate\Database\Eloquent\Builder|Transaction|Model|object|null
+     */
+    public static function findByTransactionNo($transaction_no)
+    {
+        return Transaction::where('transaction_no', $transaction_no)->first();
+    }
 }

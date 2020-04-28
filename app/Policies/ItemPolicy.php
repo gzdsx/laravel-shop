@@ -73,4 +73,12 @@ class ItemPolicy
         }
         return true;
     }
+
+    public function preview(User $user, Item $item){
+        if ($user->isAdmin()){
+            return true;
+        }
+
+        return $user->uid == $item->uid;
+    }
 }

@@ -53,6 +53,9 @@ trait CartTrait
                         $price = $sku->price;
                         $sku_title = $sku->title;
                     }
+                } else {
+                    $sku_id = 0;
+                    $sku_title = '';
                 }
                 $result = $this->query()->create([
                     'itemid' => $item->itemid,
@@ -87,9 +90,8 @@ trait CartTrait
     public function update(Request $request)
     {
         $itemid = $request->input('itemid', 0);
-        $this->query()->where('uid', Auth::id())
-            ->where('itemid', $itemid)
-            ->update($request->except('itemid'));
+        $cart = $this->query()->where('uid', Auth::id())->where('itemid', $itemid)->firstOrFail();
+        $cart->fill($request->except('itemid'))->save();
         return $this->showUpdatedCartResponse($request);
     }
 

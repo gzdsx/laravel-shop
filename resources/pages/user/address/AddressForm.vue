@@ -90,7 +90,7 @@
             }
         },
         mounted() {
-            this.$nextTick(this.setSascaderValue);
+
         },
         methods: {
             handleSave() {
@@ -129,13 +129,12 @@
                 });
             },
             setSascaderValue() {
-                //let cascader = this.$refs.cascader;
-                let cascader = this.cascader;
-                //if (cascader) {
+                let cascader = this.$refs.cascader;
+                if (cascader) {
                     cascader.panel.activePath = [];
                     cascader.panel.loadCount = 0;
                     cascader.panel.lazyLoad();
-                //}
+                }
             }
         },
         watch: {
@@ -144,11 +143,6 @@
             },
             show(val) {
                 this.visiable = val;
-                if (val) {
-                    if (this.address.address_id){
-
-                    }
-                }
             },
             address(val) {
                 const address = this.address;
@@ -158,18 +152,9 @@
                         address.city,
                         address.district
                     ];
-                    this.$nextTick(this.setSascaderValue);
                 }
-            },
-            data(){
-
-            },
-            cities(){
-
+                this.$nextTick(this.setSascaderValue);
             }
-        },
-        updated() {
-            this.cascader = this.$refs.cascader;
         }
     }
 </script>

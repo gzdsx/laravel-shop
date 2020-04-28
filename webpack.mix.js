@@ -46,6 +46,8 @@ mix.js('resources/pages/h5/sold.js', 'public/js/h5');
 mix.js('resources/pages/admin/app.js', 'public/js/admin');
 mix.js('resources/pages/user/app.js', 'public/js/user');
 mix.js('resources/pages/order/buynow.js', 'public/js/order');
+mix.js('resources/pages/order/confirm.js', 'public/js/order');
+mix.js('resources/pages/cart/app.js', 'public/js/cart');
 //sass
 // mix.sass('resources/sass/bootstrap.scss', 'public/css/vendor');
 // mix.sass('resources/sass/element-ui.scss', 'public/css/vendor');
@@ -57,6 +59,7 @@ mix.sass('resources/sass/errors/index.scss', 'public/css/errors');
 mix.sass('resources/sass/auth/index.scss', 'public/css/auth');
 mix.sass('resources/sass/user/index.scss', 'public/css/user');
 mix.sass('resources/sass/order/index.scss', 'public/css/order');
+mix.sass('resources/sass/cart/index.scss', 'public/css/cart');
 //less
 // mix.less('resources/sass/vant.less', 'public/css/vendor');
 

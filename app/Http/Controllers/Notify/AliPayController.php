@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Notify;
 
-use App\Alipay\Alipay;
-use App\Events\OrderEvent;
+
+use Alipay\Factory;
+use App\Jobs\OrderProcessNotice;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,29 +45,24 @@ class AliPayController extends Controller
          * [seller_id] => 2088521634578995
          * )
          */
-        $out_trade_no = $request->input('out_trade_no', '615597247682809667');
-        $query = Alipay::pay()->query(compact('out_trade_no'));
-        if ($query->tradeSuccess()) {
-            $transaction = Transaction::where('out_trade_no', $out_trade_no)->first();
-            if ($transaction) {
-                if (!$transaction->pay_state) {
-                    $transaction->pay_state = 1;
-                    $transaction->pay_at = time();
-                    $transaction->pay_type = 'alipay';
-                    $transaction->transaction_state = 2;
-                    $transaction->pay_appid = config('alipay.default.appid');
-                    $transaction->save();
+        $out_trade_no = $request->input('out_trade_no');
+        $res = Factory::query()->sendRequest(compact('out_trade_no'));
+        if ($res['trade_status'] == 'TRADE_SUCCESS') {
+            $transaction = Transaction::findByOutTradeNo($out_trade_no);
+            $transaction->extra = $request->all();
+            $transaction->transaction_state = 2;
+            $transaction->pay_state = 1;
+            $transaction->pay_at = now();
+            $transaction->pay_type = 'alipay';
+            $transaction->save();
 
-                    $order = $transaction->order;
-                    if ($order) {
-                        $order->pay_state = 1;
-                        $order->pay_at = time();
-                        $order->order_state = 2;
-                        $order->save();
+            if ($transaction->order){
+                $transaction->order->order_state=2;
+                $transaction->order->pay_state=1;
+                $transaction->order->pay_at = now();
+                $transaction->order->save();
 
-                        event(new OrderEvent($order, 'paid'));
-                    }
-                }
+                dispatch(new OrderProcessNotice($transaction->order,'paid'));
             }
         }
     }

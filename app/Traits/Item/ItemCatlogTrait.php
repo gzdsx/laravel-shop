@@ -70,12 +70,16 @@ trait ItemCatlogTrait
         $attributes = collect($request->input('catlog', []));
         if ($attributes->count()) {
             if ($attributes->has('fid')) {
-                if ($parent = $this->query()->find($attributes->get('fid'))) {
-                    $attributes->put('level', $parent->level + 1);
+                if ($attributes->get('fid') > 0) {
+                    if ($parent = $this->query()->find($attributes->get('fid'))) {
+                        $attributes->put('level', $parent->level + 1);
+                    }
+                } else {
+                    $attributes->put('level', 1);
                 }
             }
             $catlog = $this->query()->findOrNew($catid);
-            $catlog->fill($attributes->except('catid')->all())->save();
+            $catlog->fill($attributes->except('catid')->toArray())->save();
 
             $this->updateCache();
             return ajaxReturn(['catlog' => $catlog]);

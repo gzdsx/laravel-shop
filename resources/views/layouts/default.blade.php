@@ -43,7 +43,9 @@
     <div class="nav">
         <ul>
             <li><a href="{{url('shop')}}">店铺首页</a></li>
-            <li><a href="{{url('youxuan')}}">正品优选</a></li>
+            @foreach (cache('itemCatlogs', []) as $cat)
+                <li><a href="{{url('search?catid='.$cat['catid'])}}">{{$cat['name']}}</a></li>
+            @endforeach
             <li><a href="{{url('user/#/bought')}}">我的订单</a></li>
         </ul>
     </div>

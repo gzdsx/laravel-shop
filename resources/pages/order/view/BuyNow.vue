@@ -76,7 +76,7 @@
                 </div>
             </div>
         </div>
-        <address-form :address="address" v-model="showAddressForm" @saved="handleSavedAddress"></address-form>
+        <address-form v-model="showDialog" :address="address" @saved="handleSavedAddress"></address-form>
     </div>
 </template>
 
@@ -99,7 +99,7 @@
                 remark: '',
                 address_id: 0,
                 address: {},
-                showAddressForm: true
+                showDialog: false
             }
         },
         mounted() {
@@ -147,13 +147,14 @@
             },
             handleAddAddress() {
                 this.address = {};
-                this.showAddressForm = true;
+                this.showDialog = true;
             },
             handleEditAddress(address) {
                 this.address = address;
-                this.showAddressForm = true;
+                this.showDialog = true;
             },
             handleSavedAddress(address) {
+                this.showDialog = false;
                 if (this.address.address_id) {
                     this.addresses.map((addr, i) => {
                         if (addr.address_id === address.address_id) {

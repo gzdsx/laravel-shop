@@ -13,7 +13,7 @@
                 <span class="amount">支付金额:<i>￥{{$order['total_fee']}}</i></span>
             </p>
             <p class="links">
-                <a href="{{url('user/trade/detail?order_id='.$order_id)}}" style="margin-right: 50px;">订单详情</a>
+                <a href="{{url('user/#/bought/detail/'.$order->order_id)}}" style="margin-right: 50px;">订单详情</a>
                 <a href="{{url('/')}}">继续购物</a>
             </p>
             @else

@@ -214,12 +214,12 @@
     position: absolute;
     display: inline-block;
     z-index: 99999;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.80);
     border-radius: 8px;
     max-width: 400px;
 
     .dsxui-toast-content {
-        padding: 15px 20px;
+        padding: 18px 30px;
         font-size: 16px;
         color: #fff;
         text-align: center;

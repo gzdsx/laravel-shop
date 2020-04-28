@@ -13,7 +13,7 @@
 
 
 Route::group(['namespace' => 'Shop'], function () {
-    Route::get('/', 'IndexController@index');
+    Route::get('shop', 'IndexController@index');
     Route::get('search', 'SearchController@index');
 
     Route::group(['prefix' => 'item'], function () {
@@ -23,9 +23,16 @@ Route::group(['namespace' => 'Shop'], function () {
 
     Route::group(['prefix' => 'order', 'middleware' => 'auth'], function () {
         Route::any('buynow', 'OrderController@buynow');
+        Route::any('confirm', 'OrderController@confirm');
         Route::get('pay', 'OrderController@pay');
-        Route::get('success', 'OrderController@success');
+        Route::get('pay/result', 'OrderController@payResult');
         Route::get('alipay', 'OrderController@alipay');
+        Route::get('query/alipay', 'OrderController@alipayQuery');
+    });
+
+    Route::group(['prefix' => 'cart', 'middleware' => 'auth'], function () {
+        Route::get('/','CartController@index');
+        Route::get('getall','CartController@getAll');
     });
 });
 

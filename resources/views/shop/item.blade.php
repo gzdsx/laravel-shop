@@ -17,7 +17,7 @@
         </div>
         <div class="blank"></div>
         <div class="area">
-            <form method="get" action="{{url('order/buynow')}}">
+            <form method="get" id="Form" action="{{url('order/buynow')}}">
                 @csrf
                 <input type="hidden" name="itemid" value="{{$item->itemid}}">
                 <input type="hidden" name="sku_id" value="" id="sku_id">
@@ -102,7 +102,9 @@
                             <dt class="dt flex-row align-items-center">
                                 <div class="input-number">
                                     <span class="input-btn" id="decrease">-</span>
-                                    <span><input class="input-text" title="" type="number"  id="quantity" name="quantity" value="1"></span>
+                                    <span class="flex">
+                                        <input class="input-text" title="" type="number"  id="quantity" name="quantity" value="1">
+                                    </span>
                                     <span class="input-btn" id="increase">+</span>
                                 </div>
                                 <div class="flex-fill">
@@ -111,21 +113,25 @@
                             </dt>
                         </dl>
                         <dl class="item-dl">
-                            <dd class="dd">支付方式</dd>
+                            <dd class="dd">付款方式</dd>
                             <dt class="dt">
                                 <label><input type="radio" class="radio pay_type" name="pay_type" value="1" checked="checked"> 在线支付</label>
                                 <label><input type="radio" class="radio pay_type" name="pay_type" value="2"> 货到付款</label>
                             </dt>
                         </dl>
-                        <div class="item-dl">
-                            <div class="flex-row">
-                                <button class="btn-lg btn-buy-now" id="btn-buy-now">立即购买</button>
-                                <button class="btn-lg" id="add-to-cart">
-                                    <i class="iconfont icon-cartfill"></i>
-                                    <span>加入购物车</span>
-                                </button>
+                        @if ($item->on_sale)
+                            <div class="item-dl">
+                                <div class="flex-row">
+                                    <button class="btn-sku btn-buy" id="btn-buy" type="button" role="button">
+                                        <span>立即购买</span>
+                                    </button>
+                                    <button class="btn-sku btn-basket" id="btn-basket" type="button" role="button">
+                                        <i class="iconfont icon-cartfill"></i>
+                                        <span>加入购物车</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="item-dl">
                             <div class="share"><i class="iconfont icon-share"></i><span>分享</span></div>
                             <div class="favorite" data-action="collection" data-id="{{$itemid}}" data-type="item">
@@ -229,6 +235,41 @@
             $(".item-attrs li").on('click',function () {
                 $(this).addClass('selected').siblings().removeClass('selected');
                 setSku();
+            });
+
+            $("#btn-buy").on('click',function () {
+                if (item.skus.length > 0){
+                    if (!skuIdEl.val()){
+                        DSXUI.showToast('请选择产品型号');
+                        return false;
+                    }
+                }
+                $("#Form").submit();
+            });
+
+            $("#btn-basket").on('click',function () {
+                if (item.skus.length > 0){
+                    if (!skuIdEl.val()){
+                        DSXUI.showToast('请选择产品型号');
+                        return false;
+                    }
+                }
+                $.post('/webapi/cart/create',{
+                    itemid:item.itemid,
+                    quantity:quantity,
+                    sku_id:skuIdEl.val()
+                },function (response) {
+                    if (response.errcode){
+                        if (response.errmsg==='Unauthenticated.'){
+                            window.location.href = '/login';
+                        }else{
+                            DSXUI.showToast(response.errmsg);
+                        }
+
+                    }else{
+                        DSXUI.showToast('已成功加入购物车');
+                    }
+                });
             });
 
             function setSku() {

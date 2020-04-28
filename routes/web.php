@@ -12,18 +12,20 @@
 */
 
 require __DIR__.'/auth.php';
-require __DIR__.'/misc.php';
 require __DIR__.'/user.php';
 require __DIR__.'/admin.php';
 require __DIR__.'/post.php';
 require __DIR__.'/shop.php';
 require __DIR__.'/webapi.php';
 //首页
-Route::get('/', 'H5\IndexController@index');
+Route::get('/', 'Shop\IndexController@index');
 Route::group(['namespace' => 'Home'], function () {
     Route::get('app', 'IndexController@app');
     Route::get('upgrade', 'UpgradeController@index');
     Route::any('test', 'TestController@index');
 });
 
-
+//页面
+Route::group(['namespace' => 'Pages', 'prefix' => 'pages'], function () {
+    Route::get('detail/{pageid}.html', 'DetailController@index');
+});

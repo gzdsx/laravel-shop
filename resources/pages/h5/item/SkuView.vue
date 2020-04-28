@@ -10,7 +10,7 @@
         </div>
         <div class="sku-attrs">
             <div class="sku-attrs-content">
-                <div class="sku-attr-group" v-for="(attr,index) in item.attr_list" :key="index">
+                <div class="sku-attr-group" v-for="(attr,index) in item.attrs" :key="index">
                     <div class="attr-title">{{attr.attr_title}}</div>
                     <div class="attr-values">
                         <div class="attr-values-item"
@@ -27,9 +27,8 @@
                     <div class="flex">购买数量</div>
                     <van-stepper
                             v-model="quantity"
-                            :default-value="quantity"
-                            @change="handleQuantityChange(item)"
                             :max="sku.stock"
+                            :min="1"
                     />
                 </div>
             </div>
@@ -75,7 +74,7 @@
             },
             getSku() {
                 var props = [];
-                this.item.attr_list.map((attr) => {
+                this.item.attrs.map((attr) => {
                     attr.attr_values.map((v) => {
                         if (v.checked) props.push(v.attr_id);
                     });

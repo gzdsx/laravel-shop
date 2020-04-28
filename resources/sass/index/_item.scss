@@ -30,7 +30,7 @@
                 .dragbox {
                     width: 140px;
                     height: 140px;
-                    background: url("#{$image-path}/common/mask.png");
+                    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAGUExURf///////1V89WwAAAACdFJOU/8A5bcwSgAAABBJREFUeNpiYGBkYGQECDAAAA0ABMZIs2EAAAAASUVORK5CYII=");
                     position: absolute;
                     z-index: 100;
                     left: 0;
@@ -189,13 +189,13 @@
 
             .input-number {
                 border: 1px #DDD solid;
-                width: 120px;
+                width: 100px;
                 display: flex;
                 margin-right: 10px;
 
                 .input-btn {
                     float: left;
-                    width: 65px;
+                    width: 25px;
                     text-align: center;
                     cursor: pointer;
                     line-height: 30px;
@@ -214,6 +214,8 @@
                     float: left;
                     font-size: 16px;
                     width: 100%;
+                    resize: none;
+                    -webkit-appearance: textfield;
                 }
             }
 
@@ -262,24 +264,28 @@
             }
         }
 
-
-        .btn-lg {
-            font-size: 16px;
+        .btn-sku{
+            float: left;
             margin-right: 10px;
-            height: 38px;
-            line-height: 36px;
-            padding: 0 30px;
-            border: 1px #E12D2C solid;
-            background-color: #E12D2C;
-            color: #fff;
-            display: inline-block;
-            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            width: 178px;
+            background-color: #ffeded;
+            border: 1px solid #FF0036;
+            color: #FF0036;
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 16px;
         }
 
-        .btn-buy-now {
-            background-color: #FFE4CF;
-            color: #e5511d;
-            border-color: #f0cab6;
+        .btn-basket{
+            background-color: #ff0036;
+            border: 1px solid #ff0036;
+            color: #fff;
+            margin-right: 0;
         }
 
         .radio {
@@ -287,8 +293,6 @@
             height: 14px;
             width: 14px;
         }
-
-
     }
 
 

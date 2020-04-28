@@ -26,6 +26,8 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth']
     Route::get('bought/batchget', 'BoughtController@batchget');
     Route::post('bought/notice', 'BoughtController@notice');
     Route::post('bought/confirm', 'BoughtController@confirm');
+    Route::post('bought/delete', 'BoughtController@delete');
+    Route::post('bought/close', 'BoughtController@close');
     //账单
     Route::get('transaction/batchget', 'TransactionController@batchget');
     //address
@@ -40,3 +42,5 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth']
     Route::get('collect/item/batchget', 'CollectController@batchgetItems');
     Route::post('collect/item/delete', 'CollectController@deleteItem');
 });
+
+Route::get('avatar/{code}', 'User\AvatarController@index');

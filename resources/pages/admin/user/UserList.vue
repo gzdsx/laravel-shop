@@ -34,7 +34,7 @@
                     <el-table-column prop="aid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
-                            <el-image :src="scope.row.avatar" class="w50 h50" fit="cover"></el-image>
+                            <el-image :src="scope.row.avatar" class="img-40" fit="cover"></el-image>
                         </template>
                     </el-table-column>
                     <el-table-column label="用户名">

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Item $item
+ * @property-read \App\Models\Item|null $item
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ItemCollect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ItemCollect newQuery()

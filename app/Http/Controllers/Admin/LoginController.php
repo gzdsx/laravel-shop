@@ -87,7 +87,7 @@ class LoginController extends Controller
             'mobile' => $account,
             'password' => $password,
             'admincp' => 1
-        ], false);
+        ], true);
 
         if ($mobileLogin) {
             return true;
@@ -97,7 +97,7 @@ class LoginController extends Controller
             'email' => $account,
             'password' => $password,
             'admincp' => 1
-        ], false);
+        ], true);
 
         if ($emailLogin) {
             return true;

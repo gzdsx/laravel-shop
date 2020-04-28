@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Misc;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\Common\MaterialTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KindeditorController extends Controller
 {
@@ -46,7 +47,9 @@ class KindeditorController extends Controller
 
         $file_list = [];
         if ($dir === 'image') {
-            $this->user()->materials()->image()->orderByDesc('id')->limit(100)->get()->map(function ($m) use (&$file_list){
+            Auth::user()->materials()->where('type','image')
+                ->orderByDesc('id')->limit(100)->get()
+                ->map(function ($m) use (&$file_list){
                     $file_list[] = [
                     'is_dir'=>false,
                     'has_file'=>false,
@@ -62,7 +65,7 @@ class KindeditorController extends Controller
         }
 
         if ($dir === 'media') {
-            $this->user()->materials()->whereIn('type', ['video', 'voice'])->orderByDesc('id')
+            Auth::user()->materials()->whereIn('type', ['video', 'voice'])->orderByDesc('id')
                 ->limit(100)->get()->map(function ($m) use (&$file_list){
                     $file_list[] = [
                         'is_dir'=>false,
@@ -78,7 +81,7 @@ class KindeditorController extends Controller
         }
 
         if ($dir === 'file') {
-            $this->user()->materials()->whereIn('type', ['doc', 'file'])->orderByDesc('id')
+            Auth::user()->materials()->whereIn('type', ['doc', 'file'])->orderByDesc('id')
                 ->limit(100)->get()->map(function ($m) use (&$file_list){
                     $file_list[] = [
                         'is_dir'=>false,

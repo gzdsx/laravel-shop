@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $aid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\PostItem $post
+ * @property-read \App\Models\PostItem|null $post
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostCollect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PostCollect newQuery()
