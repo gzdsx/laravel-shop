@@ -15,7 +15,7 @@
 </head>
 <body><div id="app"></div>
 <script src="{{asset('kindeditor/kindeditor-all-min.js')}}" type="text/javascript"></script>
-<script src="{{asset('js/lib/vue-bootstrap.js?v=1')}}" type="text/javascript"></script>
+<script src="{{asset('js/lib/chunk-vendor.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/lib/element-ui.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/admin/app.js?v='.time())}}" type="text/javascript"></script>
 </body>

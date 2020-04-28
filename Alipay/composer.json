@@ -1,0 +1,35 @@
+{
+  "name": "xy113/alipay",
+  "version": "1.0.0",
+  "keywords": [
+    "alipay",
+    "微信支付"
+  ],
+  "description": "alipay kit",
+  "license": "MIT",
+  "type": "library",
+  "homepage": "https://github.com/xy113/alipay",
+  "authors": [
+    {
+      "name": "xy113",
+      "email": "songdewei@163.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "ext-bcmath": "*",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Alipay\\": "src/"
+    },
+    "files": [
+    ]
+  },
+  "extra": {
+  }
+}

@@ -91,7 +91,7 @@
                     lazyLoad(node, resolve) {
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
-                        Axios.get('/webapi/district/batchget?fid=' + fid).then(response => {
+                        axios.get('/webapi/district/batchget?fid=' + fid).then(response => {
                             const items = response.data.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2

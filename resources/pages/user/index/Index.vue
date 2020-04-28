@@ -39,8 +39,8 @@
         name: "Index",
         data:function () {
             return {
-                user:{},
-                account:{}
+                user,
+                account
             }
         }
     }

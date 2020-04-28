@@ -53,11 +53,11 @@
     export default {
         name: "ImagePicker",
         model: {
-            prop: 'modelVal',//指向props的参数名
+            prop: 'show',//指向props的参数名
             event: 'change'//事件名称
         },
         props: {
-            modelVal: {
+            show: {
                 type: Boolean,
                 default: false
             }
@@ -85,7 +85,7 @@
                 }
                 this.$emit('change', val);
             },
-            modelVal(val) {
+            show(val) {
                 this.visible = val;
             }
         },

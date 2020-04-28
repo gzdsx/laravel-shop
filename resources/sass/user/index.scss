@@ -18,10 +18,12 @@
 
     .header {
         height: 60px;
+        display: flex;
 
         .logo {
             float: left;
             padding-top: 10px;
+            margin-right: 30px;
 
             img {
                 height: 40px;
@@ -34,7 +36,6 @@
         .right-menu {
             font-size: 12px;
             overflow: hidden;
-            margin-left: 180px;
             padding: 20px 0 0;
 
             a {
@@ -473,7 +474,7 @@
 
             span {
                 font-weight: 500;
-                font-size: 16px;
+                font-size: 14px;
             }
         }
     }

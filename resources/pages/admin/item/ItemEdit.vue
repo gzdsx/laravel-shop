@@ -213,8 +213,8 @@
             if (itemid) {
                 this.itemid = itemid;
                 this.fetchItem();
-                this.fetchCatlogs();
             }
+            this.fetchCatlogs();
             this.fetchFreightTemplates();
         },
         methods: {

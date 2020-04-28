@@ -166,6 +166,11 @@
                     return false;
                 }
 
+                if (!this.$validator.isMobile(this.mobile)){
+                    this.$showToast('手机号输入有误');
+                    return false;
+                }
+
                 if (this.mobile === user.mobile) {
                     this.$showToast('新手机号不能和原来一致');
                     return false;

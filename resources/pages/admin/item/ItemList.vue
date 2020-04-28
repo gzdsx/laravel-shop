@@ -61,7 +61,13 @@
                             </a>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="title" label="名称"></el-table-column>
+                    <el-table-column label="名称">
+                        <template slot-scope="scope">
+                            <a :href="scope.row.url" target="_blank">
+                                {{scope.row.title}}
+                            </a>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="price" width="100" label="价格"></el-table-column>
                     <el-table-column prop="stock" width="100" label="库存"></el-table-column>
                     <el-table-column prop="sold" width="80" label="销量"></el-table-column>

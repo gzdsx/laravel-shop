@@ -36,7 +36,7 @@
         </div>
         <div class="h40"></div>
         <div class="edit-bottom">
-            <el-button type="primary" @click="submit">更新配置</el-button>
+            <el-button type="primary" @click="handleSubmit">更新配置</el-button>
         </div>
     </admin-frame>
 </template>
@@ -61,35 +61,35 @@
         },
         data: function () {
             return {
-                settings:{},
-                tabStyle:{
-                    'flex':'none',
-                    'padding-left':'15px',
-                    'padding-right':'15px'
+                settings: {},
+                tabStyle: {
+                    'flex': 'none',
+                    'padding-left': '15px',
+                    'padding-right': '15px'
                 }
             }
         },
         created() {
             this.fetchAll();
         },
-        methods:{
-            submit:function () {
-                this.$axios.post('/admin/settings/update',{settings:this.settings}).then(response=>{
+        methods: {
+            fetchAll: function () {
+                this.$get('/admin/settings/getall').then(response => {
+                    this.settings = response.data.settings;
+                });
+            },
+            handleSubmit: function () {
+                this.$post('/admin/settings/update', {settings: this.settings}).then(response => {
                     this.$showToast('配置更新成功');
                 });
             },
-            fetchAll:function () {
-                this.$axios.get('/admin/settings/getall',{settings:this.settings}).then(response=>{
-                    this.settings = response.data.settings;
-                });
-            }
         }
     }
 </script>
 
 <style scoped>
-.tab-content{
-    margin-top: 10px;
-    padding: 0 10px;
-}
+    .tab-content {
+        margin-top: 10px;
+        padding: 0 10px;
+    }
 </style>

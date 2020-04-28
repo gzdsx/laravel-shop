@@ -1,5 +1,5 @@
 <template>
-    <table class="dsxui-formtable" cellpadding="0" cellspacing="0" width="100%">
+    <table class="dsxui-formtable">
         <tbody>
         <tr>
             <td width="110" class="cell-label">允许上传的文件类型:</td>

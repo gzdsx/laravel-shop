@@ -9,7 +9,7 @@
     <link href="{{asset('css/iconfont/iconfont.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/vendor/element-ui.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/user/index.css?v='.time())}}" rel="stylesheet" type="text/css">
-    <script src="{{asset('js/lib/vue-bootstrap.js?v=1')}}" type="text/javascript"></script>
+    <script src="{{asset('js/lib/chunk-vendor.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/lib/element-ui.js')}}" type="text/javascript"></script>
     <script type="text/javascript">window.user=@json($user);window.account=@json($account);</script>
 </head>
@@ -26,7 +26,7 @@
         </div>
     </div>
 </div>
-<div style="height: 30px; display: block; clear: both;"></div>
+<div class="h30"></div>
 <div id="app"></div>
 @include('common.footer')
 <script type="text/javascript" src="{{asset('js/user/app.js?v='.time())}}"></script>

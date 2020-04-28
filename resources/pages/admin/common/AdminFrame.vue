@@ -6,7 +6,7 @@
                     <div class="sidebar-profile">
                         <el-dropdown>
                             <div class="el-dropdown-link">
-                                <img :src="'images/common/favicon.png'" class="logo" alt="">
+                                <img src="/images/common/favicon.png" class="logo" alt="">
                                 <div class="sitename">后台管理中心</div>
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                             </div>

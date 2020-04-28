@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('css/vendor/vant.css?v=2.0')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('css/h5/index.css?'.time())}}" type="text/css">
     @yield('styles')
-    <script src="{{asset('js/lib/vue-bootstrap.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/lib/chunk-vendor.js')}}" type="text/javascript"></script>
     <script src="{{asset('js/lib/vant.min.js')}}" type="text/javascript"></script>
     <script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript"></script>
     <script>var imgPath = '{{asset('images')}}';</script>

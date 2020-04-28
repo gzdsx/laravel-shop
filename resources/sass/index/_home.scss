@@ -240,9 +240,10 @@
     }
 }
 
-.duanwu-bg {
-    background-image: url("#{$image-path}/ad/duanwu-bg.jpg");
+.headbg {
+    background-image: url("#{$image-path}/shop/headbg.jpg");
     background-size: 100% 100%;
+    padding-top: 0;
 }
 
 .item-catlog-wrapper {

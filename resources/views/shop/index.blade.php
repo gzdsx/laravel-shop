@@ -3,7 +3,7 @@
 @section('title', '电商门户')
 
 @section('content')
-    <div class="color-wapper duanwu-bg" style="padding-top: 0;">
+    <div class="color-wapper headbg">
         <div class="area">
             <div class="category-panel">
                 <ul class="cat-list list-unstyled" id="cat-list">

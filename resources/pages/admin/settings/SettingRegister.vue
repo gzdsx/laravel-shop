@@ -1,5 +1,5 @@
 <template>
-    <table width="100%" cellspacing="0" cellpadding="0" class="dsxui-formtable">
+    <table class="dsxui-formtable">
         <tbody>
         <tr>
             <td width="110" class="cell-label">开放用户注册:</td>

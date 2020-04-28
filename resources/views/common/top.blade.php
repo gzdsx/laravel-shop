@@ -2,7 +2,7 @@
     <div class="area">
         <div class="float-right">
             <ul class="list-unstyled">
-                <li><a href="{{url('/')}}">商城首页</a></li>
+                <li><a href="{{url('/')}}">店铺首页</a></li>
                 <li class="pipe">|</li>
                 <li><a href="{{url('user')}}">个人中心</a></li>
                 <li>

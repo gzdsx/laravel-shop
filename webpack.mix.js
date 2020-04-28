@@ -32,9 +32,8 @@ mix.options({
  |
  */
 
-// mix.js('resources/js/env-bootstrap.js', 'public/js');
-// mix.js('resources/js/vue-bootstrap.js', 'public/js/lib');
-// mix.js('resources/js/vue-components.js', 'public/js');
+// mix.js('resources/js/chunk-vendor.js', 'public/js/lib');
+// mix.js('resources/js/chunk-jquery.js', 'public/js/lib');
 
 mix.js('resources/pages/h5/index.js', 'public/js/h5');
 mix.js('resources/pages/h5/user.js', 'public/js/h5');
@@ -46,6 +45,7 @@ mix.js('resources/pages/h5/sold.js', 'public/js/h5');
 //后台
 mix.js('resources/pages/admin/app.js', 'public/js/admin');
 mix.js('resources/pages/user/app.js', 'public/js/user');
+mix.js('resources/pages/order/buynow.js', 'public/js/order');
 //sass
 // mix.sass('resources/sass/bootstrap.scss', 'public/css/vendor');
 // mix.sass('resources/sass/element-ui.scss', 'public/css/vendor');
@@ -56,6 +56,7 @@ mix.sass('resources/sass/h5/index.scss', 'public/css/h5');
 mix.sass('resources/sass/errors/index.scss', 'public/css/errors');
 mix.sass('resources/sass/auth/index.scss', 'public/css/auth');
 mix.sass('resources/sass/user/index.scss', 'public/css/user');
+mix.sass('resources/sass/order/index.scss', 'public/css/order');
 //less
 // mix.less('resources/sass/vant.less', 'public/css/vendor');
 
