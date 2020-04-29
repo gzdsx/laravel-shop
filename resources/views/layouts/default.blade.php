@@ -21,7 +21,7 @@
 <div class="header">
     <div class="area banner">
         <div class="global-logo">
-            <img src="{{asset('images/common/logo.png?v=12')}}">
+            <img src="{{setting('logo')??''}}" alt="{{setting('sitename')??''}}">
         </div>
         <div class="global-search">
             <form method="get" action="{{url('search')}}">

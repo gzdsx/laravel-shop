@@ -61,6 +61,10 @@ input[type=text], textarea {
     -moz-appearance: none;
 }
 
+input[type=number]{
+    -webkit-appearance: textfield;
+}
+
 button{
     cursor: pointer;
 }

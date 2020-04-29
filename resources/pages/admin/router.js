@@ -24,6 +24,8 @@ import Ad from "./other/Ad";
 import Video from "./other/Video";
 import FreightList from "./freight/FreightList";
 import FreightSet from "./freight/FreightSet";
+import UserEdit from "./user/UserEdit";
+import UserGroupList from "./user/UserGroupList";
 
 
 const router = new VueRouter({
@@ -37,16 +39,11 @@ const router = new VueRouter({
         {path: '/freight/index', component: FreightList, meta: {title: '运费设置'}},
         {path: '/freight/edit', component: FreightSet, meta: {title: '编辑模板'}},
         {path: '/freight/edit/:template_id', component: FreightSet, meta: {title: '编辑模板'}},
-        {
-            path: '/user',
-            component: UserList,
-            children: [
-                {
-                    path: 'list',
-                    component: UserList,
-                }
-            ]
-        },
+        {path: '/user', component: UserList},
+        {path: '/user/list', component: UserList},
+        {path: '/user/edit', component: UserEdit},
+        {path: '/user/edit/:uid', component: UserEdit},
+        {path: '/user/group', component: UserGroupList},
         {path: '/item', component: ItemList,},
         {path: '/item/list', component: ItemList,},
         {path: '/item/edit', component: ItemEdit,},

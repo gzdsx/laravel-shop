@@ -72,8 +72,8 @@
                                 </li>
                             </ul>
                         </div>
-                        @if ($item->attr_list)
-                            @foreach ($item->attr_list as $attr)
+                        @if ($item->attrs)
+                            @foreach ($item->attrs as $attr)
                                 <dl class="item-dl">
                                     <dd class="dd">{{$attr['attr_title']}}</dd>
                                     <dt class="dt">

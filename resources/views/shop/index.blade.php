@@ -1,7 +1,5 @@
 @extends('layouts.default')
 
-@section('title', '电商门户')
-
 @section('content')
     <div class="color-wapper headbg">
         <div class="area">

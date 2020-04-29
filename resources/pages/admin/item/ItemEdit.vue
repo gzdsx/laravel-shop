@@ -51,7 +51,7 @@
                         <td class="cell-label"></td>
                         <td>
                             <div class="dsxui-uploader">
-                                <vuedraggable v-model="item.images" class="dsxui-uploader-files" draggable=".draggable">
+                                <vuedraggable class="dsxui-uploader-files" v-model="item.images" draggable=".draggable">
                                     <div class="dsxui-uploader-files-item draggable"
                                          v-for="(img,idx) in item.images"
                                          :key="idx"

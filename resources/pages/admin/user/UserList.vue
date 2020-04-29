@@ -9,15 +9,28 @@
 
         <div class="mainframe-content">
             <div class="content-block">
-                <div class="form-inline">
-                    <el-form :inline="true">
-                        <el-form-item label="用户名">
-                            <el-input size="medium" class="w150" v-model="searchFields.username"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
-                        </el-form-item>
-                    </el-form>
+                <div class="dsxui-form-inline">
+                    <div class="form-item">
+                        <div class="form-item-label">用户名</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" clearable v-model="searchFields.username"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">手机号</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" clearable v-model="searchFields.mobile"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="form-item-label">邮箱</div>
+                        <div class="form-item-input">
+                            <el-input size="medium" class="w200" clearable v-model="searchFields.emial"></el-input>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>
+                    </div>
                 </div>
             </div>
 
@@ -29,8 +42,14 @@
                         <el-tab-pane label="等待审核" name="0"></el-tab-pane>
                         <el-tab-pane label="禁止登录" name="-1"></el-tab-pane>
                     </el-tabs>
+                    <div class="buttons-wrapper">
+                        <router-link to="/user/edit">
+                            <el-button type="primary" size="small">添加用户</el-button>
+                        </router-link>
+                    </div>
                 </div>
-                <el-table :data="itemList" v-loading="loading" style="width: 100%" @selection-change="handleSelectionChange">
+                <el-table :data="itemList" v-loading="loading" style="width: 100%"
+                          @selection-change="handleSelectionChange">
                     <el-table-column prop="aid" width="45" type="selection"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
@@ -48,7 +67,7 @@
                     <el-table-column prop="created_at" width="170" label="注册时间"></el-table-column>
                     <el-table-column width="50" label="选项">
                         <template slot-scope="scope">
-                            <router-link :to="'/edit/'+scope.row.uid">编辑</router-link>
+                            <router-link :to="'/user/edit/'+scope.row.uid">编辑</router-link>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -97,12 +116,12 @@
                 catlogs: [],
                 selectionIds: [],
                 searchFields: {
-                    title: '',
-                    catid: '',
                     username: '',
-                    state: ''
+                    state: '',
+                    emial: '',
+                    mobile: ''
                 },
-                loading:true
+                loading: true
             }
         },
         mounted() {
@@ -147,6 +166,7 @@
             },
             handleTabClick: function (tab) {
                 this.searchFields.state = tab.name;
+                this.offset = 0;
                 this.fetchList();
             },
             handleBatchUpdate: function (params) {

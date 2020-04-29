@@ -32,7 +32,8 @@ class UserFilter extends ModelFilter
         return $this->where('email', '=', $email);
     }
 
-    public function gid($gid){
+    public function gid($gid)
+    {
         return $this->where('gid', $gid);
     }
 
@@ -49,6 +50,15 @@ class UserFilter extends ModelFilter
         if ($time) {
             return $this->where('created_at', '<', strtotime($time) + 86400);
         }
+        return $this;
+    }
+
+    public function state($state)
+    {
+        if (is_numeric($state)) {
+            return $this->where('state', $state);
+        }
+
         return $this;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-class Pinyin
+class PinyinUtil
 {
     private $_outEncoding = "gb2312";
 
@@ -114,5 +114,24 @@ class Pinyin
         for ($i = 0; $i < count($_Arr1); $i++)
             $_Res [$_Arr1 [$i]] = $_Arr2 [$i];
         return $_Res;
+    }
+
+    /**
+     * @param $str
+     * @param string $pix
+     * @return string|string[]|null
+     */
+    public static function pinyin($str, $pix = '')
+    {
+        return (new static())->getPinyin($str, $pix);
+    }
+
+    /**
+     * @param $str
+     * @return string|null
+     */
+    public static function firstChar($str)
+    {
+        return (new static())->getFirstChar($str);
     }
 }

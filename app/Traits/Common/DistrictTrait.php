@@ -15,6 +15,7 @@ namespace App\Traits\Common;
 
 
 use App\Models\District;
+use App\Support\PinyinUtil;
 use Illuminate\Http\Request;
 
 trait DistrictTrait
@@ -39,5 +40,47 @@ trait DistrictTrait
     {
         $fid = $request->input('fid', 0);
         return ajaxReturn(['items' => District::where('fid', $fid)->get()]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $attributes = collect($request->input('district', []));
+        if ($attributes->has('pinyin')) {
+            if (!$attributes->get('pinyin')) {
+                $attributes->put('pinyin', PinyinUtil::pinyin($attributes->get('name')));
+            }
+        }
+
+        if ($attributes->has('letter')) {
+            if (!$attributes->get('letter')) {
+                $attributes->put('letter', PinyinUtil::firstChar($attributes->get('name')));
+            }
+        }
+
+        if (!$attributes->get('level')) {
+            if ($attributes->get('fid')) {
+                $parent = District::find($attributes->get('fid'));
+                $attributes->put('level', $parent->level + 1);
+            } else {
+                $attributes->put('level', 1);
+            }
+        }
+        $district = District::findOrNew($request->input('id'));
+        $district->fill($attributes->except('id')->toArray())->save();
+        return ajaxReturn(['district' => $district]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request)
+    {
+        District::whereKey($request->input('items', []))->delete();
+        return ajaxReturn();
     }
 }

@@ -73,10 +73,18 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::post('link/delete', 'LinkController@delete');
     Route::get('district/get', 'DistrcitController@get');
     Route::get('district/batchget', 'DistrcitController@batchget');
+    Route::post('district/update', 'DistrcitController@update');
+    Route::post('district/delete', 'DistrcitController@delete');
     //用户管理
     Route::get('user/get', 'UserController@get');
     Route::get('user/batchget', 'UserController@batchget');
+    Route::post('user/update', 'UserController@update');
+    Route::post('user/delete', 'UserController@delete');
     Route::post('user/batchupdate', 'UserController@batchUpdate');
+    Route::get('user/group/get','UserGroupController@get');
+    Route::get('user/group/getall','UserGroupController@getAll');
+    Route::post('user/group/update','UserGroupController@update');
+    Route::post('user/group/delete','UserGroupController@delete');
     //系统设置
     Route::get('settings/getall', 'SettingsController@getAll');
     Route::post('settings/update', 'SettingsController@update');

@@ -62,7 +62,10 @@
                             </div>
                             <div class="v-common-nav-link-wrapper">
                                 <div class="v-common-nav-link">
-                                    <router-link to="/user">用户列表</router-link>
+                                    <router-link to="/user/list">用户列表</router-link>
+                                </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/user/group">用户分组</router-link>
                                 </div>
                             </div>
                         </div>
