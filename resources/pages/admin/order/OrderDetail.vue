@@ -78,6 +78,10 @@
                         <td>{{order.buyer_state_des}}</td>
                     </tr>
                     <tr>
+                        <td class="cell-label">订单金额</td>
+                        <td>{{order.total_fee}}</td>
+                    </tr>
+                    <tr>
                         <td class="cell-label">付款状态</td>
                         <td>{{order.pay_state_des}}</td>
                     </tr>

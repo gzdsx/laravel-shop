@@ -17,7 +17,7 @@
         </div>
         <div class="blank"></div>
         <div class="area">
-            <form method="get" id="Form" action="{{url('order/buynow')}}">
+            <form method="get" id="Form" autocomplete="off" action="{{url('order/buynow')}}">
                 @csrf
                 <input type="hidden" name="itemid" value="{{$item->itemid}}">
                 <input type="hidden" name="sku_id" value="" id="sku_id">

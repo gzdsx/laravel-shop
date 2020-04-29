@@ -7,7 +7,7 @@
                     <div class="title">{{item.title}}</div>
                     <div class="data">
                         <strong>￥{{item.price}}</strong>
-                        <span><s>市场价:{{item.price>0 ? item.price : item.price}}</s></span>
+                        <span>已售{{item.sold}}件</span>
                     </div>
                 </a>
             </div>

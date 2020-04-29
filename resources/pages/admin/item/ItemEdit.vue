@@ -214,7 +214,8 @@
                 this.itemid = itemid;
                 this.fetchItem();
             }else {
-                this.item.content.content = this.$refs.keditor.getCookie();
+                var content = this.$refs.keditor.getCookie();
+                if (content !== null) this.item.content.content = content;
             }
             this.fetchCatlogs();
             this.fetchFreightTemplates();

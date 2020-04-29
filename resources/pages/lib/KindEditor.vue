@@ -90,10 +90,10 @@
                         return strCrumb[1] ? unescape(strCrumb[1]) : null;
                     }
                 }
-                return null;
+                return '';
             },
             removeCookie: function () {
-                this.setCookie('keditor_content', null, 0);
+                this.setCookie('keditor_content', '', 0);
             }
         }
     }
