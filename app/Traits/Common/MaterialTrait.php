@@ -76,9 +76,9 @@ trait MaterialTrait
 
         //大图
         @mkdir(dirname(material_path($imagePath)), 0777, true);
-        if ($img->getWidth() > 1600) {
-            $scale = 1600 / $img->getWidth();
-            $img->resize(1600, $img->getHeight() * $scale)->save(material_path($imagePath));
+        if ($img->getWidth() > 2500) {
+            $scale = 2500 / $img->getWidth();
+            $img->resize(2500, $img->getHeight() * $scale)->save(material_path($imagePath));
         } else {
             $img->save(material_path($imagePath));
         }

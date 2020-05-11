@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Address
  *
- * @property int $address_id
+ * @property int $id
  * @property int $shop_id
  * @property string|null $name
- * @property string|null $phone
+ * @property string|null $tel
  * @property string|null $province
  * @property string|null $city
  * @property string|null $district
@@ -21,23 +21,23 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereDistrict($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundAddress whereTel($value)
  * @mixin \Eloquent
  */
 class RefundAddress extends Model
 {
     protected $table = 'refund_address';
-    protected $primaryKey = 'address_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'shop_id', 'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode'
+        'shop_id', 'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
     ];
 
     public $timestamps = false;

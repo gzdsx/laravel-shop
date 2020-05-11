@@ -37,7 +37,7 @@
                     <el-table-column prop="url" label="链接"></el-table-column>
                     <el-table-column label="编辑" width="60">
                         <template slot-scope="scope">
-                            <el-link @click="handleEdit($event,scope.row)">编辑</el-link>
+                            <a @click="handleEdit($event,scope.row)">编辑</a>
                         </template>
                     </el-table-column>
                 </el-table>

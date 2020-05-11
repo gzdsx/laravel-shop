@@ -14,7 +14,7 @@
                             <span>快递列表</span>
                         </div>
                         <div class="button-item">
-                            <el-button type="primary" size="small" @click="handleAddExpress">添加快递</el-button>
+                            <el-button type="primary" size="small" @click="handleShowAdd">添加快递</el-button>
                         </div>
                     </div>
                 </header>
@@ -70,7 +70,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <el-button type="primary" size="medium" class="w100" @click="handleSaveMenu">提交</el-button>
+                        <el-button type="primary" size="medium" class="w100" @click="handleSave">提交</el-button>
                     </td>
                     <td></td>
                 </tr>
@@ -127,7 +127,7 @@
                     });
                 });
             },
-            handleSaveMenu() {
+            handleSave() {
                 if (!this.express.name) {
                     this.$showToast('请填写快递名称');
                     return false;
@@ -142,7 +142,7 @@
                     this.fetchList();
                 });
             },
-            handleAddExpress() {
+            handleShowAdd() {
                 this.resetData();
                 this.showDialog = true;
             },

@@ -24,10 +24,13 @@ Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth']
     //Order
     Route::get('bought/get', 'BoughtController@get');
     Route::get('bought/batchget', 'BoughtController@batchget');
+    Route::get('bought/getitem', 'BoughtController@getItem');
     Route::post('bought/notice', 'BoughtController@notice');
     Route::post('bought/confirm', 'BoughtController@confirm');
     Route::post('bought/delete', 'BoughtController@delete');
     Route::post('bought/close', 'BoughtController@close');
+    Route::post('bought/review', 'BoughtController@review');
+    Route::post('bought/applyrefund', 'BoughtController@applyRefund');
     //账单
     Route::get('transaction/batchget', 'TransactionController@batchget');
     //address

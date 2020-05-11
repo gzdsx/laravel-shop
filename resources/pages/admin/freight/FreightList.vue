@@ -10,7 +10,7 @@
         <div class="mainframe-content">
             <div class="content-block">
                 <div class="table-edit-header">
-                    <div class="edit-title">模板列表</div>
+                    <div class="table-edit-title">模板列表</div>
                     <div class="buttons-wrapper">
                         <router-link to="/freight/edit">
                             <el-button type="primary" size="small">添加模板</el-button>
@@ -26,7 +26,7 @@
                             <p>{{scope.row.free_quantity}}件以上包邮或者金额满{{scope.row.free_amount}}包邮</p>
                         </template>
                     </el-table-column>
-                    <el-table-column width="90">
+                    <el-table-column width="90" label="操作选项">
                         <template slot-scope="scope">
                             <router-link :to="'/freight/edit/'+scope.row.template_id">编辑</router-link>
                             <a @click="handleDelete(scope.row.template_id)">删除</a>

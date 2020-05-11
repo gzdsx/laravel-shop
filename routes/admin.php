@@ -130,4 +130,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'auth
     Route::get('video/batchget','VideoController@batchGet');
     Route::post('video/update','VideoController@update');
     Route::post('video/delete','VideoController@delete');
+    //退货理由
+    Route::get('refundreason/getall','RefundReasonController@getAll');
+    Route::post('refundreason/update','RefundReasonController@update');
+    Route::post('refundreason/delete','RefundReasonController@delete');
 });

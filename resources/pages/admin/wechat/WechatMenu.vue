@@ -176,7 +176,7 @@
                 <tr>
                     <td></td>
                     <td colspan="2">
-                        <el-button type="primary" size="medium" class="w100" @click="handleSaveMenu">提交</el-button>
+                        <el-button type="primary" size="medium" class="w100" @click="handleSave">提交</el-button>
                     </td>
                 </tr>
                 </tfoot>
@@ -236,7 +236,7 @@
                     });
                 });
             },
-            handleSaveMenu() {
+            handleSave() {
                 if (!this.menu.name) {
                     this.$showToast('请填写菜单名称');
                     return false;

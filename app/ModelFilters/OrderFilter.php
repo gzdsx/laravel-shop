@@ -23,6 +23,8 @@ class OrderFilter extends ModelFilter
             return $this->where('order_state', 3);
         } elseif ($tab == 'received') {
             return $this->where('order_state', 4);
+        } elseif ($tab == 'success') {
+            return $this->where('order_state', 4);
         } elseif ($tab == 'refunding') {
             return $this->where('order_state', 5);
         } elseif ($tab == 'closed') {

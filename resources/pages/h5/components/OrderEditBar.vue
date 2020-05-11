@@ -78,7 +78,7 @@
                     message: '你确认要申请退款吗?'
                 }).then(() => {
                     // on confirm
-                    this.$axios.post('/webapi/bought/refund', {
+                    this.$axios.post('/webapi/bought/applyrefund', {
                         order_id: this.order.order_id
                     }).then(response => {
                         this.$toast.success('退款成功');

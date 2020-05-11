@@ -26,6 +26,8 @@ import FreightList from "./freight/FreightList";
 import FreightSet from "./freight/FreightSet";
 import UserEdit from "./user/UserEdit";
 import UserGroupList from "./user/UserGroupList";
+import RefundReason from "./other/RefundReason";
+import PagesCategory from "./pages/PagesCategory";
 
 
 const router = new VueRouter({
@@ -60,6 +62,7 @@ const router = new VueRouter({
         {path: '/pages/list', component: PagesList},
         {path: '/pages/edit', component: PagesEdit},
         {path: '/pages/edit/:pageid', component: PagesEdit},
+        {path: '/pages/category', component: PagesCategory},
         {path: '/material', component: MaterialList},
         {path: '/link', component: LinkList},
         {path: '/district', component: DistrictList},
@@ -75,6 +78,7 @@ const router = new VueRouter({
         {path: '/block/item/:block_id', component: BlockItem},
         {path: '/ad', component: Ad},
         {path: '/video', component: Video},
+        {path: '/refundreason', component: RefundReason},
         {
             path: '*',
             component: () => require('./error/404')

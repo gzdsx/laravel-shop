@@ -8,6 +8,8 @@ import PostCollect from "./collect/PostCollect";
 import ItemCollect from "./collect/ItemCollect";
 import BoughtList from "./bought/BoughtList";
 import BoughtDetail from "./bought/BoughtDetail";
+import BoughtReview from "./bought/BoughtReview";
+import ApplyRefund from "./refund/ApplyRefund";
 
 const router = new VueRouter({
     routes: [
@@ -21,6 +23,8 @@ const router = new VueRouter({
         {path: '/collect/item', component: ItemCollect, meta: {title: '我的收藏'}},
         {path: '/bought', component: BoughtList, meta: {title: '我的订单'}},
         {path: '/bought/detail/:order_id', component: BoughtDetail, meta: {title: '订单详情'}},
+        {path: '/bought/review/:order_id', component: BoughtReview, meta: {title: '订单评价'}},
+        {path: '/refund/apply/:order_id/:itemid', component: ApplyRefund, meta: {title: '申请退款'}},
     ]
 });
 

@@ -63,8 +63,8 @@
                         </td>
                         <td><strong style="color: #f40;">￥{{computeTotal(item)}}</strong></td>
                         <td>
-                            <p><a href="javascript:;">移入收藏夹</a></p>
-                            <p><a href="javascript:;">删除</a></p>
+                            <p><a @click="handleMoveToFavoritor(item)">移入收藏夹</a></p>
+                            <p><a @click="handleDelete(item)">删除</a></p>
                         </td>
                     </tr>
                     </tbody>
@@ -162,6 +162,18 @@
                     }
                     return a;
                 }, 0);
+            },
+            handleMoveToFavoritor(item) {
+                this.$post('/webapi/item/collect/create', {itemid: item.itemid}).then(response => {
+                    this.$showToast('已成功加入收藏夹');
+                });
+            },
+            handleDelete(item) {
+                if (confirm('确定要从购物车删除此宝贝吗?')) {
+                    this.$post('/webapi/cart/delete', {items: [item.itemid]}).then(response => {
+                        this.fetchList();
+                    });
+                }
             }
         },
         watch: {

@@ -12,13 +12,13 @@
                 <div class="form-inline">
                     <el-form :inline="true">
                         <el-form-item label="交易流水">
-                            <el-input size="medium" class="w150" v-model="searchFields.transaction_no"></el-input>
+                            <el-input size="medium" class="w200" v-model="searchFields.transaction_no"></el-input>
                         </el-form-item>
                         <el-form-item label="商品名称">
-                            <el-input size="medium" class="w150" v-model="searchFields.subject"></el-input>
+                            <el-input size="medium" class="w200" v-model="searchFields.subject"></el-input>
                         </el-form-item>
                         <el-form-item label="付款方">
-                            <el-input size="medium" class="w150" v-model="searchFields.payer_name"></el-input>
+                            <el-input size="medium" class="w200" v-model="searchFields.payer_name"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button size="medium" type="primary" @click="handleSearch">查询</el-button>

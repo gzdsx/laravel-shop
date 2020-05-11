@@ -1,30 +1,27 @@
 @extends('layouts.default')
 
-@section('title', $pageData['title'])
+@section('title', $page->title)
 
 @section('content')
     <div class="area">
         <div class="page-detail">
-            <div class="sidebar">
-                @foreach ($categoryList as $category)
-                    <h3>{{$category['title']}}</h3>
+            <div class="frame-left">
+                @foreach ($pageList as $p)
+                    <h3>{{$p->title}}</h3>
                     <ul>
-                        @if (isset($pageList[$category['pageid']]))
-                            @foreach($pageList[$category['pageid']] as $page)
-                                <li><a href="{{$page->url}}">{{$page['title']}}</a></li>
-                            @endforeach
-                        @endif
+                        @foreach($p->pages as $pp)
+                            <li><a href="{{$pp->url}}" class="{{$pp->pageid==$page->pageid ? 'active' :''}}">{{$pp->title}}</a></li>
+                        @endforeach
                     </ul>
                 @endforeach
             </div>
 
-            <div class="main-frame">
+            <div class="frame-main">
                 <div class="frame-content">
-                    <h2 class="title">{{$pageData['title']}}</h2>
-                    <div class="content">{!! $pageData['content'] !!}</div>
+                    <h2 class="title">{{$page->title}}</h2>
+                    <div class="content">{!! $page->content !!}</div>
                 </div>
             </div>
         </div>
     </div>
-    <script>$(".area,.nav").width(960);</script>
 @stop

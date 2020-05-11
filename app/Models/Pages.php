@@ -50,8 +50,7 @@ class Pages extends Model
     protected $table = 'pages';
     protected $primaryKey = 'pageid';
     protected $fillable = [
-        'type', 'catid', 'title', 'alias', 'image', 'summary',
-        'content', 'template', 'displayorder', 'created_at', 'updated_at'
+        'type', 'catid', 'title', 'alias', 'image', 'summary', 'content', 'template', 'displayorder'
     ];
     protected $appends = ['url', 'h5_url'];
 

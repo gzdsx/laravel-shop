@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $express_name 快递名称
  * @property string|null $express_no 快递单号
  * @property string|null $name
- * @property string|null $phone
+ * @property string|null $tel
  * @property string|null $province
  * @property string|null $city
  * @property string|null $district
@@ -34,11 +34,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereExpressNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereRefundId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RefundShipping whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -48,7 +48,7 @@ class RefundShipping extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'refund_id', 'express_code', 'express_name', 'express_no',
-        'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode', 'created_at', 'updated_at'
+        'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
     ];
 
     /**

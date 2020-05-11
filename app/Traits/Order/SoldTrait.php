@@ -101,16 +101,14 @@ trait SoldTrait
     public function send(Request $request)
     {
         $order = $this->query()->findOrFail($request->input('order_id'));
-        if (!$order->shipping_state) {
-            if ($order->shipping) {
-                $order->shipping->express_code = $request->input('express_code');
-                $order->shipping->express_name = $request->input('express_name');
-                $order->shipping->express_no = $request->input('express_no');
-                $order->shipping->save();
-            }
-
-            $this->orderService()->send($order);
+        if ($order->shipping) {
+            $order->shipping->express_code = $request->input('express_code');
+            $order->shipping->express_name = $request->input('express_name');
+            $order->shipping->express_no = $request->input('express_no');
+            $order->shipping->save();
         }
+
+        $this->orderService()->send($order);
         return ajaxReturn(['order' => $order]);
     }
 

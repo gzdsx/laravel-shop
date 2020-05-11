@@ -24,11 +24,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $shipping_fee 运费
  * @property float $total_fee 总费用
  * @property float $redpack_amount 红包金额
+ * @property int $coupon_id 优惠券
+ * @property int $trade_state 交易状态
+ * @property int $refund_state 退款状态
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereCouponId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereDiscount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereImage($value)
@@ -39,12 +43,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem wherePromotionPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereRedpackAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereShippingFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereSkuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereSkuTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereTotalFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrderItem whereTradeState($value)
  * @mixin \Eloquent
  */
 class OrderItem extends Model

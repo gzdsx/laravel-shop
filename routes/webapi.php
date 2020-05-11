@@ -37,6 +37,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
     Route::get('block/item/batchget', 'BlockController@batchgetItem');
 
     Route::get('express/getall', 'ExpressController@getAll');
+    Route::get('refundreason/getall', 'RefundReasonController@getAll');
 
     Route::group(['middleware' => 'auth'], function () {
         Route::get('freighttemplate/getall', 'FreightTemplateController@getAll');
@@ -59,13 +60,14 @@ Route::group(['namespace' => 'Api', 'prefix' => 'webapi'], function () {
         Route::get('cart/getall', 'CartController@getAll');
         Route::post('cart/create', 'CartController@create');
         Route::post('cart/update', 'CartController@update');
+        Route::post('cart/delete', 'CartController@delete');
         Route::get('bought/get', 'BoughtController@get');
         Route::get('bought/batchget', 'BoughtController@batchget');
         Route::post('bought/close', 'BoughtController@close');
         Route::post('bought/confirm', 'BoughtController@confirm');
         Route::post('bought/delete', 'BoughtController@delete');
         Route::post('bought/notice', 'BoughtController@notice');
-        Route::post('bought/refund', 'BoughtController@refund');
+        Route::post('bought/applyrefund', 'BoughtController@applyRefund');
 
         Route::get('sold/get', 'SoldController@get');
         Route::get('sold/batchget', 'SoldController@batchget');

@@ -33,7 +33,7 @@ class RefundImage extends Model
      */
     public function getThumbAttribute($value)
     {
-        return image_url($value);
+        return $value ? image_url($value) : $value;
     }
 
     /**
@@ -41,7 +41,7 @@ class RefundImage extends Model
      */
     public function setThumbAttribute($value)
     {
-        $this->attributes['thumb'] = str_replace(material_url(), '', $value);
+        $this->attributes['thumb'] = strip_image_url($value);
     }
 
     /**
@@ -50,7 +50,7 @@ class RefundImage extends Model
      */
     public function getImageAttribute($value)
     {
-        return image_url($value);
+        return $value ? image_url($value) : $value;
     }
 
     /**
@@ -58,6 +58,6 @@ class RefundImage extends Model
      */
     public function setImageAttribute($value)
     {
-        $this->attributes['image'] = str_replace(material_url(), '', $value);
+        $this->attributes['image'] = strip_image_url($value);
     }
 }

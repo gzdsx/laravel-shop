@@ -36,8 +36,9 @@
                         <col>
                         <col width="100">
                         <col width="70">
-                        <col width="145">
+                        <col width="100">
                         <col width="120">
+                        <col width="110">
                         <col width="105">
                     </colgroup>
                     <thead>
@@ -45,6 +46,7 @@
                         <th>宝贝</th>
                         <th class="align-center">单价</th>
                         <th class="align-center">数量</th>
+                        <th class="align-center">商品操作</th>
                         <th class="align-center">实付款</th>
                         <th class="align-center">交易状态</th>
                         <th class="align-center">交易操作</th>
@@ -60,8 +62,9 @@
                                     <col>
                                     <col width="100">
                                     <col width="70">
-                                    <col width="145">
+                                    <col width="100">
                                     <col width="120">
+                                    <col width="110">
                                     <col width="105">
                                 </colgroup>
                                 <thead>
@@ -76,8 +79,10 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th class="align-right">
-                                        <a v-if="order.closed"><span class="iconfont icon-delete1 font-18" @click="handleDelete(order)"></span></a>
+                                        <a v-if="order.closed"><span class="iconfont icon-delete1 font-18"
+                                                                     @click="handleDelete(order)"></span></a>
                                     </th>
                                 </tr>
                                 </thead>
@@ -99,15 +104,20 @@
                                         <div class="align-center">x{{item.quantity}}</div>
                                     </td>
                                     <td>
+                                        <div class="align-center" v-if="order.pay_state">
+                                            <p><a @click="handleRefund(item)">退款/退货</a></p>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="align-center" v-if="idx===0">
-                                            <p><strong>￥{{order.total_fee}}</strong></p>
-                                            <p class="col-freight">(含运费: ￥{{order.shipping_fee}})</p>
+                                            <p><strong class="font-14">￥{{order.total_fee}}</strong></p>
+                                            <p class="col-freight">(含运费:￥{{order.shipping_fee}})</p>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="align-center" v-if="idx===0">
                                             <p>{{order.buyer_state_des}}</p>
-                                            <router-link :to="'/bought/detail/'+order.order_id">详情</router-link>
+                                            <router-link :to="'/bought/detail/'+order.order_id">订单详情</router-link>
                                         </div>
                                     </td>
                                     <td>
@@ -129,8 +139,8 @@
                                                          v-if="order.order_state===3">
                                                 <el-button size="mini" type="primary">确认收货</el-button>
                                             </router-link>
-                                            <router-link :to="'/bought/detail/'+order.order_id"
-                                                         v-if="order.order_state===4">
+                                            <router-link :to="'/bought/review/'+order.order_id"
+                                                         v-if="order.order_state===4&&!order.buyer_rate">
                                                 <el-button size="mini" type="primary">立即评价</el-button>
                                             </router-link>
                                         </div>
@@ -221,7 +231,7 @@
                     this.$showToast('已成功提醒卖家发货');
                 });
             },
-            handleCloseOrder(order){
+            handleCloseOrder(order) {
                 const {order_id} = order;
                 this.$confirm('确认要取消此订单吗?', '提示', {
                     confirmButtonText: '确定',
@@ -233,6 +243,10 @@
                         this.fetchList();
                     });
                 });
+            },
+            handleRefund(item) {
+                const {order_id, itemid} = item;
+                this.$router.push({path: '/refund/apply/'+order_id+'/'+itemid});
             }
         }
     }

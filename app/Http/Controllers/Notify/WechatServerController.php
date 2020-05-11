@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Notify;
 
 
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Services\Wechat\OfficialAccountService;
 use App\Traits\WeChat\WechatDefaultConfig;

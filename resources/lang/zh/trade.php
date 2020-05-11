@@ -69,4 +69,13 @@ return [
     'confirm success' => '确认收货成功',
     'delete order' => '删除订单',
     'confirm receipt' => '确认收货',
+    'close_reasons'=>[
+        '我不想买了',
+        '信息填写错误，重新拍',
+        '卖家缺货',
+        '同城见面交易',
+        '付款遇到问题',
+        '拍错了',
+        '其他原因'
+    ]
 ];

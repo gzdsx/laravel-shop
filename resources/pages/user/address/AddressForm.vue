@@ -21,7 +21,7 @@
             <tr>
                 <td class="cell-label">所在地</td>
                 <td>
-                    <el-cascader :props.sync="props" class="w300" v-model="cities" ref="cascader"></el-cascader>
+                    <el-cascader :props.sync="props" size="medium" class="w300" v-model="cities" ref="cascader"></el-cascader>
                 </td>
             </tr>
             <tr>

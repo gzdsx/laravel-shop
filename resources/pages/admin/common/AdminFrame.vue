@@ -51,6 +51,12 @@
                                 <div class="v-common-nav-link">
                                     <router-link to="/freight/index">运费模板</router-link>
                                 </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/refundreason">退货理由</router-link>
+                                </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/express">快递管理</router-link>
+                                </div>
                             </div>
                         </div>
                         <div class="v-common-nav-model">
@@ -135,7 +141,7 @@
                                     <router-link to="/pages/list">页面列表</router-link>
                                 </div>
                                 <div class="v-common-nav-link">
-                                    <router-link to="/pages/edit">添加页面</router-link>
+                                    <router-link to="/pages/category">页面分类</router-link>
                                 </div>
                             </div>
                         </div>
@@ -169,9 +175,6 @@
                                 </div>
                                 <div class="v-common-nav-link">
                                     <router-link to="/district">区域管理</router-link>
-                                </div>
-                                <div class="v-common-nav-link">
-                                    <router-link to="/express">快递管理</router-link>
                                 </div>
                                 <div class="v-common-nav-link">
                                     <router-link to="/block/list">内容模块</router-link>

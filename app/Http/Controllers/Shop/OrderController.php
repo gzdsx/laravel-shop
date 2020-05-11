@@ -94,20 +94,24 @@ class OrderController extends BaseController
         $res = Factory::query()->sendRequest(['out_trade_no' => $out_trade_no]);
         if ($res['trade_status'] == 'TRADE_SUCCESS') {
             $transaction = Transaction::findByOutTradeNo($out_trade_no);
-            $transaction->extra = $request->all();
-            $transaction->transaction_state = 2;
-            $transaction->pay_state = 1;
-            $transaction->pay_at = now();
-            $transaction->pay_type = 'alipay';
-            $transaction->save();
+            if (!$transaction->pay_state){
+                $transaction->extra = $request->all();
+                $transaction->transaction_state = 2;
+                $transaction->pay_state = 1;
+                $transaction->pay_at = now();
+                $transaction->pay_type = 'alipay';
+                $transaction->save();
+            }
 
             if ($transaction->order) {
-                $transaction->order->order_state = 2;
-                $transaction->order->pay_state = 1;
-                $transaction->order->pay_at = now();
-                $transaction->order->save();
+                if ($transaction->order->pay_state){
+                    $transaction->order->order_state = 2;
+                    $transaction->order->pay_state = 1;
+                    $transaction->order->pay_at = now();
+                    $transaction->order->save();
 
-                dispatch(new OrderProcessNotice($transaction->order, 'paid'));
+                    dispatch(new OrderProcessNotice($transaction->order, 'paid'));
+                }
                 return redirect('order/pay/result?order_id=' . $transaction->order->order_id);
             } else {
                 return $transaction;

@@ -2,8 +2,8 @@
 // @formatter:off
 
 /**
- * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 6.18.6 on 2020-04-20 03:31:13.
+ * A helper file for Laravel, to provide autocomplete information to your IDE
+ * Generated for Laravel 6.18.10 on 2020-05-04 03:06:32.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -13116,7 +13116,8 @@ namespace Illuminate\Support\Facades {
          * @return bool 
          * @static 
          */ 
-        public static function prepend($path, $data, $separator = '')
+        public static function prepend($path, $data, $separator = '
+')
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->prepend($path, $data, $separator);
@@ -13131,7 +13132,8 @@ namespace Illuminate\Support\Facades {
          * @return bool 
          * @static 
          */ 
-        public static function append($path, $data, $separator = '')
+        public static function append($path, $data, $separator = '
+')
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->append($path, $data, $separator);
@@ -15241,7 +15243,7 @@ namespace Maatwebsite\Excel\Facades {
          * @param string $event
          * @static 
          */ 
-        public static function extend($concern, $handler, $event = 'Maatwebsite\Excel\Events\BeforeWriting')
+        public static function extend($concern, $handler, $event = 'Maatwebsite\\Excel\\Events\\BeforeWriting')
         {
                         return \Maatwebsite\Excel\Excel::extend($concern, $handler, $event);
         }
@@ -15955,7 +15957,7 @@ namespace SimpleSoftwareIO\QrCode\Facades {
          * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
          * @static 
          */ 
-        public static function merge($filepath, $percentage = '0.2', $absolute = false)
+        public static function merge($filepath, $percentage = 0.2, $absolute = false)
         {
                         /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
                         return $instance->merge($filepath, $percentage, $absolute);
@@ -15969,7 +15971,7 @@ namespace SimpleSoftwareIO\QrCode\Facades {
          * @return \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator 
          * @static 
          */ 
-        public static function mergeString($content, $percentage = '0.2')
+        public static function mergeString($content, $percentage = 0.2)
         {
                         /** @var \SimpleSoftwareIO\QrCode\BaconQrCodeGenerator $instance */
                         return $instance->mergeString($content, $percentage);
@@ -19245,7 +19247,7 @@ namespace  {
             /**
              * Add an "order by" clause to the query.
              *
-             * @param \Closure|\Illuminate\Database\Query\Builder|string $column
+             * @param \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string $column
              * @param string $direction
              * @return \Illuminate\Database\Query\Builder 
              * @throws \InvalidArgumentException

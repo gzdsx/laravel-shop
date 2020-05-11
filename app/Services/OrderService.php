@@ -14,6 +14,7 @@
 namespace App\Services;
 
 
+use Alipay\Factory as Alipay;
 use App\Jobs\OrderProcessNotice;
 use App\Models\Address;
 use App\Models\FreightTemplate;
@@ -84,7 +85,7 @@ class OrderService implements OrderServiceInterface
                             'price' => $sku->price,
                             'sku_id' => $sku->id,
                             'sku_title' => $sku->title,
-                            'total_fee' => $item->quantity,
+                            'total_fee' => $simpleFee,
                             'shipping_fee' => $freight,
                             'redpack_amount' => $item->redpack_amount
                         ]);
@@ -161,7 +162,7 @@ class OrderService implements OrderServiceInterface
             $order->shipping->update($address->only(['name', 'tel', 'province', 'city', 'district', 'street', 'postalcode']));
 
             //添加操作记录
-            $order->actions()->create([
+            $order->logs()->create([
                 'uid' => $buyer->uid,
                 'username' => $buyer->username,
                 'content' => trans('auction.order submitted success')
@@ -285,31 +286,49 @@ class OrderService implements OrderServiceInterface
         return $order;
     }
 
-
     /**
-     * 评价
      * @param Order $order
-     * @return Order|void
+     * @return Order
      */
-    public function reate(Order $order)
+    public function buyerRate(Order $order)
     {
-        // TODO: Implement reate() method.
-        if ($order->order_state == 4 && !$order->buyer_rate) {
-            $order->buyer_rate = 1;
-            $order->save();
-            dispatch(new OrderProcessNotice($order, 'rate'));
-        }
+        // TODO: Implement buyerReview() method.
+        $order->buyer_rate = 1;
+        $order->save();
+        dispatch(new OrderProcessNotice($order, 'buyerRate'));
         return $order;
     }
 
-    public function buyerReview(Order $order)
-    {
-        // TODO: Implement buyerReview() method.
-    }
-
-    public function sellerReview(Order $order)
+    /**
+     * @param Order $order
+     * @return Order
+     */
+    public function sellerRate(Order $order)
     {
         // TODO: Implement sellerReview() method.
+        $order->seller_rate = 1;
+        $order->save();
+        dispatch(new OrderProcessNotice($order, 'sellerRate'));
+        return $order;
+    }
+
+    /**
+     * @param Order $order
+     * @return Order
+     */
+    public function applyRefund(Order $order)
+    {
+        // TODO: Implement applyRefund() method.
+        $order->order_state = 5;
+        $order->refund_state = 1;
+        $order->refund_at = now();
+        if ($transaction = $order->transaction) {
+            $transaction->transaction_state = 5;
+        }
+        $order->push();
+        dispatch(new OrderProcessNotice($order, 'applyRefund'));
+
+        return $order;
     }
 
     /**
@@ -320,41 +339,17 @@ class OrderService implements OrderServiceInterface
     public function refund(Order $order)
     {
         // TODO: Implement refund() method.
-        if ($order->refund_state == 0) {
-            //未发货直接退款
-            if ($order->order_state == 2) {
-                $order->order_state = 6;
-                $order->refund_state = 1;
-                $order->refund_at = now();
-                $order->save();
+        $order->order_state = 6;
+        $order->refund_state = 1;
+        $order->refund_at = now();
+        $order->save();
 
-                if ($transaction = $order->transaction) {
-                    $transaction->transaction_state = 6;
-                    $transaction->pay_state = 2;
-                    $transaction->save();
-
-                    $res = $this->payment()->refund->byTransactionId(
-                        $transaction->extra['transaction_id'],
-                        $order->refund->refund_no,
-                        $transaction->extra['total_fee'],
-                        $transaction->extra['total_fee']);
-                    $response = new RefundOrderResponse($res);
-                    if (!$response->tradeSuccess()) {
-                        abort(400, $response->errCodeDes());
-                    }
-                }
-                dispatch(new OrderProcessNotice($order, 'refunded'));
-            } else {
-                $order->order_state = 5;
-                $order->refund_state = 1;
-                $order->refund_at = now();
-                if ($transaction = $order->transaction) {
-                    $transaction->transaction_state = 5;
-                }
-                $order->push();
-                dispatch(new OrderProcessNotice($order, 'refunding'));
-            }
+        if ($transaction = $order->transaction) {
+            $transaction->transaction_state = 6;
+            $transaction->pay_state = 2;
+            $transaction->save();
         }
+        dispatch(new OrderProcessNotice($order, 'refund'));
         return $order;
     }
 
@@ -374,7 +369,7 @@ class OrderService implements OrderServiceInterface
                 $order->transaction->transaction_state = 6;
             }
             $order->push();
-            dispatch(new OrderProcessNotice($order, 'closed'));
+            dispatch(new OrderProcessNotice($order, 'close'));
         }
         return $order;
     }

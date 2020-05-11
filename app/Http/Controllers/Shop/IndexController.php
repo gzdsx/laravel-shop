@@ -11,13 +11,16 @@ use Illuminate\Http\Request;
 
 class IndexController extends BaseController
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
-
         $catlogs = ItemCatlog::fetchWithCache();
         $slides = BlockItem::where('block_id', 1)->get();
         $news = PostItem::orderByDesc('aid')->limit(10)->get();
         $items = Item::orderByDesc('itemid')->get();
-        return $this->view('shop.index', compact('catlogs', 'slides', 'news','items'));
+        return $this->view('shop.index', compact('catlogs', 'slides', 'news', 'items'));
     }
 }

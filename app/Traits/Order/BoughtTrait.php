@@ -14,16 +14,18 @@
 namespace App\Traits\Order;
 
 
+use App\Models\ItemReviews;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Services\Contracts\OrderServiceInterface;
-use App\Traits\WeChat\WechatDefaultConfig;
+use App\Support\TradeUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 trait BoughtTrait
 {
-    use WechatDefaultConfig;
+    use RefundTrait;
 
     /**
      * @return Order|\Illuminate\Database\Eloquent\Builder
@@ -47,7 +49,7 @@ trait BoughtTrait
      */
     public function get(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
+        $order = $this->getOrder($request);
         $order->load(['items', 'shipping', 'buyer']);
 
         return $this->sendGetOrderResponse($request, $order);
@@ -93,19 +95,27 @@ trait BoughtTrait
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getItem(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        $itemid = $request->input('itemid');
+        $item = OrderItem::where(compact('order_id', 'itemid'))->first();
+        return ajaxReturn(['item' => $item]);
+    }
+
+    /**
      * 关闭订单
      * @return \Illuminate\Http\JsonResponse
      */
     public function close(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
+        $order = $this->getOrder($request);
         if (!$order->closed) {
-            $reason = $request->input('reason', '');
-            $otherReason = $request->input('otherReason', '拍错了,不想要了');
-            $order->closeReason()->create([
-                'reason' => $reason ?: $otherReason,
-            ]);
-
+            $reason = $request->input('reason', trans('trade.close_reasons.0'));
+            $order->closeReason()->create(['reason' => $reason]);
             $this->orderService()->close($order);
         }
         return $this->sendClosedOrderResponse($request, $order);
@@ -127,7 +137,7 @@ trait BoughtTrait
      */
     public function paid(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
+        $order = $this->getOrder($request);
         if ($order->order_state == 1) {
             $this->orderService()->paid($order);
         }
@@ -151,7 +161,7 @@ trait BoughtTrait
      */
     public function notice(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
+        $order = $this->getOrder($request);
         $this->orderService()->notice($order);
         return $this->sendNoticedOrderResponse($request, $order);
     }
@@ -173,10 +183,10 @@ trait BoughtTrait
     public function confirm(Request $request)
     {
         $password = $request->input('password');
-        if (!Hash::check($password, Auth::user()->getAuthPassword())){
+        if (!Hash::check($password, Auth::user()->getAuthPassword())) {
             abort(422, __('user.password incorrect'));
         }
-        $order = $this->getOrderForRequest($request);
+        $order = $this->getOrder($request);
         $this->orderService()->confirm($order);
         return $this->sendConfrimedOrderResponse($request, $order);
     }
@@ -197,22 +207,37 @@ trait BoughtTrait
      * @return \Illuminate\Http\JsonResponse
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
-    public function refund(Request $request)
+    public function applyRefund(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
-        if (!$order->refund_state) {
-            $order->refund()->create($request->input('refund', []));
-            $this->orderService()->refund($order);
+        $order = $this->getOrder($request);
+        $itemid = $request->input('itemid');
+        $refund = $order->refunds()->firstOrNew(['itemid' => $itemid]);
+        $refund->fill($request->input('refund', []));
+        $refund->refund_no = TradeUtil::createReundNo();
+        if ($order->shipping_state) {
+            $order = $this->orderService()->applyRefund($order);
+            $refund->refund_state = 1;
+        } else {
+            $this->refundMoney($order->transaction, $refund);
+            $order = $this->orderService()->refund($order);
+            $refund->refund_state = 2;
         }
-        return $this->applyRefundOrderSuccess($request, $order);
+        $refund->save();
+        $refund->images()->delete();
+        $images = $request->input('refund.images', []);
+        foreach ($images as $image) {
+            $refund->images()->create($image);
+        }
+        return $this->sendApplyRefundOrderResponse($request, $order);
     }
+
 
     /**
      * @param Request $request
      * @param \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|Order $order
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function applyRefundOrderSuccess(Request $request, $order)
+    protected function sendApplyRefundOrderResponse(Request $request, $order)
     {
         return ajaxReturn(['order' => $order]);
     }
@@ -223,11 +248,7 @@ trait BoughtTrait
      */
     public function delete(Request $request)
     {
-        $order = $this->getOrderForRequest($request);
-        if ($order) {
-            $order->buyer_deleted = 1;
-            $order->save();
-        }
+        $order = $this->orderService()->buyerDelete($this->getOrder($request));
         return $this->sendDeletedOrderResponse($request, $order);
     }
 
@@ -245,18 +266,23 @@ trait BoughtTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function evaluate(Request $request)
+    public function review(Request $request)
     {
-        $order_id = $request->input('order_id');
-
+        $reviews = $request->input('reviews', []);
+        foreach ($reviews as $review) {
+            $itemReviews = ItemReviews::make($review);
+            $itemReviews->user()->associate(Auth::user());
+            $itemReviews->save();
+        }
+        $this->orderService()->buyerRate($this->getOrder($request));
         return ajaxReturn();
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasMany[]
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|Order
      */
-    protected function getOrderForRequest(Request $request)
+    protected function getOrder(Request $request)
     {
         return Auth::user()->boughts()->findOrFail($request->input('order_id'));
     }

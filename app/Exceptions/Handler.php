@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -62,18 +61,25 @@ class Handler extends ExceptionHandler
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        if ($exception instanceof HttpExceptionInterface){
+        if ($exception instanceof AuthenticationException) {
+            $redirect = $request->input('redirect', $request->fullUrl());
+            return $request->expectsJson()
+                ? response()->json(['message' => $exception->getMessage()], 401)
+                : redirect()->guest($exception->redirectTo() ?? route('login', ['redirect' => $redirect]));
+        }
+
+        if ($exception instanceof HttpExceptionInterface) {
             $errcode = $exception->getStatusCode();
-        }else{
+        } else {
             $errcode = $exception->getCode();
         }
 
-        if ($request->ajax()) {
+        if ($request->expectsJson()) {
             return ajaxError(
                 $errcode > 0 ? $errcode : 500,
                 $exception->getMessage(),
                 [
-                    'extra'=>parent::convertExceptionToArray($exception)
+                    'extra' => parent::convertExceptionToArray($exception)
                 ]
             );
         }

@@ -4,7 +4,7 @@
             title="选择图片"
             @close="handleClose"
     >
-        <el-container style="margin-top: -20px;">
+        <el-container style="margin-top: -20px; margin-bottom: 10px;">
             <div class="flex" style="line-height: 32px;">
                 图片上传仅支持JPG,JPEG,PNG,GIF格式，大小不能超过5MB
             </div>

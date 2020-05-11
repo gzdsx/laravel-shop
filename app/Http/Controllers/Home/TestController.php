@@ -22,6 +22,7 @@ use ChinaPay\SecssUtil;
 use ChinaPay\Signing\Application;
 use ChinaPay\Signing\SignContentBuilder;
 use ChinaPay\SignQuery\SignQueryContentBuilder;
+use ChinaPay\SignSms\SignSmsContentBuilder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -36,52 +37,54 @@ class TestController extends Controller
     {
 
         //return $this->officialAccount()->customer_service->online();
-        return $this->officialAccount()->customer_service_session->create('kf2001@guizhoudashixiong','orT_zvy-cnPpKsKr_HDLaLWvAL6w');
+        //return $this->officialAccount()->customer_service_session->create('kf2001@guizhoudashixiong','orT_zvy-cnPpKsKr_HDLaLWvAL6w');
 
-        return 'ok';
+        //return 'ok';
+
+        return $this->sing();
 
         $merId = "531112004160001";
         $orderNo = "20201122593490438098";
-        $propFile = __DIR__ . '/security.ini';
-        $tranTime = '191557';//date('His');
+        $propFile = __DIR__ . '/security2.ini';
+        $tranTime = '131757';//date('His');
         $cardTranData = [
-//            'CertType' => '01',
-//            'CertNo' => '520221199608090813',
-//            'AccType' => '01',
-            'AccName' => '张超',
-            'CardNo' => '6212262402018407292',
-//            'MobileNo'=>'18786709420'
+            'CertType' => '01',
+            'CertNo' => '522731199706113806',
+            'AccType' => '01',
+            'AccName' => '韦天琴',
+            'CardNo' => '6228480878140397075',
+            'MobileNo'=>'18847151058'
         ];
         $merBgUrl = url('notify');
 
         //发短信
-        try {
-            $builder = new SmsContentBuilder();
-            $builder->setSecurityPropFile($propFile);
-            $builder->setMerId($merId);
-            $builder->setMerOrderNo($orderNo);
-            $builder->setTranDate(date('Ymd'));
-            $builder->setTranTime($tranTime);
-            $builder->setCardTranData($cardTranData);
-
-            $content = $builder->getBizContent();
-            dump($content);
-
-//        $secssUtil = new SecssUtil();
-//        $secssUtil->init($propFile);
-//        if ($secssUtil->verify($content)) {
-//            return 'true';
-//        } else {
-//            return $secssUtil->getErrMsg();
+//        try {
+//            $builder = new SignSmsContentBuilder();
+//            $builder->setSecurityPropFile($propFile);
+//            $builder->setMerId($merId);
+//            $builder->setMerOrderNo($orderNo);
+//            $builder->setTranDate(date('Ymd'));
+//            $builder->setTranTime($tranTime);
+//            $builder->setCardTranData($cardTranData);
+//            $content = $builder->getBizContent();
+//            dump($content);
+//
+////        $secssUtil = new SecssUtil();
+////        $secssUtil->init($propFile);
+////        if ($secssUtil->verify($content)) {
+////            return 'true';
+////        } else {
+////            return $secssUtil->getErrMsg();
+////        }
+//
+//            $res = Factory::signSms()->sendRequest($builder->getBizContent());
+//            parse_str($res, $arr);
+//            dump($arr);
+//        } catch (ChinaPayException $exception) {
+//            dump($exception->getMessage());
 //        }
-
-            $res = Factory::sms()->sendRequest($builder->getBizContent());
-            parse_str($res, $arr);
-            dump($arr);
-        } catch (ChinaPayException $exception) {
-            dump($exception->getMessage());
-        }
-
+//
+//        return '';
         //签约
         try {
             $builder = new SignContentBuilder();
@@ -90,15 +93,18 @@ class TestController extends Controller
             $builder->setMerOrderNo($orderNo);
             $builder->setMerBgUrl($merBgUrl);
             $builder->setTranDate(date('Ymd'));
-            $builder->setTranTime('214521');
+            $builder->setTranTime($tranTime);
             $builder->setTranType('9004');
             $builder->setCardTranData([
                 'CertType' => '01',
-                'CertNo' => '522727198502011219',
+                'CertNo' => '522731199706113806',
                 'AccType' => '01',
-                'AccName' => '宋德伟',
-                'CardNo' => '4563510100860693112'
+                'AccName' => '韦天琴',
+                'CardNo' => '6228480878140397075',
+                'MobileNo'=>'18847151058',
+                'MobileAuthCode'=>'882973'
             ]);
+            $builder->set('AcqCode','000000000000014');
 
             $content = $builder->getBizContent();
             dump($content);
@@ -111,9 +117,10 @@ class TestController extends Controller
 //                return $secssUtil->getErrMsg();
 //            }
 
-            $res = Factory::signing()->testBgSigning()->sendRequest($content);
+            $res = Factory::signing()->bgSigning()->sendRequest($content);
             parse_str($res, $arr);
             dump($arr);
+            return '';
         } catch (ChinaPayException $exception) {
             return urldecode($exception->getMessage());
         }
@@ -140,14 +147,102 @@ class TestController extends Controller
         } catch (ChinaPayException $exception) {
             dump($exception->getMessage());
         }
+    }
 
-//        ItemCatlog::updateCache();
-//        return ItemCatlog::fetchWithCache();
+    /**
+     * @return string
+     * @throws ChinaPayException
+     */
+    protected function pay(){
+        $merId = "531112004160001";
+        $orderNo = "2020112259349043809822";
+        $propFile = __DIR__ . '/security2.ini';
+        $tranTime = '233200';//date('His');
+        $cardTranData = [
+            'CertType' => '01',
+            'CertNo' => '522731199706113806',
+            'AccType' => '01',
+            'AccName' => '韦天琴',
+            'CardNo' => '6228480878140397075',
+            'MobileNo'=>'18847151058'
+        ];
+        $merBgUrl = url('notify');
 
+        $builder = new PayContentBuilder();
+        $builder->setSecurityPropFile($propFile);
+        $builder->setOrderAmt(1);
+        $builder->setTranTime($tranTime);
+        $builder->setTranDate(date('Ymd'));
+        $builder->setMerOrderNo($orderNo);
+        $builder->setMerId($merId);
+        $builder->setMerBgUrl($merBgUrl);
+        $builder->setTranType('0004');
+        $builder->setMerPageUrl($merBgUrl);
+        $builder->setRemoteAddr(\request()->ip());
+//        $builder->setAccessType(0);
+//        $builder->set('CurryNo','CNY');
+//        $builder->set('SplitType','0001');
+//        $builder->set('SplitMethod',0);
+//        $builder->set('CommodityMsg','iPhone手机一部');
+        $builder->setCardTranData($cardTranData);
 
-//        $collect = collect(['a'=>1,'b'=>3]);
-//
-//        return $collect->keys();
-        //return app(ItemRepositoryInterface::class)->orderByDesc('itemid')->get();
+        //dd($builder->getBizContent());
+
+        return Factory::payment()->bgPay()->sendRequest($builder->getBizContent());
+    }
+
+    private function sing(){
+        $merId = "531112004160001";
+        $orderNo = "20201122593490438098";
+        $propFile = __DIR__ . '/security2.ini';
+        $tranTime = '131757';//date('His');
+        $cardTranData = [
+            'CertType' => '01',
+            'CertNo' => '522731199706113806',
+            'AccType' => '01',
+            'AccName' => '韦天琴',
+            'CardNo' => '6228480878140397075',
+            'MobileNo'=>'18847151058'
+        ];
+        $merBgUrl = url('notify');
+
+        try {
+            $builder = new SignContentBuilder();
+            $builder->setSecurityPropFile($propFile);
+            $builder->setMerId($merId);
+            $builder->setMerOrderNo($orderNo);
+            $builder->setMerBgUrl($merBgUrl);
+            $builder->setTranDate(date('Ymd'));
+            $builder->setTranTime($tranTime);
+            $builder->setTranType('9904');
+            $builder->setCardTranData([
+                'CertType' => '01',
+                'CertNo' => '522731199706113806',
+                'AccType' => '01',
+                'AccName' => '韦天琴',
+                'CardNo' => '6228480878140397075',
+                'MobileNo'=>'18847151058',
+                'MobileAuthCode'=>'882973'
+            ]);
+            $builder->set('AcqCode','000000000000014');
+
+            $content = $builder->getBizContent();
+            dump($content);
+
+//            $secssUtil = new SecssUtil();
+//            $secssUtil->init($propFile);
+//            if ($secssUtil->verify($content)){
+//                return 'true';
+//            }else{
+//                return $secssUtil->getErrMsg();
+//            }
+
+            $res = Factory::signing()->bgSigning()->sendRequest($content);
+            parse_str($res, $arr);
+            dump($arr);
+            return '';
+        } catch (ChinaPayException $exception) {
+            return urldecode($exception->getMessage());
+        }
     }
 }

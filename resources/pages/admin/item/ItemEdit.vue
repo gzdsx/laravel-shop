@@ -158,7 +158,6 @@
 </template>
 
 <script>
-    import vuedraggable from 'vuedraggable';
     import AdminFrame from "../common/AdminFrame";
     import SkuPanel from "../../lib/SkuPanel";
     import KindEditor from "../../lib/KindEditor";
@@ -170,7 +169,6 @@
             AdminFrame,
             SkuPanel,
             KindEditor,
-            vuedraggable,
             ImagePicker
         },
         data: function () {

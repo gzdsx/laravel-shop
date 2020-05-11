@@ -1,5 +1,5 @@
 <template>
-    <div class="area">
+    <div class="area flex-row">
         <div class="sidebar">
             <div class="sidebar-content">
                 <dl>

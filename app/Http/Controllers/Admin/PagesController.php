@@ -48,8 +48,8 @@ class PagesController extends BaseController
      */
     public function update(Request $request)
     {
-        $pageid = $request->input('pageid', 0);
-        $pages = Pages::findOrNew($pageid)->fill($request->all())->save();
+        $pages = Pages::findOrNew($request->input('pageid'));
+        $pages->fill($request->input('pages',[]))->save();
         return ajaxReturn(['pages' => $pages]);
     }
 

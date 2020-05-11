@@ -57,14 +57,20 @@ interface OrderServiceInterface
      * @param Order|\Illuminate\Database\Eloquent\Model $order
      * @return Order
      */
-    public function buyerReview(Order $order);
+    public function buyerRate(Order $order);
 
     /**
      * 卖家评价
      * @param Order|\Illuminate\Database\Eloquent\Model $order
-     * @return mixed
+     * @return Order
      */
-    public function sellerReview(Order $order);
+    public function sellerRate(Order $order);
+
+    /**
+     * @param Order $order
+     * @return Order
+     */
+    public function applyRefund(Order $order);
 
     /**
      * @param Order|\Illuminate\Database\Eloquent\Model $order

@@ -98,6 +98,7 @@
             this.fetchCatlogs();
             var pageid = this.$route.params.pageid;
             if (pageid){
+                this.pageid = pageid;
                 this.$axios.get('/admin/pages/get?pageid='+pageid).then(response=>{
                     this.pages = response.data.pages;
                 });

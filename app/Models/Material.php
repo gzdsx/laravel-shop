@@ -127,7 +127,7 @@ class Material extends Model
      */
     public function getImageAttribute()
     {
-        return $this->thumb ? image_url($this->thumb) : null;
+        return $this->source ? image_url($this->source) : null;
     }
 
 
