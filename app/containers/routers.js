@@ -1,0 +1,43 @@
+import TabBar from "./TabBar";
+import AboutUs from "../pages/user/AboutUs";
+import FeedBack from "../pages/user/FeedBack";
+import Favorite from "../pages/user/Favorite";
+import Security from "../pages/user/security/Security";
+import EditEmail from "../pages/user/security/EditEmail";
+import EditMobile from "../pages/user/security/EditMobile";
+import EditPass from "../pages/user/security/EditPass";
+import Signin from "../pages/auth/Signin";
+import Signup from "../pages/auth/Signup";
+import AMapView from "../pages/common/AMapView";
+import QRScanner from "../pages/common/QRScanner";
+import DistrictSelector from "../pages/common/DistrictSelector";
+import NotificationDetail from "../pages/notification/NotificationDetail";
+import VideoIndex from "../pages/video/VideoIndex";
+import VideoDetail from "../pages/video/VideoDetail";
+import LiveIndex from "../pages/live/LiveIndex";
+//shop
+import ItemList from "../pages/shop/ItemList";
+import ItemDetail from "../pages/shop/ItemDetail";
+
+export default [
+    {name: 'TabBar', component: TabBar, options: {headerShown: false,}},
+    {name: 'AboutUs', component: AboutUs, options: AboutUs.navigationOptions || {}},
+    {name: 'FeedBack', component: FeedBack, options: FeedBack.navigationOptions || {}},
+    {name: 'Favorite', component: Favorite, options: Favorite.navigationOptions || {}},
+    {name: 'Security', component: Security, options: Security.navigationOptions || {}},
+    {name: 'EditEmail', component: EditEmail, options: EditEmail.navigationOptions || {}},
+    {name: 'EditMobile', component: EditMobile, options: EditMobile.navigationOptions || {}},
+    {name: 'EditPass', component: EditPass, options: EditPass.navigationOptions || {}},
+    {name: 'Signin', component: Signin, options: Signin.navigationOptions || {}},
+    {name: 'Signup', component: Signup, options: Signup.navigationOptions || {}},
+    {name: 'AMapView', component: AMapView, options: AMapView.navigationOptions || {}},
+    {name: 'QRScanner', component: QRScanner, options: QRScanner.navigationOptions || {}},
+    {name: 'DistrictSelector', component: DistrictSelector, options: DistrictSelector.navigationOptions || {}},
+    {name: 'NotificationDetail', component: NotificationDetail, options: NotificationDetail.navigationOptions || {}},
+    {name: 'VideoIndex', component: VideoIndex, options: VideoIndex.navigationOptions || {}},
+    {name: 'VideoDetail', component: VideoDetail, options: VideoDetail.navigationOptions || {}},
+    {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},
+    //shop
+    {name: 'ItemList', component: ItemList, options: ItemList.navigationOptions || {}},
+    {name: 'ItemDetail', component: ItemDetail, options: ItemDetail.navigationOptions || {}},
+];

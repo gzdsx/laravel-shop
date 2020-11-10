@@ -1,0 +1,233 @@
+import React from 'react';
+import {View, ScrollView, TouchableOpacity, Image, Text, FlatList, RefreshControl} from 'react-native';
+import {connect} from "react-redux";
+import Swiper from 'react-native-swiper';
+import {CacheImage} from 'react-native-gzdsx-cache-image';
+import {LoadingView} from "react-native-dsxui";
+import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
+import {Header, Image as ELImage, Input} from 'react-native-elements';
+import {Colors, Size, Styles} from '../../styles';
+import {ApiClient} from "../../utils";
+import Menus from '../../base/menus';
+import {BaseApi} from "../../base/constants";
+import {CustomSearchBar} from "../../components";
+import ItemListView from "../shop/components/ItemListView";
+import ItemGridView from "../shop/components/ItemGridView";
+
+class HomeIndex extends React.Component {
+
+    static navigationOptions = () => {
+        return {
+            header: ({navigation, route}) => (
+                <Header
+                    backgroundColor={Colors.primary}
+                    centerComponent={() => (
+                        <CustomSearchBar
+                            placeholderTextColor={"#666"}
+                            placeholder={"猕猴桃,果酒,羊肉粉"}
+                            containerStyle={{
+                                flex: 1,
+                                padding: 0,
+                                borderRadius: 10,
+                                borderTopWidth: 0,
+                                borderBottomWidth: 0,
+                                paddingBottom: 0
+                            }}
+                            inputContainerStyle={{
+                                backgroundColor: '#fefefe',
+                                height: 34,
+                            }}
+
+                            inputStyle={{
+                                fontSize: 12,
+                            }}
+                            round={true}
+                            lightTheme={true}
+                            onSearch={(q) => {
+                                navigation.navigate('ItemList', {q});
+                            }}
+                        />
+                    )}
+                    centerContainerStyle={{
+                        flexDirection: "row"
+                    }}
+                    leftContainerStyle={{flex: 0}}
+                    rightContainerStyle={{flex: 0}}
+                >
+                </Header>
+            ),
+            headerStyle: Styles.headerStyle,
+        }
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: true,
+            isRefreshing: false,
+            images: [],
+            posts: [],
+            items: []
+        };
+    }
+
+    render(): React.ReactNode {
+        if (this.state.isLoading) return <LoadingView/>;
+        return (
+            <ItemGridView
+                data={this.state.items}
+                onPressItem={(item) => {
+                    this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
+                }}
+                ListHeaderComponent={this.renderHeaderView()}
+            />
+        );
+    }
+
+    componentDidMount(): void {
+        console.log(this.props);
+        NetInfo.configure({
+            reachabilityUrl: BaseApi + '/reachable',
+            reachabilityTest: async (response) => response.status === 200,
+            reachabilityLongTimeout: 60 * 1000, // 60s
+            reachabilityShortTimeout: 5 * 1000, // 5s
+        });
+        NetInfo.addEventListener(state => {
+            //console.log(state);
+            if (state.isConnected) {
+                this.fetchData();
+            }
+        });
+    }
+
+    fetchData = async () => {
+        let response = await ApiClient.get('/block/item/batchget', {block_id: 1});
+        const images = response.data.items;
+
+        response = await ApiClient.get('/post/batchget', {catid: 2, count: 6});
+        const posts = response.data.items;
+
+        response = await ApiClient.get('/item/batchget', {count: 20});
+        const items = response.data.items;
+
+        this.setState({
+            isLoading: false,
+            isRefreshing: false,
+            images,
+            posts,
+            items
+        });
+    };
+
+    refresh = () => {
+        this.setState({isRefreshing: true}, () => this.fetchData());
+    };
+
+    renderHeaderView() {
+        return (
+            <View>
+                {this.renderSwiper()}
+                {this.renderMenus()}
+            </View>
+        )
+    }
+
+    renderSwiper = () => {
+        const size = {
+            width: Size.screenWidth,
+            height: Size.screenWidth * 0.5
+        };
+        let contents = this.state.images.map((item, index) => {
+            return (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    key={'key1' + index.toString()}
+                    onPress={() => {
+                        if (/http(.*?)\/post\/detail\/(\d+)\.html/.test(item.url)) {
+                            let aid = item.url.match(/(\d+)/g)[0];
+                            this.props.navigation.navigate('PostDetail', {aid});
+                        }
+                    }}
+                >
+                    <CacheImage
+                        source={{uri: item.image}}
+                        style={{...size}}
+                    />
+                </TouchableOpacity>
+            );
+        });
+
+        return (<Swiper style={{height: size.height}} dotColor={"#ccc"} autoplay>{contents}</Swiper>);
+    };
+
+    renderMenus = () => {
+        let contents = Menus.map((menu, index) => {
+            return (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        width: Size.screenWidth * 0.25,
+                        marginTop: 8,
+                        marginBottom: 8
+                    }}
+                    onPress={() => {
+                        this.props.navigation.navigate(menu.url, menu.params);
+                    }}
+                    key={'key2' + index.toString()}
+                >
+                    <Image
+                        source={menu.icon}
+                        style={{
+                            width: 50,
+                            height: 50
+                        }}
+                    />
+                    <Text style={{
+                        fontSize: 14,
+                        color: '#333',
+                        textAlign: 'center',
+                        marginTop: 5
+                    }}>{menu.title}</Text>
+                </TouchableOpacity>
+            );
+        });
+
+        return (
+            <View style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                backgroundColor: '#fff'
+            }}>{contents}</View>
+        );
+    };
+
+    renderImage = (image) => {
+        if (image) {
+            return (
+                <CacheImage
+                    source={{uri: image}}
+                    style={{
+                        width: 120,
+                        height: 90,
+                        borderRadius: 3,
+                        resizeMode: 'cover',
+                        marginLeft: 10
+                    }}
+                />
+            );
+        }
+        return null;
+    }
+}
+
+const mapStateToProps = (store) => {
+    return {
+        auth: store.auth
+    };
+};
+
+export default connect(mapStateToProps)(HomeIndex);

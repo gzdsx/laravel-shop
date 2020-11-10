@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">大师兄微小店</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">DeploymentKey</string>
+</resources>
