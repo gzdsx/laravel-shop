@@ -7,6 +7,7 @@ import Category from "../pages/shop/Category";
 import UserIndex from '../pages/user/UserIndex';
 import {Colors} from "../styles";
 import Cart from "../pages/cart/Cart";
+import PostIndex from "../pages/post/PostIndex";
 
 function iconStyle(tintColor) {
     return {
@@ -28,6 +29,13 @@ const CategoryScreen = () => (
     <CategoryStack.Navigator>
         <CategoryStack.Screen name={"Category"} component={Category} options={Category.navigationOptions}/>
     </CategoryStack.Navigator>
+)
+
+const PostStack = createStackNavigator();
+const PostScreen = () =>(
+    <PostStack.Navigator>
+        <PostStack.Screen name={"PostIndex"} component={PostIndex} options={PostIndex.navigationOptions}/>
+    </PostStack.Navigator>
 )
 
 const CartStack = createStackNavigator();
@@ -69,13 +77,13 @@ class TabBar extends React.Component {
                     }}
                 />
                 <Tab.Screen
-                    name="Category"
-                    component={CategoryScreen}
+                    name="Post"
+                    component={PostScreen}
                     options={{
-                        tabBarLabel: '分类',
+                        tabBarLabel: '发现',
                         tabBarIcon: ({focused, color, size}) => (
                             <Image
-                                source={focused ? require('../images/tabbar/category-fill.png') : require('../images/tabbar/category.png')}
+                                source={focused ? require('../images/tabbar/we-fill.png') : require('../images/tabbar/we.png')}
                                 style={iconStyle(color)}
                             />
                         ),

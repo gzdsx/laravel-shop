@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
+import {Button} from 'react-native-elements';
 import {ApiClient, Toast} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import {CustomButton} from "../../components";
+import {Colors} from "../../styles";
 
 export default class FeedBack extends React.Component {
 
@@ -46,7 +47,12 @@ export default class FeedBack extends React.Component {
                     />
                 </View>
                 <View style={css.row}>
-                    <CustomButton text="提交" onPress={this.submit}/>
+                    <Button
+                        buttonStyle={{backgroundColor: Colors.primary, height: 45}}
+                        title="提交"
+                        onPress={this.submit}
+                        activeOpacity={0.8}
+                    />
                 </View>
             </View>
         );

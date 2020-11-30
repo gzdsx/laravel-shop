@@ -1,14 +1,7 @@
 import React from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {
-    DeviceEventEmitter,
-    AppState,
-    Platform,
-    Linking,
-    Alert,
-    InteractionManager
-} from 'react-native';
+import {DeviceEventEmitter, AppState, Linking, Alert} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import JPush from 'jpush-react-native';
 import CodePush from 'react-native-code-push';
@@ -22,11 +15,10 @@ import {
     AccessToken,
     AppUrl,
     AppVersion,
-    CodePushAndroidKey,
-    CodePushIosKey,
-    UserDidLoggedInNotification,
-    UserDidLogoutNotification,
-    UserInfoStoreKey
+    CodePushDeploymentKey,
+    isAndroid,
+    UserDidSigninedNotification,
+    UserDidSignoutedNotification,
 } from "../base/constants";
 
 class App extends React.Component {
@@ -34,7 +26,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showLaunch: Platform.OS !== 'ios'
+            showLaunch: isAndroid
         };
     }
 
@@ -55,28 +47,18 @@ class App extends React.Component {
     componentDidMount() {
         AppState.removeEventListener('change', this.onAppStateChange);
         const {authActions, locationActions} = this.props;
-        DeviceEventEmitter.addListener(UserDidLoggedInNotification, (userinfo) => {
-            AsyncStorage.setItem(UserInfoStoreKey, JSON.stringify(userinfo)).then(() => {
-                authActions.userDidLoggedIn(userinfo);
-            });
+        DeviceEventEmitter.addListener(UserDidSigninedNotification, (userinfo) => {
+            authActions.userDidSignIn(userinfo);
             AsyncStorage.getItem('RegistrationID').then(registrationid => {
-                this.registerJpushToken(registrationid);
+                this.registerJpushToken(registrationid, userinfo.uid);
             });
         });
 
-        DeviceEventEmitter.addListener(UserDidLogoutNotification, () => {
-            AsyncStorage.removeItem(UserInfoStoreKey).then(() => {
-                authActions.userDidLogout();
-            });
+        DeviceEventEmitter.addListener(UserDidSignoutedNotification, () => {
+            authActions.userDidSignOut();
             AsyncStorage.removeItem(AccessToken);
         });
 
-        //注册通知
-        this.setupJPush();
-
-        InteractionManager.runAfterInteractions(() => {
-            AppState.addEventListener('change', this.onAppStateChange);
-        });
         //获取位置信息
         GeoLocation.getCurrentPosition(position => {
             //console.log(position);
@@ -97,8 +79,9 @@ class App extends React.Component {
                 showLaunch: false
             })
         }, 2000);
-        //更新版本
-        this.checkUpdates();
+
+        //注册通知
+        this.setupJPush();
     }
 
     onAppStateChange = (appState) => {
@@ -108,34 +91,17 @@ class App extends React.Component {
         }
         //console.log('appState:'+appState);
         if (appState === 'active') {
-            //this.checkLogin();
             //检测新版本
             this.checkVersion();
-            this.checkUpdates();
-        }
-    };
-
-    checkUpdates = () => {
-        //热更新
-        if (!__DEV__) {
-            // CodePush.sync({
-            //     updateDialog: false,
-            //     installMode: CodePush.InstallMode.IMMEDIATE,
-            //     deploymentKey: Platform.OS === 'ios' ? CodePushIosKey : CodePushAndroidKey,
-            // });
         }
     };
 
     checkUserStatus = () => {
         const {authActions} = this.props;
-        AsyncStorage.getItem(UserInfoStoreKey).then(userinfo => {
-            if (userinfo) {
-                authActions.userDidLoggedIn(JSON.parse(userinfo));
-            } else {
-                authActions.userDidLogout();
-            }
-        }).catch(error => {
-            authActions.userDidLogout();
+        ApiClient.get('/user/info').then(response => {
+            authActions.userDidSignIn(response.data.userinfo);
+        }).catch(reason => {
+
         });
     };
 
@@ -149,12 +115,11 @@ class App extends React.Component {
         JPush.addNotificationListener((message) => {
             //console.log(message);
             let extras = message.extras;
-            if (Platform.OS === 'ios') {
-                JPush.setBadge({badge: 0});
-            } else {
+            if (isAndroid) {
                 extras = JSON.parse(extras);
+            } else {
+                JPush.setBadge({badge: 0});
             }
-
             if (extras.action === 'upgrade') {
                 Linking.openURL(AppUrl);
             }
@@ -185,12 +150,13 @@ class App extends React.Component {
         });
     };
 
-    registerJpushToken = (registrationid) => {
-        ApiClient.post('/jpush', {
+    registerJpushToken = (registrationid, uid = 0) => {
+        ApiClient.post('/apns/jpush', {
             platform: Platform.OS,
-            registrationid
+            registrationid,
+            uid
         }).then((response => {
-            console.log(response.data);
+            //console.log(response.data);
         })).catch(reason => {
             console.log(reason);
         });
@@ -218,7 +184,7 @@ const codePushOptions = {
     checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
     updateDialog: false,
     installMode: CodePush.InstallMode.IMMEDIATE,
-    deploymentKey: Platform.OS === 'ios' ? CodePushIosKey : CodePushAndroidKey
+    deploymentKey: CodePushDeploymentKey
 };
 
 App = CodePush(codePushOptions)(App);

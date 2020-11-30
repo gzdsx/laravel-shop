@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, TouchableOpacity, Image, Text, FlatList, RefreshControl} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Image, Text, FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import Swiper from 'react-native-swiper';
 import {CacheImage} from 'react-native-gzdsx-cache-image';
@@ -13,6 +13,7 @@ import {BaseApi} from "../../base/constants";
 import {CustomSearchBar} from "../../components";
 import ItemListView from "../shop/components/ItemListView";
 import ItemGridView from "../shop/components/ItemGridView";
+import {Ticon} from "react-native-ticon";
 
 class HomeIndex extends React.Component {
 
@@ -48,15 +49,26 @@ class HomeIndex extends React.Component {
                             }}
                         />
                     )}
-                    centerContainerStyle={{
-                        flexDirection: "row"
-                    }}
+                    centerContainerStyle={{flexDirection: "row", paddingHorizontal: 10}}
+                    leftComponent={() => (
+                        <Ticon name={'scan-light'} color={"#fff"} onPress={() => {
+
+                        }}/>
+                    )}
                     leftContainerStyle={{flex: 0}}
+                    rightComponent={() => (
+                        <Ticon name={'more-light'} color={"#fff"} onPress={() => {
+
+                        }}/>
+                    )}
                     rightContainerStyle={{flex: 0}}
+                    containerStyle={{
+                        borderBottomColor: Colors.primary,
+                        borderBottomWidth: 0,
+                    }}
                 >
                 </Header>
-            ),
-            headerStyle: Styles.headerStyle,
+            )
         }
     }
 
@@ -80,12 +92,14 @@ class HomeIndex extends React.Component {
                     this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
                 }}
                 ListHeaderComponent={this.renderHeaderView()}
+                onRefresh={this.refresh}
+                isRefreshing={this.state.isRefreshing}
             />
         );
     }
 
     componentDidMount(): void {
-        console.log(this.props);
+        //console.log(this.props);
         NetInfo.configure({
             reachabilityUrl: BaseApi + '/reachable',
             reachabilityTest: async (response) => response.status === 200,

@@ -124,7 +124,6 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
     aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -177,12 +176,13 @@ android {
         }
     }
 
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-    }
+//    packagingOptions {
+//        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+//        pickFirst "lib/arm64-v8a/libc++_shared.so"
+//        pickFirst "lib/x86/libc++_shared.so"
+//        pickFirst "lib/x86_64/libc++_shared.so"
+//        pickFirst "lib/arm64-v8a/librealm-jni.so"
+//    }
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -209,6 +209,7 @@ dependencies {
 
     //implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation project(':jcore-react-native')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

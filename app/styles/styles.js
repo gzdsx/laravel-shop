@@ -22,7 +22,7 @@ const Styles = StyleSheet.create({
         borderColor: Colors.primary,
         borderBottomWidth: 0,
         borderEndColor: Colors.primary,
-        elevation: 0,
+        shadowColor: Colors.primary
     },
     headerTitleStyle: {
         fontSize: 18,

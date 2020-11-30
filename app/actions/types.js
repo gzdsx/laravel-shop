@@ -1,5 +1,6 @@
-export const USER_DID_LOGGEDIN = 'USER_DID_LOGGEDIN';
-export const USER_DID_LOGOUT = 'USER_DID_LOGOUT';
+export const USER_DID_SIGNIN = 'USER_DID_SIGNIN';
+export const USER_DID_SIGNOUT = 'USER_DID_SIGNOUT';
+export const LOCATION_DID_CHANGE = 'LOCATION_DID_CHANGE';
 
 export const FETCH_ITEM_LIST   = 'FETCH_ITEM_LIST';
 export const RECEIVE_ITEM_LIST = 'RECEIVE_ITEM_LIST';
@@ -10,5 +11,3 @@ export const RECEIVE_POST_LIST = 'RECEIVE_POST_LIST';
 
 export const FETCH_ORDER_LIST   = 'FETCH_ORDER_LIST';
 export const RECEIVE_ORDER_LIST = 'RECEIVE_ORDER_LIST';
-
-export const LOCATION_DID_CHANGE = 'LocationDidChange';

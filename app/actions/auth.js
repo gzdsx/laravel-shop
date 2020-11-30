@@ -1,15 +1,15 @@
 import * as types from "./types";
 
-export function userDidLoggedIn(userinfo) {
+export function userDidSignIn(userinfo) {
     return {
         userinfo,
-        type:types.USER_DID_LOGGEDIN
+        type: types.USER_DID_SIGNIN
     }
 }
 
-export function userDidLogout() {
+export function userDidSignOut() {
     return {
-        userinfo:{},
-        type:types.USER_DID_LOGOUT
+        userinfo: {},
+        type: types.USER_DID_SIGNOUT
     }
 }

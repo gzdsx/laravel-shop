@@ -11,7 +11,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WeChat from 'react-native-wechat';
 import axios from 'axios';
-import {AccessToken, OauthApi, UserDidLoggedInNotification, WeChatAppId} from "../../base/constants";
+import {
+    AccessToken,
+    OauthApi,
+    UserDidSigninedNotification,
+    WeChatAppId
+} from "../../base/constants";
 import {ApiClient, Utils, Toast} from "../../utils";
 import {CustomButton, CustomTextInput} from "../../components";
 import {defaultNavigationConfigure} from "../../base/navconfig";
@@ -128,7 +133,7 @@ class Signin extends React.Component {
                     />
                 </View>
                 <View style={{height: 50}}/>
-                <CustomButton text={"登录"} onPress={this._submit}/>
+                <CustomButton text={"登录"} onPress={this.submit}/>
 
                 <View style={{
                     marginTop: 30,
@@ -165,7 +170,7 @@ class Signin extends React.Component {
         });
     }
 
-    _submit = () => {
+    submit = () => {
         const {account, password} = this.state;
         if (!account) {
             Toast.show('请填写账号');
@@ -180,7 +185,7 @@ class Signin extends React.Component {
         AsyncStorage.setItem('account', account);
         AsyncStorage.setItem('password', password);
 
-        axios.post(OauthApi + '/token',{
+        axios.post(OauthApi + '/token', {
             'grant_type': 'password',
             'client_id': '2',
             'client_secret': 'Rw7FTTT4ouOIIWJx6eMQ28ENG7Tnq9lifOewqyce',
@@ -188,7 +193,7 @@ class Signin extends React.Component {
             'password': password,
             'scope': '*',
         }).then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             const {access_token} = response.data;
             if (access_token) this.doLogin(access_token);
         }).catch(reason => {
@@ -200,9 +205,9 @@ class Signin extends React.Component {
         AsyncStorage.setItem(AccessToken, access_token).then(() => {
             ApiClient.get('/user/info').then(response => {
                 //console.log('==========');
-                console.log(response.data);
+                //console.log(response.data);
                 const userinfo = response.data.userinfo;
-                DeviceEventEmitter.emit(UserDidLoggedInNotification, userinfo);
+                DeviceEventEmitter.emit(UserDidSigninedNotification, userinfo);
                 this.props.navigation.goBack();
             }).catch(reason => {
                 if (reason.data) {
@@ -213,10 +218,6 @@ class Signin extends React.Component {
             console.log(reason);
         });
     };
-
-    UNSAFE_componentWillMount(): void {
-
-    }
 }
 
 export default Signin;

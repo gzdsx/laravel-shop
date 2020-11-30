@@ -87,6 +87,10 @@ class ItemList extends React.Component {
                         />
                     )}
                     rightContainerStyle={{flex: 0}}
+                    containerStyle={{
+                        borderBottomColor: Colors.primary,
+                        borderBottomWidth: 0,
+                    }}
                 >
                 </Header>
             )

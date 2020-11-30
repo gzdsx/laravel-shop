@@ -10,6 +10,8 @@ buildscript {
     repositories {
         maven{ url 'https://maven.aliyun.com/repository/public' }
         maven{ url 'https://maven.aliyun.com/repository/jcenter'}
+        maven{ url 'https://maven.aliyun.com/repository/central'}
+        maven{ url 'https://maven.aliyun.com/repository/google'}
         google()
         jcenter()
     }
@@ -35,6 +37,8 @@ allprojects {
 
         maven{ url 'https://maven.aliyun.com/repository/public' }
         maven{ url 'https://maven.aliyun.com/repository/jcenter'}
+        maven{ url 'https://maven.aliyun.com/repository/central'}
+        maven{ url 'https://maven.aliyun.com/repository/google'}
 
         google()
         jcenter()

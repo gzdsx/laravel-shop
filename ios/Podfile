@@ -13,7 +13,6 @@ target 'shopapp' do
     # Pods for testing
   end
 
-  use_native_modules!
   permissions_path = '../node_modules/react-native-permissions/ios'
               pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
               pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars.podspec"

@@ -1,18 +1,19 @@
 import React from 'react';
-import {ScrollView, View, Image, Text, TouchableOpacity, Platform, StyleSheet, DeviceEventEmitter} from 'react-native';
+import {ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
-import HtmlView from 'react-native-htmlview';
-import {LoadingView, BarItemSeparate} from "react-native-dsxui";
+import {LoadingView} from "react-native-dsxui";
 import {Ticon} from "react-native-ticon";
-import {CacheImage} from 'react-native-gzdsx-cache-image';
-import PropTypes from 'prop-types';
-import BuyModalView from "./components/BuyModalView";
+import HTML from 'react-native-render-html';
+import {Image as ELImage} from 'react-native-elements';
+import SkuPannel from "./components/SkuPannel";
 import {AddToCart} from "../cart/CartActions";
 import {Utils, Toast, ApiClient} from "../../utils";
 import {ShareView} from '../../components';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Size, Styles} from '../../styles';
+import GoodsActionBar from "./components/GoodsActionBar";
+import {CartDidChangedNotification} from "../../base/constants";
 
 const getContent = (content) => {
     return `<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />` +
@@ -20,140 +21,9 @@ const getContent = (content) => {
         `<body>${content || ''}</body></html>`;
 };
 
-class ActionButton extends React.Component {
-
-    static propTypes = {
-        onPress: PropTypes.func,
-        text: PropTypes.string,
-        name: PropTypes.string,
-        iconSource: PropTypes.any
-    };
-
-    static defaultProps = {
-        onPress: () => null,
-        text: '',
-        name: ''
-    };
-
-    render() {
-        const styles = {
-            iconBox: {
-                flex: 1,
-                alignContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                paddingTop: 5
-            },
-            iconTitle: {
-                fontSize: 12,
-                color: '#666',
-                textAlign: 'center',
-                marginTop: 3
-            },
-        };
-
-        return (
-            <TouchableOpacity activeOpacity={1} onPress={this.props.onPress} style={styles.iconBox}>
-                <Image style={{
-                    tintColor: "#666",
-                    width: 22,
-                    height: 22,
-                    resizeMode: 'contain'
-                }} source={this.props.iconSource}/>
-                <Text style={styles.iconTitle}>{this.props.text}</Text>
-            </TouchableOpacity>
-        );
-    }
-
-}
-
-class FooterBar extends React.Component {
-    static propTypes = {
-        show: PropTypes.bool,
-        onAddToCart: PropTypes.func,
-        onBuyNow: PropTypes.func,
-        onViewShop: PropTypes.func,
-        onAddCollection: PropTypes.func,
-        onConnectKefu: PropTypes.func
-    };
-    static defaultProps = {
-        show: false,
-        onAddToCart: () => null,
-        onBuyNow: () => null,
-        onViewShop: () => null,
-        onAddCollection: () => null,
-        onConnectKefu: () => null
-    };
-
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const styles = StyleSheet.create({
-            bar: {
-                height: 49,
-                backgroundColor: '#fff',
-                borderTopWidth: 0.5,
-                borderTopColor: '#e5e5e5',
-                flexDirection: 'row',
-                display: this.props.show ? 'flex' : 'none'
-            },
-            icons: {
-                width: Size.screenWidth * 0.4,
-                flexDirection: 'row',
-                height: 49,
-                paddingLeft: 5,
-                paddingRight: 5
-            },
-            buttons: {
-                flex: 1,
-                flexDirection: 'row',
-            },
-            button: {
-                flex: 1,
-                alignItems: 'center',
-                alignContent: 'center'
-            },
-            buttonText: {
-                flex: 1,
-                fontSize: 16,
-                color: '#fff',
-                lineHeight: 49,
-                textAlignVertical: 'center',
-                fontWeight: '500'
-            }
-        });
-
-        return (
-            <View style={styles.bar}>
-                <View style={styles.icons}>
-                    <ActionButton iconSource={require('../../images/icon/shop.png')} text={"店铺"}
-                                  onPress={this.props.onViewShop}/>
-                    <ActionButton iconSource={require('../../images/icon/star2.png')} text={"收藏"}
-                                  onPress={this.props.onAddCollection}/>
-                    <ActionButton iconSource={require('../../images/icon/kefu.png')} text={"客服"}
-                                  onPress={this.props.onConnectKefu}/>
-                </View>
-                <View style={styles.buttons}>
-                    <TouchableOpacity style={[styles.button, {backgroundColor: '#FD932B'}]} activeOpacity={1}
-                                      onPress={this.props.onAddToCart}>
-                        <Text style={styles.buttonText}>加入购物车</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, {backgroundColor: '#F9521F'}]} activeOpacity={1}
-                                      onPress={this.props.onBuyNow}>
-                        <Text style={styles.buttonText}>立即购买</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    }
-
-}
-
 class ItemDetail extends React.Component {
-    setNavigationOptions(){
-        const {navigation,route} = this.props;
+    setNavigationOptions() {
+        const {navigation, route} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
             headerTitle: '宝贝详情',
@@ -172,14 +42,6 @@ class ItemDetail extends React.Component {
             headerRight: () => (
                 <View style={Styles.headerRight}>
                     <Ticon
-                        name={"cart-light"}
-                        size={28}
-                        color={"#fff"}
-                        onPress={() => {
-                            navigation.navigate('Cart', {canBack: true})
-                        }}/>
-                    <BarItemSeparate/>
-                    <Ticon
                         name={"share-squar-light"}
                         color={"#fff"}
                         size={28}
@@ -197,26 +59,23 @@ class ItemDetail extends React.Component {
             item: {},
             content: {},
             images: [],
-            shop: [],
             props: [],
-            loading: true,
+            isLoading: true,
             showFooter: false,
             showModal: false,
             showShare: false,
             shareMessage: {},
             isOffSale: false
         };
-        this.action = null;
+        this.actionType = 1;
     }
 
     render() {
         if (this.state.isOffSale) return this.renderOffSale();
         const {auth} = this.props;
         const {item} = this.state;
-        if (this.state.loading) return <LoadingView/>;
-
-        let content = item.content.content || `<img src="${item.image}" style="width: 100%;"/>`;
-        let html = Platform.OS === 'ios' ? getContent(content) : content;
+        if (this.state.isLoading) return <LoadingView/>;
+        let html = item.content.content || `<img src="${item.image}" style="width: 100%;"/>`;
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
@@ -233,13 +92,17 @@ class ItemDetail extends React.Component {
                         }}>宝贝详情</Text>
                     </View>
                     {this.renderProperties()}
-                    <HtmlView value={html} style={{backgroundColor: '#fff'}}/>
+                    <HTML
+                        html={html}
+                        imagesMaxWidth={Size.screenWidth}
+                        imagesInitialDimensions={{...Size.screenSize}}
+                        ignoredStyles={['font-family']}
+                    />
                 </ScrollView>
-                <FooterBar
-                    show={this.state.showFooter}
-                    onAddToCart={() => {
-                        if (auth.isLoggedIn) {
-                            this.action = 'AddToCart';
+                <GoodsActionBar
+                    onPressAddCart={() => {
+                        if (auth.isSignined) {
+                            this.actionType = 1;
                             this.setState({
                                 showModal: true
                             });
@@ -247,21 +110,18 @@ class ItemDetail extends React.Component {
                             this.showLogin();
                         }
                     }}
-                    onBuyNow={() => {
-                        if (auth.isLoggedIn) {
-                            this.action = 'BuyNow';
+                    onPressBuyNow={() => {
+                        if (auth.isSignined) {
+                            this.actionType = 2;
                             this.setState({
                                 showModal: true
                             });
                         } else {
                             this.showLogin();
                         }
-                    }}
-                    onViewShop={() => {
-                        this.props.navigation.navigate('ShopDetail', {shop_id: shop.shop_id});
                     }}
                     onAddCollection={() => {
-                        if (auth.isLoggedIn) {
+                        if (auth.isSignined) {
                             Utils.addToCollection(item.itemid, 'item', () => {
                                 Toast.show('已成功加入收藏夹');
                             });
@@ -270,23 +130,27 @@ class ItemDetail extends React.Component {
                         }
                     }}
                     onConnectKefu={() => {
-                        this.props.navigation.navigate('ShopInfo', {shop_id: shop.shop_id});
+                        this.props.navigation.navigate('ShopInfo', {shop_id: item.shop_id});
                     }}
                 />
-                <BuyModalView
-                    visible={this.state.showModal}
+                <SkuPannel
+                    show={this.state.showModal}
                     data={item}
-                    onSubmit={(itemid, quantity) => {
-                        if (this.action === 'AddToCart') {
-                            AddToCart(itemid, quantity, () => {
+                    onSubmit={(sku, quantity) => {
+                        const item = this.state.item;
+                        if (this.actionType === 1) {
+                            console.log(sku);
+                            this.setState({showModal: false});
+                            let sku_id = sku.sku_id || 0;
+                            AddToCart(item.itemid, quantity, sku_id, () => {
                                 Toast.show('已成功加入购物车');
-                                DeviceEventEmitter.emit('CartDidChanged');
+                                DeviceEventEmitter.emit(CartDidChangedNotification);
                             });
                         } else {
                             this.setState({showModal: false});
-                            this.props.navigation.navigate('ConfirmOrder', {
+                            this.props.navigation.navigate('BuyNow', {
                                 item,
-                                shop,
+                                sku,
                                 quantity
                             });
                         }
@@ -309,7 +173,7 @@ class ItemDetail extends React.Component {
                 content,
                 images,
                 props,
-                loading: false,
+                isLoading: false,
                 showFooter: true,
                 shareMessage: {
                     type: 'news',
@@ -324,21 +188,11 @@ class ItemDetail extends React.Component {
         });
     }
 
-    UNSAFE_componentWillMount() {
-        this.props.navigation.addListener('willFocus', () => {
-            Utils.setStatusBarStyle('dark');
-        });
-    }
-
-    componentWillUnmount() {
-        this.props.navigation.removeListener('willFocus');
-    }
-
     renderSwiper = () => {
         let items = this.state.images.map((image, index) => {
             return (
                 <TouchableOpacity style={{flex: 1}} activeOpacity={1} key={index.toString()}>
-                    <CacheImage source={{uri: image.image}} style={{flex: 1}}/>
+                    <ELImage source={{uri: image.image}} containerStyle={{flex: 1}}/>
                 </TouchableOpacity>
             );
         });
@@ -385,7 +239,7 @@ class ItemDetail extends React.Component {
                         fontSize: 12,
                         color: '#777'
                     }}>配送费:{item.shipping_fee > 0 ? item.shipping_fee : '免费'}</Text>
-                    <View style={{flex: 1}}></View>
+                    <View style={{flex: 1}}/>
                     <Text style={{
                         fontSize: 12,
                         color: '#777',

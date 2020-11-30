@@ -1,22 +1,22 @@
 import * as types from '../actions/types';
 
 const initialState = {
-    isLoggedIn:false,
-    userinfo:{}
+    isSignined: false,
+    userinfo: {}
 };
 
 function auth(state = initialState, action) {
-    if (action.type === types.USER_DID_LOGGEDIN){
+    if (action.type === types.USER_DID_SIGNIN) {
         return Object.assign({}, state, {
-            isLoggedIn:true,
-            userinfo:action.userinfo
+            isSignined: true,
+            userinfo: action.userinfo
         });
     }
 
-    if (action.type === types.USER_DID_LOGOUT) {
+    if (action.type === types.USER_DID_SIGNOUT) {
         return Object.assign({}, state, {
-            isLoggedIn:false,
-            userinfo:{}
+            isSignined: false,
+            userinfo: {}
         });
     }
     return state;

@@ -1,21 +1,18 @@
 import React from 'react';
-import {View, Image, ScrollView, DeviceEventEmitter} from 'react-native';
+import {View, Image, ScrollView, DeviceEventEmitter, TouchableOpacity, Text} from 'react-native';
 import {bindActionCreators} from 'redux';
 import {connect,} from "react-redux";
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-picker';
 import {LoadingView, Spinner, TableCellGroup, TableCell} from "react-native-dsxui";
-import {UserDidLoggedInNotification, UserDidLogoutNotification, UserInfoStoreKey} from "../../../base/constants";
+import {UserDidSignoutedNotification} from "../../../base/constants";
 import {Utils, ApiClient} from "../../../utils";
 import {CustomButton} from "../../../components";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {authActionCreators, locationActionCreators} from "../../../actions";
+import {Colors} from "../../../styles";
 
 class MyProfile extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '个人资料',
-    });
 
     constructor(props) {
         super(props);
@@ -72,9 +69,19 @@ class MyProfile extends React.Component {
                         />
                     </TableCellGroup>
                 </ScrollView>
-                <View>
-                    <CustomButton type={"danger"} text={"退出当前账号"} onPress={this.logout} style={{borderRadius: 0}}/>
-                </View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                        height: 45,
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: Colors.primary
+                    }}
+                    onPress={this.logout}
+                >
+                    <Text style={{color: '#fff', fontSize: 16}}>退出当前账号</Text>
+                </TouchableOpacity>
                 <ActionSheet
                     ref={o => this.ActionSheet = o}
                     options={['女', '男', '取消']}
@@ -98,6 +105,12 @@ class MyProfile extends React.Component {
 
 
     componentDidMount() {
+        const {navigation} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '个人资料',
+        });
+
         ApiClient.get('/user/info').then(response => {
             //console.log(response);
             const {userinfo} = response.data;
@@ -112,7 +125,6 @@ class MyProfile extends React.Component {
         });
 
         DeviceEventEmitter.addListener('onPickedDistrict', (dist) => {
-            console.log(dist);
             let {userinfo} = this.state;
             let {province, city, district} = dist;
             userinfo = {
@@ -124,9 +136,7 @@ class MyProfile extends React.Component {
             this.setState({
                 userinfo
             }, () => {
-                ApiClient.post('/user/update', {info: {province, city, district}}).then(response => {
-
-                });
+                ApiClient.post('/user/update', {info: {province, city, district}});
             });
         });
 
@@ -135,11 +145,11 @@ class MyProfile extends React.Component {
 
     componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners('onPickedDistrict');
-        this.listner.remove();
+        this.props.navigation.removeListener('willFocus');
     }
 
     logout = () => {
-        DeviceEventEmitter.emit(UserDidLogoutNotification);
+        DeviceEventEmitter.emit(UserDidSignoutedNotification);
         this.props.navigation.goBack();
     };
 
@@ -170,7 +180,7 @@ class MyProfile extends React.Component {
                 DeviceEventEmitter.emit(UserDidLoggedInNotification, userinfo);
                 this.setState({
                     userinfo,
-                    uploading:false
+                    uploading: false
                 });
             }).catch(error => {
                 this.setState({uploading: false});
@@ -183,7 +193,8 @@ const mapDispatchToProps = (dispatch) => {
     const authActions = bindActionCreators(authActionCreators, dispatch);
     const locationActions = bindActionCreators(locationActionCreators, dispatch);
     return {
-        authActions
+        authActions,
+        locationActions
     }
 };
 

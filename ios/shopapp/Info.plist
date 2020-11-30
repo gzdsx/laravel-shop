@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>大师兄的小店</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -63,6 +63,24 @@
 	<string>我们需要使用siri进行语音识别</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>我们需要使用语言识别功能，用于进行语音输入</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -79,23 +97,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>UIAppFonts</key>
-  <array>
-    <string>AntDesign.ttf</string>
-    <string>Entypo.ttf</string>
-    <string>EvilIcons.ttf</string>
-    <string>Feather.ttf</string>
-    <string>FontAwesome.ttf</string>
-    <string>FontAwesome5_Brands.ttf</string>
-    <string>FontAwesome5_Regular.ttf</string>
-    <string>FontAwesome5_Solid.ttf</string>
-    <string>Foundation.ttf</string>
-    <string>Ionicons.ttf</string>
-    <string>MaterialIcons.ttf</string>
-    <string>MaterialCommunityIcons.ttf</string>
-    <string>SimpleLineIcons.ttf</string>
-    <string>Octicons.ttf</string>
-    <string>Zocial.ttf</string>
-  </array>
 </dict>
 </plist>

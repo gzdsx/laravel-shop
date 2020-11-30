@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View,Image} from 'react-native';
 import {Ticon} from 'react-native-ticon';
 import {Colors, Styles} from '../styles';
 
@@ -16,6 +16,7 @@ const defaultNavigationConfigure = (navigation) => {
             </View>
         ),
         headerRight: () => (<View style={Styles.headerRight}/>),
+        headerBackImage: ()=> <Image source={require('../images/common/launchimage.png')}/>
     };
 };
 

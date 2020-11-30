@@ -2,7 +2,6 @@ import React from 'react';
 import {View, FlatList, Text, TouchableOpacity} from 'react-native';
 import {LoadingView} from "react-native-dsxui";
 import {ApiClient} from "../../../utils";
-import {Size} from "../../../styles";
 
 export default class PostCollect extends React.Component {
 
@@ -48,7 +47,6 @@ export default class PostCollect extends React.Component {
         let offset = this.offset;
         let items = this.state.items;
         let response = await ApiClient.get('/post/collect/batchget', {offset});
-        console.log(response.data);
         if (this.state.isLoadMore) {
             items = items.concat(response.data.items);
         } else {
@@ -100,7 +98,7 @@ export default class PostCollect extends React.Component {
                 }}
                 onPress={() => this.props.onPressItem(item)}
             >
-                <Text style={{fontSize: 18, fontWeight: '400', color: '#333'}} numberOfLines={2}>{item.title}</Text>
+                <Text style={{fontSize: 16, fontWeight: '400', color: '#333'}} numberOfLines={2}>{item.title}</Text>
             </TouchableOpacity>
         );
     };

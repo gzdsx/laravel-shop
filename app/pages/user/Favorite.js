@@ -53,7 +53,7 @@ export default class Favorite extends React.Component {
                 }}
             >
                 <PostCollect tabLabel={"文章"} onPressItem={(item) => {
-                    this.props.navigation.navigate('NewsDetail', {aid: item.aid});
+                    this.props.navigation.navigate('PostDetail', {aid: item.aid});
                 }}/>
                 <VideoCollect tabLabel={"视频"} onPressItem={(item) => {
                     this.props.navigation.navigate('VideoDetail', {id: item.id});
