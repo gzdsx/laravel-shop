@@ -9,7 +9,7 @@ import {
     Image,
     StatusBar
 } from 'react-native';
-import {Ticon} from "react-native-ticon";
+import {Ticon} from "react-native-gzdsx-elements";
 import Video from "react-native-video";
 import {ApiClient, Toast} from "../../utils";
 import {Size} from "../../styles";
@@ -159,7 +159,12 @@ export default class VideoIndex extends React.Component {
                 paddingRight: 20,
                 paddingBottom: 15
             }}>
-                <Ticon size={28} name={"back-light"} color={"#fff"} onPress={() => this.props.navigation.goBack()}/>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => this.props.navigation.goBack()}
+                >
+                    <Ticon size={28} name={"back-light"} color={"#fff"}/>
+                </TouchableOpacity>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity
                     activeOpacity={1}

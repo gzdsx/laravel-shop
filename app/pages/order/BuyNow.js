@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
-import {LoadingView, TableCellGroup, TableCell} from "react-native-dsxui";
+import {LoadingView, TableView, TableCell, Toast, TextField} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {CustomTextInput} from "../../components";
-import {Toast, ApiClient, Utils} from "../../utils";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import ShippingAddress from "../../components/ShippingAddress";
 
@@ -60,6 +60,7 @@ export default class BuyNow extends React.Component {
                         }
                     }}
                 />
+                <Toast ref={"toast"}/>
             </View>
         );
     }
@@ -127,7 +128,7 @@ export default class BuyNow extends React.Component {
     renderContent = () => {
         const {item, sku, quantity} = this.props.route.params;
         return (
-            <TableCellGroup style={{marginTop: 10}}>
+            <TableView style={{marginTop: 10}}>
                 <TableCell>
                     <CacheImage
                         source={{uri: item.thumb}}
@@ -174,40 +175,25 @@ export default class BuyNow extends React.Component {
                         </View>
                     </View>
                 </TableCell>
-                <TableCell
-                    title={"配送方式"}
-                    detail={this.getShippingTypeText()}
-                    isLink={true}
-                    onPress={() => this.ActionSheet1.show()}
-                />
-                <TableCell
-                    title={"付款方式"}
-                    detail={this.getPayTypeText()}
-                    isLink={true}
-                    onPress={() => this.ActionSheet2.show()}
-                />
-                <TableCell>
-                    <View style={{
-                        alignContent: 'center',
-                        justifyContent: 'center',
-                        marginRight: 10
-                    }}
-                    >
-                        <Text style={{
-                            fontSize: 16,
-                            color: '#000',
-                            textAlignVertical: 'center'
-                        }}>给卖家留言</Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <CustomTextInput
-                            placeholder={"选填,对本次交易的说明"}
-                            style={{fontSize: 14}}
-                            onChangeText={(text) => this.setState({remark: text})}
-                        />
-                    </View>
+                <TableCell onPress={() => this.ActionSheet1.show()}>
+                    <TableCell.Title title={"配送方式"}/>
+                    <TableCell.Detail text={this.getShippingTypeText()}/>
+                    <TableCell.Accessory/>
                 </TableCell>
-            </TableCellGroup>
+                <TableCell onPress={() => this.ActionSheet2.show()}>
+                    <TableCell.Title title={"付款方式"}/>
+                    <TableCell.Detail text={this.getPayTypeText()}/>
+                    <TableCell.Accessory/>
+                </TableCell>
+                <TextField
+                    label={"给卖家留言"}
+                    placeholder={"选填,对本次交易的说明"}
+                    style={{paddingHorizontal: 15}}
+                    onChangeText={(text) => this.setState({remark: text})}
+                    labelContainerStyle={{width: 95}}
+                    inputStyle={{fontSize: 14}}
+                />
+            </TableView>
         );
     };
 
@@ -258,7 +244,7 @@ export default class BuyNow extends React.Component {
         const {shipping_type, pay_type, remark, address} = this.state;
 
         if (!address) {
-            Toast.show('请选择收货地址');
+            this.refs.toast.show('请选择收货地址');
             return false;
         }
 

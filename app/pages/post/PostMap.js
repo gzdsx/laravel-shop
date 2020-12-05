@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {LoadingView} from "react-native-dsxui";
-import {Colors, Size, Styles} from "../../styles";
+import {LoadingView} from "react-native-gzdsx-elements";
+import {Colors, Size} from "../../styles";
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 

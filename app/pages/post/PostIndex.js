@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import PostListComponent from "./components/PostListComponent";
 import {ApiClient} from "../../utils";

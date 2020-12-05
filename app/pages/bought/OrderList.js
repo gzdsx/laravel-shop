@@ -7,7 +7,7 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";

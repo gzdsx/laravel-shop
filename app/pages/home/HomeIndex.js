@@ -3,17 +3,15 @@ import {View, ScrollView, TouchableOpacity, Image, Text, FlatList, RefreshContro
 import {connect} from "react-redux";
 import Swiper from 'react-native-swiper';
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView, Ticon} from "react-native-gzdsx-elements";
 import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
-import {Header, Image as ELImage, Input} from 'react-native-elements';
-import {Colors, Size, Styles} from '../../styles';
+import {Header} from 'react-native-elements';
+import {Colors, Size} from '../../styles';
 import {ApiClient} from "../../utils";
 import Menus from '../../base/menus';
 import {BaseApi} from "../../base/constants";
-import {CustomSearchBar} from "../../components";
-import ItemListView from "../shop/components/ItemListView";
+import {SearchBar} from "../../components";
 import ItemGridView from "../shop/components/ItemGridView";
-import {Ticon} from "react-native-ticon";
 
 class HomeIndex extends React.Component {
 
@@ -23,7 +21,7 @@ class HomeIndex extends React.Component {
                 <Header
                     backgroundColor={Colors.primary}
                     centerComponent={() => (
-                        <CustomSearchBar
+                        <SearchBar
                             placeholderTextColor={"#666"}
                             placeholder={"猕猴桃,果酒,羊肉粉"}
                             containerStyle={{
@@ -51,15 +49,25 @@ class HomeIndex extends React.Component {
                     )}
                     centerContainerStyle={{flexDirection: "row", paddingHorizontal: 10}}
                     leftComponent={() => (
-                        <Ticon name={'scan-light'} color={"#fff"} onPress={() => {
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
 
-                        }}/>
+                            }}
+                        >
+                            <Ticon name={'scan-light'} color={"#fff"}/>
+                        </TouchableOpacity>
                     )}
                     leftContainerStyle={{flex: 0}}
                     rightComponent={() => (
-                        <Ticon name={'more-light'} color={"#fff"} onPress={() => {
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
 
-                        }}/>
+                            }}
+                        >
+                            <Ticon name={'more-light'} color={"#fff"}/>
+                        </TouchableOpacity>
                     )}
                     rightContainerStyle={{flex: 0}}
                     containerStyle={{
@@ -107,7 +115,7 @@ class HomeIndex extends React.Component {
             reachabilityShortTimeout: 5 * 1000, // 5s
         });
         NetInfo.addEventListener(state => {
-            //console.log(state);
+            console.log(state);
             if (state.isConnected) {
                 this.fetchData();
             }
@@ -239,9 +247,7 @@ class HomeIndex extends React.Component {
 }
 
 const mapStateToProps = (store) => {
-    return {
-        auth: store.auth
-    };
+    return {...store};
 };
 
 export default connect(mapStateToProps)(HomeIndex);

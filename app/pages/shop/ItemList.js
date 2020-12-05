@@ -5,12 +5,12 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from "react-native";
-import {Ticon} from "react-native-ticon";
+import {Ticon} from "react-native-gzdsx-elements";
 import {Header} from "react-native-elements";
 import {Utils, ApiClient} from "../../utils";
 import ItemListView from "./components/ItemListView";
 import {Colors, Size} from "../../styles";
-import {CustomSearchBar} from "../../components";
+import {SearchBar} from "../../components";
 
 const TabItem = ({text, active = false, onPress = () => null}) => {
     return (
@@ -34,16 +34,16 @@ class ItemList extends React.Component {
                 <Header
                     backgroundColor={Colors.primary}
                     leftComponent={() => (
-                        <Ticon
-                            name={"back-light"}
-                            size={28}
-                            color={"#fff"}
+                        <TouchableOpacity
+                            activeOpacity={1}
                             onPress={() => navigation.goBack()}
-                        />
+                        >
+                            <Ticon name={"back-light"} size={28} color={"#fff"}/>
+                        </TouchableOpacity>
                     )}
                     leftContainerStyle={{flex: 0}}
                     centerComponent={() => (
-                        <CustomSearchBar
+                        <SearchBar
                             placeholderTextColor={"#666"}
                             placeholder={"猕猴桃,果酒,羊肉粉"}
                             containerStyle={{
@@ -77,14 +77,14 @@ class ItemList extends React.Component {
                         marginRight: 10
                     }}
                     rightComponent={() => (
-                        <Ticon
-                            name={"more-light"}
-                            size={28}
-                            color={"#fff"}
+                        <TouchableOpacity
+                            activeOpacity={1}
                             onPress={() => {
 
                             }}
-                        />
+                        >
+                            <Ticon name={"more-light"} size={28} color={"#fff"}/>
+                        </TouchableOpacity>
                     )}
                     rightContainerStyle={{flex: 0}}
                     containerStyle={{

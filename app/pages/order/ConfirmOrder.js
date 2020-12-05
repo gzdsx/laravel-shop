@@ -1,10 +1,9 @@
 import React from 'react';
 import {View, Text, ScrollView, TouchableOpacity, InteractionManager, DeviceEventEmitter} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
-import {LoadingView, TableCellGroup, TableCell} from "react-native-dsxui";
+import {LoadingView, TableView, TableCell, TextField} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {ApiClient, Utils} from "../../utils";
-import {CustomTextInput} from "../../components";
+import {ApiClient} from "../../utils";
 import ShippingAddress from "../../components/ShippingAddress";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {CartDidChangedNotification} from "../../base/constants";
@@ -187,46 +186,27 @@ export default class ConfirmOrder extends React.Component {
 
 
         return (
-            <TableCellGroup>
+            <TableView>
                 {itemContents}
-                <TableCell>
-                    <View style={{
-                        alignContent: 'center',
-                        justifyContent: 'center',
-                        marginRight: 10
-                    }}
-                    >
-                        <Text style={{
-                            fontSize: 16,
-                            color: '#000',
-                            textAlignVertical: 'center'
-                        }}>给卖家留言</Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                        <CustomTextInput
-                            placeholder={"选填,对本次交易的说明"}
-                            style={{
-                                fontSize: 14
-                            }}
-                            onChangeText={(text) => {
-                                this.setState({remark: text});
-                            }}
-                        />
-                    </View>
+                <TableCell onPress={() => this.ActionSheet1.show()}>
+                    <TableCell.Title title={"配送方式"}/>
+                    <TableCell.Detail text={this.getShippingTypeText()}/>
+                    <TableCell.Accessory/>
                 </TableCell>
-                <TableCell
-                    title={"配送方式"}
-                    detail={this.getShippingTypeText()}
-                    isLink={true}
-                    onPress={() => this.ActionSheet1.show()}
+                <TableCell onPress={() => this.ActionSheet2.show()}>
+                    <TableCell.Title title={"付款方式"}/>
+                    <TableCell.Detail text={this.getPayTypeText()}/>
+                    <TableCell.Accessory/>
+                </TableCell>
+                <TextField
+                    label={"给卖家留言"}
+                    placeholder={"选填,对本次交易的说明"}
+                    style={{paddingHorizontal: 15}}
+                    onChangeText={(text) => this.setState({remark: text})}
+                    labelContainerStyle={{width: 95}}
+                    inputStyle={{fontSize: 14}}
                 />
-                <TableCell
-                    title={"付款方式"}
-                    detail={this.getPayTypeText()}
-                    isLink={true}
-                    onPress={() => this.ActionSheet2.show()}
-                />
-            </TableCellGroup>
+            </TableView>
         );
     };
 

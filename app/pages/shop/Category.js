@@ -6,12 +6,12 @@ import {
     FlatList,
     ScrollView,
 } from 'react-native';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Header} from "react-native-elements";
 import {Utils, ApiClient} from "../../utils";
 import {Colors, Size} from "../../styles";
-import {CustomSearchBar} from "../../components";
+import {SearchBar} from "../../components";
 
 const viewItemWidth = (Size.screenWidth - 90) / 3;
 const selected = {
@@ -27,26 +27,27 @@ const textSelected = {
 };
 
 export default class Category extends React.Component {
-    static navigationOptions = ({navigation, route}) => {
+    setNavigationOptions = () => {
+        const {navigation, route} = this.props;
         return {
             header: () => (
                 <Header
                     backgroundColor={Colors.primary}
-                    centerComponent={()=>(
-                        <CustomSearchBar
+                    centerComponent={() => (
+                        <SearchBar
                             placeholderTextColor={"#666"}
                             placeholder={"猕猴桃,果酒,羊肉粉"}
                             containerStyle={{
                                 backgroundColor: "transparent",
-                                flex:1,
-                                padding:0,
-                                borderRadius:10,
-                                borderTopWidth:0,
-                                borderBottomWidth:0,
+                                flex: 1,
+                                padding: 0,
+                                borderRadius: 10,
+                                borderTopWidth: 0,
+                                borderBottomWidth: 0,
                             }}
                             inputContainerStyle={{
                                 backgroundColor: '#fefefe',
-                                height:34
+                                height: 34
                             }}
 
                             inputStyle={{
@@ -54,16 +55,16 @@ export default class Category extends React.Component {
                             }}
                             round={true}
                             lightTheme={true}
-                            onSearch={(q)=>{
-                                navigation.navigate('ItemList',{q});
+                            onSearch={(q) => {
+                                navigation.navigate('ItemList', {q});
                             }}
                         />
                     )}
                     centerContainerStyle={{
-                        flexDirection:"row"
+                        flexDirection: "row"
                     }}
-                    leftContainerStyle={{flex:0}}
-                    rightContainerStyle={{flex:0}}
+                    leftContainerStyle={{flex: 0}}
+                    rightContainerStyle={{flex: 0}}
                 >
                 </Header>
             )
@@ -116,8 +117,8 @@ export default class Category extends React.Component {
         );
     }
 
-
     componentDidMount() {
+        this.setNavigationOptions();
         ApiClient.get('/item/category/getall').then(response => {
             //console.log(response.data);
             const items = response.data.items;
@@ -128,13 +129,6 @@ export default class Category extends React.Component {
                 isLoading: false
             });
         });
-
-        this.listener = this.props.navigation.addListener('willFocus', () => Utils.setStatusBarStyle('light'));
-    }
-
-
-    componentWillUnmount() {
-        //this.listener.remove();
     }
 
     renderListItem = (category, index) => {

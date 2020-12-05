@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {ApiClient} from "../../utils";
 

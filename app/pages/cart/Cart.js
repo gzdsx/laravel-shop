@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View,
     Text,
-    Image,
     TouchableOpacity,
     ScrollView,
     RefreshControl,
@@ -11,35 +10,37 @@ import {
     StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {Ticon} from "react-native-ticon";
+import {Ticon, Toast, CheckBox} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
-import CheckBox from '../../components/CheckBox';
 import ItemGridView from "../shop/components/ItemGridView";
 import {Styles} from "../../styles";
-import {Utils, ApiClient, Toast} from "../../utils";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {NumberControl} from "../shop/components/NumberControl";
 import {CartDidChangedNotification} from "../../base/constants";
 
 class Cart extends React.Component {
-    static navigationOptions = ({navigation, route}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '购物车',
-        headerLeft: () => {
-            let canBack = route.params?.canBack;
-            if (canBack) {
-                return (
-                    <View style={Styles.headerLeft}>
-                        <Ticon name={"back-light"} size={28} color={"#fff"} onPress={() => navigation.goBack()}/>
-                    </View>
-                );
-            } else {
-                return <View style={Styles.headerLeft}/>;
+    setNavigationOptions(){
+        const {navigation,route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '购物车',
+            headerLeft: () => {
+                let canBack = route.params?.canBack;
+                if (canBack) {
+                    return (
+                        <TouchableOpacity onPress={navigation.goBack} activeOpacity={1} style={Styles.headerLeft}>
+                            <Ticon name={"back-light"} size={28} color={"#fff"}/>
+                        </TouchableOpacity>
+                    );
+                } else {
+                    return <View style={Styles.headerLeft}/>;
+                }
             }
-        }
-    });
+        })
+    }
 
     constructor(props) {
         super(props);
@@ -82,6 +83,7 @@ class Cart extends React.Component {
                     />
                 </ScrollView>
                 {auth.isSignined && this.renderFootBar()}
+                <Toast ref={"toast"}/>
             </View>
         );
     }
@@ -91,6 +93,7 @@ class Cart extends React.Component {
     }
 
     componentDidMount() {
+        this.setNavigationOptions();
         if (this.props.auth.isSignined) {
             this.fetchData();
         }
@@ -187,9 +190,8 @@ class Cart extends React.Component {
         });
         let contents = this.state.cartItems.map((item, index) => {
             return (
-                <View style={{backgroundColor: '#f00'}}>
+                <View style={{backgroundColor: '#f00'}} key={item.itemid.toString()}>
                     <Swipeable
-                        key={item.itemid.toString()}
                         rightThreshold={75}
                         renderRightActions={(progress, dragX) => {
                             const trans = dragX.interpolate({
@@ -361,7 +363,7 @@ class Cart extends React.Component {
 
     settlement = () => {
         if (this.checkedItems.length === 0) {
-            Toast.show('请选择要结算的商品');
+            this.refs.toast.show('请选择要结算的商品');
             return false;
         }
 
@@ -370,8 +372,7 @@ class Cart extends React.Component {
 }
 
 const mapStateToProps = (store) => {
-    const {auth, location} = store;
-    return {auth, location};
+    return {...store};
 };
 
 export default connect(mapStateToProps)(Cart);

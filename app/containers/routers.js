@@ -13,7 +13,6 @@ import Signup from "../pages/auth/Signup";
 import AMapView from "../pages/common/AMapView";
 import QRScanner from "../pages/common/QRScanner";
 import DistrictSelector from "../pages/common/DistrictSelector";
-import NotificationDetail from "../pages/notification/NotificationDetail";
 import VideoIndex from "../pages/video/VideoIndex";
 import VideoDetail from "../pages/video/VideoDetail";
 import LiveIndex from "../pages/live/LiveIndex";
@@ -45,7 +44,6 @@ export default [
     {name: 'AMapView', component: AMapView, options: AMapView.navigationOptions || {}},
     {name: 'QRScanner', component: QRScanner, options: QRScanner.navigationOptions || {}},
     {name: 'DistrictSelector', component: DistrictSelector, options: DistrictSelector.navigationOptions || {}},
-    {name: 'NotificationDetail', component: NotificationDetail, options: NotificationDetail.navigationOptions || {}},
     {name: 'VideoIndex', component: VideoIndex, options: VideoIndex.navigationOptions || {}},
     {name: 'VideoDetail', component: VideoDetail, options: VideoDetail.navigationOptions || {}},
     {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},

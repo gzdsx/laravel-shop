@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {Image,View,StyleSheet,Dimensions, StatusBar} from 'react-native';
 
 const WIN_WIDTH = Dimensions.get("window").width,
@@ -18,7 +18,7 @@ const css = StyleSheet.create({
     }
 });
 
-export default class LaunchScreen extends Component{
+export default class LaunchScreen extends React.Component{
     constructor(props) {
         super(props);
 

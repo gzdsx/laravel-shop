@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements';
-import {ApiClient, Toast} from "../../utils";
+import {Toast} from 'react-native-gzdsx-elements';
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Colors} from "../../styles";
 
@@ -54,27 +55,27 @@ export default class FeedBack extends React.Component {
                         activeOpacity={0.8}
                     />
                 </View>
+                <Toast ref={"toast"}/>
             </View>
         );
     }
 
     submit = () => {
         if (!this.state.title) {
-            Toast.show('请输入你要反馈的问题');
+            this.refs.toast.show('请输入你要反馈的问题');
             return false;
         }
 
         if (!this.state.message) {
-            Toast.show('请描述一下你的问题，不少于10个字');
+            this.refs.toast.show('请描述一下你的问题，不少于10个字');
             return false;
         }
 
-        ApiClient.post('/feedback/save', this.state)
-            .then(response => {
-                Toast.show('你的问题已提交', {
-                    onHidden: () => this.props.navigation.goBack()
-                });
+        ApiClient.post('/feedback/save', this.state).then(response => {
+            this.refs.toast.show('你的问题已提交', {
+                onHide: () => this.props.navigation.goBack()
             });
+        });
     }
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {FlatList, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 
 class ItemListView extends React.Component {

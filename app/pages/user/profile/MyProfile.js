@@ -4,10 +4,9 @@ import {bindActionCreators} from 'redux';
 import {connect,} from "react-redux";
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-picker';
-import {LoadingView, Spinner, TableCellGroup, TableCell} from "react-native-dsxui";
+import {LoadingView, Spinner, TableView, TableCell} from "react-native-gzdsx-elements";
 import {UserDidSignoutedNotification} from "../../../base/constants";
 import {Utils, ApiClient} from "../../../utils";
-import {CustomButton} from "../../../components";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {authActionCreators, locationActionCreators} from "../../../actions";
 import {Colors} from "../../../styles";
@@ -30,44 +29,37 @@ class MyProfile extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
-                    <TableCellGroup>
-                        <TableCell
-                            title={"头像"}
-                            isLink={true}
-                            detailComponent={() => {
-                                return (
-                                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                                        <Image
-                                            source={{uri: userinfo.avatar}}
-                                            style={{
-                                                width: 50,
-                                                height: 50,
-                                                borderRadius: 10
-                                            }}
-                                        />
-                                    </View>
-                                )
-                            }}
-                            onPress={this.pickImage}
-                        />
-                        <TableCell
-                            title={"账号"}
-                            isLink={true}
-                            detail={userinfo.username}
-                        />
-                        <TableCell
-                            title={"性别"}
-                            isLink={true}
-                            detail={userinfo.gender ? '男' : '女'}
-                            onPress={() => this.ActionSheet.show()}
-                        />
-                        <TableCell
-                            title={"所在地"}
-                            isLink={true}
-                            detail={[userinfo.province, userinfo.city, userinfo.district].join(' ')}
-                            onPress={() => navigation.navigate('DistrictSelector')}
-                        />
-                    </TableCellGroup>
+                    <TableView>
+                        <TableCell onPress={this.pickImage}>
+                            <TableCell.Title title={"头像"}/>
+                            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                                <Image
+                                    source={{uri: userinfo.avatar}}
+                                    style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: 10
+                                    }}
+                                />
+                            </View>
+                            <TableCell.Accessory/>
+                        </TableCell>
+                        <TableCell>
+                            <TableCell.Title title={"账号"}/>
+                            <TableCell.Detail text={userinfo.username}/>
+                            <TableCell.Accessory/>
+                        </TableCell>
+                        <TableCell onPress={() => this.ActionSheet.show()}>
+                            <TableCell.Title title={"性别"}/>
+                            <TableCell.Detail text={userinfo.gender ? '男' : '女'}/>
+                            <TableCell.Accessory/>
+                        </TableCell>
+                        <TableCell onPress={() => navigation.navigate('DistrictSelector')}>
+                            <TableCell.Title title={"所在地"}/>
+                            <TableCell.Detail text={[userinfo.province, userinfo.city, userinfo.district].join(' ')}/>
+                            <TableCell.Accessory/>
+                        </TableCell>
+                    </TableView>
                 </ScrollView>
                 <TouchableOpacity
                     activeOpacity={1}

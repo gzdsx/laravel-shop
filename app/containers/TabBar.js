@@ -2,10 +2,10 @@ import React from 'react';
 import {Image} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeIndex from '../pages/home/HomeIndex';
-import Category from "../pages/shop/Category";
-import UserIndex from '../pages/user/UserIndex';
 import {Colors} from "../styles";
+import HomeIndex from '../pages/home/HomeIndex';
+// import Category from "../pages/shop/Category";
+import UserIndex from '../pages/user/UserIndex';
 import Cart from "../pages/cart/Cart";
 import PostIndex from "../pages/post/PostIndex";
 
@@ -24,15 +24,15 @@ const HomeScreen = () => (
     </HomeStack.Navigator>
 )
 
-const CategoryStack = createStackNavigator();
-const CategoryScreen = () => (
-    <CategoryStack.Navigator>
-        <CategoryStack.Screen name={"Category"} component={Category} options={Category.navigationOptions}/>
-    </CategoryStack.Navigator>
-)
+// const CategoryStack = createStackNavigator();
+// const CategoryScreen = () => (
+//     <CategoryStack.Navigator>
+//         <CategoryStack.Screen name={"Category"} component={Category} options={Category.navigationOptions}/>
+//     </CategoryStack.Navigator>
+// )
 
 const PostStack = createStackNavigator();
-const PostScreen = () =>(
+const PostScreen = () => (
     <PostStack.Navigator>
         <PostStack.Screen name={"PostIndex"} component={PostIndex} options={PostIndex.navigationOptions}/>
     </PostStack.Navigator>
@@ -61,6 +61,7 @@ class TabBar extends React.Component {
                 tabBarOptions={{
                     activeTintColor: Colors.primary,
                     inactiveTintColor: '#777',
+                    labelStyle: {height: 14}
                 }}
             >
                 <Tab.Screen

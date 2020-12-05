@@ -1,8 +1,8 @@
 import React from 'react';
-import {SearchBar} from "react-native-elements";
+import {SearchBar as ELSearchBar} from "react-native-elements";
 import PropTypes from 'prop-types';
 
-class CustomSearchBar extends React.Component {
+class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,7 +13,7 @@ class CustomSearchBar extends React.Component {
 
     render() {
         return (
-            <SearchBar
+            <ELSearchBar
                 {...this.props}
                 onChangeText={(text) => {
                     this.setState({value: text});
@@ -30,7 +30,7 @@ class CustomSearchBar extends React.Component {
     }
 }
 
-CustomSearchBar.propTypes = {
+SearchBar.propTypes = {
     value: PropTypes.string,
     clearIcon: PropTypes.any,
     searchIcon: PropTypes.any,
@@ -58,8 +58,8 @@ CustomSearchBar.propTypes = {
     onSearch: PropTypes.func
 }
 
-CustomSearchBar.defaultProps = {
+SearchBar.defaultProps = {
     onSearch: () => null
 }
 
-export default CustomSearchBar;
+export default SearchBar;

@@ -1,50 +1,47 @@
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {connect} from "react-redux";
 import {WebView} from 'react-native-webview';
-import {Ticon} from 'react-native-ticon';
-import {LoadingView} from "react-native-dsxui";
-import {Styles, Colors} from '../../styles';
+import {Ticon, Toast} from "react-native-gzdsx-elements";
+import {Styles} from '../../styles';
 import {ShareView, BarItemSeparate} from '../../components';
-import {ApiClient, Utils, Toast} from '../../utils';
-import {BaseUri} from '../../base/constants';
+import {ApiClient} from '../../utils';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 
 
 class PostDetail extends React.Component {
 
     setNavigationOptions() {
-        const {navigation, route} = this.props;
+        const {navigation, route, auth} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
-            headerTitle: '文章正文',
+            headerTitle: '正文',
             headerRight: () => (
                 <View style={Styles.headerRight}>
-                    <Ticon
-                        name={"share-squar-light"}
-                        size={28}
-                        color={"#fff"}
+                    <TouchableOpacity
                         onPress={() => {
                             this.setState({showShare: true});
                         }}
-                    />
+                        activeOpacity={1}
+                    >
+                        <Ticon name={"share-squar-light"} size={28} color={"#fff"}/>
+                    </TouchableOpacity>
                     <BarItemSeparate/>
-                    <Ticon
-                        name={"favor-light"}
-                        color={"#fff"}
-                        size={28}
+                    <TouchableOpacity
                         onPress={() => {
-                            if (this.props.auth.isSignined) {
+                            if (auth.isSignined) {
                                 const aid = route.params?.aid;
                                 ApiClient.post('/post/collect/create', {aid}).then(response => {
-                                    console.log(response.data);
-                                    Toast.show('已成功加入收藏夹');
+                                    this.refs.toast.show('已成功加入收藏夹');
                                 });
                             } else {
                                 navigation.navigate('Signin');
                             }
                         }}
-                    />
+                        activeOpacity={1}
+                    >
+                        <Ticon name={"favor-light"} color={"#fff"} size={28}/>
+                    </TouchableOpacity>
                 </View>
             )
         })
@@ -65,11 +62,12 @@ class PostDetail extends React.Component {
                 <WebView
                     source={{uri: this.state.post.m_url}}
                     renderError={() => <View/>}
-                    renderLoading={() => <LoadingView/>}
+                    //renderLoading={() => <LoadingView/>}
                     onMessage={this.handlerMessage}
                     decelerationRate={"normal"}
                 />
                 <ShareView show={this.state.showShare} shareMessage={this.state.shareMessage}/>
+                <Toast ref={"toast"}/>
             </View>
         );
     }
@@ -78,39 +76,36 @@ class PostDetail extends React.Component {
         this.setNavigationOptions();
         const aid = this.props.route.params?.aid;
         ApiClient.get('/post/get', {aid}).then(response => {
-            this.setState({post: response.data.post});
+            const {post} = response.data;
+            this.setState({
+                post,
+                shareMessage: {
+                    type: 'news',
+                    title: post.title,
+                    description: post.summary,
+                    thumbImage: post.image || '',
+                    webpageUrl: post.m_url
+                }
+            });
         })
     }
 
     handlerMessage = (event: any) => {
-        console.log(event);
         const res = JSON.parse(event.nativeEvent.data);
-        if (res.event === 'shareMessage') {
-            this.setState({
-                shareMessage: {
-                    type: 'news',
-                    title: res.data.title,
-                    description: res.data.message,
-                    thumbImage: res.data.pic,
-                    webpageUrl: res.data.link
-                }
-            });
-        }
-
         if (res.event === 'shareTo') {
+            //console.log(event.nativeEvent);
             this.setState({showShare: true});
         }
 
-        if (res.event === 'viewArticle') {
-            this.props.navigation.navigate('PostDetail', {aid: res.aid});
+        if (res.event === 'onPressItem') {
+            //console.log(event.nativeEvent);
+            this.props.navigation.push('PostDetail', {aid: res.aid});
         }
     }
 }
 
 const mapStateToProps = (store) => {
-    return {
-        auth: store.auth
-    };
+    return {auth: store.auth};
 };
 
 export default connect(mapStateToProps)(PostDetail);

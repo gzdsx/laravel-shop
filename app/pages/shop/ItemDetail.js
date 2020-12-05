@@ -2,13 +2,12 @@ import React from 'react';
 import {ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
-import {LoadingView} from "react-native-dsxui";
-import {Ticon} from "react-native-ticon";
+import {LoadingView, Ticon, Toast} from "react-native-gzdsx-elements";
 import HTML from 'react-native-render-html';
 import {Image as ELImage} from 'react-native-elements';
 import SkuPannel from "./components/SkuPannel";
 import {AddToCart} from "../cart/CartActions";
-import {Utils, Toast, ApiClient} from "../../utils";
+import {Utils, ApiClient} from "../../utils";
 import {ShareView} from '../../components';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Size, Styles} from '../../styles';
@@ -139,11 +138,10 @@ class ItemDetail extends React.Component {
                     onSubmit={(sku, quantity) => {
                         const item = this.state.item;
                         if (this.actionType === 1) {
-                            console.log(sku);
                             this.setState({showModal: false});
                             let sku_id = sku.sku_id || 0;
                             AddToCart(item.itemid, quantity, sku_id, () => {
-                                Toast.show('已成功加入购物车');
+                                this.refs.toast.show('已成功加入购物车');
                                 DeviceEventEmitter.emit(CartDidChangedNotification);
                             });
                         } else {
@@ -157,6 +155,7 @@ class ItemDetail extends React.Component {
                     }}
                 />
                 <ShareView show={this.state.showShare} shareMessage={this.state.shareMessage}/>
+                <Toast ref={"toast"}/>
             </View>
         );
     }

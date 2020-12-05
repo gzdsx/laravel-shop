@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {View, Text, Image, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
-import {Ticon} from "react-native-ticon";
-import {TableCellGroup, TableCell} from "react-native-dsxui";
+import {Ticon, TableView, TableCell} from "react-native-gzdsx-elements";
 import AboutUs from "./AboutUs";
 import {Colors} from "../../styles";
 
@@ -15,44 +14,50 @@ class UserView extends React.Component {
                 {this.renderHeader()}
                 {this.renderOrderMenus()}
                 <View style={{height: 10}}/>
-                <TableCellGroup>
-                    <TableCell
-                        title={"账号安全"}
-                        icon={<Ticon name={"safe"} color={"#23C55D"} size={25}/>}
-                        isLink={true}
-                        onPress={() => this.showView('Security')}
-                    />
-                    <TableCell
-                        title={"收货地址"}
-                        icon={<Ticon name={"address-book"} color={"#666666"} size={25}/>}
-                        isLink={true}
-                        onPress={() => this.showView('AddressList')}
-                    />
-                    <TableCell
-                        title={"我的收藏"}
-                        icon={<Ticon name={"favor"} color={"#FD932B"} size={25}/>}
-                        isLink={true}
-                        onPress={() => this.showView('Favorite')}
-                    />
-                    <TableCell
-                        title={"消息及提醒"}
-                        icon={<Ticon name={"notification"} color={"#FC461E"} size={25}/>}
-                        isLink={true}
-                        onPress={() => this.showView('NoticeSet')}
-                    />
-                    <TableCell
-                        title={"关于我们"}
-                        icon={<Ticon name={"info"} color={"#1998E0"} size={25}/>}
-                        isLink={true}
-                        onPress={() => navigation.navigate('AboutUs')}
-                    />
-                    <TableCell
-                        title={"帮助与反馈"}
-                        icon={<Ticon name={"write"} color={"#d4237a"} size={25}/>}
-                        isLink={true}
-                        onPress={() => this.showView('FeedBack')}
-                    />
-                </TableCellGroup>
+                <TableView>
+                    <TableCell onPress={() => this.showView('Security')}>
+                        <TableCell.Icon name={"safe"} color={"#23C55D"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"账号安全"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => this.showView('AddressList')}>
+                        <TableCell.Icon name={"address-book"} color={"#666666"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"收货地址"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => this.showView('Favorite')}>
+                        <TableCell.Icon name={"favor"} color={"#FD932B"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"我的收藏"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => this.showView('NoticeSet')}>
+                        <TableCell.Icon name={"notification"} color={"#FC461E"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"消息及提醒"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => navigation.navigate('AboutUs')}>
+                        <TableCell.Icon name={"info"} color={"#1998E0"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"关于我们"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => this.showView('FeedBack')}>
+                        <TableCell.Icon name={"write"} color={"#d4237a"} size={25}/>
+                        <TableCell.Content>
+                            <TableCell.Title title={"帮助与反馈"}/>
+                        </TableCell.Content>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                </TableView>
             </ScrollView>
         );
     }
@@ -129,42 +134,58 @@ class UserView extends React.Component {
             <View style={{
                 backgroundColor: '#fff'
             }}>
-                <TableCell
-                    title={"我的订单"}
-                    detail={"全部订单"}
-                    isLink={true}
-                    onPress={() => this.showOrderView('all')}
-                />
+                <TableCell onPress={() => this.showOrderView('all')}>
+                    <TableCell.Content>
+                        <TableCell.Title title={"我的订单"}/>
+                    </TableCell.Content>
+                    <TableCell.Detail text={"全部订单"}/>
+                    <TableCell.Accessory/>
+                </TableCell>
                 <View style={{flexDirection: 'row', paddingTop: 15, paddingBottom: 15}}>
-                    <View style={styles.button}>
-                        <Ticon name={"wait-pay"} size={30} color={Colors.primary}
-                               onPress={() => this.showOrderView('waitPay')}/>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.button}
+                        onPress={() => this.showOrderView('waitPay')}
+                    >
+                        <Ticon name={"wait-pay"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>待付款</Text>
-                    </View>
+                    </TouchableOpacity>
 
-                    <View style={styles.button}>
-                        <Ticon name={"wait-send"} size={30} color={Colors.primary}
-                               onPress={() => this.showOrderView('waitSend')}/>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.button}
+                        onPress={() => this.showOrderView('waitSend')}
+                    >
+                        <Ticon name={"wait-send"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>待发货</Text>
-                    </View>
+                    </TouchableOpacity>
 
-                    <View style={styles.button}>
-                        <Ticon name={"wait-delivery"} size={30} color={Colors.primary}
-                               onPress={() => this.showOrderView('waitConfirm')}/>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.button}
+                        onPress={() => this.showOrderView('waitConfirm')}
+                    >
+                        <Ticon name={"wait-delivery"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>待收货</Text>
-                    </View>
+                    </TouchableOpacity>
 
-                    <View style={styles.button}>
-                        <Ticon name={"wait-rate"} size={30} color={Colors.primary}
-                               onPress={() => this.showOrderView('waitRate')}/>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.button}
+                        onPress={() => this.showOrderView('waitRate')}
+                    >
+                        <Ticon name={"wait-rate"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>待评价</Text>
-                    </View>
+                    </TouchableOpacity>
 
-                    <View style={styles.button}>
-                        <Ticon name={"refund"} size={30} color={Colors.primary}
-                               onPress={() => this.showOrderView('refunding')}/>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.button}
+                        onPress={() => this.showOrderView('refunding')}
+                    >
+                        <Ticon name={"refund"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>退款/售后</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

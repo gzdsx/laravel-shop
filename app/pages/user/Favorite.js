@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, FlatList} from 'react-native';
+import {View} from 'react-native';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-view";
 import {Colors} from "../../styles";
@@ -7,11 +7,6 @@ import PostCollect from "./collect/PostCollect";
 import VideoCollect from "./collect/VideoCollect";
 
 export default class Favorite extends React.Component {
-
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '我的收藏'
-    });
 
     constructor(props) {
         super(props);
@@ -21,6 +16,13 @@ export default class Favorite extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const {navigation,route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '我的收藏'
+        });
+    }
 
     render(): React.ReactNode {
         return (

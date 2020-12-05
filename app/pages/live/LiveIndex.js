@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import {LoadingView} from 'react-native-dsxui';
+import {LoadingView} from 'react-native-gzdsx-elements';
 import {defaultNavigationConfigure} from '../../base/navconfig';
 import {Colors, Styles} from '../../styles';
 import {ApiClient} from '../../utils';

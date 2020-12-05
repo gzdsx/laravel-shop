@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {ApiClient, Utils, Toast, Validate} from "../../utils";
+import {Toast} from 'react-native-gzdsx-elements';
+import {ApiClient, Utils, Validate} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {CustomButton, CustomTextInput} from "../../components";
 

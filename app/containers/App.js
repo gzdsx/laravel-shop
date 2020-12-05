@@ -99,6 +99,7 @@ class App extends React.Component {
     checkUserStatus = () => {
         const {authActions} = this.props;
         ApiClient.get('/user/info').then(response => {
+            //console.log(response.data);
             authActions.userDidSignIn(response.data.userinfo);
         }).catch(reason => {
 
@@ -164,11 +165,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (store) => {
-    const {auth, location} = store;
-    return {
-        auth,
-        location
-    };
+    return {...store};
 };
 
 const mapDispatchToProps = (dispatch) => {

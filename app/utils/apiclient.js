@@ -1,7 +1,7 @@
 import {DeviceEventEmitter} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {AccessToken, BaseApi, UserDidLogoutNotification} from "../base/constants";
+import {AccessToken, BaseApi, UserDidSignoutedNotification} from "../base/constants";
 
 const request = async (path, data = {}, method = 'GET', headers = {}) => {
     const url = BaseApi + path;
@@ -28,7 +28,7 @@ const request = async (path, data = {}, method = 'GET', headers = {}) => {
                     console.log(response);
                 }
                 if (response.data.errcode === 401) {
-                    DeviceEventEmitter.emit(UserDidLogoutNotification);
+                    DeviceEventEmitter.emit(UserDidSignoutedNotification);
                 }
                 reject(response);
             } else {
@@ -41,7 +41,7 @@ const request = async (path, data = {}, method = 'GET', headers = {}) => {
                 console.log(error);
             }
             if (error.response.status === 401) {
-                DeviceEventEmitter.emit(UserDidLogoutNotification);
+                DeviceEventEmitter.emit(UserDidSignoutedNotification);
             }
             reject(error);
         });

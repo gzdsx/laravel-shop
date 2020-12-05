@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {Size} from "../../../styles";
 
 export default class ItemGridView extends React.Component {

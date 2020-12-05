@@ -11,31 +11,19 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WeChat from 'react-native-wechat';
 import axios from 'axios';
+import {Button} from "react-native-elements";
+import {Toast, TextField} from "react-native-gzdsx-elements";
 import {
     AccessToken,
     OauthApi,
     UserDidSigninedNotification,
     WeChatAppId
 } from "../../base/constants";
-import {ApiClient, Utils, Toast} from "../../utils";
-import {CustomButton, CustomTextInput} from "../../components";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-
-const css = StyleSheet.create({
-    row: {
-        paddingTop: 20,
-        paddingBottom: 20,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#DDD',
-    }
-});
+import {Colors} from "../../styles";
 
 class Signin extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '登录',
-    });
-
 
     constructor(props) {
         super(props);
@@ -103,37 +91,35 @@ class Signin extends React.Component {
                 paddingRight: 20,
                 flex: 1
             }}>
-                <View style={css.row}>
-                    <CustomTextInput
-                        placeholder="手机号/邮箱/用户名"
-                        value={this.state.account}
-                        onSubmitEditing={() => {
-                            Keyboard.dismiss();
-                        }}
-                        onChangeText={(text) => {
-                            this.setState({
-                                account: text
-                            });
-                        }}
-                    />
-                </View>
-                <View style={css.row}>
-                    <CustomTextInput
-                        placeholder="密码"
-                        value={this.state.password}
-                        secureTextEntry={true}
-                        onSubmitEditing={() => {
-                            Keyboard.dismiss();
-                        }}
-                        onChangeText={(text) => {
-                            this.setState({
-                                password: text
-                            });
-                        }}
-                    />
-                </View>
+                <TextField
+                    placeholder="手机号/邮箱/用户名"
+                    defaultValue={this.state.account}
+                    onSubmitEditing={() => {
+                        Keyboard.dismiss();
+                    }}
+                    onChangeText={(text) => {
+                        this.setState({
+                            account: text
+                        });
+                    }}
+                    style={{paddingVertical: 10}}
+                />
+                <TextField
+                    placeholder="密码"
+                    defaultValue={this.state.password}
+                    secureTextEntry={true}
+                    onSubmitEditing={() => {
+                        Keyboard.dismiss();
+                    }}
+                    onChangeText={(text) => {
+                        this.setState({
+                            password: text
+                        });
+                    }}
+                    style={{paddingVertical: 10}}
+                />
                 <View style={{height: 50}}/>
-                <CustomButton text={"登录"} onPress={this.submit}/>
+                <Button title={"登录"} onPress={this.submit} buttonStyle={{backgroundColor: Colors.primary, height: 45}}/>
 
                 <View style={{
                     marginTop: 30,
@@ -149,11 +135,18 @@ class Signin extends React.Component {
                           }}
                     >快速注册</Text>
                 </View>
+                <Toast ref={"toast"}/>
             </View>
         );
     }
 
     componentDidMount() {
+        const {navigation, route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '登录',
+        });
+
         AsyncStorage.getItem('account').then(account => {
             this.setState({account});
         });
@@ -173,12 +166,12 @@ class Signin extends React.Component {
     submit = () => {
         const {account, password} = this.state;
         if (!account) {
-            Toast.show('请填写账号');
+            this.refs.toast.show('请填写账号');
             return false;
         }
 
         if (!password) {
-            Toast.show('请填写密码');
+            this.refs.toast.show('请填写密码');
             return false;
         }
 
@@ -197,7 +190,7 @@ class Signin extends React.Component {
             const {access_token} = response.data;
             if (access_token) this.doLogin(access_token);
         }).catch(reason => {
-            Toast.show('你输入的账号和密码不匹配');
+            this.refs.toast.show('你输入的账号和密码不匹配');
         });
     };
 
@@ -211,7 +204,7 @@ class Signin extends React.Component {
                 this.props.navigation.goBack();
             }).catch(reason => {
                 if (reason.data) {
-                    Toast.show(reason.data.errmsg);
+                    this.refs.toast.show(reason.data.errmsg);
                 }
             });
         }).catch(reason => {

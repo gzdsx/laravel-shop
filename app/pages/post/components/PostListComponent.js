@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, FlatList, TouchableOpacity, Image, Text} from 'react-native';
-import {LoadingView} from "react-native-dsxui";
+import {View, FlatList, TouchableOpacity, Text} from 'react-native';
+import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import PropTypes from 'prop-types';
 import {ApiClient} from "../../../utils";

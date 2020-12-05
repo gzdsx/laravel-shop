@@ -1,11 +1,11 @@
 import React from 'react';
 import {Modal, View, Text, TouchableOpacity, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import PropTypes from 'prop-types';
-import {Ticon} from "react-native-ticon";
+import {Ticon} from "react-native-gzdsx-elements";
 import {Button, Image} from 'react-native-elements';
+import {Toast} from "react-native-gzdsx-elements";
 import {NumberControl} from "./NumberControl";
 import {Colors, Size} from "../../../styles";
-import {Toast} from "../../../utils";
 
 const H = Size.screenHeight * 0.70;
 
@@ -121,7 +121,7 @@ export default class SkuPannel extends React.Component {
                                         const quantity = this.quatity;
                                         if (this.props.data.skus.length > 0) {
                                             if (sku.sku_id === undefined) {
-                                                Toast.show('请选择产品型号');
+                                                this.refs.toast.show('请选择产品型号');
                                                 return false;
                                             }
                                         }
@@ -137,6 +137,7 @@ export default class SkuPannel extends React.Component {
                         </Animated.View>
                     </TouchableWithoutFeedback>
                 </TouchableOpacity>
+                <Toast ref={"toast"}/>
             </Modal>
         );
     }

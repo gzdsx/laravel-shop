@@ -1,7 +1,6 @@
 import React from 'react';
-import {TableCell, TableCellGroup} from "react-native-dsxui";
 import {Text, View} from "react-native";
-import {Ticon} from "react-native-ticon";
+import {Ticon, TableView, TableCell} from "react-native-gzdsx-elements";
 import PropTypes from 'prop-types';
 
 export default class ShippingAddress extends React.Component {
@@ -20,7 +19,7 @@ export default class ShippingAddress extends React.Component {
     render() {
         const {data, onPress, isLink} = this.props;
         return (
-            <TableCellGroup>
+            <TableView>
                 <TableCell style={{paddingHorizontal: 10}} isLink={isLink} onPress={onPress}>
                     <View style={{alignItems: 'center', alignSelf: 'center', marginRight: 10}}>
                         <Ticon name={"location"} size={24} color={"#666"}/>
@@ -51,7 +50,7 @@ export default class ShippingAddress extends React.Component {
                         >收货地址: {data.full_address}</Text>
                     </View>
                 </TableCell>
-            </TableCellGroup>
+            </TableView>
         );
     }
 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import {Image, NativeModules, Platform, TouchableOpacity, View} from 'react-native';
 import Video from 'react-native-video';
-import {Ticon} from "react-native-ticon";
-import {LoadingView} from "react-native-dsxui";
+import {Ticon, LoadingView} from "react-native-gzdsx-elements";
 import {ApiClient, Toast} from "../../utils";
 import {Size} from "../../styles";
 
@@ -113,8 +112,8 @@ export default class VideoDetail extends React.Component {
                     <Image
                         source={require('../../images/common/favorite.png')}
                         style={{
-                            width:30,
-                            height:30,
+                            width: 30,
+                            height: 30,
                             tintColor: '#fff'
                         }}
                     />

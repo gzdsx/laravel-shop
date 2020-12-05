@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, ScrollView, Text} from 'react-native';
-import {Ticon} from "react-native-ticon";
+import {Ticon} from "react-native-gzdsx-elements";
 import {Utils} from "../../utils";
-import {whiteNavigationConfigure} from "../../base/navconfig";
+import {defaultNavigationConfigure} from "../../base/navconfig";
 import {CustomButton} from "../../components";
 
 export default class PaySuccess extends React.Component{
     static navigationOptions = ({navigation}) => ({
-        ...whiteNavigationConfigure(navigation),
+        ...defaultNavigationConfigure(navigation),
         headerTitle:'支付结果',
     });
 

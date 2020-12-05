@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from "prop-types";
-import {Size} from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
 
 const ActionButton = ({text, iconSource, onPress = () => null}) => {

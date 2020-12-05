@@ -1,19 +1,23 @@
 import React from 'react';
 import {View} from 'react-native';
 import {WebView} from 'react-native-webview';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {BaseUri} from "../../base/constants";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 
 export default class AboutUs extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '关于我们'
-    });
 
     constructor(props) {
         super(props);
         this.state = {}
+    }
+
+    componentDidMount() {
+        const {navigation,route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '关于我们'
+        });
     }
 
     render() {

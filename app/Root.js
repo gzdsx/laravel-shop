@@ -5,6 +5,9 @@ import configureStore from './store/configureStore';
 import App from './containers/App';
 import {sagas} from "./sagas";
 import {WeChatAppId} from "./base/constants";
+import PostIndex from "./pages/post/PostIndex";
+import Cart from "./pages/cart/Cart";
+import Signin from "./pages/auth/Signin";
 
 const store = configureStore();
 store.runSaga(sagas);
@@ -13,7 +16,7 @@ export default class Root extends React.Component{
     render() {
         return (
             <Provider store={store}>
-                <App />
+                <App/>
             </Provider>
         );
     }

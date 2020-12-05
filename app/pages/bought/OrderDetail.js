@@ -1,10 +1,9 @@
 import React from 'react';
 import {View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Alert, DeviceEventEmitter} from 'react-native';
 import Alipay from 'react-native-gzdsx-alipay';
-import {LoadingView, Spinner} from "react-native-dsxui";
+import {LoadingView, Spinner} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Button} from 'react-native-elements';
-import {CustomButton} from "../../components";
 import {Toast, ApiClient, Utils} from "../../utils";
 import * as WeChat from 'react-native-wechat';
 import {defaultNavigationConfigure} from "../../base/navconfig";

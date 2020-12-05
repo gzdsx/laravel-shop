@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
-import {TableCellGroup, TableCell} from "react-native-dsxui";
+import {TableView, TableCell} from "react-native-gzdsx-elements";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 
 class Security extends React.Component {
@@ -19,32 +19,29 @@ class Security extends React.Component {
         const {mobile, email} = auth.userinfo;
         return (
             <View style={{flex: 1}}>
-                <TableCellGroup>
-                    <TableCell
-                        title={"修改密码"}
-                        isLink={true}
-                        onPress={() => navigation.navigate('EditPass')}
-                    />
-                    <TableCell
-                        title={"手机号"}
-                        detail={mobile ? '已绑定' : '未绑定'}
-                        isLink={true}
-                        onPress={() => navigation.navigate('EditMobile')}
-                    />
-                    <TableCell
-                        title={"邮箱"}
-                        isLink={true}
-                        detail={email ? '已绑定' : '未绑定'}
-                        onPress={() => navigation.navigate('EditEmail')}
-                    />
-                </TableCellGroup>
+                <TableView>
+                    <TableCell onPress={() => navigation.navigate('EditPass')}>
+                        <TableCell.Title title={"修改密码"}/>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => navigation.navigate('EditMobile')}>
+                        <TableCell.Title title={"手机号"}/>
+                        <TableCell.Detail text={mobile ? '已绑定' : '未绑定'}/>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                    <TableCell onPress={() => navigation.navigate('EditEmail')}>
+                        <TableCell.Title title={"邮箱"}/>
+                        <TableCell.Detail text={email ? '已绑定' : '未绑定'}/>
+                        <TableCell.Accessory/>
+                    </TableCell>
+                </TableView>
             </View>
         );
     }
 }
 
 const mapStateToProps = (store) => {
-    return {auth: store.auth};
+    return {...store};
 };
 
 export default connect(mapStateToProps)(Security);

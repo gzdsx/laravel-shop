@@ -1,6 +1,6 @@
 import React from 'react';
-import {View,Image} from 'react-native';
-import {Ticon} from 'react-native-ticon';
+import {View, TouchableOpacity} from 'react-native';
+import {Ticon} from 'react-native-gzdsx-elements';
 import {Colors, Styles} from '../styles';
 
 const defaultNavigationConfigure = (navigation) => {
@@ -11,12 +11,11 @@ const defaultNavigationConfigure = (navigation) => {
         headerTitleStyle: Styles.headerTitleStyle,
         headerTintColor: Colors.headerTintColor,
         headerLeft: () => (
-            <View style={Styles.headerLeft}>
-                <Ticon name={'back-light'} size={28} color={'#fff'} onPress={() => navigation.goBack()}/>
-            </View>
+            <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()} style={Styles.headerLeft}>
+                <Ticon name={'back-light'} size={28} color={'#fff'}/>
+            </TouchableOpacity>
         ),
         headerRight: () => (<View style={Styles.headerRight}/>),
-        headerBackImage: ()=> <Image source={require('../images/common/launchimage.png')}/>
     };
 };
 

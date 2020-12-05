@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, FlatList, Text, TouchableOpacity} from 'react-native';
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView} from "react-native-gzdsx-elements";
 import {ApiClient} from "../../../utils";
 
 export default class PostCollect extends React.Component {

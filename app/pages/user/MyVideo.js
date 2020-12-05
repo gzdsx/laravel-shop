@@ -1,16 +1,11 @@
 import React from 'react';
-import {View, Image, Text, TouchableOpacity, FlatList} from 'react-native';
-import {defaultNavigationConfigure} from "../../base/navconfig";
-import {LoadingView} from "react-native-dsxui";
-import {ApiClient} from "../../utils";
+import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {CacheImage} from "react-native-gzdsx-cache-image";
+import {LoadingView} from "react-native-dsxui";
+import {defaultNavigationConfigure} from "../../base/navconfig";
+import {ApiClient} from "../../utils";
 
 export default class MyVideo extends React.Component {
-
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '我的视频',
-    });
 
     constructor(props) {
         super(props);
@@ -23,7 +18,6 @@ export default class MyVideo extends React.Component {
         this.offset = 0;
         this.loadMoreAble = false;
     }
-
 
     render(): React.ReactNode {
         if (this.state.isLoading) return <LoadingView/>;
@@ -46,6 +40,11 @@ export default class MyVideo extends React.Component {
     }
 
     componentDidMount(): void {
+        const {navigation, route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            headerTitle: '我的视频',
+        });
         this.fetchData();
     }
 

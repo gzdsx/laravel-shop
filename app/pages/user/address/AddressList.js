@@ -1,11 +1,9 @@
 import React from 'react';
 import {FlatList, View, Text, TouchableOpacity, Alert} from 'react-native';
-import {Ticon} from "react-native-ticon";
-import {LoadingView} from "react-native-dsxui";
+import {LoadingView, Ticon, CheckBox} from "react-native-gzdsx-elements";
 import {Utils, ApiClient} from "../../../utils";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {Colors} from "../../../styles";
-import CheckBox from "../../../components/CheckBox";
 
 const ActionButton = ({name, text, color = "#666", onPress = () => null}) => {
     return (
@@ -112,12 +110,12 @@ export default class AddressList extends React.Component {
                         }
                     }}
                     style={{
-                    backgroundColor: '#fff',
-                    borderBottomColor: '#e5e5e5',
-                    borderBottomWidth: 0.5,
-                    paddingHorizontal: 12,
-                    paddingVertical: 15
-                }}>
+                        backgroundColor: '#fff',
+                        borderBottomColor: '#e5e5e5',
+                        borderBottomWidth: 0.5,
+                        paddingHorizontal: 12,
+                        paddingVertical: 15
+                    }}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{
                             fontSize: 16,
@@ -158,10 +156,7 @@ export default class AddressList extends React.Component {
                     <View style={{flexDirection: 'row'}}>
                         <ActionButton name={"edit-light"} text={"编辑"} onPress={() => {
                             const {address_id} = address;
-                            this.props.navigation.navigate('AddressEdit', {
-                                address_id,
-                                callback: this.fetchData
-                            });
+                            this.props.navigation.navigate('AddressEdit', {address_id});
                         }}/>
                         <View style={{width: 5}}/>
                         <ActionButton name={"delete-light"} text={"删除"} onPress={() => {
