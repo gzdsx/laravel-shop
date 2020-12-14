@@ -6,11 +6,11 @@ import {
     FlatList,
     ScrollView,
 } from 'react-native';
-import {LoadingView} from "react-native-gzdsx-elements";
+import {LoadingView, Ticon} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Header} from "react-native-elements";
 import {Utils, ApiClient} from "../../utils";
-import {Colors, Size} from "../../styles";
+import {Colors, Size, Styles} from "../../styles";
 import {SearchBar} from "../../components";
 
 const viewItemWidth = (Size.screenWidth - 90) / 3;
@@ -29,7 +29,7 @@ const textSelected = {
 export default class Category extends React.Component {
     setNavigationOptions = () => {
         const {navigation, route} = this.props;
-        return {
+        navigation.setOptions({
             header: () => (
                 <Header
                     backgroundColor={Colors.primary}
@@ -65,10 +65,21 @@ export default class Category extends React.Component {
                     }}
                     leftContainerStyle={{flex: 0}}
                     rightContainerStyle={{flex: 0}}
+                    leftComponent={() => (
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                            style={[Styles.headerLeft, {marginRight: 10, marginLeft: 0}]}
+                        >
+                            <Ticon name={'back-light'} color={"#fff"}/>
+                        </TouchableOpacity>
+                    )}
                 >
                 </Header>
             )
-        }
+        });
     };
 
     constructor(props) {

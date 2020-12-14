@@ -15,10 +15,12 @@ import QRScanner from "../pages/common/QRScanner";
 import DistrictSelector from "../pages/common/DistrictSelector";
 import VideoIndex from "../pages/video/VideoIndex";
 import VideoDetail from "../pages/video/VideoDetail";
+import RecordVideo from "../pages/video/RecordVideo";
 import LiveIndex from "../pages/live/LiveIndex";
 //shop
 import ItemList from "../pages/shop/ItemList";
 import ItemDetail from "../pages/shop/ItemDetail";
+import Category from "../pages/shop/Category";
 import BuyNow from "../pages/order/BuyNow";
 import ConfirmOrder from "../pages/order/ConfirmOrder";
 import OrderList from "../pages/bought/OrderList";
@@ -46,10 +48,12 @@ export default [
     {name: 'DistrictSelector', component: DistrictSelector, options: DistrictSelector.navigationOptions || {}},
     {name: 'VideoIndex', component: VideoIndex, options: VideoIndex.navigationOptions || {}},
     {name: 'VideoDetail', component: VideoDetail, options: VideoDetail.navigationOptions || {}},
+    {name: 'RecordVideo', component: RecordVideo, options: RecordVideo.navigationOptions || {}},
     {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},
     //shop
-    {name: 'ItemList', component: ItemList, options: ItemList.navigationOptions || {}},
-    {name: 'ItemDetail', component: ItemDetail, options: ItemDetail.navigationOptions || {}},
+    {name: 'ItemList', component: ItemList},
+    {name: 'ItemDetail', component: ItemDetail},
+    {name: 'Category', component: Category},
     //order
     {name: 'BuyNow', component: BuyNow},
     {name: 'ConfirmOrder', component: ConfirmOrder},

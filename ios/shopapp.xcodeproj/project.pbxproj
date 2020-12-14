@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* shopappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shopappTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -17,6 +16,8 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* shopappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* shopappTests.m */; };
 		2F38455BF5CF3416CA60239E /* libPods-shopapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C32A4699ED0A16C8B3CBC581 /* libPods-shopapp.a */; };
+		7104EC172587E4B900761687 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7104EC162587E4B900761687 /* LaunchScreen.storyboard */; };
+		7104EC252587EF1700761687 /* launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 7104EC242587EF1700761687 /* launch.png */; };
 		712C6B6C2556892C00BBD699 /* bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C6B6B2556892C00BBD699 /* bridge.swift */; };
 		712C6B6D2556892C00BBD699 /* bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C6B6B2556892C00BBD699 /* bridge.swift */; };
 		C1AAA2C8CB6D90E09C1604A4 /* libPods-shopapp-shopappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59CD7EBC2BE96DA0189E06A7 /* libPods-shopapp-shopappTests.a */; };
@@ -48,7 +49,6 @@
 		13B07F961A680F5B00A75B9A /* 大师兄微小店.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "大师兄微小店.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = shopapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = shopapp/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = shopapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shopapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = shopapp/main.m; sourceTree = "<group>"; };
@@ -60,6 +60,8 @@
 		55391D987EE6D4E9AAB81D57 /* Pods-shopapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shopapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-shopapp-tvOSTests/Pods-shopapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		55758AC4ED6FAD87CC40CF2C /* Pods-shopapp-shopappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shopapp-shopappTests.debug.xcconfig"; path = "Target Support Files/Pods-shopapp-shopappTests/Pods-shopapp-shopappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		59CD7EBC2BE96DA0189E06A7 /* libPods-shopapp-shopappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shopapp-shopappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7104EC162587E4B900761687 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7104EC242587EF1700761687 /* launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launch.png; sourceTree = "<group>"; };
 		712C6B692556892B00BBD699 /* shopapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "shopapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		712C6B6A2556892B00BBD699 /* shopapp-tvOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "shopapp-tvOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		712C6B6B2556892C00BBD699 /* bridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bridge.swift; sourceTree = "<group>"; };
@@ -130,16 +132,17 @@
 		13B07FAE1A68108700A75B9A /* shopapp */ = {
 			isa = PBXGroup;
 			children = (
+				7104EC242587EF1700761687 /* launch.png */,
 				714781D0246D814E0026F3E0 /* shopapp.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				712C6B6B2556892C00BBD699 /* bridge.swift */,
 				712C6B692556892B00BBD699 /* shopapp-Bridging-Header.h */,
 				712C6B6A2556892B00BBD699 /* shopapp-tvOS-Bridging-Header.h */,
+				7104EC162587E4B900761687 /* LaunchScreen.storyboard */,
 			);
 			name = shopapp;
 			sourceTree = "<group>";
@@ -349,8 +352,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7104EC252587EF1700761687 /* launch.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				7104EC172587E4B900761687 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,18 +692,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = shopapp;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -751,6 +743,7 @@
 			baseConfigurationReference = 394AC0A7C7FF2FFED08C39C1 /* Pods-shopapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = shopapp/shopapp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -762,7 +755,7 @@
 				);
 				INFOPLIST_FILE = shopapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -782,13 +775,14 @@
 			baseConfigurationReference = 9DEA3B51E8654C8D17BCA11B /* Pods-shopapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = shopapp/shopapp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BJ79TLLV4Y;
 				INFOPLIST_FILE = shopapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

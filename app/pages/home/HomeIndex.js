@@ -16,6 +16,7 @@ import ItemGridView from "../shop/components/ItemGridView";
 class HomeIndex extends React.Component {
 
     static navigationOptions = () => {
+        //const {navigation, route} = this.props;
         return {
             header: ({navigation, route}) => (
                 <Header
@@ -52,7 +53,7 @@ class HomeIndex extends React.Component {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-
+                                navigation.navigate('QRScanner');
                             }}
                         >
                             <Ticon name={'scan-light'} color={"#fff"}/>
@@ -63,7 +64,7 @@ class HomeIndex extends React.Component {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-
+                                navigation.navigate('Category');
                             }}
                         >
                             <Ticon name={'more-light'} color={"#fff"}/>

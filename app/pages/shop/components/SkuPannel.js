@@ -85,9 +85,12 @@ export default class SkuPannel extends React.Component {
                                             : null
                                     }
                                 </View>
-                                <View>
-                                    <Ticon name={"close-light"} size={25} color={"#666"} onPress={this.hide}/>
-                                </View>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={this.hide}
+                                >
+                                    <Ticon name={"close-light"} size={25} color={"#666"}/>
+                                </TouchableOpacity>
                             </View>
                             <ScrollView style={{
                                 flex: 1,
@@ -115,7 +118,7 @@ export default class SkuPannel extends React.Component {
                             <View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20}}>
                                 <Button
                                     title={"确定"}
-                                    buttonStyle={{height: 40, backgroundColor: Colors.primary}}
+                                    buttonStyle={{height: 45, backgroundColor: Colors.primary}}
                                     onPress={() => {
                                         const sku = this.state.sku;
                                         const quantity = this.quatity;

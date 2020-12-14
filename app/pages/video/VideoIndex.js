@@ -20,10 +20,8 @@ export default class VideoIndex extends React.Component {
         this.state = {
             isLoading: true,
             items: [],
-            isPause: true, //控制播放器是否播放，下面的代码有解释一个列表只需要一个state控制，而不用数组
+            isPause: false, //控制播放器是否播放，下面的代码有解释一个列表只需要一个state控制，而不用数组
             current: 0,//表示当前item的索引，通过这个实现一个state控制全部的播放器,
-            catlogs: [],
-            currentCatlog: 0
         };
     }
 
@@ -38,25 +36,25 @@ export default class VideoIndex extends React.Component {
                 keyExtractor={(item) => item.id.toString()}
                 data={this.state.items}
                 renderItem={({item, index}) => {
-                    return (<View style={{width, height: height - STATUSBAR_HEIGHT}}>
-                        <Video
-                            source={{uri: item.sourceurl}}
-                            style={{flex: 1, backgroundColor: '#000'}}
-                            repeat={true}
-                            paused={index === this.state.current ? this.state.isPause : true}
-                            resizeMode='contain'
-                            poster={item.image}
-                        />
+                    return (
                         <TouchableOpacity
                             onPress={() => {
                                 this.setState({
                                     isPause: !this.state.isPause,
                                 })
                             }}
-                            style={{flex: 1, position: 'absolute', width, height: height - STATUSBAR_HEIGHT}}
+                            style={{width, height: height - STATUSBAR_HEIGHT}}
+                            activeOpacity={1}
                         >
+                            <Video
+                                source={{uri: item.source}}
+                                style={{flex: 1, backgroundColor: '#000'}}
+                                repeat={true}
+                                paused={index === this.state.current ? this.state.isPause : true}
+                                resizeMode='contain'
+                            />
                         </TouchableOpacity>
-                    </View>);
+                    );
                 }}
                 viewabilityConfig={VIEWABILITY_CONFIG}
                 pagingEnabled={true}
@@ -66,56 +64,37 @@ export default class VideoIndex extends React.Component {
                 getItemLayout={(data, index) => {
                     return {length: height, offset: height * index, index}
                 }}
+                ListEmptyComponent={() => (
+                    <View style={{
+                        flex: 1,
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        width,
+                        height
+                    }}>
+                        <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>没有课播放的视频</Text>
+                    </View>
+                )}
             />
-            <View style={{
-                flexDirection: 'row',
-                paddingTop: 30 + STATUSBAR_HEIGHT,
-                paddingBottom: 10,
-                paddingLeft: 15,
-                paddingRight: 15,
-                position: 'absolute'
-            }}>
-
-                <FlatList
-                    keyExtractor={(item, index) => index.toString()}
-                    data={this.state.catlogs}
-                    renderItem={({item, index}) => {
-                        return (
-                            <TouchableOpacity
-                                style={{flex: 1}}
-                                activeOpacity={1}
-                                onPress={() => {
-                                    this.setState({
-                                        currentCatlog: index
-                                    });
-                                }}
-                            >
-                                <Text style={{
-                                    fontSize: 16,
-                                    color: this.state.currentCatlog === index ? '#fff' : '#ddd',
-                                    paddingTop: 6,
-                                    paddingBottom: 6,
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
-                                    fontWeight: this.state.currentCatlog === index ? '600' : '400'
-                                }}>{item.name}</Text>
-                            </TouchableOpacity>
-                        )
-                    }}
-                    horizontal={true}
-                />
-            </View>
             {this.renderBottom()}
         </View>);
     }
 
     componentDidMount(): void {
+        StatusBar.setHidden(true);
         this.props.navigation.setOptions({
             headerShown: false
         });
-        this.props.navigation.addListener('willFocus', () => StatusBar.setHidden(true));
-        this.props.navigation.addListener('willBlur', () => StatusBar.setHidden(false));
+        this.props.navigation.addListener('beforeRemove', () => {
+            StatusBar.setHidden(false);
+            this.setState({isPause: true});
+        });
         this.fetchData();
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.removeListener('beforeRemove');
     }
 
     fetchData = () => {
@@ -124,13 +103,6 @@ export default class VideoIndex extends React.Component {
             this.setState({
                 isLoading: false,
                 items
-            });
-        });
-
-        ApiClient.get('/video/catlog/batchget').then(response => {
-            let catlogs = response.data.items;
-            this.setState({
-                catlogs
             });
         });
     };

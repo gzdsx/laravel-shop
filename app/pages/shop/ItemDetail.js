@@ -27,27 +27,31 @@ class ItemDetail extends React.Component {
             ...defaultNavigationConfigure(navigation),
             headerTitle: '宝贝详情',
             headerLeft: () => (
-                <View style={Styles.headerLeft}>
-                    <Ticon name={"back-light"} color={"#fff"} size={28} onPress={() => {
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={Styles.headerLeft}
+                    onPress={() => {
                         if (route.params) {
                             if (typeof route.params.callback === 'function') {
                                 route.params.callback();
                             }
                         }
                         navigation.goBack();
-                    }}/>
-                </View>
+                    }}
+                >
+                    <Ticon name={"back-light"} color={"#fff"} size={28}/>
+                </TouchableOpacity>
             ),
             headerRight: () => (
-                <View style={Styles.headerRight}>
-                    <Ticon
-                        name={"share-squar-light"}
-                        color={"#fff"}
-                        size={28}
-                        onPress={() => {
-                            this.setState({showShare: true});
-                        }}/>
-                </View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={Styles.headerRight}
+                    onPress={() => {
+                        this.setState({showShare: true});
+                    }}
+                >
+                    <Ticon name={"share-squar-light"} color={"#fff"} size={28}/>
+                </TouchableOpacity>
             )
         });
     }

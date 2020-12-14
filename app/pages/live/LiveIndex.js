@@ -1,108 +1,163 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Image, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
-import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import {LoadingView} from 'react-native-gzdsx-elements';
-import {defaultNavigationConfigure} from '../../base/navconfig';
-import {Colors, Styles} from '../../styles';
-import {ApiClient} from '../../utils';
-import LiveListComponent from './LiveListComponent';
+import {LoadingView, Ticon} from 'react-native-gzdsx-elements';
+import {NodePlayerView} from 'react-native-nodemediaclient';
+import {Colors, Size} from '../../styles';
+import {ApiClient, Toast} from '../../utils';
 
 class LiveIndex extends React.Component {
-    static navigationOptions({navigation, route}) {
-        return {
-            ...defaultNavigationConfigure(navigation),
-            headerTitle: '在线课程',
-            headerRight: () => (
-                <View style={Styles.headerRight}>
-                    {
-                        route.params.canLive ?
-                            <TouchableOpacity
-                                activeOpacity={1}
-                                onPress={() => navigation.navigate('LivePush')}
-                            >
-                                <Text style={{fontSize: 16, color: '#fff'}}>开启直播</Text>
-                            </TouchableOpacity>
-                            : null
-                    }
-                </View>
-            ),
-        };
-    }
-
     constructor(props) {
         super(props);
         this.state = {
+            items: [],
             isLoading: true,
-            types: [],
         };
+        this.vps = [];
     }
 
     render(): React.ReactNode {
-        if (this.state.isLoading) {
-            return <LoadingView/>;
-        }
-        let contents = this.state.types.map((item, index) => {
-            return <LiveListComponent
-                typeid={item.channel_id}
-                onPressItem={(live) => {
-                    this.props.navigation.navigate('LivePlay', live);
+        if (this.state.isLoading) return <LoadingView/>;
+
+        const {width, height} = Size.screenSize;
+        return (<View style={{flex: 1, backgroundColor: '#000'}}>
+            <FlatList
+                keyExtractor={(item) => item.id.toString()}
+                data={this.state.items}
+                renderItem={({item, index}) => {
+                    return (
+                        <NodePlayerView
+                            style={{width, height, flex: 1}}
+                            inputUrl={"rtmp://live.gzdsx.cn/push/" + item.stream_id}
+                            scaleMode={"ScaleAspectFit"}
+                            bufferTime={0}
+                            maxBufferTime={0}
+                            autoplay={false}
+                            ref={vp => {
+                                this.vps[index] = vp;
+                            }}
+                            onStatus={(code, msg) => {
+                                console.log(code + ':' + msg);
+                            }}
+                        />
+                    );
                 }}
-                tabLabel={item.name}
-                key={index.toString()}/>;
-        });
-        return (
-            <ScrollableTabView
-                renderTabBar={() => <ScrollableTabBar
-                    style={{
-                        height: 44,
-                        borderBottomWidth: 0.5,
-                        backgroundColor: '#fff',
-                        borderBottomColor: '#e0e0e0',
-                    }}
-                    tabStyle={{
-                        paddingLeft: 5,
-                        paddingRight: 5,
-                        paddingTop: 15,
-                        paddingBottom: 15,
-                    }}
-                />}
-                tabBarActiveTextColor={Colors.primary}
-                tabBarInactiveTextColor="#222"
-                tabBarUnderlineStyle={{
-                    backgroundColor: Colors.primary,
-                    height: 3,
-                    bottom: -1,
+                viewabilityConfig={{
+                    viewAreaCoveragePercentThreshold: 80,//item滑动80%部分才会到下一个
                 }}
-                tabBarTextStyle={{fontSize: 15}}
-                initialPage={0}
-                style={{
-                    backgroundColor: '#f2f2f2',
+                pagingEnabled={true}
+                horizontal={false}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                onViewableItemsChanged={this.onViewableItemsChanged}
+                getItemLayout={(data, index) => {
+                    return {length: height, offset: height * index, index}
                 }}
-            >
-                {contents}
-            </ScrollableTabView>
-        );
+                ListEmptyComponent={() => (
+                    <View style={{
+                        flex: 1,
+                        alignContent: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        width,
+                        height
+                    }}>
+                        <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>当前没有直播内容</Text>
+                    </View>
+                )}
+            />
+            {this.renderBottom()}
+        </View>);
     }
 
     componentDidMount(): void {
-        const userinfo = this.props.auth.userinfo;
-        if (userinfo.type === 1 || userinfo.type === 2) {
-            this.props.navigation.setParams({
-                canLive: true,
-            });
-        } else {
-            this.props.navigation.setParams({
-                canLive: true,
-            });
-        }
-        ApiClient.get('/live/channel/batchget').then(response => {
-            const types = response.data.items;
-            this.setState({
-                isLoading: false,
-                types,
+        this.props.navigation.setOptions({
+            headerShown: false
+        });
+        this.props.navigation.addListener('beforeRemove', () => {
+            this.vps.map((vp) => {
+                vp.stop();
             });
         });
+        StatusBar.setHidden(false);
+        this.fetchData();
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.removeListener('beforeRemove');
+    }
+
+    fetchData = () => {
+        ApiClient.get('/live/batchget').then(response => {
+            let items = response.data.items;
+            this.setState({
+                isLoading: false,
+                items
+            });
+        });
+    };
+
+    onViewableItemsChanged = ({viewableItems, changed}) => {
+        //这个方法为了让state对应当前呈现在页面上的item的播放器的state
+        //也就是只会有一个播放器播放，而不会每个item都播放
+        //可以理解为，只要不是当前再页面上的item 它的状态就应该暂停
+        //只有100%呈现再页面上的item（只会有一个）它的播放器是播放状态
+        console.log(viewableItems);
+        if (viewableItems.length === 1) {
+            const current = viewableItems[0].index;
+            this.vps.map((vp, index) => {
+                if (index === current) {
+                    vp.start();
+                } else {
+                    vp.stop();
+                }
+            });
+            this.setState({viewItem: viewableItems[0], current});
+        }
+    };
+
+    renderBottom = () => {
+        return (
+            <View style={{
+                flexDirection: 'row',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingBottom: 15
+            }}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => this.props.navigation.goBack()}
+                >
+                    <Ticon size={28} name={"back-light"} color={"#fff"}/>
+                </TouchableOpacity>
+                <View style={{flex: 1}}/>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                        ApiClient.post('/video/collect/add', {
+                            vid: this.state.items[this.state.current].id
+                        }).then(response => {
+                            Toast.show('视频收藏成功');
+                        }).catch(reason => {
+                            console.log(reason);
+                        });
+                    }}
+                >
+                    <Image
+                        source={require('../../images/common/favorite.png')}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            tintColor: '#fff'
+                        }}
+                    />
+                </TouchableOpacity>
+            </View>
+        );
     }
 }
 

@@ -63,6 +63,8 @@
 	<string>我们需要使用siri进行语音识别</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>我们需要使用语言识别功能，用于进行语音输入</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>我们需要访问位置服务向你展示周边的信息</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

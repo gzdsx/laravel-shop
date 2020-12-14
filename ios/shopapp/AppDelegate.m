@@ -43,6 +43,7 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [NSThread sleepForTimeInterval:2];
   return YES;
 }
 

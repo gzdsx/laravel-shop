@@ -51,47 +51,6 @@ export default class GoodsActionBar extends React.Component {
     };
 
     render() {
-        const styles = StyleSheet.create({
-            bar: {
-                height: 50,
-                backgroundColor: '#fff',
-                borderTopWidth: 0.5,
-                borderTopColor: '#e5e5e5',
-                flexDirection: 'row'
-            },
-            icons: {
-                flexDirection: 'row',
-                height: 50,
-                paddingLeft: 5,
-                paddingRight: 5,
-                flex: 1
-            },
-            buttons: {
-                flex: 2,
-                flexDirection: 'row',
-                padding: 5
-            },
-            button: {
-                flex: 1,
-                flexDirection: 'row',
-                borderWidth: 0
-            },
-            buttonText: {
-                fontSize: 14,
-                color: '#fff',
-                textAlignVertical: 'center',
-                fontWeight: '500'
-            },
-            linearGradient: {
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'center',
-                height: 40,
-                borderWidth: 0
-            }
-        });
-
         return (
             <View style={styles.bar}>
                 <View style={styles.icons}>
@@ -107,42 +66,80 @@ export default class GoodsActionBar extends React.Component {
                     />
                 </View>
                 <View style={styles.buttons}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={this.props.onPressAddCart}
-                        style={styles.button}
+                    <LinearGradient
+                        colors={['#ffd01e', '#ff8917']}
+                        start={{x: 0, y: 0}}
+                        end={{x: 1, y: 0}}
+                        style={[styles.linearGradient, {
+                            borderTopLeftRadius: 20,
+                            borderBottomLeftRadius: 20,
+                        }]}
                     >
-                        <LinearGradient
-                            colors={['#ffd01e', '#ff8917']}
-                            start={{x: 0, y: 0}}
-                            end={{x: 1, y: 0}}
-                            style={[styles.linearGradient, {
-                                borderTopLeftRadius: 20,
-                                borderBottomLeftRadius: 20,
-                            }]}
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={this.props.onPressAddCart}
                         >
                             <Text style={styles.buttonText}>加入购物车</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={this.props.onPressBuyNow}
-                        style={styles.button}
+                        </TouchableOpacity>
+                    </LinearGradient>
+                    <LinearGradient
+                        colors={['#ff6034', '#ee0a24']}
+                        start={{x: 0, y: 0}}
+                        end={{x: 1, y: 0}}
+                        style={[styles.linearGradient, {
+                            borderTopRightRadius: 20,
+                            borderBottomRightRadius: 20,
+                        }]}
                     >
-                        <LinearGradient
-                            colors={['#ff6034', '#ee0a24']}
-                            start={{x: 0, y: 0}}
-                            end={{x: 1, y: 0}}
-                            style={[styles.linearGradient, {
-                                borderTopRightRadius: 20,
-                                borderBottomRightRadius: 20,
-                            }]}
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={this.props.onPressBuyNow}
                         >
                             <Text style={styles.buttonText}>立即购买</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </LinearGradient>
                 </View>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    bar: {
+        height: 50,
+        backgroundColor: '#fff',
+        borderTopWidth: 0.5,
+        borderTopColor: '#e5e5e5',
+        flexDirection: 'row',
+    },
+    icons: {
+        flexDirection: 'row',
+        height: 50,
+        paddingLeft: 5,
+        paddingRight: 5,
+        flex: 1
+    },
+    buttons: {
+        flex: 2,
+        flexDirection: 'row',
+        paddingRight: 5
+    },
+    buttonText: {
+        fontSize: 14,
+        color: '#fff',
+        textAlignVertical: 'center',
+        fontWeight: '500',
+    },
+    linearGradient: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        height: 40,
+        borderWidth: 0,
+        backgroundColor: '#000',
+        padding: 0,
+        margin: 0,
+        flex: 1,
+        flexDirection: 'row'
+    }
+});
