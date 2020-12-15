@@ -26,16 +26,15 @@ export default class VideoIndex extends React.Component {
     }
 
     render(): React.ReactNode {
-        const VIEWABILITY_CONFIG = {
-            viewAreaCoveragePercentThreshold: 80,//item滑动80%部分才会到下一个
-        };
         const {width, height} = Size.screenSize;
         const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 0 : NativeModules.StatusBarManager.HEIGHT;
-        return (<View style={{flex: 1, backgroundColor: '#000'}}>
+        return (<View style={{flex: 1, backgroundColor: '#000', width, height}}>
             <FlatList
+                style={{flex: 1, width, height}}
                 keyExtractor={(item) => item.id.toString()}
                 data={this.state.items}
                 renderItem={({item, index}) => {
+                    const isPause = index === this.state.current ? this.state.isPause : true;
                     return (
                         <TouchableOpacity
                             onPress={() => {
@@ -50,13 +49,30 @@ export default class VideoIndex extends React.Component {
                                 source={{uri: item.source}}
                                 style={{flex: 1, backgroundColor: '#000'}}
                                 repeat={true}
-                                paused={index === this.state.current ? this.state.isPause : true}
+                                paused={isPause}
                                 resizeMode='contain'
                             />
+                            {
+                                isPause ?
+                                    <Image
+                                        source={require('../../images/common/play.png')}
+                                        style={{
+                                            position: 'absolute',
+                                            width: 60,
+                                            height: 60,
+                                            tintColor: '#e0e0e0',
+                                            left: width * 0.5 - 30,
+                                            top: height * 0.5 - 30
+                                        }}
+                                    />
+                                    : null
+                            }
                         </TouchableOpacity>
                     );
                 }}
-                viewabilityConfig={VIEWABILITY_CONFIG}
+                viewabilityConfig={{
+                    viewAreaCoveragePercentThreshold: 80,//item滑动80%部分才会到下一个
+                }}
                 pagingEnabled={true}
                 horizontal={false}
                 showsHorizontalScrollIndicator={false}

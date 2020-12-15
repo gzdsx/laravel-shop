@@ -116,7 +116,7 @@ class HomeIndex extends React.Component {
             reachabilityShortTimeout: 5 * 1000, // 5s
         });
         NetInfo.addEventListener(state => {
-            console.log(state);
+            //console.log(state);
             if (state.isConnected) {
                 this.fetchData();
             }

@@ -77,7 +77,7 @@ class App extends React.Component {
         setTimeout(() => {
             this.setState({
                 showLaunch: false
-            })
+            });
         }, 2000);
 
         //注册通知
