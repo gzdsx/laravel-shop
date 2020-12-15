@@ -11,6 +11,7 @@ import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
+import Alipay from "react-native-gzdsx-alipay";
 
 const ActionButton = ({text, show = true, onPress = () => null}) => {
     return (
@@ -337,7 +338,14 @@ class OrderList extends React.Component {
     }
 
     onPay = (order) => {
-
+        const {order_id} = order;
+        ApiClient.get('/alipay/sign', {order_id}).then(response => {
+            Alipay.pay(response.data.payStr).then((data) => {
+                this.fetchData();
+            }, (resean) => {
+                console.log(resean);
+            });
+        });
     }
 
     onNoticeSeller = (order) => {

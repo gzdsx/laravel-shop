@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Text, TouchableOpacity, Image} from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import {LoadingView, TableView, TableCell, Toast, TextField} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {CustomTextInput} from "../../components";
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import ShippingAddress from "../../components/ShippingAddress";
@@ -77,13 +76,9 @@ export default class BuyNow extends React.Component {
                     isLoading: false
                 });
             } else {
-                this.props.navigation.navigate('AddressSelector', {
-                    callback: (address) => {
-                        this.setState({
-                            address,
-                            isLoading: false
-                        });
-                    }
+                this.setState({
+                    address: null,
+                    isLoading: false
                 });
             }
         });
@@ -111,18 +106,41 @@ export default class BuyNow extends React.Component {
 
     renderAddress = () => {
         const address = this.state.address;
-        return (
-            <ShippingAddress
-                data={address}
-                onPress={() => {
-                    this.props.navigation.navigate('AddressList', {
-                        callback: (address) => {
-                            this.setState({address});
-                        }
-                    });
-                }}
-            />
-        );
+        if (address) {
+            return (
+                <ShippingAddress
+                    data={address}
+                    onPress={() => {
+                        this.props.navigation.navigate('AddressList', {
+                            callback: (address) => {
+                                this.setState({address});
+                            }
+                        });
+                    }}
+                />
+            );
+        } else {
+            return (
+                <TableView>
+                    <TableCell
+                        style={{
+                            paddingVertical: 20,
+                            justifyContent: 'center'
+                        }}
+                        onPress={() => {
+                            this.props.navigation.navigate('AddressList', {
+                                callback: (address) => {
+                                    this.setState({address});
+                                }
+                            });
+                        }}
+                    >
+                        <Image source={require('../../images/controls/add.png')} style={{width: 20, height: 20}}/>
+                        <Text style={{lineHeight: 20, fontSize: 16, marginLeft: 5}}>添加收货地址</Text>
+                    </TableCell>
+                </TableView>
+            )
+        }
     };
 
     renderContent = () => {

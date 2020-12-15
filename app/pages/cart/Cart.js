@@ -22,8 +22,8 @@ import {NumberControl} from "../shop/components/NumberControl";
 import {CartDidChangedNotification} from "../../base/constants";
 
 class Cart extends React.Component {
-    setNavigationOptions(){
-        const {navigation,route} = this.props;
+    setNavigationOptions() {
+        const {navigation, route} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
             headerTitle: '购物车',
@@ -88,16 +88,10 @@ class Cart extends React.Component {
         );
     }
 
-    UNSAFE_componentWillMount() {
-        DeviceEventEmitter.addListener(CartDidChangedNotification, this.fetchData);
-    }
-
     componentDidMount() {
         this.setNavigationOptions();
-        if (this.props.auth.isSignined) {
-            this.fetchData();
-        }
-
+        DeviceEventEmitter.addListener(CartDidChangedNotification,this.fetchData);
+        this.fetchData();
         ApiClient.get('/item/batchget', {
             offset: 0,
             count: 20
@@ -114,10 +108,12 @@ class Cart extends React.Component {
     };
 
     fetchData = () => {
-        ApiClient.get('/cart/getall').then(response => {
-            let cartItems = response.data.items;
-            this.setState({cartItems, isRefreshing: false, checkAll: false});
-        });
+        if (this.props.auth.isSignined){
+            ApiClient.get('/cart/getall').then(response => {
+                let cartItems = response.data.items;
+                this.setState({cartItems, isRefreshing: false, checkAll: false});
+            });
+        }
     };
 
     renderCartView = () => {

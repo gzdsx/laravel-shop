@@ -1,13 +1,12 @@
 import React from 'react';
-import {View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Alert, DeviceEventEmitter} from 'react-native';
+import {View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import Alipay from 'react-native-gzdsx-alipay';
-import {LoadingView, Spinner} from "react-native-gzdsx-elements";
+import {LoadingView, Spinner, Ticon} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Button} from 'react-native-elements';
 import {Toast, ApiClient, Utils} from "../../utils";
 import * as WeChat from 'react-native-wechat';
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import ShippingAddress from "../../components/ShippingAddress";
 import {Colors} from "../../styles";
 
 const SectionTitleView = ({text}) => {
@@ -96,8 +95,7 @@ export default class OrderDetail extends React.Component {
             items: [],
             shipping: null,
             transaction: null,
-            isLoading: true,
-            showSpinner: false
+            isLoading: true
         };
     }
 
@@ -112,7 +110,6 @@ export default class OrderDetail extends React.Component {
                     {this.renderShippingAddress()}
                     {this.renderContent()}
                     {this.renderOrderInfo()}
-                    <Spinner show={this.state.showSpinner}/>
                 </ScrollView>
                 <View style={{
                     height: 49,
@@ -136,7 +133,7 @@ export default class OrderDetail extends React.Component {
                     <ActionButton
                         text={"支付"}
                         show={order_state === 1}
-                        onPress={() => this.payOrder()}
+                        onPress={this.payOrder}
                     />
                     <ActionButton
                         text={"提醒卖家发货"}
@@ -157,6 +154,7 @@ export default class OrderDetail extends React.Component {
                         show={order_state === 5}
                     />
                 </View>
+                <Spinner ref={'spinner'}/>
             </View>
         );
     }
@@ -178,8 +176,7 @@ export default class OrderDetail extends React.Component {
                 items,
                 shipping,
                 transaction,
-                isLoading: false,
-                showSpinner: false,
+                isLoading: false
             });
         });
     };
@@ -227,7 +224,44 @@ export default class OrderDetail extends React.Component {
      */
     renderShippingAddress = () => {
         const {shipping} = this.state;
-        return <ShippingAddress data={shipping} isLink={false}/>;
+        return (
+            <View style={{
+                flexDirection: 'row',
+                paddingHorizontal: 10,
+                paddingVertical: 20,
+                backgroundColor: '#fff',
+                marginBottom: 10
+            }}>
+                <View style={{alignItems: 'center', alignSelf: 'center', marginRight: 10}}>
+                    <Ticon name={"location"} size={24} color={"#666"}/>
+                </View>
+                <View style={{flex: 1}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{
+                            flex: 1,
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#333'
+                        }}>收货人: {shipping.name}</Text>
+                        <Text style={{
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#333',
+                            textAlign: 'right'
+                        }}>{shipping.tel}</Text>
+                    </View>
+                    <Text
+                        style={{
+                            fontSize: 14,
+                            fontWeight: '400',
+                            color: '#333',
+                            marginTop: 5
+                        }}
+                        numberOfLines={2}
+                    >收货地址: {shipping.full_address}</Text>
+                </View>
+            </View>
+        );
     };
 
     /**
@@ -339,13 +373,12 @@ export default class OrderDetail extends React.Component {
     payOrder = () => {
         const {order_id} = this.state.order;
         ApiClient.get('/alipay/sign', {order_id}).then(response => {
+            //console.log(response.data);
             Alipay.pay(response.data.payStr).then((data) => {
-                console.log(data);
-                this.setState({showSpinner: true});
+                //console.log(data)
                 this.fetchData();
             }, (resean) => {
                 console.log(resean);
-                this.setState({showSpinner: false});
             });
         });
     };

@@ -1,9 +1,12 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Toast} from 'react-native-gzdsx-elements';
-import {ApiClient, Utils, Validate} from "../../utils";
+import {DeviceEventEmitter, View} from 'react-native';
+import {Toast, TextField} from 'react-native-gzdsx-elements';
+import {ApiClient, Validate} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import {CustomButton, CustomTextInput} from "../../components";
+import {Button} from "react-native-elements";
+import {ButtonStyles} from "../../styles/ButtonStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {AccessToken, UserDidSigninedNotification} from "../../base/constants";
 
 export default class Signup extends React.Component {
 
@@ -24,49 +27,40 @@ export default class Signup extends React.Component {
 
     render() {
         return (
-            <View
-                style={{
-                    backgroundColor: '#fff',
-                    paddingTop: 30,
-                    paddingLeft: 30,
-                    paddingRight: 20,
-                    flex: 1
-                }}
-            >
-                <View style={css.row}>
-                    <CustomTextInput
-                        placeholder="用户名"
-                        onChangeText={(text) => {
-                            this.setState({
-                                username: text
-                            });
-                        }}
-                    />
-                </View>
-                <View style={css.row}>
-                    <CustomTextInput
-                        placeholder="手机号码"
-                        keyboardType={"phone-pad"}
-                        onChangeText={(text) => {
-                            this.setState({
-                                mobile: text
-                            });
-                        }}
-                    />
-                </View>
-                <View style={css.row}>
-                    <CustomTextInput
-                        placeholder="登录密码"
-                        secureTextEntry={true}
-                        onChangeText={(text) => {
-                            this.setState({
-                                password: text
-                            });
-                        }}
-                    />
-                </View>
+            <View style={{
+                backgroundColor: '#fff',
+                padding: 30,
+                flex: 1
+            }}>
+                <TextField
+                    placeholder="用户名"
+                    onChangeText={(text) => {
+                        this.setState({
+                            username: text
+                        });
+                    }}
+                />
+                <TextField
+                    placeholder="手机号码"
+                    keyboardType={"phone-pad"}
+                    onChangeText={(text) => {
+                        this.setState({
+                            mobile: text
+                        });
+                    }}
+                />
+                <TextField
+                    placeholder="登录密码"
+                    secureTextEntry={true}
+                    onChangeText={(text) => {
+                        this.setState({
+                            password: text
+                        });
+                    }}
+                />
                 <View style={{height: 50}}/>
-                <CustomButton onPress={this.submit} text={"立即注册"}/>
+                <Button onPress={this.submit} title={"立即注册"} buttonStyle={ButtonStyles.primary}/>
+                <Toast ref={"toast"}/>
             </View>
         );
     }
@@ -83,51 +77,49 @@ export default class Signup extends React.Component {
         };
 
         if (!username) {
-            Toast.show('请输入用户名');
+            this.refs.toast.show('请输入用户名');
             return false;
         }
         if (!Validate.IsUserName(username)) {
-            Toast.show('用户名输入错误');
+            this.refs.toast.show('用户名输入错误');
             return false;
         }
 
         if (!mobile) {
-            Toast.show('请输入手机号码');
+            this.refs.toast.show('请输入手机号码');
             return false;
         }
         if (!Validate.IsMobile(mobile)) {
-            Toast.show('手机号码输入错误');
+            this.refs.toast.show('手机号码输入错误');
             return false;
         }
 
         if (!password) {
-            Toast.show('请输入登录密码');
+            this.refs.toast.show('请输入登录密码');
             return false;
         }
         if (!Validate.IsPassword(password)) {
-            Toast.show('密码输入错误');
+            this.refs.toast.show('密码输入错误');
             return false;
         }
 
         ApiClient.post('/register', data).then(response => {
-            Toast.show('注册成功', {
-                onHidden: () => {
-                    this.props.navigation.popToTop();
+            console.log(response.data);
+            const {userinfo, access_token} = response.data;
+            this.refs.toast.show('注册成功', {
+                onHide: () => {
+                    AsyncStorage.setItem(AccessToken, access_token).then(() => {
+                        DeviceEventEmitter.emit(UserDidSigninedNotification, userinfo);
+                        this.props.navigation.popToTop();
+                    }).catch(reason => {
+                        console.log(reason);
+                    });
                 }
             });
         }).catch(error => {
             if (error.data) {
-                Toast.show(error.data.errmsg);
+                this.refs.toast.show(error.data.errmsg);
             }
         });
     }
 }
-
-const css = StyleSheet.create({
-    row: {
-        paddingTop: 20,
-        paddingBottom: 20,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#DDD',
-    }
-});

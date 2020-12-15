@@ -59,7 +59,7 @@ export default class AddressList extends React.Component {
                         }}
                         activeOpacity={0.9}
                         onPress={() => {
-                            this.props.navigation.navigate('AddressEdit', {callback: this.fetchData});
+                            this.props.navigation.navigate('AddressEdit');
                         }}
                     >
                         <Text style={{
@@ -81,7 +81,11 @@ export default class AddressList extends React.Component {
             ...defaultNavigationConfigure(navigation),
             headerTitle: '管理收货地址',
         });
-        this.fetchData();
+        navigation.addListener('focus',this.fetchData);
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus');
     }
 
     fetchData = () => {
@@ -96,8 +100,6 @@ export default class AddressList extends React.Component {
 
     renderItem = ({item, index}) => {
         const address = item;
-        const name = address.isdefault ? 'round-check-fill' : 'round';
-        const color = address.isdefault ? Colors.primary : '#bbb';
         return (
             <View>
                 <TouchableOpacity

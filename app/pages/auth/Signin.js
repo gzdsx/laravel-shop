@@ -181,7 +181,7 @@ class Signin extends React.Component {
         axios.post(OauthApi + '/token', {
             'grant_type': 'password',
             'client_id': '2',
-            'client_secret': 'Rw7FTTT4ouOIIWJx6eMQ28ENG7Tnq9lifOewqyce',
+            'client_secret': 'LZ5WlUAM03zTjvMkYCZDpqJB53kvK6F9rFXADurG',
             'username': account,
             'password': password,
             'scope': '*',

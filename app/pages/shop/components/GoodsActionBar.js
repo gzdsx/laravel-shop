@@ -66,38 +66,40 @@ export default class GoodsActionBar extends React.Component {
                     />
                 </View>
                 <View style={styles.buttons}>
-                    <LinearGradient
-                        colors={['#ffd01e', '#ff8917']}
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 0}}
-                        style={[styles.linearGradient, {
-                            borderTopLeftRadius: 20,
-                            borderBottomLeftRadius: 20,
-                        }]}
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={this.props.onPressAddCart}
+                        style={styles.button}
                     >
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={this.props.onPressAddCart}
+                        <LinearGradient
+                            colors={['#ffd01e', '#ff8917']}
+                            start={{x: 0, y: 0}}
+                            end={{x: 1, y: 0}}
+                            style={[styles.linearGradient, {
+                                borderTopLeftRadius: 20,
+                                borderBottomLeftRadius: 20,
+                            }]}
                         >
                             <Text style={styles.buttonText}>加入购物车</Text>
-                        </TouchableOpacity>
-                    </LinearGradient>
-                    <LinearGradient
-                        colors={['#ff6034', '#ee0a24']}
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 0}}
-                        style={[styles.linearGradient, {
-                            borderTopRightRadius: 20,
-                            borderBottomRightRadius: 20,
-                        }]}
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={this.props.onPressBuyNow}
+                        style={styles.button}
                     >
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={this.props.onPressBuyNow}
+                        <LinearGradient
+                            colors={['#ff6034', '#ee0a24']}
+                            start={{x: 0, y: 0}}
+                            end={{x: 1, y: 0}}
+                            style={[styles.linearGradient, {
+                                borderTopRightRadius: 20,
+                                borderBottomRightRadius: 20,
+                            }]}
                         >
                             <Text style={styles.buttonText}>立即购买</Text>
-                        </TouchableOpacity>
-                    </LinearGradient>
+                        </LinearGradient>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -124,6 +126,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingRight: 5
     },
+    button: {
+        flex: 1,
+        flexDirection: 'row'
+    },
     buttonText: {
         fontSize: 14,
         color: '#fff',
@@ -140,6 +146,5 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: 0,
         flex: 1,
-        flexDirection: 'row'
     }
 });

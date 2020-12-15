@@ -20,11 +20,11 @@ export default class ShippingAddress extends React.Component {
         const {data, onPress, isLink} = this.props;
         return (
             <TableView>
-                <TableCell style={{paddingHorizontal: 10}} isLink={isLink} onPress={onPress}>
+                <TableCell style={{paddingHorizontal: 10, paddingVertical: 20}} onPress={onPress}>
                     <View style={{alignItems: 'center', alignSelf: 'center', marginRight: 10}}>
                         <Ticon name={"location"} size={24} color={"#666"}/>
                     </View>
-                    <View style={{flex: 1}}>
+                    <View style={{flex: 1, paddingRight: 10}}>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={{
                                 flex: 1,
@@ -49,6 +49,7 @@ export default class ShippingAddress extends React.Component {
                             numberOfLines={2}
                         >收货地址: {data.full_address}</Text>
                     </View>
+                    <TableCell.Accessory/>
                 </TableCell>
             </TableView>
         );

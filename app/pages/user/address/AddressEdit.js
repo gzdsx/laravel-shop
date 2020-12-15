@@ -12,8 +12,8 @@ export default class AddressEdit extends React.Component {
         super(props);
         this.state = {
             address: {
-                consignee: '',
-                phone: '',
+                name: '',
+                tel: '',
                 province: '',
                 city: '',
                 district: '',
@@ -42,12 +42,8 @@ export default class AddressEdit extends React.Component {
                     label={"收货人"}
                     placeholder={"真实姓名"}
                     onChangeText={(text) => {
-                        this.setState({
-                            address: {
-                                ...address,
-                                consignee: text
-                            }
-                        });
+                        address.name = text;
+                        this.setState({address});
                     }}
                     defaultValue={address.name}
                 />
@@ -55,7 +51,7 @@ export default class AddressEdit extends React.Component {
                     label={"联系电话"}
                     placeholder={"手机号码"}
                     onChangeText={(text) => {
-                        address.phone = text;
+                        address.tel = text;
                         this.setState({address});
                     }}
                     keyboardType={"phone-pad"}
@@ -78,8 +74,12 @@ export default class AddressEdit extends React.Component {
                                 this.props.navigation.navigate('DistrictSelector');
                             }}
                         >
-                            <View style={{flex: 1}}>
-                                <Text style={{color: '#333', fontSize: 16}}>{district}</Text>
+                            <View style={{flex: 1, justifyContent: 'center'}}>
+                                <Text style={{
+                                    color: '#333',
+                                    fontSize: 16,
+                                    textAlignVertical: 'center'
+                                }}>{district}</Text>
                             </View>
                             <TableCell.Accessory/>
                         </TouchableOpacity>
@@ -131,9 +131,10 @@ export default class AddressEdit extends React.Component {
             headerTitle: '编辑收货地址',
         });
 
-        let {address} = this.state;
-        DeviceEventEmitter.addListener('onPickedDistrict', (dst) => {
-            const {province, city, district} = dst;
+
+        DeviceEventEmitter.addListener('onPickedDistrict', (dist) => {
+            let {address} = this.state;
+            let {province, city, district} = dist;
             address = {
                 ...address,
                 province,
@@ -143,13 +144,17 @@ export default class AddressEdit extends React.Component {
             this.setState({address});
         });
 
-        const address_id = route?.params.address_id;
+        const address_id = route.params?.address_id || 0;
         if (address_id) {
             ApiClient.get('/address/get', {address_id}).then(response => {
                 this.setState({
                     address: response.data.address,
                     isLoading: false
                 });
+            });
+        } else {
+            this.setState({
+                isLoading: false
             });
         }
     }
@@ -161,13 +166,24 @@ export default class AddressEdit extends React.Component {
     submit = () => {
         const {address} = this.state;
         const {address_id} = address;
+        console.log(address);
 
         if (this.submiting) {
             return false;
         }
 
-        if (!Validate.IsChineseName(address.name)) {
+        if (!address.name){
             this.refs.toast.show('请填写收货人姓名');
+            return false;
+        }
+
+        if (!Validate.IsChineseName(address.name)) {
+            this.refs.toast.show('收货人姓名填写不正确');
+            return false;
+        }
+
+        if (!address.tel){
+            this.refs.toast.show('请填写联系电话');
             return false;
         }
 
@@ -188,7 +204,7 @@ export default class AddressEdit extends React.Component {
 
         this.submiting = true;
         ApiClient.post('/address/save', {address, address_id}).then(response => {
-            this.submiting = false;
+            console.log(response.data);
             this.refs.toast.show('地址保存成功', {
                 onHide: () => {
                     this.props.navigation.goBack();

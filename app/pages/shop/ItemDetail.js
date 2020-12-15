@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, DeviceEventEmitter} from 'react-native';
+import {ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, DeviceEventEmitter, Linking} from 'react-native';
 import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {LoadingView, Ticon, Toast} from "react-native-gzdsx-elements";
@@ -125,15 +125,16 @@ class ItemDetail extends React.Component {
                     }}
                     onAddCollection={() => {
                         if (auth.isSignined) {
-                            Utils.addToCollection(item.itemid, 'item', () => {
-                                Toast.show('已成功加入收藏夹');
+                            const itemid = item.itemid;
+                            ApiClient.post('/item/collect/create',{itemid}).then(()=>{
+                                this.refs.toast.show('已成功加入收藏夹');
                             });
                         } else {
                             this.showLogin();
                         }
                     }}
                     onConnectKefu={() => {
-                        this.props.navigation.navigate('ShopInfo', {shop_id: item.shop_id});
+                        Linking.openURL('tel:18685849696');
                     }}
                 />
                 <SkuPannel

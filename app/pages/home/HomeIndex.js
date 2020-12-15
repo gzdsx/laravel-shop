@@ -134,11 +134,11 @@ class HomeIndex extends React.Component {
         const items = response.data.items;
 
         this.setState({
-            isLoading: false,
-            isRefreshing: false,
             images,
             posts,
-            items
+            items,
+            isLoading: false,
+            isRefreshing: false,
         });
     };
 
