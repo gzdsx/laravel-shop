@@ -126,7 +126,7 @@ class ItemDetail extends React.Component {
                     onAddCollection={() => {
                         if (auth.isSignined) {
                             const itemid = item.itemid;
-                            ApiClient.post('/item/collect/create',{itemid}).then(()=>{
+                            ApiClient.post('/item/collect/create', {itemid}).then(() => {
                                 this.refs.toast.show('已成功加入收藏夹');
                             });
                         } else {
@@ -141,13 +141,14 @@ class ItemDetail extends React.Component {
                     show={this.state.showModal}
                     data={item}
                     onSubmit={(sku, quantity) => {
-                        const item = this.state.item;
+                        const _this = this;
+                        const {item} = this.state;
                         if (this.actionType === 1) {
                             this.setState({showModal: false});
                             let sku_id = sku.sku_id || 0;
-                            AddToCart(item.itemid, quantity, sku_id, () => {
-                                this.refs.toast.show('已成功加入购物车');
+                            AddToCart(item.itemid, quantity, sku_id, (data) => {
                                 DeviceEventEmitter.emit(CartDidChangedNotification);
+                                _this.refs.toast.show('已成功加入购物车');
                             });
                         } else {
                             this.setState({showModal: false});

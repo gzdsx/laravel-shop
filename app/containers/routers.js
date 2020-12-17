@@ -17,6 +17,7 @@ import VideoIndex from "../pages/video/VideoIndex";
 import VideoDetail from "../pages/video/VideoDetail";
 import RecordVideo from "../pages/video/RecordVideo";
 import LiveIndex from "../pages/live/LiveIndex";
+import LivePlay from "../pages/live/LivePlay";
 //shop
 import ItemList from "../pages/shop/ItemList";
 import ItemDetail from "../pages/shop/ItemDetail";
@@ -50,6 +51,7 @@ export default [
     {name: 'VideoDetail', component: VideoDetail, options: VideoDetail.navigationOptions || {}},
     {name: 'RecordVideo', component: RecordVideo, options: RecordVideo.navigationOptions || {}},
     {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},
+    {name: 'LivePlay', component: LivePlay, options: LivePlay.navigationOptions || {}},
     //shop
     {name: 'ItemList', component: ItemList},
     {name: 'ItemDetail', component: ItemDetail},

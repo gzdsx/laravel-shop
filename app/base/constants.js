@@ -1,11 +1,11 @@
 import {Platform} from 'react-native';
 
 export const isAndroid = Platform.OS === 'android';
-export const AppVersion = 1.0;
+export const AppVersion = 1.05;
 export const BaseApi = 'https://shop.gzdsx.cn/api';
 export const BaseUri = 'https://shop.gzdsx.cn/h5';
 export const OauthApi = 'https://shop.gzdsx.cn/oauth';
-export const AppUrl = isAndroid ? 'https://shop.gzdsx.cn/apk/aipei.apk' : 'https://apps.apple.com/cn/app/id1479643354?l=zh&ls=1';
+export const AppUrl = isAndroid ? 'https://shop.gzdsx.cn/apk/shopapp.apk' : 'https://apps.apple.com/cn/app/id1544829486?l=zh&ls=1';
 
 export const AccessToken = 'AccessToken';
 export const UserDidSigninedNotification = 'UserDidSigninedNotification';

@@ -4,31 +4,33 @@ import PropTypes from "prop-types";
 import LinearGradient from "react-native-linear-gradient";
 
 const ActionButton = ({text, iconSource, onPress = () => null}) => {
-    const styles = {
+    const buttonStyles = StyleSheet.create({
         iconBox: {
-            flex: 1,
-            alignContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            paddingTop: 5
+            paddingTop: 5,
+            paddingHorizontal: 10,
+            alignItems: 'center'
         },
         iconTitle: {
             fontSize: 12,
             color: '#666',
             textAlign: 'center',
-            marginTop: 3
+            marginTop: 5
         },
-    };
+    });
 
     return (
-        <TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.iconBox}>
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={onPress}
+            style={buttonStyles.iconBox}
+        >
             <Image style={{
                 tintColor: "#666",
                 width: 22,
                 height: 22,
                 resizeMode: 'contain'
             }} source={iconSource}/>
-            <Text style={styles.iconTitle}>{text}</Text>
+            <Text style={buttonStyles.iconTitle}>{text}</Text>
         </TouchableOpacity>
     );
 }
@@ -115,16 +117,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     icons: {
-        flexDirection: 'row',
         height: 50,
-        paddingLeft: 5,
-        paddingRight: 5,
-        flex: 1
+        paddingHorizontal: 10,
+        flexDirection: 'row',
     },
     buttons: {
-        flex: 2,
         flexDirection: 'row',
-        paddingRight: 5
+        paddingRight: 5,
+        flex:1
     },
     button: {
         flex: 1,
