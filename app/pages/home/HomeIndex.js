@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, ScrollView, TouchableOpacity, Image, Text, FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Image, Text, FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {connect} from "react-redux";
 import Swiper from 'react-native-swiper';
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {LoadingView, Ticon} from "react-native-gzdsx-elements";
-import NetInfo, {useNetInfo} from "@react-native-community/netinfo";
+import {Ticon} from "react-native-gzdsx-elements";
+import NetInfo from "@react-native-community/netinfo";
 import {Header} from 'react-native-elements';
 import {Colors, Size} from '../../styles';
 import {ApiClient} from "../../utils";
@@ -84,8 +84,8 @@ class HomeIndex extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
-            isRefreshing: false,
+            loading: true,
+            refreshing: false,
             images: [],
             posts: [],
             items: []
@@ -93,7 +93,6 @@ class HomeIndex extends React.Component {
     }
 
     render(): React.ReactNode {
-        if (this.state.isLoading) return <LoadingView/>;
         return (
             <ItemGridView
                 data={this.state.items}
@@ -101,8 +100,13 @@ class HomeIndex extends React.Component {
                     this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
                 }}
                 ListHeaderComponent={this.renderHeaderView()}
-                onRefresh={this.refresh}
-                isRefreshing={this.state.isRefreshing}
+                loading={this.state.loading}
+                refreshing={this.state.refreshing}
+                onRefresh={() => {
+                    setTimeout(() => {
+                        this.setState({refreshing: true}, this.fetchData);
+                    }, 500);
+                }}
             />
         );
     }
@@ -137,13 +141,9 @@ class HomeIndex extends React.Component {
             images,
             posts,
             items,
-            isLoading: false,
-            isRefreshing: false,
+            loading: false,
+            refreshing: false,
         });
-    };
-
-    refresh = () => {
-        this.setState({isRefreshing: true}, () => this.fetchData());
     };
 
     renderHeaderView() {
@@ -246,6 +246,41 @@ class HomeIndex extends React.Component {
         return null;
     }
 }
+
+const itemWidth = Size.screenWidth / 2;
+const styles = StyleSheet.create({
+    item: {
+        padding: 3,
+        width: itemWidth
+    },
+    itemContent: {
+        backgroundColor: '#fff',
+        borderRadius: 2
+    },
+    itemImage: {
+        height: (Size.screenWidth - 12) / 2,
+        width: (Size.screenWidth - 12) / 2
+    },
+    itemTitle: {
+        fontSize: 14,
+        color: '#000',
+        height: 60,
+        padding: 10,
+        fontWeight: '400'
+    },
+    itemData: {
+        flexDirection: 'row',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10
+    },
+    itemPrice: {
+        flex: 1,
+        color: '#f40',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+});
 
 const mapStateToProps = (store) => {
     return {...store};

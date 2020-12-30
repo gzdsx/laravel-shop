@@ -3,22 +3,28 @@ import {FlatList, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {LoadingView, Ticon} from 'react-native-gzdsx-elements';
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {Colors, Size} from '../../styles';
-import {ApiClient, Toast} from '../../utils';
+import Swiper from "react-native-swiper";
+import {Size} from '../../styles';
+import {ApiClient} from '../../utils';
 import {defaultNavigationConfigure} from "../../base/navconfig";
+
 
 class LiveIndex extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             items: [],
-            isLoading: true,
+            images: [],
+            loading: true,
+            refreshing: false,
+            loadMore: false,
         };
-        this.vps = [];
+        this.offset = 0;
+        this.loadMoreAble = false;
     }
 
     render(): React.ReactNode {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) return <LoadingView/>;
         return (<View style={{flex: 1, backgroundColor: '#fff'}}>
             <FlatList
                 keyExtractor={(item) => item.id.toString()}
@@ -48,14 +54,17 @@ class LiveIndex extends React.Component {
                         alignContent: 'center',
                         justifyContent: 'center',
                         flexDirection: 'column',
-                        paddingVertical: 20,
+                        paddingVertical: 50,
                     }}>
                         <Text style={{color: '#666', fontSize: 16, textAlign: 'center'}}>当前没有直播内容</Text>
                     </View>
                 )}
-                style={{
-                    paddingHorizontal: 5,
-                    paddingVertical: 10
+                ListHeaderComponent={this.renderSwiper}
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+                columnWrapperStyle={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 5
                 }}
             />
         </View>);
@@ -67,18 +76,77 @@ class LiveIndex extends React.Component {
             ...defaultNavigationConfigure(navigation),
             headerTitle: '直播'
         });
+        ApiClient.get('/block/item/batchget?block_id=4').then(response => {
+            this.setState({
+                images: response.data.items
+            });
+        })
         this.fetchData();
     }
 
     fetchData = () => {
-        ApiClient.get('/live/batchget?state=1').then(response => {
-            console.log(response.data);
+        ApiClient.get('/live/batchget', {
+            state: 1,
+            offset: this.offset,
+        }).then(response => {
+            //console.log(response.data);
             let items = response.data.items;
             this.setState({
-                isLoading: false,
-                items
+                items,
+                loading: false,
+                refreshing: false,
+                loadMore: false
             });
+            this.loadMoreAble = items.length === 10;
         });
+    };
+
+    onRefresh = () => {
+        if (this.state.loading || this.state.refreshing || this.state.loadMore) {
+            return false;
+        }
+
+        this.offset = 0;
+        this.setState({refreshing: true});
+        setTimeout(this.fetchData, 500);
+    };
+
+    onEndReached = () => {
+        if (this.state.loading || this.state.refreshing || this.state.loadMore || !this.loadMoreAble) {
+            return false;
+        }
+
+        this.offset += 20;
+        this.setState({loadMore: true});
+        setTimeout(this.fetchData, 500);
+    };
+
+    renderSwiper = () => {
+        const size = {
+            width: Size.screenWidth,
+            height: Size.screenWidth * 0.4
+        };
+        let contents = this.state.images.map((item, index) => {
+            return (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    key={'key1' + index.toString()}
+                    onPress={() => {
+                        if (/http(.*?)\/post\/detail\/(\d+)\.html/.test(item.url)) {
+                            let aid = item.url.match(/(\d+)/g)[0];
+                            this.props.navigation.navigate('PostDetail', {aid});
+                        }
+                    }}
+                >
+                    <CacheImage
+                        source={{uri: item.image}}
+                        style={{...size}}
+                    />
+                </TouchableOpacity>
+            );
+        });
+
+        return (<Swiper style={{height: size.height}} dotColor={"#ccc"} autoplay>{contents}</Swiper>);
     };
 }
 

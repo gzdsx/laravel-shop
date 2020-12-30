@@ -5,7 +5,7 @@ import {connect,} from "react-redux";
 import ActionSheet from 'react-native-actionsheet'
 import ImagePicker from 'react-native-image-picker';
 import {LoadingView, Spinner, TableView, TableCell} from "react-native-gzdsx-elements";
-import {UserDidSignoutedNotification} from "../../../base/constants";
+import {UserDidSigninedNotification, UserDidSignoutedNotification} from "../../../base/constants";
 import {Utils, ApiClient} from "../../../utils";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {authActionCreators, locationActionCreators} from "../../../actions";
@@ -169,7 +169,7 @@ class MyProfile extends React.Component {
                 //console.log(res.data);
                 let {userinfo} = this.state;
                 userinfo.avatar = res.data.avatar;
-                DeviceEventEmitter.emit(UserDidLoggedInNotification, userinfo);
+                DeviceEventEmitter.emit(UserDidSigninedNotification, userinfo);
                 this.setState({
                     userinfo,
                     uploading: false

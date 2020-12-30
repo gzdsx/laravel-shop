@@ -1,7 +1,7 @@
 PODS:
   - AMap3DMap (7.5.0):
     - AMapFoundation (~> 1.6.3)
-  - AMapFoundation (1.6.4)
+  - AMapFoundation (1.6.5.1)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
@@ -120,16 +120,14 @@ PODS:
     - RNPermissions
   - Permission-StoreKit (2.2.2):
     - RNPermissions
-  - RCTAlipay (1.0.0):
-    - React
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
     - Folly (= 2020.01.13.00)
     - RCTRequired (= 0.63.4)
     - React-Core (= 0.63.4)
-  - RCTWeChat (1.9.12):
-    - React
+  - RCTWeChat (1.1.25):
+    - React-Core
   - React (0.63.4):
     - React-Core (= 0.63.4)
     - React-Core/DevSupport (= 0.63.4)
@@ -387,6 +385,8 @@ PODS:
     - React-jsi (= 0.63.4)
   - rn-fetch-blob (0.12.0):
     - React-Core
+  - RNAlipay (1.0.0):
+    - React
   - RNCAsyncStorage (1.13.2):
     - React
   - RNCMaskedView (0.1.10):
@@ -456,10 +456,9 @@ DEPENDENCIES:
   - Permission-Siri (from `../node_modules/react-native-permissions/ios/Siri.podspec`)
   - Permission-SpeechRecognition (from `../node_modules/react-native-permissions/ios/SpeechRecognition.podspec`)
   - Permission-StoreKit (from `../node_modules/react-native-permissions/ios/StoreKit.podspec`)
-  - RCTAlipay (from `../node_modules/react-native-gzdsx-alipay`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
-  - RCTWeChat (from `../node_modules/react-native-wechat`)
+  - RCTWeChat (from `../node_modules/react-native-wechat-lib`)
   - React (from `../node_modules/react-native/`)
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
@@ -491,6 +490,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - RNAlipay (from `../node_modules/react-native-gzdsx-alipay/ios`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -573,14 +573,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/SpeechRecognition.podspec"
   Permission-StoreKit:
     :path: "../node_modules/react-native-permissions/ios/StoreKit.podspec"
-  RCTAlipay:
-    :path: "../node_modules/react-native-gzdsx-alipay"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
     :path: "../node_modules/react-native/Libraries/TypeSafety"
   RCTWeChat:
-    :path: "../node_modules/react-native-wechat"
+    :path: "../node_modules/react-native-wechat-lib"
   React:
     :path: "../node_modules/react-native/"
   React-callinvoker:
@@ -639,6 +637,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNAlipay:
+    :path: "../node_modules/react-native-gzdsx-alipay/ios"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
@@ -660,7 +660,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AMap3DMap: fc7c911f5cf079d544ad7faec256c9554cbbb202
-  AMapFoundation: 3638198dfa40be54648570c3520edefad288286b
+  AMapFoundation: b67560a6f21aab81c8c12f84616b55a3833b6253
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
@@ -700,10 +700,9 @@ SPEC CHECKSUMS:
   Permission-Siri: c50c434a91af15ed47fe2b5b2fb705d567ba1d77
   Permission-SpeechRecognition: 1598784f0122a9e3af62a37b18468450ea03fa12
   Permission-StoreKit: 43b6a94351b1ffc24f48a814c1396d6d5712e41d
-  RCTAlipay: 9ab263b66bd8393bce2e5162ec4a59e5439b91ef
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
-  RCTWeChat: edb02d76aaf9b2e698e515e3c57bf143a290d9d7
+  RCTWeChat: eeae3323bef0d40d78181dbc7b3a1a33cd5a358e
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
   React-callinvoker: c3f44dd3cb195b6aa46621fff95ded79d59043fe
   React-Core: d3b2a1ac9a2c13c3bcde712d9281fc1c8a5b315b
@@ -733,6 +732,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
+  RNAlipay: 67b9db7087df6637f5ad0573182c81d26f8501b3
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b

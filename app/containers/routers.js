@@ -24,12 +24,18 @@ import ItemDetail from "../pages/shop/ItemDetail";
 import Category from "../pages/shop/Category";
 import BuyNow from "../pages/order/BuyNow";
 import ConfirmOrder from "../pages/order/ConfirmOrder";
+import Logistics from "../pages/order/Logistics";
+import OrderRate from "../pages/order/OrderRate";
 import OrderList from "../pages/bought/OrderList";
 import OrderDetail from "../pages/bought/OrderDetail";
 import AddressList from "../pages/user/address/AddressList";
 import AddressEdit from "../pages/user/address/AddressEdit";
-import PostDetail from "../pages/post/PostDetail";
 //post
+import PostDetail from "../pages/post/PostDetail";
+import RefundApply from "../pages/refund/RefundApply";
+import RefundForm from "../pages/refund/RefundForm";
+import RefundDetail from "../pages/refund/RefundDetail";
+
 
 export default [
     {name: 'TabBar', component: TabBar, options: {headerShown: false,}},
@@ -59,10 +65,16 @@ export default [
     //order
     {name: 'BuyNow', component: BuyNow},
     {name: 'ConfirmOrder', component: ConfirmOrder},
+    {name: 'Logistics', component: Logistics},
+    {name: 'OrderRate', component: OrderRate},
     {name: 'OrderList', component: OrderList},
     {name: 'OrderDetail', component: OrderDetail},
     {name: 'AddressList', component: AddressList},
     {name: 'AddressEdit', component: AddressEdit},
     //post
     {name: 'PostDetail', component: PostDetail},
+    //refund
+    {name: 'RefundApply', component: RefundApply},
+    {name: 'RefundForm', component: RefundForm},
+    {name: 'RefundDetail', component: RefundDetail},
 ];

@@ -3123,10 +3123,10 @@ eventemitter3@^3.0.0:
   resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
-events@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/events/-/events-1.0.2.tgz#75849dcfe93d10fb057c30055afdbd51d06a8e24"
-  integrity sha1-dYSdz+k9EPsFfDAFWv29UdBqjiQ=
+events@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/events/download/events-1.0.1.tgz?cache=0&sync_timestamp=1595422555438&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fevents%2Fdownload%2Fevents-1.0.1.tgz#386f6471cbb609e7925e7bfe7468634b9e069ac2"
+  integrity sha1-OG9kccu2CeeSXnv+dGhjS54GmsI=
 
 events@^1.1.0:
   version "1.1.1"
@@ -6429,10 +6429,9 @@ react-native-gesture-handler@^1.8.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-gzdsx-alipay@^1.0.0:
+"react-native-gzdsx-alipay@git+https://gitee.com/gzdsx/react-native-gzdsx-alipay.git":
   version "1.0.0"
-  resolved "https://registry.npmjs.org/react-native-gzdsx-alipay/-/react-native-gzdsx-alipay-1.0.0.tgz#ca189c99e3296e4822c5d4fda2995904d6dfa621"
-  integrity sha512-oOSm7l4aTt1JcJ5XfTqNi6Hk08VWsZsnc+d777sptrrMPiPktpDYheflBLJfRTQ+1sEIlmaJUveeEVdIR52Hrw==
+  resolved "git+https://gitee.com/gzdsx/react-native-gzdsx-alipay.git#dbd386cb9dbced1fedc5fe046283cda111ae6b43"
 
 react-native-gzdsx-cache-image@^1.1.0:
   version "1.1.2"
@@ -6440,8 +6439,8 @@ react-native-gzdsx-cache-image@^1.1.0:
   integrity sha512-KMpAaXDU2B5yKgVl0o7PPHedLeyEDtK/JTNw5lOJohhpwC+FxmCtuhqUrKXClT7GHhCNJFILzQldat2wtIzsqg==
 
 "react-native-gzdsx-elements@git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git":
-  version "1.1.7"
-  resolved "git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git#11874b02ac66f44100a55da5d2c6869d8cdadfab"
+  version "1.1.9"
+  resolved "git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git#32475838e5dbcd8baaa9fd43a6a8735a786193b4"
 
 react-native-image-pan-zoom@^2.1.12:
   version "2.1.12"
@@ -6600,12 +6599,12 @@ react-native-webview@^10.10.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native-wechat@^1.9.12:
-  version "1.9.12"
-  resolved "https://registry.npmjs.org/react-native-wechat/-/react-native-wechat-1.9.12.tgz#db75ab594373685c6097f3024a78e0b293ba0a5d"
-  integrity sha512-GpLRdmNmQd3pWSQG9O38e3+CfVGH67IcXMgTlOzTYsvxjUhLb3WpvAzveJ3ykdQMxB1mx3s3IJnQcbY9UBld9g==
+react-native-wechat-lib@^1.1.25:
+  version "1.1.25"
+  resolved "https://registry.npm.taobao.org/react-native-wechat-lib/download/react-native-wechat-lib-1.1.25.tgz#6b83013c5e19db39c81b011f0a616ff6a51742cc"
+  integrity sha1-a4MBPF4Z2znIGwEfCmFv9qUXQsw=
   dependencies:
-    events "1.0.2"
+    events "1.0.1"
 
 react-native@0.63.4:
   version "0.63.4"

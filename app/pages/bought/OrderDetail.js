@@ -3,26 +3,13 @@ import {View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Alert} from
 import Alipay from 'react-native-gzdsx-alipay';
 import {LoadingView, Spinner, Ticon} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {Button} from 'react-native-elements';
-import {Toast, ApiClient, Utils} from "../../utils";
-import * as WeChat from 'react-native-wechat';
+import {Toast} from 'react-native-gzdsx-elements';
+import {ApiClient, Utils} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Colors} from "../../styles";
-
-const SectionTitleView = ({text}) => {
-    return (
-        <View style={{
-            alignSelf: 'center',
-            alignItems: 'flex-start',
-            padding: 15
-        }}>
-            <Text style={{
-                fontSize: 14,
-                color: '#666'
-            }}>{text}</Text>
-        </View>
-    )
-};
+import OrderActionBar from "../order/OrderActionBar";
+import OrderActionButton from "../order/OrderActionButton";
+import {AddToCart} from "../cart/CartActions";
 
 const getStatusIcon = (status) => {
     let icon;
@@ -49,33 +36,6 @@ const getStatusIcon = (status) => {
             ;
     }
     return icon;
-};
-
-const ActionButton = ({text, show = true, onPress = () => null}) => {
-    return (
-        <TouchableOpacity
-            activeOpacity={1}
-            style={{
-                paddingVertical: 8,
-                paddingHorizontal: 12,
-                borderRadius: 18,
-                borderWidth: 0.5,
-                borderColor: '#ccc',
-                marginLeft: 10,
-                display: show ? 'flex' : 'none'
-            }}
-            onPress={onPress}
-        >
-            <Text style={{
-                flex: 1,
-                color: '#333',
-                fontSize: 12,
-                textAlign: 'center'
-            }}>
-                {text}
-            </Text>
-        </TouchableOpacity>
-    );
 };
 
 export default class OrderDetail extends React.Component {
@@ -111,60 +71,49 @@ export default class OrderDetail extends React.Component {
                     {this.renderContent()}
                     {this.renderOrderInfo()}
                 </ScrollView>
-                <View style={{
-                    height: 49,
-                    backgroundColor: '#fff',
-                    flexDirection: 'row',
-                    padding: 10
-                }}>
-                    <View style={{flex: 1}}/>
-                    <ActionButton
-                        text={"取消订单"}
-                        show={order_state === 1}
-                        onPress={() => this.cancelOrder()}
-                    />
-                    <ActionButton
-                        text={"查看物流"}
-                        show={shipping_state}
-                        onPress={() => {
-                            this.props.navigation.navigate('ViewExpress', {order_id});
-                        }}
-                    />
-                    <ActionButton
-                        text={"支付"}
-                        show={order_state === 1}
-                        onPress={this.payOrder}
-                    />
-                    <ActionButton
-                        text={"提醒卖家发货"}
-                        show={order_state === 2}
-                        onPress={() => this.noticeOrder()}
-                    />
-                    <ActionButton
-                        text={"确认收货"}
-                        show={order_state === 3}
-                        onPress={() => this.confirmOrder()}
-                    />
-                    <ActionButton
-                        text={"评价"}
-                        show={order_state === 4}
-                    />
-                    <ActionButton
-                        text={"申请退款"}
-                        show={order_state === 5}
-                    />
-                </View>
+                <OrderActionBar
+                    order={order}
+                    style={{backgroundColor: '#fff', height: 49}}
+                    onCancel={this.fetchData}
+                    onPay={this.fetchData}
+                    onNotice={() => {
+                    }}
+                    onConfirm={this.fetchData}
+                    onRefund={() => {
+
+                    }}
+                    onRate={() => {
+
+                    }}
+                    onExpress={() => {
+
+                    }}
+                    onDelete={() => {
+                        this.props.navigation.goBack();
+                    }}
+                />
                 <Spinner ref={'spinner'}/>
+                <Toast ref={'toast'}/>
             </View>
         );
     }
 
+    UNSAFE_componentWillMount() {
+        this.props.navigation.addListener('focus', () => Utils.setStatusBarStyle('light'));
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus');
+    }
 
     componentDidMount() {
         this.setNavigationOptions();
         this.fetchData();
     }
 
+    /**
+     * 查询订单数据
+     */
     fetchData = () => {
         const {order_id} = this.props.route.params;
         ApiClient.get('/bought/get', {order_id}).then(response => {
@@ -272,23 +221,40 @@ export default class OrderDetail extends React.Component {
         const {items, order} = this.state;
         let itemContents = items.map((item, index) => {
             return (
-                <TouchableOpacity activeOpacity={1} key={index.toString()}>
-                    <View key={index.toString()} style={css.itemBox}>
-                        <CacheImage source={{uri: item.thumb}} style={css.itemImage}/>
-                        <View style={css.itemTitleView}>
-                            <Text style={css.itemTitle}>{item.title}</Text>
-                            {
-                                item.sku_id ?
-                                    <Text style={{fontSize: 12, color: '#666', marginTop: 5}}>{item.sku_title}</Text>
-                                    : null
-                            }
+                <View key={index.toString()}>
+                    <TouchableOpacity activeOpacity={1}>
+                        <View style={css.itemBox}>
+                            <CacheImage source={{uri: item.thumb}} style={css.itemImage}/>
+                            <View style={css.itemTitleView}>
+                                <Text style={css.itemTitle}>{item.title}</Text>
+                                {
+                                    item.sku_id ?
+                                        <Text
+                                            style={{fontSize: 12, color: '#666', marginTop: 5}}>{item.sku_title}</Text>
+                                        : null
+                                }
+                            </View>
+                            <View style={css.itemData}>
+                                <Text style={css.itemPrice}>￥{item.price}</Text>
+                                <Text style={css.itemQuantity}>x{item.quantity}</Text>
+                            </View>
                         </View>
-                        <View style={css.itemData}>
-                            <Text style={css.itemPrice}>￥{item.price}</Text>
-                            <Text style={css.itemQuantity}>x{item.quantity}</Text>
-                        </View>
+                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', padding: 10, justifyContent: 'flex-end'}}>
+                        <OrderActionButton title={"加入购物车"} onPress={() => {
+                            AddToCart(item.itemid, 1, item.quantity, () => {
+                                this.refs.toast.show('已成功加入购物车');
+                            });
+                        }}/>
+                        <OrderActionButton
+                            title={order.receive_state ? "申请售后" : "申请退款"}
+                            show={order.pay_state}
+                            onPress={() => {
+                                this.props.navigation.navigate('RefundApply', {item});
+                            }}
+                        />
                     </View>
-                </TouchableOpacity>
+                </View>
             );
         });
 
@@ -345,61 +311,6 @@ export default class OrderDetail extends React.Component {
                 }
             </View>
         );
-    };
-
-    confirmOrder = () => {
-        const {order_id} = this.state.order;
-        Alert.alert(null, '请确认你收到的货物完好，以免钱财两空', [
-            {text: '取消', onPress: () => null},
-            {
-                text: '确定',
-                onPress: () => {
-                    this.setState({
-                        showSpinner: true,
-                    });
-                    ApiClient.post('/bought/confirm', {order_id}).then(response => {
-                        this.fetchData();
-                        Toast.show('收货成功');
-                    }).catch(() => {
-                        this.setState({
-                            showSpinner: false,
-                        });
-                    });
-                }
-            }
-        ]);
-    };
-
-    payOrder = () => {
-        const {order_id} = this.state.order;
-        ApiClient.get('/alipay/sign', {order_id}).then(response => {
-            //console.log(response.data);
-            Alipay.pay(response.data.payStr).then((data) => {
-                //console.log(data)
-                this.fetchData();
-            }, (resean) => {
-                console.log(resean);
-            });
-        });
-    };
-
-    cancelOrder = () => {
-        const {order_id} = this.state.order;
-        Alert.alert(null, '你确认要取消此订单吗?', [
-            {text: '取消', onPress: () => null},
-            {
-                text: '确定',
-                onPress: () => {
-                    ApiClient.post('/bought/close', {order_id}).then(response => {
-                        this.fetchData();
-                    });
-                }
-            }
-        ]);
-    };
-
-    noticeOrder = () => {
-
     };
 }
 

@@ -9,7 +9,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as WeChat from 'react-native-wechat';
+import * as WeChat from 'react-native-wechat-lib';
 import axios from 'axios';
 import {Button} from "react-native-elements";
 import {Toast, TextField} from "react-native-gzdsx-elements";

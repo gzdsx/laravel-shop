@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, View, Image, Text, TouchableOpacity, Animated, TouchableWithoutFeedback} from 'react-native';
 import PropTypes from 'prop-types';
-import * as WeChat from 'react-native-wechat';
+import * as WeChat from 'react-native-wechat-lib';
 
 const ShareButton = ({
                          style, onPress = () => {

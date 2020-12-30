@@ -12,6 +12,7 @@ export const UserDidSigninedNotification = 'UserDidSigninedNotification';
 export const UserDidSignoutedNotification = 'UserDidSignoutedNotification';
 
 export const WeChatAppId = "wxd061fe9e48e8c5f1";
+export const WeChatUniversalLink = "https://cg.gzdsx.cn/app/ios/";
 export const CodePushDeploymentKey = isAndroid ? 'yPBpd4qGGSHToFcrQo3ERY2ZQ76SDFpdKI7159' : 'MVr7Qot9tWdxvjobG_vB9070CsMhqvx3FeCcC';
 
 export const CartDidChangedNotification = "CartDidChangedNotification";

@@ -113,7 +113,7 @@ class LivePlay extends React.Component {
                 live,
                 isLoading: false
             });
-            console.log(live);
+            //console.log(live);
         });
         this.initWebsocket();
     }
@@ -258,7 +258,7 @@ class LivePlay extends React.Component {
         };
 
         websocket.onmessage = function (evt) {
-            console.log('Retrieved data from server: ' + evt.data);
+            //console.log('Retrieved data from server: ' + evt.data);
             _this.state.messages.push(JSON.parse(evt.data));
             setTimeout(() => {
                 if (_this.scrollView) _this.scrollView.scrollToEnd();

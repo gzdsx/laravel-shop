@@ -1,18 +1,15 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import * as WeChat from 'react-native-wechat';
+import * as WeChat from 'react-native-wechat-lib';
 import configureStore from './store/configureStore';
 import App from './containers/App';
 import {sagas} from "./sagas";
-import {WeChatAppId} from "./base/constants";
-import PostIndex from "./pages/post/PostIndex";
-import Cart from "./pages/cart/Cart";
-import Signin from "./pages/auth/Signin";
+import {WeChatAppId, WeChatUniversalLink} from "./base/constants";
 
 const store = configureStore();
 store.runSaga(sagas);
 
-export default class Root extends React.Component{
+export default class Root extends React.Component {
     render() {
         return (
             <Provider store={store}>
@@ -22,8 +19,9 @@ export default class Root extends React.Component{
     }
 
     componentDidMount(): void {
-        WeChat.registerApp(WeChatAppId).then(res=>{
-            //console.log('wecahtApp registered');
+        WeChat.registerApp(WeChatAppId, WeChatUniversalLink).then(res => {
+            console.log('wecahtApp registered');
+            //console.log(res);
         }).catch(reason => {
             console.log(reason);
         });

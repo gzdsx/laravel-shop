@@ -4,41 +4,13 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Alert,
-    StyleSheet
+    StyleSheet,
 } from 'react-native';
-import {LoadingView} from "react-native-gzdsx-elements";
+import {LoadingView, Toast} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {ApiClient} from "../../utils";
+import {ApiClient, Utils} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import Alipay from "react-native-gzdsx-alipay";
-
-const ActionButton = ({text, show = true, onPress = () => null}) => {
-    return (
-        <TouchableOpacity
-            activeOpacity={1}
-            style={{
-                paddingVertical: 8,
-                paddingHorizontal: 12,
-                borderRadius: 18,
-                borderWidth: 0.5,
-                borderColor: '#ccc',
-                marginLeft: 10,
-                display: show ? 'flex' : 'none'
-            }}
-            onPress={onPress}
-        >
-            <Text style={{
-                flex: 1,
-                color: '#333',
-                fontSize: 12,
-                textAlign: 'center'
-            }}>
-                {text}
-            </Text>
-        </TouchableOpacity>
-    );
-};
+import OrderActionBar from "../order/OrderActionBar";
 
 class OrderList extends React.Component {
 
@@ -50,19 +22,32 @@ class OrderList extends React.Component {
             isLoadMore: false,
             orders: [],
             order_state: 0,
-            tab: 'all'
+            tab: 'all',
+            reasons: []
         };
         this.offset = 0;
         this.loadMoreAble = false;
+        this.obj = null;
+        this.index = 0;
     }
 
     render() {
+        const {reasons} = this.state;
         return (
             <View style={{flex: 1}}>
                 {this.renderTabs()}
                 {this.renderContent()}
+                <Toast ref={'toast'}/>
             </View>
         );
+    }
+
+    UNSAFE_componentWillMount() {
+        this.props.navigation.addListener('focus', () => Utils.setStatusBarStyle('light'));
+    }
+
+    componentWillUnmount() {
+        this.props.navigation.removeListener('focus');
     }
 
     componentDidMount() {
@@ -72,8 +57,13 @@ class OrderList extends React.Component {
             headerTitle: '我的订单'
         });
 
-        const tab = route?.params.tab || 'all'
+        const tab = route.params?.tab || 'all'
         this.setState({tab}, this.fetchData);
+        ApiClient.get('/order/closereason/getall').then(response => {
+            let reasons = response.data.items;
+            reasons.push('取消');
+            this.setState({reasons});
+        });
     }
 
     fetchData = () => {
@@ -230,6 +220,7 @@ class OrderList extends React.Component {
     }
 
     renderItem = (order, index) => {
+        let {order_id} = order;
         let totalCount = order.items.reduce((a, b) => a + b.quantity, 0);
         return (
             <View style={css.order}>
@@ -245,36 +236,27 @@ class OrderList extends React.Component {
                         共计{totalCount}件商品 合计:{order.total_fee}(含运费￥{order.shipping_fee})
                     </Text>
                 </View>
-                <View style={css.orderBottom}>
-                    <View style={{flex: 1}}/>
-                    <ActionButton
-                        text={"取消订单"}
-                        show={order.order_state === 1}
-                        onPress={() => this.onCancel(order, index)}
-                    />
-                    <ActionButton
-                        text={"查看物流"}
-                        show={order.shipping_state}
-                        onPress={() => this.onViewExpress(order)}
-                    />
-                    <ActionButton
-                        text={"支付"}
-                        show={order.order_state === 1}
-                        onPress={() => this.onPay(order)}
-                    />
-                    <ActionButton
-                        text={"提醒卖家发货"}
-                        show={order.order_state === 2}
-                        onPress={() => this.onNoticeSeller(order)}
-                    />
-                    <ActionButton
-                        text={"确认收货"}
-                        show={order.order_state === 3}
-                        onPress={() => this.onConfirmOrder(order)}
-                    />
-                    <ActionButton text={"评价"} show={order.order_state === 4}/>
-                    <ActionButton text={"申请退款"} show={order.order_state === 5}/>
-                </View>
+                <OrderActionBar
+                    order={order}
+                    onCancel={this.fetchData}
+                    onRefund={() => {
+                        this.props.navigation.navigate('RefundApply', {order_id});
+                    }}
+                    onExpress={() => {
+                        this.props.navigation.navigate('Logistics', {order_id});
+                    }}
+                    onPay={this.fetchData}
+                    onNotice={() => {
+                    }}
+                    onConfirm={this.fetchData}
+                    onRate={() => {
+                        this.props.navigation.navigate('OrderRate', {order_id});
+                    }}
+                    onDelete={() => {
+                        this.state.orders.splice(index, 1);
+                        this.setState({orders: this.state.orders});
+                    }}
+                />
             </View>
         );
     };
@@ -316,45 +298,6 @@ class OrderList extends React.Component {
             );
         });
     };
-
-    //
-    onCancel = (order, index) => {
-        //let {orders} = this.state;
-        Alert.alert(null, '你确认要取消此订单吗?', [
-            {text: '取消', onPress: () => null},
-            {
-                text: '确定',
-                onPress: () => {
-                    ApiClient.post('/order/close', {order_id: order.order_id}).then(response => {
-                        this.fetchData();
-                    });
-                }
-            }
-        ]);
-    }
-
-    onViewExpress = (order) => {
-
-    }
-
-    onPay = (order) => {
-        const {order_id} = order;
-        ApiClient.get('/alipay/sign', {order_id}).then(response => {
-            Alipay.pay(response.data.payStr).then((data) => {
-                this.fetchData();
-            }, (resean) => {
-                console.log(resean);
-            });
-        });
-    }
-
-    onNoticeSeller = (order) => {
-
-    }
-
-    onConfirmOrder = (order) => {
-
-    }
 }
 
 const css = {
@@ -424,11 +367,6 @@ const css = {
         fontSize: 12,
         color: '#333'
     },
-    orderBottom: {
-        padding: 10,
-        flexDirection: 'row',
-        alignContent: 'flex-end'
-    }
 };
 
 export default OrderList;
