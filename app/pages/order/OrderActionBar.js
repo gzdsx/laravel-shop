@@ -81,6 +81,8 @@ class OrderActionBar extends React.Component {
                     onPress={() => {
                         OrderProcessor.pay(order_id, 1).then(() => {
                             this.props.onPay(order);
+                        }).catch(reason => {
+                            console.log(reason);
                         });
                     }}
                 />
@@ -91,6 +93,8 @@ class OrderActionBar extends React.Component {
                         OrderProcessor.notice(order_id).then(() => {
                             this.refs.toast.show('已成功提醒卖家发货');
                             this.props.onNotice(order);
+                        }).catch(reason => {
+
                         });
                     }}
                 />
@@ -100,6 +104,8 @@ class OrderActionBar extends React.Component {
                     onPress={() => {
                         OrderProcessor.confirm(order_id).then(response => {
                             this.props.onConfirm(order)
+                        }).catch(reason => {
+                            console.log(reason);
                         });
                     }}
                 />
@@ -114,6 +120,8 @@ class OrderActionBar extends React.Component {
                     onPress={() => {
                         OrderProcessor.delete(order_id).then(() => {
                             this.props.onDelete(order);
+                        }).catch(reason => {
+
                         });
                     }}
                 />
@@ -126,6 +134,8 @@ class OrderActionBar extends React.Component {
                             const reason = this.state.reasons[index];
                             OrderProcessor.cancel(order_id, reason).then((response) => {
                                 this.props.onCancel(order);
+                            }).catch(reason1 => {
+
                             });
                         }
                     }}

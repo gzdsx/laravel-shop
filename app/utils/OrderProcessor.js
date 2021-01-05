@@ -72,9 +72,11 @@ export default {
                     Alipay.pay(response.data.payStr).then((data) => {
                         //console.log(data);
                         resolve(data);
-                    }, (errCode, errMsg, reason) => {
-                        console.log(errCode + ':' + errMsg);
+                    }, (code, domain, message) => {
+                        reject({code, message, domain});
                     });
+                }).catch(reason => {
+                    reject(reason);
                 });
             });
         }

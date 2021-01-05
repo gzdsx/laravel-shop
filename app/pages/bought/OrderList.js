@@ -220,8 +220,8 @@ class OrderList extends React.Component {
     }
 
     renderItem = (order, index) => {
-        let {order_id} = order;
-        let totalCount = order.items.reduce((a, b) => a + b.quantity, 0);
+        let {order_id, items} = order;
+        let totalCount = items.reduce((a, b) => a + b.quantity, 0);
         return (
             <View style={css.order}>
                 <View style={css.orderMeta}>
@@ -239,9 +239,6 @@ class OrderList extends React.Component {
                 <OrderActionBar
                     order={order}
                     onCancel={this.fetchData}
-                    onRefund={() => {
-                        this.props.navigation.navigate('RefundApply', {order_id});
-                    }}
                     onExpress={() => {
                         this.props.navigation.navigate('Logistics', {order_id});
                     }}
@@ -250,7 +247,7 @@ class OrderList extends React.Component {
                     }}
                     onConfirm={this.fetchData}
                     onRate={() => {
-                        this.props.navigation.navigate('OrderRate', {order_id});
+                        this.props.navigation.navigate('OrderRate', {order_id, items});
                     }}
                     onDelete={() => {
                         this.state.orders.splice(index, 1);

@@ -1,7 +1,7 @@
 import {Platform} from 'react-native';
 
 export const isAndroid = Platform.OS === 'android';
-export const AppVersion = 1.05;
+export const AppVersion = 1.06;
 export const BaseApi = 'https://shop.gzdsx.cn/api';
 export const BaseUri = 'https://shop.gzdsx.cn/h5';
 export const OauthApi = 'https://shop.gzdsx.cn/oauth';

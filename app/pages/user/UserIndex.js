@@ -181,7 +181,7 @@ class UserView extends React.Component {
                     <TouchableOpacity
                         activeOpacity={1}
                         style={styles.button}
-                        onPress={() => this.showOrderView('refunding')}
+                        onPress={() => this.showView('RefundList')}
                     >
                         <Ticon name={"refund"} size={30} color={Colors.primary}/>
                         <Text style={styles.buttonText}>退款/售后</Text>

@@ -32,8 +32,11 @@ import AddressList from "../pages/user/address/AddressList";
 import AddressEdit from "../pages/user/address/AddressEdit";
 //post
 import PostDetail from "../pages/post/PostDetail";
+//refund
+import RefundList from "../pages/refund/RefundList";
+import RefundRouter from "../pages/refund/RefundRouter";
 import RefundApply from "../pages/refund/RefundApply";
-import RefundForm from "../pages/refund/RefundForm";
+import RefundEdit from "../pages/refund/RefundEdit";
 import RefundDetail from "../pages/refund/RefundDetail";
 
 
@@ -74,7 +77,9 @@ export default [
     //post
     {name: 'PostDetail', component: PostDetail},
     //refund
+    {name: 'RefundList', component: RefundList},
+    {name: 'RefundRouter', component: RefundRouter},
     {name: 'RefundApply', component: RefundApply},
-    {name: 'RefundForm', component: RefundForm},
+    {name: 'RefundEdit', component: RefundEdit},
     {name: 'RefundDetail', component: RefundDetail},
 ];

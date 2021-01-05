@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, Image, ScrollView, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import Alipay from 'react-native-gzdsx-alipay';
 import {LoadingView, Spinner, Ticon} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Toast} from 'react-native-gzdsx-elements';
@@ -79,9 +78,6 @@ export default class OrderDetail extends React.Component {
                     onNotice={() => {
                     }}
                     onConfirm={this.fetchData}
-                    onRefund={() => {
-
-                    }}
                     onRate={() => {
 
                     }}
@@ -218,7 +214,8 @@ export default class OrderDetail extends React.Component {
      * @returns {*}
      */
     renderContent = () => {
-        const {items, order} = this.state;
+        const {order} = this.state;
+        const {order_id, items} = order;
         let itemContents = items.map((item, index) => {
             return (
                 <View key={index.toString()}>
@@ -248,9 +245,16 @@ export default class OrderDetail extends React.Component {
                         }}/>
                         <OrderActionButton
                             title={order.receive_state ? "申请售后" : "申请退款"}
-                            show={order.pay_state}
+                            show={order.pay_state && item.refund_id === 0}
                             onPress={() => {
-                                this.props.navigation.navigate('RefundApply', {item});
+                                this.props.navigation.navigate('RefundRouter', {order_id, items: [item]});
+                            }}
+                        />
+                        <OrderActionButton
+                            title={"退款中"}
+                            show={item.refund_state === 1}
+                            onPress={() => {
+                                this.props.navigation.navigate('RefundDetail', {refund_id: item.refund_id});
                             }}
                         />
                     </View>

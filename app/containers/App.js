@@ -42,10 +42,10 @@ class App extends React.Component {
     UNSAFE_componentWillMount(): void {
         this.checkUserStatus();
         Utils.setStatusBarStyle('light');
+        AppState.addEventListener('change', this.onAppStateChange);
     }
 
     componentDidMount() {
-        AppState.removeEventListener('change', this.onAppStateChange);
         const {authActions, locationActions} = this.props;
         DeviceEventEmitter.addListener(UserDidSigninedNotification, (userinfo) => {
             authActions.userDidSignIn(userinfo);
@@ -142,6 +142,7 @@ class App extends React.Component {
     checkVersion = () => {
         //检测新版本
         ApiClient.get('/getversion', {platform: Platform.OS}).then(response => {
+            //console.log(response.data);
             if (response.data.version > AppVersion) {
                 Alert.alert(null, 'APP已有新的版本,是否现在升级?', [
                     {text: '取消'},
