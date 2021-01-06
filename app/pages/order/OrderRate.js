@@ -84,7 +84,7 @@ export default class OrderRate extends React.Component {
                         </TableCell>
                         <TableCell touchAble={false} style={{borderBottomWidth: 0}}>
                             <TextField
-                                placeholder={"补充描述，有助于商家更好的处理售后问题"}
+                                placeholder={"对此次购物的评价"}
                                 multiline={true}
                                 inputStyle={{textAlignVertical: 'top', height: 50, fontSize: 14}}
                                 style={{borderBottomWidth: 0, backgroundColor: '#fefefe'}}
@@ -127,7 +127,7 @@ export default class OrderRate extends React.Component {
                                                     fontSize: 10,
                                                     color: '#aaa',
                                                     textAlign: 'center'
-                                                }}>上传凭证,最多3张</Text>
+                                                }}>晒图片,最多3张</Text>
                                         </ImageBackground>
                                     </TouchableOpacity>
                                     : null
@@ -236,7 +236,7 @@ export default class OrderRate extends React.Component {
             reviews[index].images = await this.uploadImages(rateImages[index]);
         }
 
-        ApiClient.post('/order/rate', {reviews, order_id}).then(response => {
+        ApiClient.post('/bought/rate', {reviews, order_id}).then(response => {
             this.refs.spinner.hide();
             this.props.navigation.goBack();
         });

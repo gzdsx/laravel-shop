@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, ImageBackground, KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {Spinner, TableCell, TableView, TextField, Toast} from "react-native-gzdsx-elements";
+import {LoadingView, Spinner, TableCell, TableView, TextField, Toast} from "react-native-gzdsx-elements";
 import {CacheImage} from "react-native-gzdsx-cache-image";
 import ActionSheet from "react-native-actionsheet";
 import ImagePicker from 'react-native-image-picker';
@@ -23,21 +23,51 @@ export default class RefundApply extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            refund_reason: null,
-            refund_amount: 0,
-            refund_desc: '',
-            receive_state: 0,
-            reasons: [],
-            images: [],
+            refund: {},
             order: {},
             items: [],
-            selectedImages: [],
+            images: [],
+            reasons: [],
+            loading: true
         };
     }
 
+    componentDidMount(): void {
+        this.setNavigationOptions();
+        let {items, order_id, refund_id} = this.props.route.params;
+        let data = {};
+        if (refund_id) {
+            data = {refund_id};
+        } else {
+            data = {
+                order_id,
+                suborders: items.map((item) => item.sub_order_id)
+            };
+        }
+        ApiClient.post('/refund/apply', data).then(response => {
+            //console.log(response.data);
+            let {refund} = response.data;
+            let {order, items, images} = refund;
+            this.totalAmount = refund.refund_amount;
+            this.setState({
+                refund,
+                order,
+                items,
+                images,
+                loading: false
+            });
+        });
+
+        ApiClient.get('/refundreason/getall').then(response => {
+            let reasons = response.data.items.map((item) => item.title);
+            this.setState({reasons});
+        });
+    }
 
     render(): React.ReactNode {
-        const {refund_amount, refund_reason, receive_state, reasons, selectedImages, shipping_fee} = this.state;
+        const {loading, refund, images, reasons} = this.state;
+        const {refund_amount, refund_reason, receive_state, shipping_fee} = refund;
+        if (loading) return <LoadingView/>;
         return (
             <KeyboardAvoidingView style={{flex: 1}} behavior={isAndroid ? "height" : "padding"}>
                 <ScrollView style={{flex: 1}}>
@@ -78,23 +108,25 @@ export default class RefundApply extends React.Component {
                                         style={{borderBottomWidth: 0, width: 80, paddingVertical: 0}}
                                         keyboardType={'numeric'}
                                         onChangeText={text => {
-                                            this.setState({refund_amount: text});
+                                            refund.refund_amount = text;
+                                            this.setState({refund});
                                         }}
                                         onBlur={(e) => {
                                             //console.log(e.nativeEvent);
-                                            let text = e.nativeEvent.text;
+                                            let value = e.nativeEvent.text;
                                             let reg = /^[0-9]+(.[0-9]{1,2})?$/; //非负浮点数
-                                            if (reg.test(text)) {
-                                                let value = parseFloat(text);
+                                            if (reg.test(value)) {
+                                                value = parseFloat(value);
                                                 if (value > this.totalAmount || value < 0.01) {
                                                     value = this.totalAmount;
                                                 } else {
                                                     value = value.toFixed(2);
                                                 }
-                                                this.setState({refund_amount: value});
                                             } else {
-                                                this.setState({refund_amount: this.totalAmount});
+                                                value = this.totalAmount;
                                             }
+                                            refund.refund_amount = value;
+                                            this.setState({refund});
                                         }}
                                         numberOfLines={1}
                                         multiline={false}
@@ -118,14 +150,15 @@ export default class RefundApply extends React.Component {
                                 inputStyle={{textAlignVertical: 'top', height: 50, fontSize: 14}}
                                 style={{borderBottomWidth: 0, backgroundColor: '#fefefe'}}
                                 onChangeText={text => {
-                                    this.setState({refund_desc: text});
+                                    refund.refund_desc = text;
+                                    this.setState({refund});
                                 }}
                             />
                         </TableCell>
                         <TableCell touchAble={false} style={{borderBottomWidth: 0}}>
                             {this.renderImages()}
                             {
-                                selectedImages.length < 3 ?
+                                images.length < 3 ?
                                     <TouchableOpacity
                                         activeOpacity={1}
                                         style={{width: 80, height: 80}}
@@ -169,22 +202,23 @@ export default class RefundApply extends React.Component {
                 </View>
                 <ActionSheet
                     ref={'as1'}
-                    options={['已收到货品', '未收到货品', '取消']}
+                    options={['已收到货', '未收到货', '取消']}
                     cancelButtonIndex={2}
                     onPress={(index) => {
                         if (index < 2) {
-                            this.setState({receive_state: index + 1});
+                            refund.receive_state = index + 1;
+                            this.setState({refund});
                         }
                     }}
                 />
                 <ActionSheet
                     ref={'as2'}
-                    options={reasons}
-                    cancelButtonIndex={reasons.length - 1}
+                    options={reasons.concat(['取消'])}
+                    cancelButtonIndex={reasons.length}
                     onPress={(index) => {
-                        if (index < (reasons.length - 1)) {
-                            const refund_reason = reasons[index];
-                            this.setState({refund_reason});
+                        if (index < reasons.length) {
+                            refund.refund_reason = reasons[index];
+                            this.setState({refund});
                         }
                     }}
                 />
@@ -192,29 +226,6 @@ export default class RefundApply extends React.Component {
                 <Spinner ref={'spinner'}/>
             </KeyboardAvoidingView>
         );
-    }
-
-    componentDidMount(): void {
-        this.setNavigationOptions();
-        let {items, order_id} = this.props.route.params;
-        ApiClient.post('/refund/apply', {
-            order_id,
-            suborders: items.map((item) => item.sub_order_id)
-        }).then(response => {
-            //console.log(response.data);
-            let {reasons, order, items, refund_amount, shipping_fee} = response.data;
-            reasons = reasons.map((reason) => reason.title);
-            reasons.push('取消');
-            this.totalAmount = refund_amount;
-            this.setState({
-                order,
-                items,
-                refund_amount,
-                shipping_fee,
-                reasons,
-                loading: false
-            });
-        });
     }
 
     renderItems = () => {
@@ -249,8 +260,8 @@ export default class RefundApply extends React.Component {
     }
 
     renderImages = () => {
-        let {selectedImages} = this.state;
-        let contents = selectedImages.map((item, index) => {
+        let {images} = this.state;
+        let contents = images.map((item, index) => {
             return (
                 <View key={index.toString()} style={{
                     width: 80,
@@ -260,7 +271,7 @@ export default class RefundApply extends React.Component {
                     marginRight: 15
                 }}>
                     <Image
-                        source={{uri: item.uri}}
+                        source={{uri: item.uri ? item.uri : item.thumb}}
                         style={{
                             width: 80,
                             height: 80,
@@ -274,8 +285,8 @@ export default class RefundApply extends React.Component {
                             right: -8
                         }}
                         onPress={() => {
-                            selectedImages.splice(index, 1);
-                            this.setState({selectedImages});
+                            images.splice(index, 1);
+                            this.setState({images});
                         }}
                     >
                         <Image source={require('../../images/icon/close_round.png')} style={{width: 20, height: 20}}/>
@@ -297,15 +308,16 @@ export default class RefundApply extends React.Component {
         }, res => {
             //console.log(res);
             if (res.uri) {
-                this.state.selectedImages.push(res);
-                this.setState({selectedImages: this.state.selectedImages});
+                this.state.images.push(res);
+                this.setState({images: this.state.images});
             }
         });
     }
 
     submit = async () => {
-        let {order_id} = this.props.route.params;
-        let {refund_reason, refund_amount, refund_desc, receive_state, shipping_fee, items} = this.state;
+        let {refund_type} = this.props.route.params;
+        let {refund, images, items} = this.state;
+        let {refund_id, order_id, refund_reason, refund_amount, receive_state, shipping_fee} = refund;
         if (!receive_state) {
             this.refs.toast.show('请选择货物状态');
             return false;
@@ -326,41 +338,54 @@ export default class RefundApply extends React.Component {
             return false;
         }
 
+        refund.refund_type = refund_type;
         this.refs.spinner.show('正在上传数据...');
         this.uploadImages().then(images => {
-            const {refund_type, items} = this.props.route.params;
-            ApiClient.post('/refund/create', {
-                order_id,
-                suborders: items.map((item) => item.sub_order_id),
-                refund: {
-                    refund_type,
-                    refund_reason,
-                    refund_amount,
-                    refund_desc,
-                    receive_state,
-                    shipping_fee
-                },
-                images
-            }).then(response => {
-                //console.log(response);
-                this.refs.spinner.hide();
-                const {refund} = response.data;
-                const {refund_id} = refund;
-                this.props.navigation.replace('RefundDetail', {refund_id});
-            }).catch(reason => {
-                this.refs.spinner.hide();
-            });
+            let data = {};
+            if (refund_id) {
+                data = {
+                    refund_id,
+                    refund,
+                    images
+                };
+                ApiClient.post('/refund/save', data).then(response => {
+                    //console.log(response);
+                    this.refs.spinner.hide();
+                    this.props.navigation.replace('RefundDetail', {refund_id});
+                }).catch(reason => {
+                    this.refs.spinner.hide();
+                });
+            } else {
+                data = {
+                    refund,
+                    order_id,
+                    images,
+                    suborders: items.map((item) => item.sub_order_id)
+                }
+                ApiClient.post('/refund/create', data).then(response => {
+                    //console.log(response);
+                    this.refs.spinner.hide();
+                    const {refund_id} = response.data.refund;
+                    this.props.navigation.replace('RefundDetail', {refund_id});
+                }).catch(reason => {
+                    this.refs.spinner.hide();
+                });
+            }
         });
     }
 
     uploadImages = async () => {
         let images = [];
-        for (let file of this.state.selectedImages) {
-            let response = await ApiClient.upload('/material/uploadimg', {
-                uri: file.uri,
-                name: file.fileName || file.uri.substring(file.uri.lastIndexOf('/'))
-            });
-            images.push(response.data.image);
+        for (let file of this.state.images) {
+            if (file.uri) {
+                let response = await ApiClient.upload('/material/uploadimg', {
+                    uri: file.uri,
+                    name: file.fileName || file.uri.substring(file.uri.lastIndexOf('/'))
+                });
+                images.push(response.data.image);
+            } else {
+                images.push(file);
+            }
         }
 
         return new Promise(resolve => {

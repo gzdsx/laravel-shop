@@ -24,6 +24,18 @@ export default class RefundDetail extends React.Component {
         };
     }
 
+    componentDidMount(): void {
+        this.setNavigationOptions();
+        const {refund_id} = this.props.route.params;
+        ApiClient.get('/refund/get', {refund_id}).then(response => {
+            //console.log(response.data);
+            const {refund} = response.data;
+            this.setState({
+                refund,
+                loading: false
+            })
+        });
+    }
 
     render(): React.ReactNode {
         const {refund, loading} = this.state;
@@ -57,6 +69,7 @@ export default class RefundDetail extends React.Component {
                     </TableView>
                     <TableView>
                         {this.renderMeta('订单号', order.order_no)}
+                        {this.renderMeta('服务类型', refund.refund_type_des)}
                         {this.renderMeta('退款单号', refund.refund_no)}
                         {this.renderMeta('申请时间', refund.created_at)}
                         {this.renderMeta('退款原因', refund.refund_reason)}
@@ -68,20 +81,6 @@ export default class RefundDetail extends React.Component {
                 {this.renderBottom()}
             </View>
         );
-    }
-
-    componentDidMount(): void {
-        this.setNavigationOptions();
-
-        const {refund_id} = this.props.route.params;
-        ApiClient.get('/refund/get', {refund_id}).then(response => {
-            //console.log(response.data);
-            const {refund} = response.data;
-            this.setState({
-                refund,
-                loading: false
-            })
-        });
     }
 
     renderItems = () => {
@@ -171,7 +170,7 @@ export default class RefundDetail extends React.Component {
                 activeOpacity={1}
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f00'}}
                 onPress={() => {
-                    this.props.navigation.navigate('RefundEdit', {refund_id});
+                    this.props.navigation.navigate('RefundApply', {refund_id});
                 }}
             >
                 <Text style={{fontSize: 14, color: '#fff'}}>修改协议</Text>
@@ -187,7 +186,7 @@ export default class RefundDetail extends React.Component {
                 activeOpacity={1}
                 style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f00'}}
                 onPress={() => {
-                    this.props.navigation.navigate('RefundEdit', {refund_id});
+                    this.props.navigation.navigate('RefundSend', {refund_id});
                 }}
             >
                 <Text style={{fontSize: 14, color: '#fff'}}>退货</Text>

@@ -36,7 +36,7 @@ import PostDetail from "../pages/post/PostDetail";
 import RefundList from "../pages/refund/RefundList";
 import RefundRouter from "../pages/refund/RefundRouter";
 import RefundApply from "../pages/refund/RefundApply";
-import RefundEdit from "../pages/refund/RefundEdit";
+import RefundSend from "../pages/refund/RefundSend";
 import RefundDetail from "../pages/refund/RefundDetail";
 
 
@@ -80,6 +80,6 @@ export default [
     {name: 'RefundList', component: RefundList},
     {name: 'RefundRouter', component: RefundRouter},
     {name: 'RefundApply', component: RefundApply},
-    {name: 'RefundEdit', component: RefundEdit},
+    {name: 'RefundSend', component: RefundSend},
     {name: 'RefundDetail', component: RefundDetail},
 ];

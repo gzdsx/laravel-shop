@@ -257,6 +257,13 @@ export default class OrderDetail extends React.Component {
                                 this.props.navigation.navigate('RefundDetail', {refund_id: item.refund_id});
                             }}
                         />
+                        <OrderActionButton
+                            title={"退款完成"}
+                            show={item.refund_state === 2}
+                            onPress={() => {
+                                this.props.navigation.navigate('RefundDetail', {refund_id: item.refund_id});
+                            }}
+                        />
                     </View>
                 </View>
             );
