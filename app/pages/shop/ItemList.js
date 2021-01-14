@@ -101,17 +101,14 @@ class ItemList extends React.Component {
         super(props);
         this.state = {
             items: [],
-            isLoading: true,
-            isRefreshing: false,
-            isLoadMore: false,
+            loading: true,
+            refreshing: false,
+            loadMore: false,
             sort: 'sold-desc'
         };
         this.offset = 0;
         this.loadMoreAble = false;
-        this.searchFileds = {
-            q: '',
-            catid: '',
-        }
+        this.searchFileds = {};
     }
 
     render() {
@@ -131,9 +128,9 @@ class ItemList extends React.Component {
                 </View>
                 <ItemListView
                     data={this.state.items}
-                    isLoading={this.state.isLoading}
-                    isRefreshing={this.state.isRefreshing}
-                    isLoadMore={this.state.isLoadMore}
+                    loading={this.state.loading}
+                    refreshing={this.state.refreshing}
+                    loadMore={this.state.loadMore}
                     onRefresh={this.onRefresh}
                     onEndReached={this.onEndReached}
                     onPressItem={(item) => {
@@ -146,23 +143,20 @@ class ItemList extends React.Component {
 
     componentDidMount() {
         this.setNavigationOptions();
-        this.searchFileds.q = this.props.route.params?.q || '';
-        this.searchFileds.catid = this.props.route.params?.catid || '';
+        this.searchFileds = {...this.props.route.params};
         this.fetchData();
     }
 
     fetchData = () => {
         let sort = this.state.sort;
-        let {q, catid} = this.searchFileds;
         ApiClient.get('/item/batchget', {
+            ...this.searchFileds,
             offset: this.offset,
             count: 20,
-            q,
-            catid,
             sort,
         }).then(response => {
             let items;
-            if (this.state.isLoadMore) {
+            if (this.state.loadMore) {
                 items = this.state.items.concat(response.data.items);
             } else {
                 items = response.data.items;
@@ -170,9 +164,9 @@ class ItemList extends React.Component {
             setTimeout(() => {
                 this.setState({
                     items,
-                    isLoading: false,
-                    isRefreshing: false,
-                    isLoadMore: false,
+                    loading: false,
+                    refreshing: false,
+                    loadMore: false,
                 });
                 this.loadMoreAble = response.data.items.length >= 20;
             }, 300);
@@ -180,12 +174,14 @@ class ItemList extends React.Component {
     };
 
     onRefresh = () => {
-        if (this.state.isLoading || this.state.isRefreshing || this.state.isLoadMore) {
+        if (this.state.loading || this.state.refreshing || this.state.loadMore) {
             return false;
         }
 
         this.setState({
-            isRefreshing: true
+            refreshing: true
+        }, () => {
+
         });
         setTimeout(() => {
             this.offset = 0;
@@ -194,12 +190,14 @@ class ItemList extends React.Component {
     };
 
     onEndReached = () => {
-        if (this.state.isLoading || this.state.isRefreshing || this.state.isLoadMore || !this.loadMoreAble) {
+        if (this.state.loading || this.state.refreshing || this.state.loadMore || !this.loadMoreAble) {
             return false;
         }
 
         this.setState({
-            isLoadMore: true
+            loadMore: true
+        }, () => {
+
         });
         setTimeout(() => {
             this.offset += 20;

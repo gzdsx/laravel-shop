@@ -19,6 +19,7 @@ import RecordVideo from "../pages/video/RecordVideo";
 import LiveIndex from "../pages/live/LiveIndex";
 import LivePlay from "../pages/live/LivePlay";
 //shop
+import ItemIndex from "../pages/shop/ItemIndex";
 import ItemList from "../pages/shop/ItemList";
 import ItemDetail from "../pages/shop/ItemDetail";
 import Category from "../pages/shop/Category";
@@ -38,6 +39,7 @@ import RefundRouter from "../pages/refund/RefundRouter";
 import RefundApply from "../pages/refund/RefundApply";
 import RefundSend from "../pages/refund/RefundSend";
 import RefundDetail from "../pages/refund/RefundDetail";
+
 
 
 export default [
@@ -62,6 +64,7 @@ export default [
     {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},
     {name: 'LivePlay', component: LivePlay, options: LivePlay.navigationOptions || {}},
     //shop
+    {name: 'ItemIndex', component: ItemIndex},
     {name: 'ItemList', component: ItemList},
     {name: 'ItemDetail', component: ItemDetail},
     {name: 'Category', component: Category},

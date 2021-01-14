@@ -64,7 +64,7 @@ class HomeIndex extends React.Component {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-                                navigation.navigate('Category');
+                                navigation.navigate('ItemIndex');
                             }}
                         >
                             <Ticon name={'more-light'} color={"#fff"}/>

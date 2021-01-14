@@ -2,7 +2,8 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Toast, TextField} from 'react-native-gzdsx-elements';
 import {Button} from "react-native-elements";
-import {ApiClient, Validate} from "../../../utils";
+import Validate from "gzdsx-validate";
+import {ApiClient} from "../../../utils";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {ButtonStyles} from "../../../styles/ButtonStyles";
 
@@ -50,7 +51,7 @@ export default class EditMobile extends React.Component {
             return false;
         }
 
-        if (!Validate.IsMobile(mobile)) {
+        if (!Validate.isMobile(mobile)) {
             this.refs.toast.show('手机号码输入错误');
             return false;
         }

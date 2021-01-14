@@ -1,49 +1,32 @@
 import React from "react";
-import {FlatList, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {FlatList, View, Text, TouchableOpacity, StyleSheet, FlatListProps} from 'react-native';
 import PropTypes from 'prop-types';
 import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 
-class ItemListView extends React.Component {
-
+class ItemListView extends React.Component<FlatListProps, void> {
     static propTypes = {
-        style: PropTypes.object,
         onPressItem: PropTypes.func,
-        data: PropTypes.array,
-        isLoading: PropTypes.bool,
-        isRefreshing: PropTypes.bool,
-        isLoadMore: PropTypes.bool,
-        onRefresh: PropTypes.func,
-        onEndReached: PropTypes.func
+        loading: PropTypes.bool,
+        loadMore: PropTypes.bool
     };
 
     static defaultProps = {
-        style: {},
         onPressItem: () => null,
-        data: [],
-        isLoading: false,
-        isRefreshing: false,
-        isLoadMore: false,
-        onRefresh: () => null,
-        onEndReached: () => null
+        loading: true,
+        loadMore: false
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        if (this.props.isLoading) return <LoadingView/>;
+        if (this.props.loading) return <LoadingView/>;
         return (
             <FlatList
-                data={this.props.data}
-                renderItem={({item}) => this.renderItem(item)}
+                {...this.props}
+                data={this.props.data || []}
+                renderItem={this.renderItem}
                 keyExtractor={(item) => item.itemid.toString()}
-                refreshing={this.props.isRefreshing}
-                onRefresh={this.props.onRefresh}
-                onEndReached={this.props.onEndReached}
                 onEndReachedThreshold={1}
-                ListFooterComponent={<LoadingView text="正在加载更多" show={this.props.isLoadMore}
+                ListFooterComponent={<LoadingView text="正在加载更多" show={this.props.loadMore}
                                                   style={{paddingTop: 10, paddingBottom: 10}}/>}
                 style={{
                     paddingTop: 5,
@@ -54,7 +37,7 @@ class ItemListView extends React.Component {
         );
     }
 
-    renderItem = (item) => {
+    renderItem = ({item, index}) => {
         return (
             <TouchableOpacity
                 activeOpacity={1}

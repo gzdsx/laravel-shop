@@ -255,18 +255,25 @@ export default class ConfirmOrder extends React.Component {
                         lineHeight: 49,
                     }}>￥{this.state.totalFee.toFixed(2)}</Text>
                 </View>
-                <TouchableOpacity activeOpacity={1} onPress={this.submit}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={this.submit}
+                    style={{paddingVertical: 5, paddingHorizontal: 10}}
+                >
                     <View style={{
-                        paddingHorizontal: 20,
-                        alignSelf: 'center',
+                        paddingLeft: 20,
+                        paddingRight: 20,
                         backgroundColor: '#FC461E',
-                        flex: 1
+                        flex: 1,
+                        borderRadius: 20,
+                        flexDirection:'row',
+                        justifyContent:'center',
+                        alignItems:'center'
                     }}>
                         <Text style={{
                             color: '#fff',
-                            fontSize: 18,
+                            fontSize: 16,
                             textAlign: 'center',
-                            lineHeight: 49
                         }}>提交订单</Text>
                     </View>
                 </TouchableOpacity>

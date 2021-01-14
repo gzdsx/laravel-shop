@@ -2,7 +2,8 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {TextField, Toast} from "react-native-gzdsx-elements";
-import {Validate, ApiClient} from "../../../utils";
+import Validate from "gzdsx-validate";
+import {ApiClient} from "../../../utils";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
 import {ButtonStyles} from "../../../styles/ButtonStyles";
 
@@ -58,7 +59,7 @@ export default class EditPass extends React.Component {
             return false;
         }
 
-        if (!Validate.IsPassword(oldpassword)) {
+        if (!Validate.isPassword(oldpassword)) {
             this.refs.toast.show('当前密码输入错误，至少6位');
             return false;
         }
@@ -68,7 +69,7 @@ export default class EditPass extends React.Component {
             return false;
         }
 
-        if (!Validate.IsPassword(newpassword)) {
+        if (!Validate.isPassword(newpassword)) {
             this.refs.toast.show('新密码输入错误，至少6位');
             return false;
         }

@@ -90,7 +90,7 @@ class Cart extends React.Component {
 
     componentDidMount() {
         this.setNavigationOptions();
-        DeviceEventEmitter.addListener(CartDidChangedNotification,this.fetchData);
+        DeviceEventEmitter.addListener(CartDidChangedNotification, this.fetchData);
         this.fetchData();
         ApiClient.get('/item/batchget', {
             offset: 0,
@@ -108,7 +108,7 @@ class Cart extends React.Component {
     };
 
     fetchData = () => {
-        if (this.props.auth.isSignined){
+        if (this.props.auth.isSignined) {
             ApiClient.get('/cart/getall').then(response => {
                 let cartItems = response.data.items;
                 this.setState({cartItems, isRefreshing: false, checkAll: false});
@@ -317,19 +317,27 @@ class Cart extends React.Component {
                 <TouchableOpacity
                     activeOpacity={1}
                     style={{
-                        width: 120,
-                        backgroundColor: '#F9521F'
+                        width: 140,
+                        paddingVertical: 5,
+                        paddingHorizontal: 10
                     }}
                     onPress={this.settlement}
                 >
-                    <Text style={{
+                    <View style={{
+                        backgroundColor: '#F9521F',
+                        borderRadius: 20,
                         flex: 1,
-                        lineHeight: 49,
-                        fontSize: 16,
-                        fontWeight: '500',
-                        color: '#fff',
-                        textAlign: 'center'
-                    }}>结算({this.state.totalNum})</Text>
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems:'center'
+                    }}>
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: '500',
+                            color: '#fff',
+                            textAlign: 'center'
+                        }}>结算({this.state.totalNum})</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
         );

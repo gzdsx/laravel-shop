@@ -2,8 +2,9 @@ import React from 'react';
 import {ScrollView, View, Text, DeviceEventEmitter, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Toast, TextField, TableCell, CheckBox, LoadingView} from 'react-native-gzdsx-elements';
+import Validate from "gzdsx-validate";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
-import {Validate, ApiClient, Utils} from '../../../utils';
+import {ApiClient, Utils} from '../../../utils';
 import {ButtonStyles} from "../../../styles/ButtonStyles";
 
 export default class AddressEdit extends React.Component {
@@ -177,7 +178,7 @@ export default class AddressEdit extends React.Component {
             return false;
         }
 
-        if (!Validate.IsChineseName(address.name)) {
+        if (!Validate.isChineseName(address.name)) {
             this.refs.toast.show('收货人姓名填写不正确');
             return false;
         }
@@ -187,7 +188,7 @@ export default class AddressEdit extends React.Component {
             return false;
         }
 
-        if (!Validate.IsMobile(address.tel)) {
+        if (!Validate.isMobile(address.tel)) {
             this.refs.toast.show('手机号码填写错误');
             return false;
         }
@@ -204,7 +205,7 @@ export default class AddressEdit extends React.Component {
 
         this.submiting = true;
         ApiClient.post('/address/save', {address, address_id}).then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             this.refs.toast.show('地址保存成功', {
                 onHide: () => {
                     this.props.navigation.goBack();

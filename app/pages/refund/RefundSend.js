@@ -68,8 +68,9 @@ export default class RefundSend extends React.Component {
                             <TableCell.Detail text={shipping.tel}/>
                         </TableCell>
                         <TableCell touchAble={false}>
-                            <TableCell.Title title={"收货地址"} titleStyle={{fontSize: 14}}/>
-                            <TableCell.Detail text={shipping.full_address}/>
+                            <TableCell.Title title={"收货地址"} style={{minWidth: 80}} titleStyle={{fontSize: 14}}/>
+                            <TableCell.Detail text={shipping.full_address} textStyle={{width: 280}}/>
+                            <View/>
                         </TableCell>
                     </TableView>
                     {this.renderShipping()}
@@ -116,13 +117,15 @@ export default class RefundSend extends React.Component {
                 </TableCell>
                 <TextField
                     defaultValue={shipping.express_no}
-                    inputStyle={{
-                        width: '100%',
-                        fontSize: 14,
-                        textAlign: 'right'
+                    containerStyle={{
+                        borderBottomWidth: 0,
+                        paddingHorizontal: 15,
                     }}
-                    inputContainerStyle={{height: 40, width: 300}}
-                    style={{borderBottomWidth: 0, width: 60, paddingHorizontal: 15}}
+                    inputStyle={{
+                        fontSize: 14,
+                        textAlign: 'right',
+                    }}
+                    inputContainerStyle={{height: 40, width: 100, flex: 0}}
                     keyboardType={'numeric'}
                     onChangeText={text => {
                         shipping.express_no = text;
@@ -131,6 +134,7 @@ export default class RefundSend extends React.Component {
                     numberOfLines={1}
                     label={"快递单号"}
                     labelStyle={{fontSize: 14}}
+                    labelContainerStyle={{flex:1}}
                     placeholder={"请填写快递单号"}
                 />
             </TableView>

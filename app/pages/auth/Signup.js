@@ -1,7 +1,8 @@
 import React from 'react';
 import {DeviceEventEmitter, View} from 'react-native';
 import {Toast, TextField} from 'react-native-gzdsx-elements';
-import {ApiClient, Validate} from "../../utils";
+import Validate from "gzdsx-validate";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Button} from "react-native-elements";
 import {ButtonStyles} from "../../styles/ButtonStyles";
@@ -80,7 +81,7 @@ export default class Signup extends React.Component {
             this.refs.toast.show('请输入用户名');
             return false;
         }
-        if (!Validate.IsUserName(username)) {
+        if (!Validate.isUserName(username)) {
             this.refs.toast.show('用户名输入错误');
             return false;
         }
@@ -89,7 +90,7 @@ export default class Signup extends React.Component {
             this.refs.toast.show('请输入手机号码');
             return false;
         }
-        if (!Validate.IsMobile(mobile)) {
+        if (!Validate.isMobile(mobile)) {
             this.refs.toast.show('手机号码输入错误');
             return false;
         }
@@ -98,13 +99,13 @@ export default class Signup extends React.Component {
             this.refs.toast.show('请输入登录密码');
             return false;
         }
-        if (!Validate.IsPassword(password)) {
+        if (!Validate.isPassword(password)) {
             this.refs.toast.show('密码输入错误');
             return false;
         }
 
         ApiClient.post('/register', data).then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             const {userinfo, access_token} = response.data;
             this.refs.toast.show('注册成功', {
                 onHide: () => {
