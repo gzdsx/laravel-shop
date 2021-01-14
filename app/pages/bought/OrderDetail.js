@@ -54,12 +54,13 @@ export default class OrderDetail extends React.Component {
             items: [],
             shipping: null,
             transaction: null,
-            isLoading: true
+            loading: true,
+            reasons: []
         };
     }
 
     render() {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) return <LoadingView/>;
         const {order} = this.state;
         const {order_id, order_state, shipping_state} = order;
         return (
@@ -72,6 +73,7 @@ export default class OrderDetail extends React.Component {
                 </ScrollView>
                 <OrderActionBar
                     order={order}
+                    reasons={this.state.reasons}
                     style={{backgroundColor: '#fff', height: 49}}
                     onCancel={this.fetchData}
                     onPay={this.fetchData}
@@ -105,6 +107,9 @@ export default class OrderDetail extends React.Component {
     componentDidMount() {
         this.setNavigationOptions();
         this.fetchData();
+        ApiClient.get('/order/closereason/getall').then(response => {
+            this.setState({reasons: response.data.items});
+        });
     }
 
     /**
@@ -121,7 +126,7 @@ export default class OrderDetail extends React.Component {
                 items,
                 shipping,
                 transaction,
-                isLoading: false
+                loading: false
             });
         });
     };

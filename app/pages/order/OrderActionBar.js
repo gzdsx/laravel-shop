@@ -3,7 +3,6 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import OrderProcessor from "../../utils/OrderProcessor";
 import ActionSheet from "react-native-actionsheet";
-import {ApiClient} from "../../utils";
 import {Toast} from "react-native-gzdsx-elements";
 
 const ActionButton = ({title, show = true, onPress = () => null}) => {
@@ -35,24 +34,9 @@ const ActionButton = ({title, show = true, onPress = () => null}) => {
 };
 
 class OrderActionBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            reasons: []
-        };
-    }
-
-    componentDidMount() {
-        ApiClient.get('/order/closereason/getall').then(response => {
-            let reasons = response.data.items;
-            reasons.push('取消');
-            this.setState({reasons});
-        });
-    }
 
     render(): React.ReactNode {
-        const {reasons} = this.state;
-        const {style, order, children} = this.props;
+        const {style, order, children, reasons} = this.props;
         const {order_id} = order;
         return (
             <View style={{
@@ -127,10 +111,10 @@ class OrderActionBar extends React.Component {
                 />
                 <ActionSheet
                     ref={'as'}
-                    options={reasons}
-                    cancelButtonIndex={reasons.length - 1}
+                    options={reasons.concat(['取消'])}
+                    cancelButtonIndex={reasons.length}
                     onPress={(index) => {
-                        if (index < (reasons.length - 1)) {
+                        if (index < (reasons.length)) {
                             const reason = this.state.reasons[index];
                             OrderProcessor.cancel(order_id, reason).then((response) => {
                                 this.props.onCancel(order);
@@ -149,6 +133,7 @@ class OrderActionBar extends React.Component {
 OrderActionBar.propTypes = {
     style: PropTypes.object,
     order: PropTypes.object,
+    reasons: PropTypes.array,
     onCancel: PropTypes.func,
     //onRefund: PropTypes.func,
     onExpress: PropTypes.func,
@@ -162,6 +147,7 @@ OrderActionBar.propTypes = {
 OrderActionBar.defaultProps = {
     style: {},
     order: {},
+    reasons: [],
     onCancel: () => null,
     //onRefund: () => null,
     onExpress: () => null,

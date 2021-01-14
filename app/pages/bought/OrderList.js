@@ -60,9 +60,7 @@ class OrderList extends React.Component {
         const tab = route.params?.tab || 'all'
         this.setState({tab}, this.fetchData);
         ApiClient.get('/order/closereason/getall').then(response => {
-            let reasons = response.data.items;
-            reasons.push('取消');
-            this.setState({reasons});
+            this.setState({reasons: response.data.items});
         });
     }
 
@@ -238,6 +236,7 @@ class OrderList extends React.Component {
                 </View>
                 <OrderActionBar
                     order={order}
+                    reasons={this.state.reasons}
                     onCancel={this.fetchData}
                     onExpress={() => {
                         this.props.navigation.navigate('Logistics', {order_id});
