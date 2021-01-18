@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ItemListView from "./ItemListView";
+import ProductListView from "./ProductListView";
 import {ApiClient} from "../../../utils";
 
-class ItemListComponent extends React.Component {
+class ProductListComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class ItemListComponent extends React.Component {
     }
 
     render(): React.ReactNode {
-        return <ItemListView
+        return <ProductListView
             data={this.state.items}
             loading={this.state.loading}
             loadMore={this.state.loadMore}
@@ -35,7 +35,7 @@ class ItemListComponent extends React.Component {
 
     fetchData = () => {
         let {catid} = this.props;
-        ApiClient.get('/item/batchget', {
+        ApiClient.get('/product/batchget', {
             offset: this.offset,
             count: 20,
             catid
@@ -85,9 +85,9 @@ class ItemListComponent extends React.Component {
     }
 }
 
-ItemListComponent.propTypes = {
+ProductListComponent.propTypes = {
     catid: PropTypes.number,
     onPressItem: PropTypes.func
 }
 
-export default ItemListComponent;
+export default ProductListComponent;

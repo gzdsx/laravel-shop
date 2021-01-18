@@ -2,13 +2,13 @@ const Menus = [
     {
         icon: require('../images/menus/xinpin.png'),
         title: '新品',
-        url: 'ItemList',
+        url: 'ProductList',
         params: {}
     },
     {
         icon: require('../images/menus/hot.png'),
         title: '热卖',
-        url: 'ItemList',
+        url: 'ProductList',
         params: {}
     },
     {

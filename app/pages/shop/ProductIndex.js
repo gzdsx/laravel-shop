@@ -2,9 +2,9 @@ import React from 'react';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {ApiClient} from "../../utils";
 import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-view";
-import ItemListComponent from "./components/ItemListComponent";
+import ProductListComponent from "./components/ProductListComponent";
 
-export default class ItemIndex extends React.Component {
+export default class ProductIndex extends React.Component {
 
     setNavigationOptions() {
         const {navigation, route} = this.props;
@@ -28,12 +28,12 @@ export default class ItemIndex extends React.Component {
         }
 
         const contents = this.state.categories.map((category) => {
-            return <ItemListComponent
+            return <ProductListComponent
                 catid={category.catid}
                 key={category.catid}
                 tabLabel={category.name}
                 onPressItem={(item) => {
-                    this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
+                    this.props.navigation.navigate('ProductDetail', {itemid: item.itemid});
                 }}
             />;
         });
@@ -69,7 +69,7 @@ export default class ItemIndex extends React.Component {
 
     componentDidMount(): void {
         this.setNavigationOptions();
-        ApiClient.get('/item/category/getall').then(response => {
+        ApiClient.get('/product/category/getall').then(response => {
             //console.log(response);
             this.setState({
                 categories: response.data.items

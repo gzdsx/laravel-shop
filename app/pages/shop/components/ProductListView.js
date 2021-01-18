@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {LoadingView} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 
-class ItemListView extends React.Component<FlatListProps, void> {
+class ProductListView extends React.Component<FlatListProps, void> {
     static propTypes = {
         onPressItem: PropTypes.func,
         loading: PropTypes.bool,
@@ -139,4 +139,4 @@ const css = StyleSheet.create({
     }
 });
 
-export default ItemListView;
+export default ProductListView;

@@ -14,7 +14,7 @@ import {Ticon, Toast, CheckBox} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
-import ItemGridView from "../shop/components/ItemGridView";
+import ProductGridView from "../shop/components/ProductGridView";
 import {Styles} from "../../styles";
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
@@ -74,11 +74,11 @@ class Cart extends React.Component {
                 >
                     {this.renderCartView()}
                     <Text style={{padding: 15, textAlign: 'center', fontSize: 16, color: '#666'}}>你可能喜欢</Text>
-                    <ItemGridView
+                    <ProductGridView
                         data={this.state.items}
                         isLoading={this.state.loadingItem}
                         onPressItem={(item) => {
-                            navigation.navigate('ItemDetail', {itemid: item.itemid});
+                            navigation.navigate('ProductDetail', {itemid: item.itemid});
                         }}
                     />
                 </ScrollView>
@@ -92,7 +92,7 @@ class Cart extends React.Component {
         this.setNavigationOptions();
         DeviceEventEmitter.addListener(CartDidChangedNotification, this.fetchData);
         this.fetchData();
-        ApiClient.get('/item/batchget', {
+        ApiClient.get('/product/batchget', {
             offset: 0,
             count: 20
         }).then(response => {
@@ -332,7 +332,7 @@ class Cart extends React.Component {
                         alignItems:'center'
                     }}>
                         <Text style={{
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: '500',
                             color: '#fff',
                             textAlign: 'center'

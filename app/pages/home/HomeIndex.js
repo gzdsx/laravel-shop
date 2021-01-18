@@ -11,7 +11,7 @@ import {ApiClient} from "../../utils";
 import Menus from '../../base/menus';
 import {BaseApi} from "../../base/constants";
 import {SearchBar} from "../../components";
-import ItemGridView from "../shop/components/ItemGridView";
+import ProductGridView from "../shop/components/ProductGridView";
 
 class HomeIndex extends React.Component {
 
@@ -44,7 +44,7 @@ class HomeIndex extends React.Component {
                             round={true}
                             lightTheme={true}
                             onSearch={(q) => {
-                                navigation.navigate('ItemList', {q});
+                                navigation.navigate('ProductList', {q});
                             }}
                         />
                     )}
@@ -64,7 +64,7 @@ class HomeIndex extends React.Component {
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => {
-                                navigation.navigate('ItemIndex');
+                                navigation.navigate('ProductIndex');
                             }}
                         >
                             <Ticon name={'more-light'} color={"#fff"}/>
@@ -94,10 +94,10 @@ class HomeIndex extends React.Component {
 
     render(): React.ReactNode {
         return (
-            <ItemGridView
+            <ProductGridView
                 data={this.state.items}
                 onPressItem={(item) => {
-                    this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
+                    this.props.navigation.navigate('ProductDetail', {itemid: item.itemid});
                 }}
                 ListHeaderComponent={this.renderHeaderView()}
                 loading={this.state.loading}
@@ -134,7 +134,7 @@ class HomeIndex extends React.Component {
         response = await ApiClient.get('/post/batchget', {catid: 2, count: 6});
         const posts = response.data.items;
 
-        response = await ApiClient.get('/item/batchget', {count: 20});
+        response = await ApiClient.get('/product/batchget', {count: 20});
         const items = response.data.items;
 
         this.setState({

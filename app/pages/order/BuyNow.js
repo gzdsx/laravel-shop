@@ -25,13 +25,13 @@ export default class BuyNow extends React.Component {
             pay_type: 1,
             remark: '',
             totalFee: 0,
-            isLoading: true
+            loading: true
         };
         this.submiting = false;
     }
 
     render() {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) return <LoadingView/>;
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
@@ -73,12 +73,12 @@ export default class BuyNow extends React.Component {
             if (response.data.address) {
                 this.setState({
                     address: response.data.address,
-                    isLoading: false
+                    loading: false
                 });
             } else {
                 this.setState({
                     address: null,
-                    isLoading: false
+                    loading: false
                 });
             }
         });
@@ -144,12 +144,12 @@ export default class BuyNow extends React.Component {
     };
 
     renderContent = () => {
-        const {item, sku, quantity} = this.props.route.params;
+        const {product, sku, quantity} = this.props.route.params;
         return (
             <TableView style={{marginTop: 10}}>
                 <TableCell>
                     <CacheImage
-                        source={{uri: item.thumb}}
+                        source={{uri: product.thumb}}
                         style={{
                             width: 80,
                             height: 80,
@@ -161,7 +161,7 @@ export default class BuyNow extends React.Component {
                         <Text style={{
                             fontSize: 14,
                             color: '#333',
-                        }} numberOfLines={2}>{item.title}</Text>
+                        }} numberOfLines={2}>{product.title}</Text>
                         {
                             sku.sku_id ?
                                 <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -185,7 +185,7 @@ export default class BuyNow extends React.Component {
                                 fontSize: 14,
                                 fontWeight: '500',
                                 flex: 1
-                            }}>￥{item.price}</Text>
+                            }}>￥{product.price}</Text>
                             <Text style={{
                                 fontSize: 14,
                                 color: '#333'
@@ -206,7 +206,7 @@ export default class BuyNow extends React.Component {
                 <TextField
                     label={"给卖家留言"}
                     placeholder={"选填,对本次交易的说明"}
-                    style={{paddingHorizontal: 15}}
+                    containerStyle={{paddingHorizontal: 15}}
                     onChangeText={(text) => this.setState({remark: text})}
                     labelContainerStyle={{width: 95}}
                     inputStyle={{fontSize: 14}}
@@ -254,7 +254,7 @@ export default class BuyNow extends React.Component {
                     }}>
                         <Text style={{
                             color: '#fff',
-                            fontSize: 16,
+                            fontSize: 14,
                             textAlign: 'center',
                         }}>提交订单</Text>
                     </View>
@@ -264,7 +264,7 @@ export default class BuyNow extends React.Component {
     };
 
     submit = () => {
-        const {item, sku, quantity} = this.props.route.params;
+        const {product, sku, quantity} = this.props.route.params;
         const {shipping_type, pay_type, remark, address} = this.state;
 
         if (!address) {
@@ -279,15 +279,15 @@ export default class BuyNow extends React.Component {
         }
 
         ApiClient.post('/order/create', {
-            itemid: item.itemid,
+            itemid: product.itemid,
             sku_id: sku.sku_id || 0,
             shipping_type,
             pay_type,
             remark,
             quantity,
-            address_id: address.address_id
+            address
         }).then(response => {
-            const order_id = response.data.order.order_id;
+            const {order_id} = response.data.order;
             this.props.navigation.replace('OrderDetail', {order_id});
         }).catch((err) => {
             this.submiting = false;

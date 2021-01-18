@@ -225,7 +225,7 @@ export default class ConfirmOrder extends React.Component {
                 <TextField
                     label={"给卖家留言"}
                     placeholder={"选填,对本次交易的说明"}
-                    style={{paddingHorizontal: 15}}
+                    containerStyle={{paddingHorizontal: 15}}
                     onChangeText={(text) => this.setState({remark: text})}
                     labelContainerStyle={{width: 95}}
                     inputStyle={{fontSize: 14}}
@@ -272,7 +272,7 @@ export default class ConfirmOrder extends React.Component {
                     }}>
                         <Text style={{
                             color: '#fff',
-                            fontSize: 16,
+                            fontSize: 14,
                             textAlign: 'center',
                         }}>提交订单</Text>
                     </View>
@@ -289,12 +289,12 @@ export default class ConfirmOrder extends React.Component {
         }
 
         const items = this.props.route.params.items.map((item) => item.itemid);
-        const address_id = this.state.address.address_id;
+        const address = this.state.address;
         const {pay_type, shipping_type, remark} = this.state;
 
         ApiClient.post('/order/settlement', {
             items,
-            address_id,
+            address,
             remark,
             pay_type,
             shipping_type

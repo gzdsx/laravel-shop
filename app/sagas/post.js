@@ -1,11 +1,10 @@
 import {put, call, fork, take} from 'redux-saga/effects';
-import {receivePostList} from '../actions/PostActions';
-import * as types from '../base/actionTypes';
+import * as types from '../actions/types';
 import ApiClient from "../utils/ApiClient";
 
 export function* requestPostList(catid, offset = 0, count = 20) {
     try {
-        const response = yield call(ApiClient.get, '/post/getitemlist', {
+        const response = yield call(ApiClient.get, '/post/batchget', {
             catid,
             offset,
             count,

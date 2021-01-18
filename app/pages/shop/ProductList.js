@@ -8,7 +8,7 @@ import {
 import {Ticon} from "react-native-gzdsx-elements";
 import {Header} from "react-native-elements";
 import {Utils, ApiClient} from "../../utils";
-import ItemListView from "./components/ItemListView";
+import ProductListView from "./components/ProductListView";
 import {Colors, Size} from "../../styles";
 import {SearchBar} from "../../components";
 
@@ -24,7 +24,7 @@ const TabItem = ({text, active = false, onPress = () => null}) => {
     );
 };
 
-class ItemList extends React.Component {
+class ProductList extends React.Component {
 
     setNavigationOptions() {
         const {navigation, route} = this.props;
@@ -126,7 +126,7 @@ class ItemList extends React.Component {
                         this.setState({sort: 'rate-desc', isRefreshing: true}, this.fetchData);
                     }}/>
                 </View>
-                <ItemListView
+                <ProductListView
                     data={this.state.items}
                     loading={this.state.loading}
                     refreshing={this.state.refreshing}
@@ -134,7 +134,7 @@ class ItemList extends React.Component {
                     onRefresh={this.onRefresh}
                     onEndReached={this.onEndReached}
                     onPressItem={(item) => {
-                        this.props.navigation.navigate('ItemDetail', {itemid: item.itemid});
+                        this.props.navigation.navigate('ProductDetail', {itemid: item.itemid});
                     }}
                 />
             </View>
@@ -149,7 +149,7 @@ class ItemList extends React.Component {
 
     fetchData = () => {
         let sort = this.state.sort;
-        ApiClient.get('/item/batchget', {
+        ApiClient.get('/product/batchget', {
             ...this.searchFileds,
             offset: this.offset,
             count: 20,
@@ -228,4 +228,4 @@ const css = StyleSheet.create({
     }
 });
 
-export default ItemList;
+export default ProductList;

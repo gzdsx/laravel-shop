@@ -56,7 +56,7 @@ export default class Category extends React.Component {
                             round={true}
                             lightTheme={true}
                             onSearch={(q) => {
-                                navigation.navigate('ItemList', {q});
+                                navigation.navigate('ProductList', {q});
                             }}
                         />
                     )}
@@ -93,6 +93,19 @@ export default class Category extends React.Component {
         this.scrollView = null;
     }
 
+    componentDidMount() {
+        this.setNavigationOptions();
+        ApiClient.get('/product/category/getall').then(response => {
+            //console.log(response.data);
+            const items = response.data.items;
+            const category = items[0] || [];
+            this.setState({
+                items,
+                category,
+                isLoading: false
+            });
+        });
+    }
 
     render() {
         if (this.state.isLoading) return <LoadingView/>;
@@ -126,20 +139,6 @@ export default class Category extends React.Component {
                 </ScrollView>
             </View>
         );
-    }
-
-    componentDidMount() {
-        this.setNavigationOptions();
-        ApiClient.get('/item/category/getall').then(response => {
-            //console.log(response.data);
-            const items = response.data.items;
-            const category = items[0] || [];
-            this.setState({
-                items,
-                category,
-                isLoading: false
-            });
-        });
     }
 
     renderListItem = (category, index) => {
@@ -204,7 +203,7 @@ export default class Category extends React.Component {
                         paddingBottom: 10
                     }}
                     onPress={() => {
-                        this.props.navigation.navigate('ItemList', {catid: category.catid, title: category.name});
+                        this.props.navigation.navigate('ProductList', {catid: category.catid, title: category.name});
                     }}
                 >
                     <CacheImage

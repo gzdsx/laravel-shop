@@ -20,7 +20,7 @@ const getContent = (content) => {
         `<body>${content || ''}</body></html>`;
 };
 
-class ItemDetail extends React.Component {
+class ProductDetail extends React.Component {
     setNavigationOptions() {
         const {navigation, route} = this.props;
         navigation.setOptions({
@@ -59,11 +59,11 @@ class ItemDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: {},
+            product: {},
             content: {},
             images: [],
             props: [],
-            isLoading: true,
+            loading: true,
             showFooter: false,
             showModal: false,
             showShare: false,
@@ -74,11 +74,11 @@ class ItemDetail extends React.Component {
     }
 
     render() {
-        if (this.state.isOffSale) return this.renderOffSale();
         const {auth} = this.props;
-        const {item} = this.state;
-        if (this.state.isLoading) return <LoadingView/>;
-        let html = item.content.content || `<img src="${item.image}" style="width: 100%;"/>`;
+        const {product, content} = this.state;
+        if (this.state.loading) return <LoadingView/>;
+        if (this.state.isOffSale) return this.renderOffSale();
+        let html = content.content || `<img src="${product.image}" style="width: 100%;"/>`;
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
@@ -125,8 +125,8 @@ class ItemDetail extends React.Component {
                     }}
                     onAddCollection={() => {
                         if (auth.isSignined) {
-                            const itemid = item.itemid;
-                            ApiClient.post('/item/collect/create', {itemid}).then(() => {
+                            const itemid = product.itemid;
+                            ApiClient.post('/product/collect/create', {itemid}).then(() => {
                                 this.refs.toast.show('已成功加入收藏夹');
                             });
                         } else {
@@ -139,21 +139,20 @@ class ItemDetail extends React.Component {
                 />
                 <SkuPannel
                     show={this.state.showModal}
-                    data={item}
+                    data={product}
                     onSubmit={(sku, quantity) => {
                         const _this = this;
-                        const {item} = this.state;
                         if (this.actionType === 1) {
                             this.setState({showModal: false});
                             let sku_id = sku.sku_id || 0;
-                            AddToCart(item.itemid, quantity, sku_id, (data) => {
+                            AddToCart(product.itemid, quantity, sku_id, (data) => {
                                 DeviceEventEmitter.emit(CartDidChangedNotification);
                                 _this.refs.toast.show('已成功加入购物车');
                             });
                         } else {
                             this.setState({showModal: false});
                             this.props.navigation.navigate('BuyNow', {
-                                item,
+                                product,
                                 sku,
                                 quantity
                             });
@@ -169,23 +168,23 @@ class ItemDetail extends React.Component {
     componentDidMount() {
         this.setNavigationOptions();
         const {navigation, route} = this.props;
-        ApiClient.get('/item/get', {itemid: route.params?.itemid}).then(response => {
+        ApiClient.get('/product/get', {itemid: route.params?.itemid}).then(response => {
             //console.log(response.data);
-            const {item} = response.data;
-            const {content, images, props} = item;
+            const {product} = response.data;
+            const {content, images, props} = product;
             this.setState({
-                item,
+                product,
                 content,
                 images,
                 props,
-                isLoading: false,
+                loading: false,
                 showFooter: true,
                 shareMessage: {
                     type: 'news',
-                    title: item.title,
-                    description: item.message,
-                    thumbImage: item.thumb,
-                    webpageUrl: item.url
+                    title: product.title,
+                    description: product.title,
+                    thumbImage: product.thumb,
+                    webpageUrl: product.url
                 }
             });
         }).catch(reason => {
@@ -206,7 +205,7 @@ class ItemDetail extends React.Component {
     };
 
     renderItemData = () => {
-        const {item, shop} = this.state;
+        const {product} = this.state;
         return (
             <View style={{
                 backgroundColor: '#fff',
@@ -219,7 +218,7 @@ class ItemDetail extends React.Component {
                         color: '#000',
                         lineHeight: 20,
                         fontWeight: '600',
-                    }}>{item.title}</Text>
+                    }}>{product.title}</Text>
                 </View>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={{color: '#f40', fontSize: 14, paddingTop: 4}}>￥</Text>
@@ -228,12 +227,12 @@ class ItemDetail extends React.Component {
                         fontWeight: 'bold',
                         color: '#f40',
                         marginRight: 20
-                    }}>{item.price}</Text>
+                    }}>{product.price}</Text>
                     <Text style={{
                         fontSize: 14,
                         color: '#777',
                         paddingTop: 4
-                    }}>原价:{item.original_price}</Text>
+                    }}>原价:{product.original_price}</Text>
                 </View>
                 <View style={{
                     flexDirection: 'row',
@@ -243,13 +242,13 @@ class ItemDetail extends React.Component {
                         flex: 1,
                         fontSize: 12,
                         color: '#777'
-                    }}>配送费:{item.shipping_fee > 0 ? item.shipping_fee : '免费'}</Text>
+                    }}>配送费:{product.shipping_fee > 0 ? product.shipping_fee : '免费'}</Text>
                     <View style={{flex: 1}}/>
                     <Text style={{
                         fontSize: 12,
                         color: '#777',
                         textAlign: 'right'
-                    }}>已售{item.sold}件</Text>
+                    }}>已售{product.sold}件</Text>
                 </View>
             </View>
         );
@@ -418,4 +417,4 @@ const mapStateToProps = (store) => {
     return {auth: store.auth};
 };
 
-export default connect(mapStateToProps)(ItemDetail);
+export default connect(mapStateToProps)(ProductDetail);

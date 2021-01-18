@@ -244,7 +244,7 @@ export default class OrderDetail extends React.Component {
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', padding: 10, justifyContent: 'flex-end'}}>
                         <OrderActionButton title={"加入购物车"} onPress={() => {
-                            AddToCart(item.itemid, 1, item.quantity, () => {
+                            AddToCart(item.itemid, 1, item.sku_id, () => {
                                 this.refs.toast.show('已成功加入购物车');
                             });
                         }}/>
@@ -321,7 +321,7 @@ export default class OrderDetail extends React.Component {
                     padding: 3
                 }}>创建时间: {order.created_at}</Text>
                 {transaction ?
-                    <Text style={{fontSize: 12, color: '#777', padding: 3}}>交易流水: {transaction.transaction_no}</Text>
+                    <Text style={{fontSize: 12, color: '#777', padding: 3}}>交易流水: {transaction.out_trade_no}</Text>
                     :
                     null
                 }

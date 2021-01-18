@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
-import OrderProcessor from "../../utils/OrderProcessor";
 import ActionSheet from "react-native-actionsheet";
 import {Toast} from "react-native-gzdsx-elements";
+import OrderProcessor from "../../utils/OrderProcessor";
 
 const ActionButton = ({title, show = true, onPress = () => null}) => {
     return (
@@ -115,7 +115,7 @@ class OrderActionBar extends React.Component {
                     cancelButtonIndex={reasons.length}
                     onPress={(index) => {
                         if (index < (reasons.length)) {
-                            const reason = this.state.reasons[index];
+                            const reason = reasons[index];
                             OrderProcessor.cancel(order_id, reason).then((response) => {
                                 this.props.onCancel(order);
                             }).catch(reason1 => {

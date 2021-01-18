@@ -10,7 +10,7 @@ import {LoadingView, Toast} from "react-native-gzdsx-elements";
 import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {ApiClient, Utils} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import OrderActionBar from "../order/OrderActionBar";
+import OrderActionBar from "./OrderActionBar";
 
 class OrderList extends React.Component {
 

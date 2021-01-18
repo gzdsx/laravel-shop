@@ -5,7 +5,7 @@ import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {LoadingView} from "react-native-gzdsx-elements";
 import {Size} from "../../../styles";
 
-export default class ItemGridView extends React.Component<FlatListProps, any> {
+export default class ProductGridView extends React.Component<FlatListProps, any> {
 
     static propTypes = {
         loading: PropTypes.bool,

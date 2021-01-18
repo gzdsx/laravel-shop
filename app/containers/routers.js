@@ -19,16 +19,16 @@ import RecordVideo from "../pages/video/RecordVideo";
 import LiveIndex from "../pages/live/LiveIndex";
 import LivePlay from "../pages/live/LivePlay";
 //shop
-import ItemIndex from "../pages/shop/ItemIndex";
-import ItemList from "../pages/shop/ItemList";
-import ItemDetail from "../pages/shop/ItemDetail";
+import ProductIndex from "../pages/shop/ProductIndex";
+import ProductList from "../pages/shop/ProductList";
+import ProductDetail from "../pages/shop/ProductDetail";
 import Category from "../pages/shop/Category";
 import BuyNow from "../pages/order/BuyNow";
 import ConfirmOrder from "../pages/order/ConfirmOrder";
 import Logistics from "../pages/order/Logistics";
 import OrderRate from "../pages/order/OrderRate";
-import OrderList from "../pages/bought/OrderList";
-import OrderDetail from "../pages/bought/OrderDetail";
+import OrderList from "../pages/order/OrderList";
+import OrderDetail from "../pages/order/OrderDetail";
 import AddressList from "../pages/user/address/AddressList";
 import AddressEdit from "../pages/user/address/AddressEdit";
 //post
@@ -64,9 +64,9 @@ export default [
     {name: 'LiveIndex', component: LiveIndex, options: LiveIndex.navigationOptions || {}},
     {name: 'LivePlay', component: LivePlay, options: LivePlay.navigationOptions || {}},
     //shop
-    {name: 'ItemIndex', component: ItemIndex},
-    {name: 'ItemList', component: ItemList},
-    {name: 'ItemDetail', component: ItemDetail},
+    {name: 'ProductIndex', component: ProductIndex},
+    {name: 'ProductList', component: ProductList},
+    {name: 'ProductDetail', component: ProductDetail},
     {name: 'Category', component: Category},
     //order
     {name: 'BuyNow', component: BuyNow},
