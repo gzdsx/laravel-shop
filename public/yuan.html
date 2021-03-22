@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .box {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-color: #cccccc;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .dian {
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #000;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .line {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            border: 2px #999580 dashed;
+            border-radius: 200px;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        .zhen {
+            position: absolute;
+            height: 6px;
+            width: 200px;
+            top: 250px;
+            left: 250px;
+            background-color: #000;
+            z-index: 5;
+            transform-origin: 0 0;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="line"></div>
+    <div class="dian" id="dian"></div>
+    <div class="zhen" id="zhen"></div>
+</div>
+<script>
+    var dian = document.getElementById('dian');
+    var zhen = document.getElementById('zhen');
+    var a = 250;
+    var b = 250;
+    var r = 200;
+
+    function setPosition() {
+        var sec = new Date().getSeconds();
+        var angle = (Math.PI / 30) * sec;
+        var x = a + r * Math.cos(-angle);
+        var y = b + r * Math.sin(-angle);
+        dian.style.top = x + 'px';
+        dian.style.left = y + 'px';
+        zhen.style.transform = 'rotate(' + sec * 6 + 'deg)';
+    }
+
+    setInterval(setPosition, 1000);
+</script>
+</body>
+</html>

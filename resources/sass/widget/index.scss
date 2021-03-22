@@ -1,0 +1,53 @@
+@import "../base";
+.main-frame{
+    overflow: hidden;
+    .frame-header{
+        padding-bottom: 9px;
+        font-size: 14px;
+        border-bottom: 1px #e8e8e8 solid;
+        position: relative;
+    }
+    .content{
+        display: block;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .image-list{
+        display: block;
+        height: 410px;
+        overflow: auto;
+        padding: 10px 0;
+        margin-right: -25px;
+        position: relative;
+
+        ul{
+            display: block;
+            list-style: none;
+
+            li{
+                width: 20%;
+                float: left;
+                margin-bottom: 10px;
+                cursor: pointer;
+                list-style: none;
+
+                .con{
+                    display: block;
+                    margin-right: 10px;
+                }
+
+                .img{
+                    padding-top: 100%;
+                    display: block;
+                    position: relative;
+                }
+            }
+        }
+    }
+
+    .pagination{
+        text-align: center;
+        padding-top: 15px;
+    }
+}

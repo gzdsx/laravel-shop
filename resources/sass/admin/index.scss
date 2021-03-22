@@ -1,0 +1,314 @@
+@import "../base";
+
+html, body {
+    background-color: #EBEBEF;
+}
+
+.iconfont {
+    vertical-align: -1px;
+    margin-right: 2px;
+}
+
+.admin-wrapper {
+    display: flex;
+}
+
+/*===侧边栏===*/
+.sidebar {
+    width: 210px;
+    position: relative;
+
+    a {
+        &,
+        &:link,
+        &:active,
+        &:visited {
+            color: #fff;
+        }
+    }
+
+    &-fixed {
+        display: block;
+        position: fixed;
+        background: #383737;
+        color: #efefef;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 210px;
+        overflow: hidden;
+    }
+
+    &-scroll {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -20px;
+        bottom: 0;
+        overflow: auto;
+    }
+
+    &-profile {
+        padding: 20px 15px;
+        border-bottom: 1px #4D4D4D solid;
+        cursor: pointer;
+
+        .logo {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .sitename {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .el-dropdown-link {
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .v-common-nav {
+        display: block;
+        padding: 20px 10px;
+
+        &-model {
+            display: block;
+            margin-bottom: 10px;
+
+            &-link {
+                display: flex;
+                font-size: 16px;
+                color: #efefef;
+
+                a {
+                    &,
+                    &:active,
+                    &:visited {
+                        color: #dddddd;
+                        display: block;
+                        flex: 1;
+                    }
+                }
+
+                .iconfont {
+                    font-size: 18px;
+                    vertical-align: 0;
+                    margin-right: 1px;
+                }
+            }
+
+
+            .v-common-nav-link-wrapper {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 10px 0 0 20px;
+
+                .v-common-nav-link {
+                    display: block;
+                    font-size: 14px;
+                    line-height: 26px;
+                    font-weight: 300;
+                    width: 80px;
+
+                    a {
+                        padding: 2px 5px;
+                        border-radius: 2px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .router-link-exact-active {
+                        background-color: #00aaee;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.mainframe {
+    display: block;
+    overflow: auto;
+    flex: 1;
+
+    &-container {
+        padding: 0;
+        height: 100%;
+        display: block;
+        position: relative;
+        padding-bottom: 60px;
+    }
+
+    &-content {
+        display: block;
+        padding: 20px;
+        position: relative;
+    }
+
+    .page-header {
+        height: 48px;
+        font-size: 14px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        border-bottom: 1px #EFEFF4 solid;
+
+        .page-title {
+            font-size: 16px;
+        }
+    }
+
+    .content-block {
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        transition: .2s;
+        background-color: #fff;
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+
+    .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+
+        .el-form-item {
+            margin: 0 10px 0 0;
+            padding: 0;
+
+            &__content {
+                line-height: 1;
+            }
+        }
+    }
+
+    .table-edit-header {
+        position: relative;
+        display: block;
+        margin-bottom: 10px;
+
+        .buttons-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+        }
+
+        .button-item {
+            margin-left: 5px;
+        }
+
+        .table-edit-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+
+    .table-edit-footer {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    .edit-title {
+        background-color: #F7F7F7;
+        padding: 0 15px;
+        display: flex;
+        height: 30px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        line-height: 30px;
+
+        span {
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+
+    .edit-bottom {
+        background-color: #F2F2F2;
+        position: fixed;
+        left: 210px;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.el-button--primary {
+    a {
+        &,
+        &:link,
+        &:active,
+        &:visited {
+            color: #fff;
+        }
+    }
+}
+
+.sortable-ghost {
+    border: 1px #409EFF dashed;
+}
+
+.sortable-chosen {
+    border: 1px #409EFF dashed;
+}
+
+.sort-icon {
+    color: #409EFF;
+    font-size: 16px;
+    font-weight: bolder;
+    margin: 2px 0;
+    cursor: pointer;
+}
+
+.w-e-text {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow-x: hidden;
+
+    * {
+        max-width: 100% !important;
+    }
+
+    p{
+        text-indent: 2em;
+    }
+}
+
+.we-toolbar {
+    background-color: #FFF;
+    border: 1px solid #c9d8db;
+    border-bottom: 1px solid #EEE;
+}
+
+.we-text-container {
+    border: 1px solid #c9d8db;
+    border-top: none;
+    height: 400px;
+}
+
+@import "dashboard";
+@import "order";
+@import "../lib/sku";
+@import "../user/refund";

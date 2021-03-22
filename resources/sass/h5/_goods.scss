@@ -1,0 +1,158 @@
+.goods-info {
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+
+    .title {
+        font-size: 16px;
+        color: #222;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        color: #666;
+        margin-top: 10px;
+        display: block;
+    }
+
+    .price{
+        font-size: 18px;
+        font-weight: 600;
+        color: #f40;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .sold{
+        font-size: 12px;
+        color: #666;
+        padding-top: 10px;
+        line-height: 1;
+    }
+}
+
+.goods-desc {
+    background-color: #fff;
+    display: block;
+    margin-top: 10px;
+
+    .title {
+        font-size: 16px;
+        color: #222;
+        font-weight: 500;
+        line-height: 1;
+        padding: 10px;
+    }
+
+    .content {
+        display: block;
+        overflow: hidden;
+
+        img {
+            max-width: 100% !important;
+            height: auto;
+        }
+
+        * {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+.goods-action-bar {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 49px;
+    display: flex;
+    background-color: #fff;
+
+    .goods-action-button {
+        flex: 1;
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        line-height: 49px;
+    }
+
+    .goods-action-button-small {
+        padding: 3px 10px;
+        text-align: center;
+        color: #666;
+
+        .iconfont {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .text {
+            font-size: 11px;
+        }
+    }
+
+    .goods-action-button-cart {
+        background-color: #FF976A;
+    }
+
+    .goods-action-button-buy {
+        background-color: #FF423D;
+    }
+}
+
+.goods-list-view {
+    display: block;
+    background-color: #fff;
+
+    .goods-list-item {
+        display: block;
+        padding: 12px;
+        position: relative;
+
+        &::after {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-bottom: 1px #ebedf0 solid;
+            z-index: 5;
+            transform: scaleY(0.5);
+            transform-origin: 0 0;
+            content: " ";
+        }
+
+        .goods-image {
+            width: 120px;
+            height: 90px;
+            margin-right: 15px;
+            border-radius: 2px;
+        }
+
+        .goods-data {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            .title {
+                font-size: 14px;
+                line-height: 1.4;
+            }
+
+            .price {
+                font-size: 16px;
+                font-weight: 600;
+                color: #f40;
+            }
+
+            .sold {
+                font-size: 12px;
+                color: #666;
+                padding-top: 6px;
+            }
+        }
+    }
+}

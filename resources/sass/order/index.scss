@@ -1,0 +1,369 @@
+@import "../base";
+@import "../common/top";
+@import "../common/footer";
+
+.area {
+    width: 996px;
+    display: block;
+    margin: 0 auto;
+    clear: both;
+}
+
+.header {
+    display: block;
+
+    .top {
+        background-color: #F7F7F7;
+        height: 35px;
+        line-height: 35px;
+        padding: 0 10px;
+        border-bottom: 1px #CCC solid;
+        font-size: 12px;
+    }
+
+    .banner {
+        display: block;
+        padding: 20px 0;
+    }
+
+    .global-logo {
+        height: 60px;
+        float: left;
+        width: 240px;
+
+        img {
+            height: 60px;
+            width: auto;
+            display: block;
+        }
+    }
+}
+
+.order-stepbar {
+    background-color: #CCC;
+    border-radius: 3px;
+    height: 26px;
+    line-height: 26px;
+    float: right;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+
+    li {
+        float: left;
+        width: 150px;
+        border-left: 2px #FFF solid;
+        margin-left: -2px;
+        font-size: 13px;
+
+        span {
+            display: block;
+            padding: 0 20px;
+        }
+    }
+
+    li.active {
+        background-color: #FF0000;
+        color: #fff;
+    }
+}
+
+.order-address {
+    display: block;
+
+    .confirm-address {
+        display: block;
+        border-bottom: 2px #F1F1F1 solid;
+        padding: 5px 0;
+
+        .manage-address {
+            float: right;
+            font-size: 12px;
+            font-weight: normal;
+        }
+    }
+
+    .address-list {
+        display: block;
+        padding: 15px 0;
+
+        li {
+            height: 25px;
+            line-height: 25px;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        li:hover {
+            background-color: #F1F1F1;
+
+            .edit-address {
+                display: block;
+            }
+        }
+
+        .edit-address {
+            float: right;
+            color: #00aaee;
+            display: none;
+        }
+    }
+}
+
+.order-table {
+    width: 100%;
+    border-spacing: 0;
+    clear: both;
+
+    thead{
+        th{
+            font-weight: normal;
+            font-size: 12px;
+            border-bottom: 3px #B1D0FF solid;
+            padding: 10px 0;
+            text-align: left;
+        }
+    }
+
+    tbody{
+        th,td{
+            font-weight: normal;
+            font-size: 12px;
+            padding: 10px 0;
+        }
+
+        th{
+            text-align: left;
+            border-bottom: 1px #DDEAFF dotted;
+        }
+    }
+
+    .item-info{
+        display: flex;
+        .thumb{
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .more-info{
+            flex: 1;
+            display: inline-block;
+            vertical-align: top;
+
+            .item-title {
+                font-size: 14px;
+                line-height: 1.2;
+            }
+
+            .item-attr {
+                color: #999;
+                font-size: 12px;
+                display: block;
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .col-simple-total {
+        color: #FF0000;
+        font-weight: 500;
+        font-size: 14px;
+        text-align: right;
+    }
+
+    .input-number {
+        border: 1px #DDD solid;
+        width: 100px;
+        display: flex;
+
+        .input-btn {
+            float: left;
+            width: 65px;
+            text-align: center;
+            cursor: pointer;
+            line-height: 30px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            padding: 0;
+        }
+
+        .input-text {
+            height: 30px;
+            text-align: center;
+            background-color: #fff;
+            border-color: #DDD;
+            border-style: solid;
+            border-width: 0 1px 0 1px;
+            float: left;
+            font-size: 16px;
+            width: 100%;
+        }
+    }
+}
+
+.order-extra{
+    background-color: #F2F7FF;
+    padding: 10px;
+    &{
+        &-row{
+            display: flex;
+            padding: 10px 0;
+
+            .col-label{
+                width: 80px;
+                text-align: right;
+                display: inline-block;
+                margin-right: 5px;
+            }
+
+            .col-input{
+                display: flex;
+                margin-left: 10px;
+                flex: 1;
+            }
+
+            .textarea {
+                width: 500px;
+                height: 80px;
+                border: 1px #E8E8E8 solid;
+            }
+
+            .total-fee {
+                font-size: 16px;
+                font-weight: 600;
+                color: #FF0000;
+            }
+        }
+    }
+}
+
+.order-btns{
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+
+    .btn-submit {
+        width: 120px;
+        background-color: #f00;
+        border-color: #f00;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        line-height: 1;
+        border: 0;
+    }
+}
+
+
+
+.order-pay-info {
+    display: block;
+
+    &-block{
+        display: block;
+        margin: 20px 0;
+
+        .info-row{
+            display: flex;
+            padding: 5px 0;
+
+            &-label{
+                color: #777;
+                width: 60px;
+                display: inline-block;
+                margin-right: 10px;
+            }
+
+            &-value{
+                color: #333;
+                display: inline-block;
+                flex: 1;
+            }
+        }
+    }
+
+    .pay-types {
+        display: flex;
+        margin: 20px 0;
+        align-items: center;
+
+        .pay-type-item {
+            float: left;
+            margin-right: 10px;
+            border: 1px #ddd solid;
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+
+            .icon {
+                width: 20px;
+                height: 20px;
+                float: left;
+                margin-right: 5px;
+            }
+
+            span {
+                font-size: 14px;
+                line-height: 20px;
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.pay-result {
+    display: block;
+    padding: 120px 0;
+    min-height: 400px;
+
+    .inner {
+        width: 360px;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+
+        h2 {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .order-no {
+            margin-right: 30px;
+        }
+        .amount {
+            i {
+                color: #f40;
+                font-style: normal;
+            }
+        }
+
+        .links {
+            display: block;
+            margin-top: 15px;
+
+            a {
+                color: #00aaee;
+
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .iconfont {
+            position: absolute;
+            top: 0;
+            left: -75px;
+            font-size: 50px;
+            color: #55a532;
+        }
+        .icon-roundclose {
+            color: #ff0000;
+        }
+
+    }
+}

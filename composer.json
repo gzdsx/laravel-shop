@@ -1,0 +1,99 @@
+{
+  "name": "gzdsx/shop",
+  "description": "The Shop With Laravel Framework.",
+  "keywords": [
+    "framework",
+    "laravel"
+  ],
+  "license": "MIT",
+  "type": "project",
+  "require": {
+    "php": "^7.2",
+    "ext-bcmath": "*",
+    "ext-curl": "*",
+    "ext-exif": "*",
+    "ext-gd": "*",
+    "ext-json": "*",
+    "ext-libxml": "*",
+    "ext-openssl": "*",
+    "ext-simplexml": "*",
+    "ext-zip": "*",
+    "alibabacloud/client": "^1.5",
+    "barryvdh/laravel-snappy": "^0.4.3",
+    "brick/math": "^0.8.15",
+    "fideloper/proxy": "^4.0",
+    "h4cc/wkhtmltoimage-amd64": "^0.12.4",
+    "h4cc/wkhtmltopdf-amd64": "^0.12.4",
+    "intervention/image": "^2.4",
+    "jenssegers/agent": "^2.6",
+    "jpush/jpush": "^3.6",
+    "laravel/framework": "^8.0",
+    "laravel/passport": "^10.0",
+    "laravel/tinker": "^2.0",
+    "lcobucci/jwt": "3.3.3",
+    "maatwebsite/excel": "^3.0",
+    "mews/captcha": "^3.0",
+    "overtrue/laravel-wechat": "^5.0",
+    "predis/predis": "^1.1",
+    "simplesoftwareio/simple-qrcode": "^2.0",
+    "tucker-eric/eloquentfilter": "^2.2",
+    "xy113/alipay": "^1.0"
+  },
+  "require-dev": {
+    "barryvdh/laravel-ide-helper": "^2.7",
+    "doctrine/dbal": "^2.7",
+    "facade/ignition": "^2.3.6",
+    "filp/whoops": "^2.0",
+    "fzaninotto/faker": "^1.9.1",
+    "laminas/laminas-diactoros": "^2.2",
+    "laravel/ui": "^3.0",
+    "mockery/mockery": "^1.0",
+    "nunomaduro/collision": "^5.0",
+    "phpunit/phpunit": "^9.0",
+    "swoole/ide-helper": "^4.5"
+  },
+  "autoload": {
+    "files": [
+      "app/Helpers/helpers.php"
+    ],
+    "classmap": [
+      "database/seeds",
+      "database/factories"
+    ],
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": [
+      ]
+    }
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "post-create-project-cmd": [
+      "@php artisan key:generate"
+    ],
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover"
+    ]
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+  ]
+}

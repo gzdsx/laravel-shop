@@ -1,0 +1,53 @@
+.user-head{
+    background-image: url("#{$image-path}/app/user_head.jpg");
+    background-size: cover;
+    background-position: center center;
+    padding: 20px 30px;
+    display: flex;
+    color: #fff;
+
+    .avatar{
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        border: 2px #fff solid;
+        margin-right: 20px;
+        background-image: url("#{$image-path}/common/avatar_default.png");
+        background-size: cover;
+    }
+
+    .username{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        h3{
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .uid{
+            font-size: 14px;
+        }
+    }
+}
+
+.order-states{
+    background-color: #fff;
+    display: flex;
+
+    .order-action{
+        flex: 1;
+        padding: 10px 0;
+        text-align: center;
+
+        .iconfont{
+            font-size: 30px;
+        }
+
+        p{
+            font-size: 12px;
+        }
+    }
+}

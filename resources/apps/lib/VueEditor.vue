@@ -1,0 +1,79 @@
+<template>
+    <div>
+        <div :id="id">
+            <div ref="toolbar" class="we-toolbar"></div>
+            <div ref="editor" class="we-text-container" :style="{'height':height+'px'}"></div>
+        </div>
+        <image-picker v-model="showPicker" @confirm="insertImage"></image-picker>
+    </div>
+
+</template>
+
+<script>
+    import {API_URL} from "../../js/config";
+
+    export default {
+        name: "VueEditor",
+        model: {
+            prop: 'value',//指向props的参数名
+            event: 'change'//事件名称
+        },
+        props: {
+            value: '',
+            height: 450,
+            id: {
+                type: String,
+                default: 'vueeditor'
+            },
+        },
+        data() {
+            return {
+                editor: null,
+                showPicker: false,
+                content: this.value
+            }
+        },
+        mounted() {
+            this.initEditor();
+            this.editor.txt.html(this.value);
+        },
+        watch: {
+            value(val) {
+                if (val != this.editor.txt.html()) {
+                    this.editor.txt.html(val);
+                }
+            }
+        },
+        methods: {
+            initEditor() {
+                let _this = this;
+                this.editor = new window.wangEditor(this.$refs.toolbar, this.$refs.editor);
+                this.editor.config.zIndex = 0;
+                this.editor.config.uploadImgServer = API_URL + '/material/uploadimg';
+                this.editor.config.uploadImgMaxSize = 3 * 1024 * 1024; // 3M
+                this.editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png', 'gif'];
+                this.editor.config.uploadImgParams = {
+                    _token: this.$csrfToken
+                }
+                this.editor.config.uploadFileName = 'file';
+                this.editor.config.customInsertImage = function (e) {
+                    _this.showPicker = true;
+                }
+                // 配置 onchange 回调函数
+                this.editor.config.onchange = function (html) {
+                    //console.log('change 之后最新的 html', html)
+                    _this.content = html;
+                    _this.$emit('change', html);
+                }
+                this.editor.create();
+            },
+            insertImage(data) {
+                this.editor.cmd.do('insertHTML', `<img src="${data.image}" style="max-width:100%;"/>`);
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

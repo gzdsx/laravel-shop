@@ -1,0 +1,20 @@
+@import "../variables";
+@import "../base";
+@import "../swiper";
+@import "../common/top";
+@import "../common/header";
+@import "../common/footer";
+
+.area{
+    width: 1080px;
+    display: block;
+    margin: 0 auto;
+}
+
+.swiper-div{
+    height: 418px;
+    overflow: hidden;
+}
+
+@import "home";
+@import "detail";

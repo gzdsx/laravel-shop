@@ -1,0 +1,150 @@
+.dsxui-listtable {
+    border-collapse: inherit;
+    width: 100%;
+
+    td, th {
+        text-align: left;
+        word-break: break-all;
+        word-wrap: break-word;
+        font-size: 14px;
+        padding: 12px 10px;
+    }
+
+    thead th {
+        color: #909399;
+        font-weight: bold;
+        border-bottom: 1px #EBEEF5 solid;
+    }
+
+    tbody {
+        td, th {
+            border-bottom: 1px #EBEEF5 solid;
+            padding: 12px 8px;
+        }
+    }
+
+    tfoot {
+        td, th {
+            background-color: #f5f6fa;
+            border-top: 1px #e1e6eb solid;
+            padding: 12px 8px;
+        }
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    h4 {
+        font-size: 12px;
+    }
+
+    p {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .child-item-icon {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAB9JREFUGBljmDVr1n8GPIAJjxxYajAoYCTkC0KeYAAAlPsFpv8H+QQAAAAASUVORK5CYII=");
+        background-size: 8px;
+        background-repeat: no-repeat;
+        margin-right: 8px;
+    }
+
+    .cell-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .action-links {
+        &, & a {
+            color: #409EFF;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+/*表单表格*/
+.dsxui-formtable {
+    width: 100%;
+    box-sizing: border-box;
+
+    td, th {
+        padding: 10px 0;
+        text-align: left;
+        font-size: 14px;
+
+        .star {
+            color: #f40;
+        }
+    }
+
+    td{
+        .tips{
+            color: #9D9D9D;
+            margin-top: 5px;
+        }
+    }
+
+    .cell-label {
+        text-align: right;
+        padding-right: 10px;
+        content: " ";
+    }
+
+    .cell-input {
+        content: " ";
+    }
+
+    .cell-tips {
+        color: #666;
+        padding-left: 15px;
+    }
+
+    li {
+        padding: 5px 0;
+        line-height: 1;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    h4 {
+        font-size: 12px;
+    }
+}
+
+
+.dsxui-row {
+    display: flex;
+    flex-direction: row;
+
+    .dsxui-col {
+        display: inline-block;
+        float: left;
+        box-sizing: border-box;
+    }
+}
