@@ -6,7 +6,7 @@ export default {
     },
     cancel(order_id, reason) {
         return new Promise((resolve, reject) => {
-            axios.post('/bought/close', {order_id, reason}).then(response => {
+            axios.post('/api/bought/close', {order_id, reason}).then(response => {
                 if (response.data.errcode) {
                     reject(response);
                 } else {
@@ -19,7 +19,7 @@ export default {
     },
     notice(order_id) {
         return new Promise((resolve, reject) => {
-            axios.post('/bought/notice', {order_id}).then(response => {
+            axios.post('/api/bought/notice', {order_id}).then(response => {
                 if (response.data.errcode) {
                     reject(response);
                 } else {
@@ -32,7 +32,7 @@ export default {
     },
     confirm(order_id) {
         return new Promise((resolve, reject) => {
-            axios.post('/bought/confirm', {order_id}).then(response => {
+            axios.post('/api/bought/confirm', {order_id}).then(response => {
                 if (response.data.errcode) {
                     reject(response);
                 } else {
@@ -45,7 +45,7 @@ export default {
     },
     delete(order_id) {
         return new Promise((resolve, reject) => {
-            axios.post('/bought/delete', {order_id}).then(response => {
+            axios.post('/api/bought/delete', {order_id}).then(response => {
                 if (response.data.errcode) {
                     reject(response);
                 } else {
