@@ -264,6 +264,10 @@ function label($id)
  */
 function jsonSuccess($data = [])
 {
+    $data = array_merge($data, [
+        'retrun_code' => 'success',
+        'return_msg' => 'OK'
+    ]);
     return response()->json($data);
 }
 

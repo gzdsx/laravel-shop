@@ -85,13 +85,18 @@
     min-height: 500px;
     margin: 20px auto;
 
-    &{
-        &-table{
+    & {
+        &-title {
+            display: flex;
+            padding-top: 20px;
+        }
+
+        &-table {
             width: 100%;
             border-spacing: 0;
 
-            thead{
-                th{
+            thead {
+                th {
                     font-size: 12px;
                     font-weight: normal;
                     color: #666;
@@ -100,14 +105,14 @@
                 }
             }
 
-            tbody{
-                td{
+            tbody {
+                td {
                     padding: 15px 0;
                     font-size: 12px;
                     vertical-align: top;
                     border-top: 1px #e7e7e7 solid;
 
-                    .item-thumb{
+                    .product-thumb {
                         width: 80px;
                         height: 80px;
                         position: relative;
@@ -116,11 +121,11 @@
                         margin-right: 10px;
                     }
 
-                    .item-title{
+                    .product-title {
                         font-size: 14px;
                     }
 
-                    .item-sku{
+                    .product-sku {
                         color: #666;
                         margin-top: 5px;
                     }
@@ -163,7 +168,7 @@
             }
         }
 
-        &-edit-footer{
+        &-edit-footer {
             height: 50px;
             position: relative;
             background-color: #e5e5e5;

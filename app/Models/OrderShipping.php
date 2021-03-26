@@ -11,12 +11,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $order_id 订单ID
- * @property int $shipping_type
  * @property string|null $express_code 快递公司编号
  * @property string|null $express_name 快递名称
  * @property string|null $express_no 快递单号
- * @property string|null $name
- * @property string|null $tel
+ * @property string|null $name 联系人
+ * @property string|null $tel 联系电话
  * @property string|null $province
  * @property string|null $city
  * @property string|null $district
@@ -40,7 +39,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereProvince($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereShippingType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereStreet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping whereUpdatedAt($value)

@@ -356,7 +356,7 @@
                 this.showDialog = false;
                 const order_id = this.order_id;
                 const order_fee = this.order_fee;
-                this.$post('/order/editprice', {order_id, order_fee}).then(response => {
+                this.$post('/order/adjustprice', {order_id, order_fee}).then(response => {
                     this.$router.go(0);
                 });
             }

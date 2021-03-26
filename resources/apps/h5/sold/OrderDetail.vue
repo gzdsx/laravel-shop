@@ -60,7 +60,7 @@
         </div>
         <div class="order-info-cell">
             <div class="cell-title">商品总价</div>
-            <div class="cell-value">￥{{order.goods_fee}}</div>
+            <div class="cell-value">￥{{order.product_fee}}</div>
         </div>
         <div class="order-info-cell">
             <div class="cell-title">运费</div>
@@ -160,7 +160,7 @@
 
                 const order_id = this.order.order_id;
                 const order_fee = this.order_fee;
-                this.$post('/sold/editprice', {order_id, order_fee}).then(response => {
+                this.$post('/sold/adjustprice', {order_id, order_fee}).then(response => {
                     this.showPopup = false;
                     this.$toast.success('价格修改成功');
                     this.getOrder();

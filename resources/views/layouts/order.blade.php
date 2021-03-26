@@ -12,7 +12,7 @@
     <link href="{{asset('images/common/favicon.png')}}" rel="icon">
     <link href="{{asset('css/vendor/element-ui.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/order/index.css?v='.config('app.version'))}}" rel="stylesheet" type="text/css">
-    @yield('scripts')
+@yield('scripts')
 </head>
 <body>
 <div class="header">

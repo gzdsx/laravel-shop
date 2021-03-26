@@ -145,6 +145,9 @@
                                 <div class="v-common-nav-link">
                                     <router-link to="/live/channel">直播频道</router-link>
                                 </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/live/admins">人员设置</router-link>
+                                </div>
                             </div>
                         </div>
                         <div class="v-common-nav-model">

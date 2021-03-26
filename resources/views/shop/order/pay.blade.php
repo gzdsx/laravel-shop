@@ -29,7 +29,7 @@
                         <td>{{$item->title}}</td>
                         <td>{{$item->price}}</td>
                         <td>{{$item->quantity}}</td>
-                        <td>{{$item->total_fee}}</td>
+                        <td>{{$item->order_fee}}</td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -39,19 +39,19 @@
             <div class="order-pay-info-block">
                 <div class="info-row">
                     <div class="info-row-label">订单编号</div>
-                    <div class="info-row-value">{{$order['order_no']}}</div>
+                    <div class="info-row-value">{{$order->order_no}}</div>
                 </div>
                 <div class="info-row">
                     <div class="info-row-label">订单金额</div>
-                    <div class="info-row-value">{{$order['total_fee']}}</div>
+                    <div class="info-row-value">{{$order->order_fee}}</div>
                 </div>
                 <div class="info-row">
                     <div class="info-row-label">创建时间</div>
-                    <div class="info-row-value">{{$order['created_at']}}</div>
+                    <div class="info-row-value">{{$order->created_at}}</div>
                 </div>
                 <div class="info-row">
                     <div class="info-row-label">交易流水</div>
-                    <div class="info-row-value">{{$order->transaction['transaction_no']}}</div>
+                    <div class="info-row-value">{{$order->transaction['out_trade_no']}}</div>
                 </div>
             </div>
             <div class="h20"></div>

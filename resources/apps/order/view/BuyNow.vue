@@ -26,31 +26,31 @@
                         <th class="align-left">宝贝</th>
                         <th width="125">单价</th>
                         <th width="160">数量</th>
-                        <th width="125">小计</th>
+                        <th width="100">小计</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
                             <div class="item-info">
-                                <img :src="item.thumb" class="thumb" alt="">
+                                <img :src="product.thumb" class="thumb" alt="">
                                 <div class="more-info">
-                                    <div class="item-title">{{item.title}}</div>
+                                    <div class="item-title">{{product.title}}</div>
                                     <div class="item-attr">{{sku.title}}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-center">{{sku.price}}</td>
-                        <td class="align-center">
-                            <div class="flex-row justify-content-center">
+                        <td>{{sku.price}}</td>
+                        <td>
+                            <div class="flex-row">
                                 <div class="input-number">
-                                    <span class="input-btn" @click="decrease()">-</span>
+                                    <span class="input-btn" @click="decrease">-</span>
                                     <span><input class="input-text" title="" type="number" v-model="quantity"></span>
-                                    <span class="input-btn" @click="increase()">+</span>
+                                    <span class="input-btn" @click="increase">+</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-center">￥{{sku.price}}</td>
+                        <td>￥{{product_fee}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -59,24 +59,24 @@
                         <div class="col-label">给掌柜留言:</div>
                         <div class="col-input">
                             <textarea class="textarea" placeholder="选填:对本次交易的说明" v-model="remark"></textarea></div>
-                        <div>合计: <span class="total-fee">{{ totalFee }}</span>元</div>
+                        <div>合计: <span class="total-fee">{{ order_fee }}</span>元</div>
                     </div>
                     <div class="order-extra-row">
                         <div class="col-label">运送方式:</div>
                         <div class="col-input">
                             <label><input type="radio" :value="1" v-model="shipping_type"> 快递</label>
-                            <label><input type="radio" :value="2" v-model="shipping_type"> 物流配送</label>
-                            <label><input type="radio" :value="3" v-model="shipping_type"> 上门自取</label>
+                            <label><input type="radio" :value="2" v-model="shipping_type"> 上门自取</label>
                         </div>
                     </div>
                 </div>
                 <div class="order-btns">
                     <div class="flex"></div>
-                    <button type="button" class="btn-submit" @click="submit()">提交订单</button>
+                    <button type="button" class="btn-submit" @click="submit">提交订单</button>
                 </div>
             </div>
         </div>
-        <address-form ref="address" v-model="showDialog" :address="address" @saved="handleSavedAddress"></address-form>
+        <address-form ref="address" v-model="showDialog" :address="newaddress"
+                      @saved="handleSavedAddress"></address-form>
     </div>
 </template>
 
@@ -88,70 +88,100 @@
         components: {
             AddressForm
         },
-        data () {
+        data() {
+            const {quantity, pay_type, shipping_type} = pageConfig;
             return {
-                ...pageConfig,
                 remark: '',
                 address: {},
-                showDialog: false
+                newaddress: {},
+                showDialog: false,
+                addresses: [],
+                product: {},
+                sku: {},
+                product_fee: 0,
+                shipping_fee: 0,
+                discount_fee: 0,
+                order_fee: 0,
+                quantity,
+                pay_type,
+                shipping_type,
             }
         },
         mounted() {
-            this.addresses.map((addr) => {
-                if (addr.isdefault) {
-                    this.address = addr;
-                }
+            this.$get('/address/get').then(response => {
+                this.address = response.data.address;
             });
 
-            //console.log(this.$refs);
-        },
-        computed: {
-            totalFee () {
-                return (this.quantity * this.sku.price).toFixed(2);
-            }
+            this.$get('/address/batchget').then(response => {
+                this.addresses = response.data.items;
+            });
+
+            this.fetchData();
         },
         methods: {
-            decrease () {
+            fetchData() {
+                const quantity = this.quantity;
+                const {itemid, sku_id} = pageConfig;
+                this.$post('/order/buynow', {itemid, sku_id, quantity}).then(response => {
+                    const {product, sku, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    this.sku = sku;
+                    this.product = product;
+                    this.product_fee = product_fee;
+                    this.shipping_fee = shipping_fee;
+                    this.discount_fee = discount_fee;
+                    this.order_fee = order_fee;
+                });
+            },
+            decrease() {
                 if (this.quantity > 1) {
                     this.quantity--;
+                    this.fetchData();
                 }
             },
-            increase () {
+            increase() {
                 if (this.quantity < this.sku.stock) {
                     this.quantity++;
+                    this.fetchData();
                 }
             },
-            submit () {
-                if (!this.address.address_id) {
+            submit() {
+                if (!this.address) {
                     this.$showToast('请选择收货地址');
                     return false;
                 }
 
-                this.$post('/api/order/create', {
-                    itemid: this.item.itemid,
-                    sku_id: this.sku.id,
-                    quantity: this.quantity,
-                    shipping_type: this.shipping_type,
-                    address: this.address
+                const address = this.address;
+                const quantity = this.quantity;
+                const {itemid, sku_id, pay_type, shipping_type} = pageConfig;
+                this.$post('/order/create', {
+                    itemid,
+                    sku_id,
+                    quantity,
+                    pay_type,
+                    shipping_type,
+                    address
                 }).then(response => {
-                    if (response.data.errcode) {
-                        this.$showToast(response.data.errmsg);
+                    var url = '/order/pay?order_id=' + response.data.order.order_id;
+                    if (window.location.replace) {
+                        window.location.replace(url);
                     } else {
-                        window.location.href = '/order/pay?order_id=' + response.data.order.order_id;
+                        window.location.href = url;
                     }
+                }).catch(reason => {
+                    this.$showToast(response.data.errmsg);
                 });
             },
             handleAddAddress() {
-                this.address = {};
+                this.newaddress = {};
                 this.showDialog = true;
             },
-            handleEditAddress(address) {
-                this.address = address;
+            handleEditAddress(addr) {
+                this.newaddress = addr;
                 this.showDialog = true;
             },
             handleSavedAddress(address) {
                 this.showDialog = false;
-                if (this.address.address_id) {
+                if (address.address_id) {
                     this.addresses.map((addr, i) => {
                         if (addr.address_id === address.address_id) {
                             this.addresses.splice(i, 1, address);

@@ -29,9 +29,7 @@ Route::group(['namespace' => 'Shop'], function () {
         Route::get('order/pay/result', 'OrderController@payResult');
         Route::get('order/alipay', 'OrderController@alipay');
         Route::get('order/query/alipay', 'OrderController@alipayQuery');
-
         //cart
         Route::get('cart', 'CartController@index');
-        Route::get('cart/getall', 'CartController@getAll');
     });
 });

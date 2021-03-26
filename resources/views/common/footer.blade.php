@@ -16,6 +16,14 @@
             <a href="https://www.gzdsx.cn" target="_blank">技术支持</a>
         </p>
 
-        <p class="copyright align-center">{{setting('copyright')}}   <a href="https://beian.miit.gov.cn/" target="_blank">{{setting('icp')}}</a></p>
+        <p class="copyright align-center">
+            {{setting('copyright')}}
+            <a href="https://beian.miit.gov.cn/" target="_blank">{{setting('icp')}}</a>
+        </p>
     </div>
 </footer>
+<div class="float-cart">
+    <a href="{{url('cart')}}">
+        <span class="iconfont icon-cart_light"></span>
+    </a>
+</div>

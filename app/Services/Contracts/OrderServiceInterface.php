@@ -14,18 +14,17 @@
 namespace App\Services\Contracts;
 
 
-use App\Models\ProductItem;
 use App\Models\Order;
 
 interface OrderServiceInterface
 {
     /**
-     * @param ProductItem[] $products
+     * @param array $items
      * @param array $address
      * @param array $options
      * @return Order|\Illuminate\Database\Eloquent\Model
      */
-    public function create($products, $address, $remark = null, $coupon = null, $options = []);
+    public function create(array $items, $address, $coupon = null, $options = []);
 
     /**
      * @param Order|\Illuminate\Database\Eloquent\Model $order

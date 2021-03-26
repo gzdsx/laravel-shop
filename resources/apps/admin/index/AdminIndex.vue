@@ -116,7 +116,7 @@
                         </div>
                         <ul class="activity">
                             <li v-for="(p,idx) in posts">
-                                <span>{{formatData(p.created_at)}}</span>
+                                <span>{{formatTime(p.created_at)}}</span>
                                 <a :href="p.url" target="_blank">{{p.title}}</a>
                             </li>
                         </ul>
@@ -170,9 +170,12 @@
             });
         },
         methods: {
-            formatData(date) {
-                const d = new Date(date);
-                return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDay();
+            formatTime(t) {
+                const date = new Date(t.replace(/-/g, '/'));
+                var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+                if (m < 10) m = '0' + m;
+                if (d < 10) d = '0' + d;
+                return y + '/' + m + '/' + d;
             }
         }
     }

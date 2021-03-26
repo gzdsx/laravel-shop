@@ -131,7 +131,7 @@
                 z-index: 1;
             }
 
-            &-content{
+            &-content {
                 background: radial-gradient(circle, #5A5B66, #2C2C38);
                 color: #fff;
                 position: absolute;
@@ -372,4 +372,34 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.live-invite {
+    position: fixed;
+    bottom: 10%;
+    right: 10px;
+    display: block;
+    z-index: 200;
+
+    img {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        box-shadow: 0 1px 3px rgb(0, 0, 0, 0.3);
+    }
+}
+
+.live-poster {
+    width: 240px;
+}
+
+.live-poster-popup {
+    background-color: transparent !important;
+    overflow-y: initial !important;
+
+    .van-popup__close-icon--top-right {
+        top: -20px;
+        right: -20px;
+    }
 }

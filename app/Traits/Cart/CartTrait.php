@@ -17,13 +17,14 @@ namespace App\Traits\Cart;
 use App\Models\Cart;
 use App\Models\ProductItem;
 use App\Models\ProductSku;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 trait CartTrait
 {
     /**
-     * @return Cart|\Illuminate\Database\Eloquent\Builder
+     * @return Cart|\Illuminate\Database\Eloquent\Builder|HasMany
      */
     protected function repository()
     {
@@ -40,8 +41,8 @@ trait CartTrait
         $sku_id = $request->input('sku_id', 0);
         $quantity = $request->input('quantity', 1);
 
-        $item = ProductItem::findOrFail($itemid);
-        $price = $item->price;
+        $product = ProductItem::findOrFail($itemid);
+        $price = $product->price;
         $sku_title = null;
         if ($sku_id) {
             $sku = ProductSku::find($sku_id);
@@ -49,23 +50,18 @@ trait CartTrait
                 $price = $sku->price;
                 $sku_title = $sku->title;
             }
-        } else {
-            $sku_id = 0;
-            $sku_title = '';
         }
 
         $cart = $this->repository()->firstOrNew(['itemid' => $itemid]);
         $cart->fill([
-            'itemid' => $item->itemid,
-            'title' => $item->title,
-            'thumb' => $item->thumb,
-            'image' => $item->image,
+            'title' => $product->title,
+            'thumb' => $product->thumb,
+            'image' => $product->image,
             'sku_id' => $sku_id,
             'sku_title' => $sku_title,
             'price' => $price,
             'quantity' => $quantity,
-        ]);
-        $cart->save();
+        ])->save();
         return $this->sendSavedCartResponse($request, $cart);
     }
 
@@ -86,7 +82,7 @@ trait CartTrait
     {
         $itemid = $request->input('itemid', 0);
         $cart = $this->repository()->firstOrNew(['itemid' => $itemid]);
-        $cart->fill($request->all())->save();
+        $cart->fill($request->except(['itemid']))->save();
         return $this->showUpdatedCartResponse($request);
     }
 
@@ -128,6 +124,24 @@ trait CartTrait
     {
         $this->repository()->delete();
         return $this->sendDeletedCartResponse($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function move(Request $request)
+    {
+        foreach ($this->repository()->whereIn('itemid', $request->input('items', []))->get() as $product) {
+            $collect = Auth::user()->productCollects()->firstOrNew(['itemid' => $product->itemid]);
+            $collect->fill([
+                'title' => $product->title,
+                'image' => $product->image,
+                'price' => $product->price
+            ])->save();
+        }
+
+        return jsonSuccess();
     }
 
     /**

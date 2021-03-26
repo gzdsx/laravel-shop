@@ -132,7 +132,7 @@
                     return false;
                 }
 
-                this.$post('/signup', {
+                this.$axios.post('/signup', {
                     username,
                     mobile,
                     password

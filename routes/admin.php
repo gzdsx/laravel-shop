@@ -11,6 +11,8 @@
  * Time: 1:32 上午
  */
 
+use Illuminate\Support\Facades\Route;
+
 //后台管理
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('login', 'LoginController@showLoginForm');
@@ -102,7 +104,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     //订单管理
     Route::get('order/get', 'OrderController@get');
     Route::get('order/batchget', 'OrderController@batchget');
-    Route::post('order/editprice', 'OrderController@editPrice');
+    Route::post('order/adjustprice', 'OrderController@adjustPrice');
     Route::post('order/send', 'OrderController@send');
     Route::post('order/delete', 'OrderController@forceDelete');
     //付款记录
@@ -156,6 +158,14 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('live/channel/getall', 'LiveChannelController@getAll');
     Route::post('live/channel/save', 'LiveChannelController@save');
     Route::post('live/channel/delete', 'LiveChannelController@delete');
+    Route::get('live/admin/get', 'LiveAdminController@get');
+    Route::get('live/admin/getall', 'LiveAdminController@getAll');
+    Route::post('live/admin/save', 'LiveAdminController@save');
+    Route::post('live/admin/delete', 'LiveAdminController@delete');
+    Route::get('live/invite/batchget', 'LiveInviteController@batchget');
+    Route::post('live/invite/create', 'LiveInviteController@create');
+    Route::post('live/invite/delete', 'LiveInviteController@delete');
+    Route::get('live/invite/code/{id}', 'LiveInviteController@code');
     //自定义标签
     Route::get('label/get', 'LabelController@get');
     Route::get('label/batchget', 'LabelController@batchget');

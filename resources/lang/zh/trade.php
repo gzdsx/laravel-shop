@@ -49,6 +49,7 @@ return [
     'order shipped' => '订单已发货，不能重复发货',
     'order shipped success' => '发货成功',
     'order cannot be closed' => '不能关闭此订单',
+    'order create success' => '订单创建成功',
     'order cancel success' => '订单取消成功',
     'order refund submit success' => '你的退款申请已提交',
     'delivery success' => '发货成功',

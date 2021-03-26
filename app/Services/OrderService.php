@@ -19,13 +19,11 @@ use App\Events\OrderConfirmd;
 use App\Events\OrderCreated;
 use App\Events\OrderPaid;
 use App\Events\OrderSend;
-use App\Models\FreightTemplate;
-use App\Models\ProductItem;
-use App\Models\ProductSku;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Services\Contracts\OrderServiceInterface;
 use App\Support\TradeUtil;
+use App\Traits\Product\HasFreight;
 use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,20 +31,20 @@ use Illuminate\Support\Facades\DB;
 class OrderService implements OrderServiceInterface
 {
 
-    use WechatDefaultConfig;
+    use WechatDefaultConfig, HasFreight;
 
     /**
-     * @param ProductItem[] $products
+     * @param array $items
      * @param array $address
      * @param array $options
      * @return mixed
      * @throws \Exception
      */
-    public function create($products, $address, $remark = null, $coupon = null, $options = [])
+    public function create($items, $address, $coupon = null, $options = [])
     {
         // TODO: Implement create() method.
-        if (empty($products)) {
-            abort(500, 'missing products value');
+        if (empty($items)) {
+            abort(500, 'missing items value');
         }
 
         if (empty($address)) {
@@ -58,92 +56,72 @@ class OrderService implements OrderServiceInterface
         try {
             $order_no = TradeUtil::createOrderNo();
             $order = new Order([
-                'buyer_name' => $buyer->username,
-                'remark' => $remark,
                 'order_no' => $order_no,
                 'order_state' => 1,
+                'buyer_name' => $buyer->username,
+                'remark' => $options['remark'] ?? null,
+                'pay_type' => $options['pay_type'] ?? 1,
+                'shipping_type' => $options['shipping_type'] ?? 1
             ]);
             $order->buyer()->associate($buyer);
             $order->save();
+            //更新配送信息
+            $order->shipping->fill($address)->save();
 
-            $totalCount = 0;
-            $goodsFee = 0;
+            $productFee = 0;
             $shippingFee = 0;
             $discountFee = 0;
+            $totalCount = 0;
 
             $subjects = [];
-            bcscale(2);
-            foreach ($products as $product) {
-                $freight = $this->computeFreight($product);
-                if ($product->sku_id) {
-                    $sku = ProductSku::findOrFail($product->sku_id);
-                    if ($product->quantity < $sku->stock) {
-                        $simpleFee = bcadd(bcmul($product->quantity, $sku->price), $freight, 2);
-                        $goodsFee = bcadd($goodsFee, $simpleFee, 2);
-                        $shippingFee = bcadd($shippingFee, $freight, 2);
-                        $totalCount = bcadd($totalCount, $product->quantity, 0);
 
-                        $order->items()->create([
-                            'itemid' => $product->itemid,
-                            'title' => $product->title,
-                            'thumb' => $product->thumb,
-                            'image' => $product->image,
-                            'quantity' => $product->quantity,
-                            'price' => $sku->price,
-                            'sku_id' => $sku->sku_id,
-                            'sku_title' => $sku->title,
-                            'total_fee' => $simpleFee,
-                            'shipping_fee' => $freight,
-                            'redpack_amount' => $product->redpack_amount
-                        ]);
-                        $sku->decreaseStock($product->quantity);
-                        //更新库存
-                        $sold = $product->sold + $product->quantity;
-                        $stock = $product->stock - $product->quantity;
-                        ProductItem::where('itemid', $product->itemid)->update(['sold' => $sold, 'stock' => $stock]);
-
-                        $subjects[] = $product->title;
-                    } else {
-                        $order->delete();
-                        abort(500, trans('product.insufficient inventory'));
-                    }
-                } else {
-                    if ($product->quantity < $product->stock) {
-                        $simpleFee = bcadd(bcmul($product->quantity, $product->price), $freight);
-                        $goodsFee = bcadd($goodsFee, $simpleFee);
-                        $shippingFee = bcadd($shippingFee, $freight);
-                        $totalCount = bcadd($totalCount, $product->quantity, 0);
-
-                        $order->items()->create([
-                            'itemid' => $product->itemid,
-                            'title' => $product->title,
-                            'thumb' => $product->thumb,
-                            'image' => $product->image,
-                            'quantity' => $product->quantity,
-                            'price' => $product->price,
-                            'total_fee' => $simpleFee,
-                            'shipping_fee' => $freight,
-                            'redpack_amount' => $product->get('redpack_amount') ?? 0
-                        ]);
-                        //更新库存
-                        $sold = $product->sold + $product->quantity;
-                        $stock = $product->stock - $product->quantity;
-                        ProductItem::where('itemid', $product->itemid)->update(['sold' => $sold, 'stock' => $stock]);
-
-                        $subjects[] = $product->title;
-                    } else {
-                        $order->delete();
-                        abort(500, trans('product.insufficient inventory'));
-                    }
+            foreach ($items as $item) {
+                $sku = $item['sku'];
+                $product = $item['product'];
+                $quantity = $item['quantity'];
+                //小计费用
+                $simpleFee = bcmul($sku->price, $quantity, 2);
+                //计算运费
+                $freight = $this->computeFreight($product->freight_template_id, $quantity, $simpleFee);
+                //商品总价
+                $productFee = bcadd($productFee, $simpleFee, 2);
+                //总运费
+                $shippingFee = bcadd($shippingFee, $freight, 2);
+                //商品总数
+                $totalCount = bcadd($totalCount, $quantity, 0);
+                //判断库存是否充足
+                if ($quantity > $sku->stock) {
+                    $order->delete();
+                    abort(403, trans('product.insufficient inventory'));
                 }
+                //创建子菜单
+                $order->items()->create([
+                    'itemid' => $product->itemid,
+                    'title' => $product->title,
+                    'thumb' => $product->thumb,
+                    'image' => $product->image,
+                    'quantity' => $quantity,
+                    'price' => $sku->price,
+                    'sku_id' => $sku->sku_id ?? 0,
+                    'sku_title' => $sku->title,
+                    'product_fee' => $simpleFee,
+                    'shipping_fee' => $freight,
+                    'total_fee' => bcadd($simpleFee, $freight, 2)
+                ]);
+                //更新SKU库存
+                $sku->decreaseStock($quantity);
+                //更新库存和销量
+                $product->incrementSold($quantity);
+                $product->decreaseStock($quantity);
+                $subjects[] = $product->title;
             }
 
             //创建交易流水
-            $totalFee = bcadd($goodsFee, $shippingFee, 2);
+            $totalFee = bcadd($productFee, $shippingFee, 2);
             $orderFee = bcsub($totalFee, $discountFee, 2);
             //更新订单价格和数量
             $order->fill([
-                'goods_fee' => $goodsFee,
+                'product_fee' => $productFee,
                 'shipping_fee' => $shippingFee,
                 'total_fee' => $totalFee,
                 'order_fee' => $orderFee,
@@ -163,14 +141,11 @@ class OrderService implements OrderServiceInterface
             $order->transaction()->associate($transaction);
             $order->save();
 
-            //更新配送信息
-            $order->shipping->fill($address)->save();
-
             //添加操作记录
             $order->logs()->create([
                 'uid' => $buyer->uid,
                 'username' => $buyer->username,
-                'content' => trans('auction.order submitted success')
+                'content' => trans('trade.order create success')
             ]);
             DB::commit();
             event(new OrderCreated($order));
@@ -180,32 +155,6 @@ class OrderService implements OrderServiceInterface
             abort(500, $exception->getMessage());
             return false;
         }
-    }
-
-    /**
-     * 计算运费
-     * @param $product
-     * @return float|int|mixed
-     */
-    protected function computeFreight($product)
-    {
-        $shippingFee = 0;
-        $template = FreightTemplate::find($product->freight_template_id);
-        if ($template) {
-            $shippingFee = $template->start_fee;
-
-            if ($product->quantity > $template->free_quantity) {
-                $shippingFee = 0;
-            } else {
-                if ($product->quantity > $template->start_quantity) {
-                    $shippingFee += ceil(($product->quantity - $template->start_quantity) / $template->growth_quantity) * $template->growth_fee;
-                }
-
-                if ($shippingFee > $template->free_amount) $shippingFee = 0;
-            }
-        }
-
-        return $shippingFee;
     }
 
     /**

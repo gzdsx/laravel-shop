@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $buyer_id 买家ID
  * @property string|null $buyer_name 买家账号
  * @property string|null $remark 买家留言
- * @property string $goods_fee 商品总价
+ * @property string $product_fee 商品总价
  * @property string $shipping_fee 运费
  * @property string $discount_fee 优惠金额
  * @property string $order_fee 付款金额
@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $pay_type 付款方式，1=在线支付，2=货到付款
  * @property int $pay_state 支付状态，1=已支付，0=未支付
  * @property \Illuminate\Support\Carbon|null $pay_at 付款时间
+ * @property int $shipping_type 配送方式
  * @property int $shipping_state 发货状态，0=未发货，1=已发货
  * @property \Illuminate\Support\Carbon|null $shipping_at 发货时间
  * @property int $receive_state 收货状态，0=未收货，1=已收货
@@ -76,7 +77,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Order whereCreatedAt($value)
  * @method static Builder|Order whereDiscountFee($value)
  * @method static Builder|Order whereEndsWith(string $column, string $value, string $boolean = 'and')
- * @method static Builder|Order whereGoodsFee($value)
  * @method static Builder|Order whereLike(string $column, string $value, string $boolean = 'and')
  * @method static Builder|Order whereOrderFee($value)
  * @method static Builder|Order whereOrderId($value)
@@ -86,6 +86,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Order wherePayAt($value)
  * @method static Builder|Order wherePayState($value)
  * @method static Builder|Order wherePayType($value)
+ * @method static Builder|Order whereProductFee($value)
  * @method static Builder|Order whereReceiveAt($value)
  * @method static Builder|Order whereReceiveState($value)
  * @method static Builder|Order whereRefundAt($value)
@@ -96,6 +97,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|Order whereShippingAt($value)
  * @method static Builder|Order whereShippingFee($value)
  * @method static Builder|Order whereShippingState($value)
+ * @method static Builder|Order whereShippingType($value)
  * @method static Builder|Order whereTotalCount($value)
  * @method static Builder|Order whereTotalFee($value)
  * @method static Builder|Order whereTransactionId($value)
@@ -124,9 +126,9 @@ class Order extends Model
     ];
 
     protected $fillable = [
-        'order_type', 'order_no', 'order_state', 'buyer_id', 'buyer_name', 'remark', 'goods_fee',
+        'order_type', 'order_no', 'order_state', 'buyer_id', 'buyer_name', 'remark', 'product_fee',
         'order_fee', 'shipping_fee', 'discount_fee', 'total_fee', 'coupon_id', 'total_count',
-        'pay_type', 'pay_state', 'pay_at', 'shipping_state', 'shipping_at', 'receive_state', 'receive_at',
+        'pay_type', 'pay_state', 'pay_at', 'shipping_type', 'shipping_state', 'shipping_at', 'receive_state', 'receive_at',
         'buyer_rate', 'seller_rate', 'refund_state', 'refund_at', 'closed', 'closed_at', 'buyer_deleted', 'seller_deleted',
         'transaction_id'
     ];
@@ -141,10 +143,10 @@ class Order extends Model
         static::deleted(function (Order $order) {
             $order->items()->delete();
             $order->logs()->delete();
-            $order->closeReason()->delete();
             $order->refunds()->delete();
             $order->shipping()->delete();
             $order->transaction()->delete();
+            $order->closeReason()->delete();
         });
     }
 

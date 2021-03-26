@@ -42,7 +42,7 @@
         },
         methods: {
             fetchList: function () {
-                this.$axios.get('/address/batchget').then(response => {
+                this.$get('/address/batchget').then(response => {
                     //console.log(response.data);
                     this.itemList = response.data.items.map((d) => {
                         if (d.isdefault) {
@@ -74,7 +74,7 @@
                     isdefault: isDefault
                 };
                 this.showPopup = false;
-                this.$axios.post('/address/update', {address_id, address}).then(response => {
+                this.$post('/address/update', {address_id, address}).then(response => {
                     this.$toast.success({
                         message: '收货地址已保存',
                         onClose: () => {
@@ -86,7 +86,7 @@
             },
             handleDelete: function (addr) {
                 this.showPopup = false;
-                this.$axios.post('/address/delete', {address_id: this.addressInfo.id}).then(response => {
+                this.$post('/address/delete', {address_id: this.addressInfo.id}).then(response => {
                     this.fetchList();
                 });
             },
@@ -94,7 +94,7 @@
                 this.$emit('select', addr.original);
             },
             handleEdit: function (addr) {
-                this.$axios.get('/address/get?address_id=' + addr.id).then(response => {
+                this.$get('/address/get?address_id=' + addr.id).then(response => {
                     const {address_id, name, tel, province, city, district, street, postalcode, isdefault} = response.data.address;
                     this.addressInfo = {
                         id: address_id,

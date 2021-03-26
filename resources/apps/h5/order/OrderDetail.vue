@@ -67,7 +67,7 @@
             </div>
             <div class="order-info-cell">
                 <div class="cell-title">商品总价</div>
-                <div class="cell-value">￥{{order.goods_fee}}</div>
+                <div class="cell-value">￥{{order.product_fee}}</div>
             </div>
             <div class="order-info-cell">
                 <div class="cell-title">运费</div>

@@ -21,26 +21,16 @@ class OrderController extends BaseController
     public function buynow(Request $request)
     {
         $step = 'confirm';
-        $item = ProductItem::findOrFail($request->input('itemid'));
-        $sku_id = $request->input('sku_id');
-        if ($sku_id) {
-            $sku = ProductSku::findOrFail($sku_id);
-        } else {
-            $sku = [
-                'stock' => $item->stock,
-                'price' => $item->price,
-                'title' => '',
-                'sku_id' => 0,
-            ];
-        }
-        $item->load(['skus']);
-        $addresses = Auth::user()->addresses()->get();
+        $itemid = $request->input('itemid');
+        $sku_id = $request->input('sku_id', 0);
         $quantity = $request->input('quantity', 1);
         $pay_type = $request->input('pay_type', 1);
         $shipping_type = $request->input('shippin_type', 1);
 
-        return $this->view('shop.order.buynow',
-            compact('item', 'sku', 'addresses', 'quantity', 'pay_type', 'shipping_type', 'step'));
+        return $this->view('shop.order.buynow', [
+            'step' => $step,
+            'pageConfig' => compact('itemid', 'sku_id', 'quantity', 'pay_type', 'shipping_type')
+        ]);
     }
 
     /**
@@ -50,9 +40,13 @@ class OrderController extends BaseController
     public function confirm(Request $request)
     {
         $step = 'confirm';
-        $items = Cart::where('uid', Auth::id())->whereIn('itemid', $request->input('items', []))->get();
-        $addresses = Auth::user()->addresses()->get();
-        return $this->view('shop.order.confirm', compact('items', 'addresses', 'step'));
+        $items = $request->input('items', []);
+        $pay_type = $request->input('pay_type', 1);
+        $shipping_type = $request->input('shippin_type', 1);
+        return $this->view('shop.order.confirm', [
+            'step' => $step,
+            'pageConfig' => compact('items', 'pay_type', 'shipping_type')
+        ]);
     }
 
     /**

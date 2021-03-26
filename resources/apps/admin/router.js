@@ -32,6 +32,8 @@ import RefundDetail from "./order/RefundDetail";
 import LiveList from "./live/LiveList";
 import LiveEdit from "./live/LiveEdit";
 import LiveChannel from "./live/LiveChannel";
+import LiveAdmins from "./live/LiveAdmins";
+import LiveInvite from "./live/LiveInvite";
 import LabelList from "./other/LabelList";
 import VideoList from "./other/VideoList";
 import MenuList from "./menu/MenuList";
@@ -83,6 +85,8 @@ const router = new VueRouter({
         {path: '/live/list', component: LiveList},
         {path: '/live/edit', component: LiveEdit},
         {path: '/live/channel', component: LiveChannel},
+        {path: '/live/admins', component: LiveAdmins},
+        {path: '/live/invite', component: LiveInvite},
         {path: '/video/list', component: VideoList},
         {path: '/menu/list', component: MenuList},
         {path: '/menu/item', component: MenuItem},

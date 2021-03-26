@@ -67,14 +67,14 @@
                     return false;
                 }
 
-                this.$post('/signin', {
+                this.$axios.post('/signin', {
                     account: this.account,
                     password: this.password
                 }).then(response => {
                     window.location.href = window.pageConfig.redirect;
                 }).catch(reason => {
                     this.$showToast(reason.data.errmsg);
-                })
+                });
             }
         }
     }

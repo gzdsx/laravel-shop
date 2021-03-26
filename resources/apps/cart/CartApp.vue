@@ -1,5 +1,8 @@
 <template>
     <div class="area cart">
+        <div class="cart-title">
+            <h1>购物车</h1>
+        </div>
         <div class="cart-main">
             <form method="post" ref="formCart" autocomplete="off" action="/order/confirm">
                 <input type="hidden" name="_token" :value="$csrfToken">
@@ -41,11 +44,13 @@
                         </td>
                         <td>
                             <div class="flex-row">
-                                <div class="bg-cover item-thumb"
+                                <div class="bg-cover product-thumb"
                                      :style="{'background-image': 'url('+item.thumb+')'}"></div>
                                 <div class="flex">
-                                    <div class="item-title"><a target="_blank">{{ item.title }}</a></div>
-                                    <p class="item-sku">{{item.sku_title}}</p>
+                                    <div class="product-title">
+                                        <a target="_blank">{{ item.title }}</a>
+                                    </div>
+                                    <p class="product-sku">{{item.sku_title}}</p>
                                 </div>
                             </div>
                         </td>
@@ -84,8 +89,8 @@
                 <span>全选</span>
             </div>
             <div class="operations">
-                <a id="multiDelete">删除</a>
-                <a id="moveToFavor">移入收藏夹</a>
+                <a @click="multiDelete">删除</a>
+                <a @click="multiMove">移入收藏夹</a>
             </div>
             <div class="settlement-buttons">
                 <div class="item-sum">已选中<strong>{{ totalCount }}</strong>件商品</div>
@@ -128,10 +133,9 @@
             },
             updateQuantity(item) {
                 const {itemid, quantity} = item;
-                this.$post('/cart/update', {itemid, quantity});
-            },
-            deleteItem(data, item) {
-
+                this.$post('/cart/update', {itemid, quantity}).then(() => {
+                    this.computePrice();
+                });
             },
             settlement() {
                 if (this.totalCount > 0) {
@@ -142,19 +146,19 @@
                 return (item.price * item.quantity).toFixed(2);
             },
             handleChange(item) {
-                var checked = this.itemList.filter((it) => !it.checked);
+                var checked = this.items.filter((it) => !it.checked);
                 this.checkedAll = checked.length === 0;
                 this.computePrice();
             },
             computePrice() {
-                this.totalFee = this.itemList.reduce((a, b) => {
+                this.totalFee = this.items.reduce((a, b) => {
                     if (b.checked) {
                         return a + b.price * b.quantity;
                     }
                     return a;
                 }, 0).toFixed(2);
 
-                this.totalCount = this.itemList.reduce((a, b) => {
+                this.totalCount = this.items.reduce((a, b) => {
                     if (b.checked) {
                         return a + b.quantity;
                     }
@@ -162,7 +166,7 @@
                 }, 0);
             },
             handleMoveToFavoritor(item) {
-                this.$post('/product/collect/create', {itemid: item.itemid}).then(response => {
+                this.$post('/cart/move', {items: [item.itemid]}).then(response => {
                     this.$showToast('已成功加入收藏夹');
                 });
             },
@@ -172,11 +176,25 @@
                         this.fetchList();
                     });
                 }
+            },
+            multiDelete() {
+                let items = [];
+                this.items.map((d) => {
+                    if (d.checked) items.push(d.itemid);
+                });
+                if (confirm('确定要将所选宝贝移入收藏夹吗?')) {
+                    this.$post('/cart/move', {items}).then(response => {
+                        this.fetchList();
+                    });
+                }
+            },
+            multiMove() {
+
             }
         },
         watch: {
             checkedAll(val) {
-                this.itemList.forEach((it) => {
+                this.items.forEach((it) => {
                     it.checked = val;
                 });
                 this.computePrice();

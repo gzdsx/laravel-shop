@@ -32,16 +32,16 @@
                 <tr v-for="(item,index) in items" :key="index">
                     <td>
                         <div class="item-info">
-                            <img :src="item.thumb" class="thumb" alt="">
+                            <img :src="item.product.thumb" class="thumb" alt="">
                             <div class="more-info">
-                                <div class="item-title">{{item.title}}</div>
-                                <div class="item-attr">{{item.sku_title}}</div>
+                                <div class="item-title">{{item.product.title}}</div>
+                                <div class="item-attr">{{item.sku.title}}</div>
                             </div>
                         </div>
                     </td>
-                    <td>{{item.price}}</td>
+                    <td>{{item.sku.price}}</td>
                     <td>{{item.quantity}}</td>
-                    <td>￥{{simpleTotal(item)}}</td>
+                    <td>￥{{item.total_fee}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -50,23 +50,22 @@
                     <div class="col-label">给掌柜留言:</div>
                     <div class="col-input">
                         <textarea class="textarea" placeholder="选填:对本次交易的说明" v-model="remark"></textarea></div>
-                    <div>合计: <span class="total-fee">{{ totalFee }}</span>元</div>
+                    <div>合计: <span class="total-fee">{{ order_fee }}</span>元(含运费:{{shipping_fee}}元)</div>
                 </div>
                 <div class="order-extra-row">
                     <div class="col-label">运送方式:</div>
                     <div class="col-input">
                         <label><input type="radio" :value="1" v-model="shipping_type"> 快递</label>
-                        <label><input type="radio" :value="2" v-model="shipping_type"> 物流配送</label>
-                        <label><input type="radio" :value="3" v-model="shipping_type"> 上门自取</label>
+                        <label><input type="radio" :value="2" v-model="shipping_type"> 上门自取</label>
                     </div>
                 </div>
             </div>
             <div class="order-btns">
                 <div class="flex"></div>
-                <button type="button" class="btn-submit" @click="submit()">提交订单</button>
+                <button type="button" class="btn-submit" @click="submit">提交订单</button>
             </div>
         </div>
-        <address-form v-model="showDialog" :address="address" @saved="handleSavedAddress"></address-form>
+        <address-form v-model="showDialog" :address="newaddress" @saved="handleSavedAddress"></address-form>
     </div>
 </template>
 
@@ -78,62 +77,83 @@
         components: {
             AddressForm
         },
-        data () {
+        data() {
+            const {pay_type, shipping_type} = pageConfig;
             return {
-                ...pageConfig,
-                remark: '',
+                remark: null,
                 address: {},
-                shipping_type: 1,
-                showDialog: false
+                newaddress: {},
+                showDialog: false,
+                items: [],
+                product_fee: 0,
+                shipping_fee: 0,
+                discount_fee: 0,
+                order_fee: 0,
+                pay_type,
+                shipping_type
             }
         },
         mounted() {
-            this.addresses.map((ad) => {
-                if (ad.isdefault) {
-                    this.address_id = ad.address_id;
-                }
+            this.$get('/address/get').then(response => {
+                this.address = response.data.address;
             });
+
+            this.$get('/address/batchget').then(response => {
+                this.addresses = response.data.items;
+            });
+
+            this.fetchData();
         },
         computed: {
-            totalFee () {
+            totalFee() {
                 return this.items.reduce((a, b) => a + b.quantity * b.price, 0).toFixed(2);
             }
         },
         methods: {
-            decrease (item) {
-                if (item.quantity > 1) {
-                    item.quantity--;
-                }
+            fetchData() {
+                const {items} = pageConfig;
+                this.$post('/order/confirm', {items}).then(response => {
+                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    this.items = items;
+                    this.product_fee = product_fee;
+                    this.shipping_fee = shipping_fee;
+                    this.discount_fee = discount_fee;
+                    this.order_fee = order_fee;
+                });
             },
-            increase (item) {
-                item.quantity++;
-            },
-            submit () {
-                if (!this.address.address_id) {
+            submit() {
+                if (!this.address) {
                     this.$showToast('请选择收货地址');
                     return false;
                 }
 
-                var items = this.items.map((d) => d.itemid);
-                this.$post('/api/order/settlement', {
+                let items = pageConfig.items;
+                let address = this.address;
+                let pay_type = this.pay_type;
+                let shipping_type = this.shipping_type;
+                let remark = this.remark;
+                this.$post('/order/settlement', {
                     items,
-                    remark: this.remark,
-                    address: this.address,
+                    address,
+                    pay_type,
+                    shipping_type,
+                    remark
                 }).then(response => {
                     const order = response.data.order;
                     window.location.href = '/order/pay?order_id=' + order.order_id;
                 });
             },
             handleAddAddress() {
-                this.address = {};
+                this.newaddress = {};
                 this.showDialog = true;
             },
-            handleEditAddress(address) {
-                this.address = address;
+            handleEditAddress(addr) {
+                this.newaddress = addr;
                 this.showDialog = true;
             },
             handleSavedAddress(address) {
-                if (this.address.address_id) {
+                this.showDialog = false;
+                if (address.address_id) {
                     this.addresses.map((addr, i) => {
                         if (addr.address_id === address.address_id) {
                             this.addresses.splice(i, 1, address);
@@ -143,9 +163,6 @@
                     this.addresses.push(address);
                 }
             },
-            simpleTotal(item) {
-                return (item.price * item.quantity).toFixed(2);
-            }
         }
     }
 </script>

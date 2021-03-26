@@ -44,6 +44,8 @@ use Illuminate\Support\Facades\Auth;
  * @property-read string|null $push_url
  * @property-read mixed $state_des
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string|null $url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LiveInvite[] $invites
+ * @property-read int|null $invites_count
  * @property-read \App\Models\User|null $user
  * @method static Builder|Live filter(array $input = [], $filter = null)
  * @method static Builder|Live newModelQuery()
@@ -85,7 +87,19 @@ class Live extends Model
         'start_at', 'expires_at', 'image', 'content', 'video_id', 'video_url'
     ];
     protected $dates = ['start_at', 'expires_at'];
-    protected $appends = ['push_url', 'obs_push_url', 'obs_stream_name', 'hls', 'hls_low', 'hls_hd', 'flv', 'hls_play_url', 'state_des', 'url', 'm_url'];
+    protected $appends = [
+        'push_url',
+        'obs_push_url',
+        'obs_stream_name',
+        'hls',
+        'hls_low',
+        'hls_hd',
+        'flv',
+        'hls_play_url',
+        'state_des',
+        'url',
+        'm_url'
+    ];
     protected $with = ['user', 'channel'];
 
     public static function boot()
@@ -269,6 +283,14 @@ class Live extends Model
     public function buyLogs()
     {
         return $this->morphMany(BuyLog::class, 'buyable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invites()
+    {
+        return $this->hasMany(LiveInvite::class,'live_id','id');
     }
 
     /**

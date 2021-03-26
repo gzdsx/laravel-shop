@@ -64,41 +64,20 @@ trait SoldTrait
     }
 
     /**
+     * 调整价格
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editPrice(Request $request)
+    public function adjustPrice(Request $request)
     {
-//        $item = OrderItem::find($request->input('id'));
-//        if ($item) {
-//            $order = $this->query()->find($item->order_id);
-//            if ($order->pay_state == 0) {
-//                $price = $request->input('price');
-//                $quantity = $request->input('quantity');
-//                $total_fee = $price * $quantity + $item->shipping_fee;
-//                $item->fill(compact('price', 'quantity', 'total_fee'))->save();
-//
-//
-//                $order->total_fee = $order->items()->sum('total_fee');
-//                $order->shipping_fee = $order->items()->sum('shipping_fee');
-//                $order->total_count = $order->items()->sum('quantity');
-//                $order->order_fee = $order->total_fee - $order->shipping_fee;
-//                $order->order_no = TradeUtil::createOrderNo();
-//                $order->save();
-//
-//                $order->transaction->out_trade_no = $order->order_no;
-//                $order->transaction->save();
-//            }
-//        }
-
         $order_fee = floatval($request->input('order_fee'));
         $order = $this->repository()->findOrFail($request->input('order_id'));
-        if ($order->order_state == 1){
-            $discount_fee = $order->total_fee - $order_fee;
+        if ($order->order_state == 1) {
+            $discount_fee = bcsub($order->total_fee, $order_fee);
             $order->order_fee = $order_fee;
             $order->discount_fee = $discount_fee;
             $order->save();
-            if ($order->transaction){
+            if ($order->transaction) {
                 $order->transaction->amount = $order_fee;
                 $order->transaction->out_trade_no = TradeUtil::createOrderNo();
                 $order->transaction->save();

@@ -65,6 +65,8 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $post_collects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCollect[] $productCollects
+ * @property-read int|null $product_collects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductItem[] $products
  * @property-read int|null $products_count
  * @property-read \App\Models\UserProfile|null $profile

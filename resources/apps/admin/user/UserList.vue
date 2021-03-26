@@ -57,6 +57,7 @@
                 <el-table :data="items" v-loading="loading" style="width: 100%"
                           @selection-change="handleSelectionChange">
                     <el-table-column prop="aid" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="uid" width="80" label="UID"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
                             <el-image :src="scope.row.avatar" class="img-40" fit="cover"></el-image>

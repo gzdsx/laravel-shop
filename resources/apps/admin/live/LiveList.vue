@@ -26,14 +26,15 @@
                             <a @click="handleShowLive(scope.row)">{{scope.row.title}}</a>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="user.username" label="主播"></el-table-column>
                     <el-table-column prop="channel.name" width="100" label="频道"></el-table-column>
                     <el-table-column prop="state_des" width="100" label="状态"></el-table-column>
                     <el-table-column prop="views" width="100" label="观看人次"></el-table-column>
                     <el-table-column prop="start_at" width="170" label="开播时间"></el-table-column>
                     <el-table-column prop="created_at" width="170" label="创建时间"></el-table-column>
-                    <el-table-column width="50">
+                    <el-table-column width="150" label="选项">
                         <template slot-scope="scope">
+                            <router-link :to="'/live/invite?live_id='+scope.row.id" target="_blank">邀请码</router-link>
+                            <span>|</span>
                             <router-link :to="'/live/edit?id='+scope.row.id" target="_blank">编辑</router-link>
                         </template>
                     </el-table-column>
@@ -43,10 +44,19 @@
                         批量删除
                     </el-button>
                     <div class="flex"></div>
+                    <el-pagination
+                            background
+                            layout="prev, pager, next, total"
+                            :total="total"
+                            :page-size="pageSize"
+                            @current-change="handlePageChange"
+                    >
+                    </el-pagination>
                 </div>
             </div>
         </div>
-        <el-dialog title="直播话题" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="直播话题" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <tbody>
                 <tr>
@@ -86,21 +96,24 @@
                 items: [],
                 selectionIds: [],
                 showDialog: false,
+                total: 0,
+                offset: 0,
+                pageSize: 15,
             }
         },
         mounted() {
             this.fetchList();
         },
         methods: {
-            fetchList () {
-                this.$get('/live/batchget').then(response => {
+            fetchList() {
+                this.$get('/live/batchget', {offset: this.offset}).then(response => {
                     this.items = response.data.items;
                 });
             },
-            handleSelectionChange (val) {
+            handleSelectionChange(val) {
                 this.selectionIds = val;
             },
-            handleDelete () {
+            handleDelete() {
                 var items = this.selectionIds.map((d) => d.id);
                 this.$confirm('此操作将永久删除所选话题, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -115,6 +128,10 @@
             handleShowLive(d) {
                 this.live = d;
                 this.showDialog = true;
+            },
+            handlePageChange(page) {
+                this.offset = (page - 1) * this.pageSize;
+                this.fetchList();
             },
         }
     }

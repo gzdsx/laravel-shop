@@ -102,6 +102,10 @@ trait LiveTrait
             return jsonSuccess(['ticket' => true]);
         }
 
+        if ($live->invites()->where('uid', Auth::id())->first()) {
+            return jsonSuccess(['ticket' => true]);
+        }
+
         return jsonSuccess(['ticket' => Gate::allows('view', $live)]);
     }
 

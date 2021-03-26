@@ -19,7 +19,7 @@ export default {
                     }
 
                     config.cancel = function (res) {
-                        //reject(res);
+                        reject({errMsg: '付款已取消'});
                     }
 
                     config.fail = function (res) {

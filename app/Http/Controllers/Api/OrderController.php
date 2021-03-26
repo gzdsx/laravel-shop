@@ -3,21 +3,58 @@
 namespace App\Http\Controllers\Api;
 
 
-use App\Models\Cart;
 use App\Models\ProductItem;
 use App\Models\ProductReview;
 use App\Services\Contracts\OrderServiceInterface;
+use App\Traits\Product\HasFreight;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends BaseController
 {
+    use HasFreight;
+
     protected $orderService;
 
     public function __construct(Request $request, OrderServiceInterface $orderService)
     {
         parent::__construct($request);
         $this->orderService = $orderService;
+    }
+
+    public function buynow(Request $request)
+    {
+        $itemid = $request->input('itemid');
+        $sku_id = $request->input('sku_id', 0);
+        $quantity = $request->input('quantity', 1);
+
+        $product = ProductItem::findOrFail($itemid);
+        if (!$sku = $product->skus()->find($sku_id)) {
+            $sku = $product->skus()->make([
+                'stock' => $product->stock,
+                'price' => $product->price
+            ]);
+        }
+
+        if ($quantity > $sku->stock) {
+            abort(403, trans('product.insufficient inventory'));
+        }
+
+        $product_fee = bcmul($sku->price, $quantity, 2);
+        $shipping_fee = $this->computeFreight($product->freight_template_id, $quantity, $product_fee);
+        $discount_fee = '0.00';
+        return jsonSuccess([
+            'result' => [
+                'sku' => $sku,
+                'product' => $product,
+                'quantity' => $quantity,
+                'product_fee' => $product_fee,
+                'shipping_fee' => bcadd($shipping_fee, 0, 2),
+                'discount_fee' => bcadd($discount_fee, 0, 2),
+                'order_fee' => bcsub(bcadd($product_fee, $shipping_fee, 2), $discount_fee, 2)
+            ]
+        ]);
     }
 
     /**
@@ -27,48 +64,129 @@ class OrderController extends BaseController
     public function create(Request $request)
     {
         $itemid = $request->input('itemid');
-        $quantity = $request->input('quantity');
+        $quantity = $request->input('quantity', 1);
+        $sku_id = $request->input('sku_id', 0);
         $address = $request->input('address', []);
         $remark = $request->input('remark');
-        $sku_id = $request->input('sku_id');
+        $pay_type = $request->input('pay_type', 1);
+        $shipping_type = $request->input('shipping_type', 1);
 
         $product = ProductItem::findOrFail($itemid);
-        if ($product->stock < $quantity) {
-            abort(400, __('product.insufficient inventory'));
+        if (!$sku = $product->skus()->find($sku_id)) {
+            $sku = $product->skus()->make([
+                'stock' => $product->stock,
+                'price' => $product->price
+            ]);
         }
 
-        $product->setAttribute('quantity', $quantity);
-        $product->setAttribute('sku_id', $sku_id);
+        if ($quantity > $sku->stock) {
+            abort(403, trans('product.insufficient inventory'));
+        }
+
+        $item = [
+            'sku' => $sku,
+            'product' => $product,
+            'quantity' => $quantity,
+        ];
 
         try {
-            $order = $this->orderService->create([$product], $address, $remark);
+            $order = $this->orderService->create([$item], $address, null, compact('remark', 'pay_type', 'shipping_type'));
             $order->load(['buyer', 'shipping', 'items', 'transaction']);
             return jsonSuccess(['order' => $order]);
         } catch (\Exception $exception) {
-            return jsonError(400, $exception->getMessage());
+            return jsonError(403, $exception->getMessage());
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function confirm(Request $request)
+    {
+        $product_fee = 0;
+        $shipping_fee = 0;
+        $discount_fee = 0;
+        $total_count = 0;
+        $items = Auth::user()->carts()->with(['product', 'sku'])
+            ->whereHas('product', function (Builder $builder) {
+                return $builder->where('on_sale', 1);
+            })->whereIn('itemid', $request->input('items', []))
+            ->get()
+            ->map(function ($cart) use (&$product_fee, &$shipping_fee, &$total_count) {
+                $product = $cart->product;
+                $quantity = $cart->quantity;
+
+                if (!$sku = $cart->sku) {
+                    $sku = $product->skus()->make([
+                        'price' => $product->price,
+                        'stock' => $product->stock
+                    ]);
+                }
+
+                $simple_fee = bcmul($sku->price, $quantity, 2);
+                $product_fee = bcadd($product_fee, $simple_fee, 2);
+                $freight = $this->computeFreight($product->freight_template_id, $quantity, $product_fee);
+                $shipping_fee = bcadd($shipping_fee, $freight, 2);
+                $total_count = bcadd($total_count, $quantity);
+
+                return [
+                    'sku' => $sku,
+                    'product' => $product,
+                    'quantity' => $quantity,
+                    'total_fee' => bcmul($sku->price, $quantity)
+                ];
+            });
+
+
+        $discount_fee = bcadd($discount_fee, 0, 2);
+        $total_fee = bcadd($product_fee, $shipping_fee, 2);
+        $order_fee = bcsub($total_fee, $discount_fee, 2);
+        return jsonSuccess([
+            'result' => compact('items', 'product_fee', 'shipping_fee', 'discount_fee', 'total_fee', 'order_fee', 'total_count')
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function settlement(Request $request)
     {
-        $items = $request->input('items', []);
-        $products = Auth::user()->carts()->whereIn('itemid', $items)->with(['product'])
-            ->get()->map(function (Cart $cart) {
-                if ($cart->product) {
-                    $cart->product->setAttribute('quantity', $cart->quantity);
-                    $cart->product->setAttribute('sku_id', $cart->sku_id);
-                    return $cart->product;
+        $address = $request->input('address', []);
+        $remark = $request->input('remark');
+        $pay_type = $request->input('pay_type', 1);
+        $shipping_type = $request->input('shipping_type', 1);
+        $items = Auth::user()->carts()->with(['product', 'sku'])
+            ->whereHas('product', function (Builder $builder) {
+                return $builder->where('on_sale', 1);
+            })->whereIn('itemid', $request->input('items', []))
+            ->get()
+            ->map(function ($cart) {
+                $product = $cart->product;
+                $quantity = $cart->quantity;
+                if (!$sku = $cart->sku) {
+                    $sku = $product->skus()->make([
+                        'price' => $product->price,
+                        'stock' => $product->stock
+                    ]);
                 }
+
+                return [
+                    'sku' => $sku,
+                    'product' => $product,
+                    'quantity' => $quantity
+                ];
             });
 
         try {
-            $order = $this->orderService->create($products, $request->input('address', []), $request->input('remark'));
+            $order = $this->orderService->create($items, $address, null, compact('remark', 'pay_type', 'shipping_type'));
             $order->load(['buyer', 'shipping', 'items', 'transaction']);
             //从购物车删除
-            Auth::user()->carts()->whereIn('itemid', $items)->delete();
+            Auth::user()->carts()->whereIn('itemid', $request->input('items', []))->delete();
             return jsonSuccess(['order' => $order]);
         } catch (\Exception $exception) {
-            return jsonError(500, $exception->getMessage(), ['trace' => $exception->getTrace()]);
+            return jsonError(403, $exception->getMessage());
         }
     }
 

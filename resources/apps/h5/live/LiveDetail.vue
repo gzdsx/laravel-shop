@@ -75,6 +75,12 @@
                 <p>长按识别上方二维码关注公众号</p>
             </div>
         </van-dialog>
+        <van-popup v-model="showPoster" closeable class="live-poster-popup">
+            <img :src="'/h5/live/poster/'+live.id" class="live-poster">
+        </van-popup>
+        <div class="live-invite" @click="showPoster=true">
+            <img src="/images/app/yaoqing.png">
+        </div>
     </div>
 </template>
 
@@ -97,7 +103,8 @@
                 websocket: null,
                 messages: [],
                 ticket: false,
-                qrcode: window.qrcode
+                qrcode: window.qrcode,
+                showPoster: false
             }
         },
         mounted() {
@@ -119,6 +126,7 @@
                     this.live = response.data.live;
                     this.loading = false;
                     this.initWebsocket();
+                    this.setShareData();
                 });
             },
             showFormDialog() {
@@ -206,6 +214,31 @@
                     wx.chooseWXPay(config);
                 });
             },
+            setShareData() {
+                const live = this.live;
+                const {username} = window.pageConfig;
+                wx.ready(function () {
+                    wx.updateAppMessageShareData({
+                        title: live.title, // 分享标题
+                        desc: username+'邀请您来一起看直播', // 分享描述
+                        link: live.m_url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: live.image, // 分享图标
+                        success: function () {
+                            // 设置成功
+                            console.log('设置成功');
+                        }
+                    });
+
+                    wx.updateTimelineShareData({
+                        title: live.title, // 分享标题
+                        link: live.m_url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: live.image, // 分享图标
+                        success: function () {
+                            // 设置成功
+                        }
+                    });
+                });
+            }
         },
         computed: {}
     }

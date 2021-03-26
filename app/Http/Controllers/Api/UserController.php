@@ -40,22 +40,9 @@ class UserController extends BaseController
      */
     public function updateAvatar(Request $request)
     {
-        $image = Image::make($request->input('avatar'));
-
-        $x = 0;
-        $y = 0;
-        if ($image->width() > $image->height()) {
-            $size = $image->height();
-            $x = intval(($image->width() - $size) / 2);
-        } else {
-            $size = $image->width();
-            $y = intval(($image->height() - $size) / 2);
-        }
-        $image->crop($size, $size, $x, $y);
-        $image->resize($size, $size);
-
         $filePath = 'avatar/' . Str::random(40) . '.jpg';
-        $image->save(material_path($filePath));
+        $image = Image::make($request->input('avatar'));
+        $image->fit(500)->save(material_path($filePath));
 
         $user = Auth::user();
         $user->avatar = material_url($filePath);

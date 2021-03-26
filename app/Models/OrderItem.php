@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $quantity 商品数量
  * @property int|null $sku_id 属性ID
  * @property string|null $sku_title 商品属性
- * @property string $goods_fee 商品总价
+ * @property string $product_fee 商品总价
  * @property string $shipping_fee 运费
  * @property string $discount_fee 优惠金额
  * @property string $total_fee 订单总价
@@ -37,12 +37,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereDiscountFee($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereGoodsFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereItemid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereOrderFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereProductFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem wherePromotionPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereRedpackAmount($value)
@@ -65,7 +65,7 @@ class OrderItem extends Model
     protected $primaryKey = 'sub_order_id';
     protected $fillable = [
         'order_id', 'itemid', 'title', 'price', 'promotion_price', 'thumb', 'image', 'quantity', 'sku_id', 'sku_title',
-        'goods_fee', 'shipping_fee', 'total_fee', 'discount_fee', 'order_fee', 'refund_id', 'refund_state'
+        'product_fee', 'shipping_fee', 'total_fee', 'discount_fee', 'order_fee', 'refund_id', 'refund_state'
     ];
 
     public $timestamps = false;

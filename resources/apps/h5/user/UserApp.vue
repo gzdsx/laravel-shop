@@ -47,7 +47,7 @@
             <van-cell is-link title="收货地址" size="large" to="/address">
                 <img :src="icons.b" class="cell-icon" slot="icon" alt="">
             </van-cell>
-            <van-cell is-link title="我的收藏" size="large">
+            <van-cell is-link title="我的收藏" size="large" to="/favorite">
                 <img :src="icons.c" class="cell-icon" slot="icon" alt="">
             </van-cell>
             <van-cell is-link title="关于我们" size="large" :url="'/h5/page/33.html'">

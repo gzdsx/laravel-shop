@@ -29,7 +29,7 @@ trait UserHasProducts
     }
 
     /**
-     * @return mixed
+     * @return HasMany
      */
     public function productCollects()
     {

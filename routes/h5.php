@@ -11,6 +11,8 @@
  * Time: 2:31 下午
  */
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['namespace' => 'H5'], function () {
     Route::get('/', 'IndexController@index');
     Route::get('category', 'CategoryController@index');
@@ -39,7 +41,9 @@ Route::group(['namespace' => 'H5'], function () {
         Route::get('user', 'UserController@index');
         //live
         Route::get('live', 'LiveController@index');
-        Route::get('live/{id}', 'LiveController@detail');
+        Route::get('live/{id}', 'LiveController@detail')->where('id', '[0-9]+');
+        Route::get('live/poster/{id}', 'LiveController@poster')->where('id', '[0-9]+');
+        Route::get('live/invite/{code}', 'LiveController@invite');
         //login
         Route::get('login', 'LoginController@index');
         Route::get('login/confirm', 'LoginController@confirm');

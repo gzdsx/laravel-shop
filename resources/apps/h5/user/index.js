@@ -14,6 +14,7 @@ import RefundRouter from "../refund/RefundRouter";
 import RefundDetail from "../refund/RefundDetail";
 import RefundSend from "../refund/RefundSend";
 import RefundApply from "../refund/RefundApply";
+import FavoriteApp from "./favorite/FavoriteApp";
 
 const router = new VueRouter({
     routes: [
@@ -32,6 +33,7 @@ const router = new VueRouter({
         {path: '/refund/apply', component: RefundApply, meta: {title: '选择服务'}},
         {path: '/refund/detail', component: RefundDetail, meta: {title: '退款详情'}},
         {path: '/refund/send', component: RefundSend, meta: {title: '发货'}},
+        {path: '/favorite', component: FavoriteApp, meta: {title: '我的收藏'}},
     ]
 });
 

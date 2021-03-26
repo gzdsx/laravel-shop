@@ -32,7 +32,7 @@
                         </div>
                     </router-link>
                     <div class="order-row">
-                        总价￥{{order.total_fee}}，优惠￥{{order.discount_fee}}，实付款￥{{order.total_fee}}
+                        总价￥{{order.total_fee}}，优惠￥{{order.discount_fee}}，实付款￥{{order.order_fee}}
                     </div>
                     <order-edit-bar
                             :order="order"

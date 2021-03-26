@@ -25,13 +25,13 @@
             <div class="buynow-goods-info">
                 <div class="title">商品信息</div>
                 <div class="goods-item" v-for="item in items" :key="item.itemid">
-                    <div class="bg-cover image" :style="'background-image: url('+item.thumb+')'"></div>
+                    <div class="bg-cover image" :style="'background-image: url('+item.product.thumb+')'"></div>
                     <div class="data">
-                        <div class="goods-title">{{item.title}}</div>
-                        <div class="goods-sku" v-if="item.sku_id">{{item.sku_title}}</div>
+                        <div class="goods-title">{{item.product.title}}</div>
+                        <div class="goods-sku">{{item.sku.title}}</div>
                         <div class="flex"></div>
                         <div class="display-flex">
-                            <div class="goods-price">￥{{item.price}}</div>
+                            <div class="goods-price">￥{{item.sku.price}}</div>
                             <div>
                                 x{{item.quantity}}
                             </div>
@@ -53,23 +53,23 @@
             <div class="settlement-info">
                 <div class="buynow-cell">
                     <div class="cell-title flex">商品总价</div>
-                    <div class="cell-value">￥{{orderFee}}</div>
+                    <div class="cell-value">￥{{product_fee}}</div>
                 </div>
                 <div class="buynow-cell">
                     <div class="cell-title flex">运费</div>
-                    <div class="cell-value">+￥0.00</div>
+                    <div class="cell-value">+￥{{shipping_fee}}</div>
                 </div>
                 <div class="buynow-cell">
                     <div class="cell-title flex">优惠</div>
-                    <div class="cell-value">-￥0.00</div>
+                    <div class="cell-value">-￥{{discount_fee}}</div>
                 </div>
                 <div class="buynow-cell">
-                    <div class="cell-title flex">合计</div>
-                    <div class="cell-value amount">￥{{orderFee}}</div>
+                    <div class="cell-title flex">实付金额</div>
+                    <div class="cell-value amount">￥{{order_fee}}</div>
                 </div>
             </div>
             <van-submit-bar
-                    :price="orderFee*100"
+                    :price="order_fee*100"
                     button-text="提交订单"
                     @submit="handleSubmit"
             />
@@ -91,17 +91,32 @@
         },
         data() {
             return {
-                ...pageConfig,
                 address: null,
                 order: null,
                 remark: null,
-                showPopup: false
+                showPopup: false,
+                items: [],
+                product_fee: 0,
+                shipping_fee: 0,
+                discount_fee: 0,
+                order_fee: 0
             }
         },
         mounted() {
+            this.fetchData();
             this.getAddress();
         },
         methods: {
+            fetchData() {
+                this.$post('/order/confirm', {items: pageConfig.items}).then(response => {
+                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    this.items = items;
+                    this.product_fee = product_fee;
+                    this.shipping_fee = shipping_fee;
+                    this.discount_fee = discount_fee;
+                    this.order_fee = order_fee;
+                });
+            },
             handleSelectedAddress(address) {
                 this.address = address;
                 this.showPopup = false;
@@ -112,22 +127,26 @@
                     return false;
                 }
 
-                var items = this.items.map((d) => d.itemid);
+                var toast = this.$toast.loading({
+                    duration: 0,
+                    message: '处理中...',
+                    forbidClick: true
+                });
                 this.$post('/order/settlement', {
-                    items,
+                    items: pageConfig.items,
                     remark: this.remark,
                     address: this.address,
                 }).then(response => {
                     //console.log(response.data);
                     this.order = response.data.order;
                     const {order_id} = this.order;
-                    OrderProcessor.pay(order_id).then(()=>{
+                    OrderProcessor.pay(order_id).then(() => {
                         window.location.replace('/h5/user/#/order/detail?order_id=' + order_id);
                     }).catch(reason => {
                         let message = reason.data ? reason.data.errmsg : reason.errMsg;
                         this.$toast.fail({
                             message,
-                            onClose:()=>{
+                            onClose: () => {
                                 window.location.replace('/h5/user/#/order/detail?order_id=' + order_id);
                             }
                         });
@@ -135,17 +154,12 @@
                 });
             },
             getAddress() {
-                this.$axios.get('/address/get').then(response => {
+                this.$get('/address/get').then(response => {
                     this.address = response.data.address;
                 });
             }
         },
-        computed: {
-            orderFee() {
-                var total = this.items.reduce((a, b) => a + b.price * b.quantity, 0);
-                return total.toFixed(2);
-            }
-        }
+        computed: {}
     }
 </script>
 

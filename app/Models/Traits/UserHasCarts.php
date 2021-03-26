@@ -15,11 +15,12 @@ namespace App\Models\Traits;
 
 
 use App\Models\Cart;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait UserHasCarts
 {
     /**
-     * @return mixed
+     * @return HasMany
      */
     public function carts()
     {

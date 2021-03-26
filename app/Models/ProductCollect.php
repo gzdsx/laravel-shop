@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ProductItem|null $item
+ * @property-read \App\Models\ProductItem|null $product
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCollect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCollect newQuery()

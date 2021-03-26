@@ -117,6 +117,8 @@ body, html {
 
 .van-toast {
     width: auto !important;
+    min-height: auto !important;
+    white-space: normal !important;
 }
 
 .van-loading {
