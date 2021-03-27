@@ -19,7 +19,7 @@
                         ></el-tab-pane>
                     </el-tabs>
                     <div class="buttons-wrapper">
-                        <el-button type="primary" size="medium" @click="showDialog=true">添加链接</el-button>
+                        <el-button type="primary" size="small" @click="showDialog=true">添加链接</el-button>
                     </div>
                 </div>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
