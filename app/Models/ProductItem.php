@@ -101,7 +101,7 @@ class ProductItem extends Model
     protected $table = 'product_item';
     protected $primaryKey = 'itemid';
     protected $fillable = [
-        'uid', 'title', 'subtitle', 'merchant_code', 'thumb', 'image', 'price', 'original_price', 'promotion_price',
+        'uid', 'catid', 'title', 'subtitle', 'merchant_code', 'thumb', 'image', 'price', 'original_price', 'promotion_price',
         'redpack_amount', 'isdiscount', 'on_sale', 'is_best', 'stock', 'sold', 'views', 'unit', 'freight_template_id', 'attrs'
     ];
     protected $appends = ['url', 'm_url', 'sale_state_des'];
@@ -155,7 +155,7 @@ class ProductItem extends Model
      */
     public function getSaleStateDesAttribute()
     {
-        return is_null($this->on_sale) ? null : __('product.sale_states.' . $this->on_sale);
+        return is_null($this->on_sale) ? null : trans('product.sale_states.' . $this->on_sale);
     }
 
     /**
@@ -265,16 +265,15 @@ class ProductItem extends Model
         return $this->hasMany(ProductCate::class, 'itemid', 'itemid');
     }
 
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function categories()
+    public function catePath()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             ProductCategory::class,
-            ProductCate::class,
-            'itemid',
-            'catid',
+            'product_cate',
             'itemid',
             'catid'
         );

@@ -23,7 +23,7 @@ class TestController extends Controller
 
     public function index(Request $request)
     {
-        return Uuid::uuid4()->toString();
+        return ProductCategory::with('products')->get();
     }
 
     public function video(Request $request)

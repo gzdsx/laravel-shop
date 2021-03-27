@@ -34,7 +34,7 @@
                                     :clearable="true"
                                     style="height: 36px;"
                                     @change="onSascaderChange"
-                                    v-model="postCatId"
+                                    v-model="post.catid"
                             ></el-cascader>
                         </td>
                         <td class="w80">文章来源</td>
@@ -104,7 +104,9 @@
                 <table class="dsxui-formtable">
                     <tr>
                         <td class="w80">文章内容</td>
-                        <td><vue-editor v-model="content.content"></vue-editor></td>
+                        <td>
+                            <vue-editor v-model="content.content"></vue-editor>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -140,7 +142,6 @@
                 showPicker: false,
                 pickImageType: 1,
                 nodes: [],
-                postCatId: []
             }
         },
         mounted() {
@@ -150,13 +151,12 @@
         },
         methods: {
             fetchData() {
-                this.$get('/post/get?aid=' + this.aid).then(response => {
+                this.$get('/post/get', {aid: this.aid}).then(response => {
                     this.post = response.data.post;
                     const {content, images, media} = this.post;
                     if (content) this.content = content;
                     if (images) this.images = images;
                     if (media) this.media = media;
-                    this.postCatId = this.post.catid;
                 });
             },
             fetchCategories() {
@@ -183,8 +183,13 @@
                 }
             },
             handleSubmit(state) {
-                this.post.state = state;
-                const {title, catid} = this.post;
+                let post = this.post;
+                post.state = state;
+                post.content = this.content;
+                post.images = this.images;
+                post.media = this.media;
+
+                const {title, catid} = post;
                 if (!title) {
                     this.$showToast('文章标题不能为空');
                     return false;
@@ -193,16 +198,12 @@
                     this.$showToast('请选择文章分类');
                     return false;
                 }
-                this.$post('/post/save', {
-                    aid: this.aid,
-                    post: this.post,
-                    content: this.content,
-                    images: this.images,
-                    media: this.media
-                }).then(response => {
+
+                const aid = this.aid;
+                this.$post('/post/save', {aid, post}).then(response => {
                     this.$showToast('文章保存成功', () => this.$router.go(0));
                 }).catch(reason => {
-                    console.log(reason);
+                    this.$showToast(reason.data.errmsg);
                 });
             },
             serilazeProps(arr) {

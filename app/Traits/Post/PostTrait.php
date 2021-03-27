@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 trait PostTrait
 {
     /**
-     * @return Builder
+     * @return Builder|PostItem
      */
     protected function repository()
     {
@@ -111,29 +111,36 @@ trait PostTrait
      */
     public function save(Request $request)
     {
+        $newPost = collect($request->input('post', []));
         $post = $this->repository()->findOrNew($request->input('aid'));
-        if ($request->has('post')) {
-            $post->fill($request->input('post', []))->save();
+        $post->fill($newPost->all())->save();
+
+        if ($newPost->has('content')) {
+            $this->saveContent($post, $newPost->get('content', []));
         }
 
-        if ($request->has('content')) {
-            $content = $request->input('content', []);
-            if (is_array($content)) $content = $content['content'] ?? '';
-            $post->content->update(['content' => $content]);
-            if (!$post->summary) {
-                $post->update(['summary' => mbsubstr(strip_html($content), 300)]);
-            }
+        if ($newPost->has('images')) {
+            $this->saveImages($post, $newPost->get('images', []));
         }
 
-        if ($request->has('images')) {
-            $this->saveImages($post, $request->input('images', []));
-        }
-
-        if ($request->has('media')) {
-            $this->saveMedia($post, $request->input('media', []));
+        if ($newPost->has('media')) {
+            $this->saveMedia($post, $newPost->get('media', []));
         }
 
         return $this->sendSavedPostResponse($request, $post);
+    }
+
+    /**
+     * @param \App\Models\PostItem $post
+     * @param array $content
+     */
+    protected function saveContent(&$post, array $content)
+    {
+        $post->content->fill($content)->save();
+        if (!$post->summary) {
+            $post->summary = mbsubstr(strip_html($post->content->content), 300);
+            $post->save();
+        }
     }
 
     /**
@@ -143,37 +150,30 @@ trait PostTrait
     protected function saveImages(&$post, array $images)
     {
         $images = collect($images);
-        $imageIds = $post->images->pluck('id', 'id');
-        if ($images->count()) {
-            $displayorder = 0;
-            foreach ($images as $image) {
-                $imgid = $image['id'] ?? 0;
-                unset($image['id']);
-                $image['displayorder'] = $displayorder++;
-                if ($imageIds->has($imgid)) {
-                    isset($image['thumb']) && $image['thumb'] = strip_image_url($image['thumb']);
-                    isset($image['image']) && $image['image'] = strip_image_url($image['image']);
-                    $post->images()->whereKey($imgid)->update($image);
-                    $imageIds->forget($imgid);
-                } else {
-                    $post->images()->create($image);
-                }
+        $post->images()->whereNotIn('id', $images->pluck('id'))->delete();
+
+        foreach ($images as $image) {
+            $newImage = $post->images()->findOrNew($image['id'] ?? 0);
+            $newImage->fill($image)->save();
+
+            if (!$post->image) {
+                $post->image = $newImage->image;
+                $post->save();
             }
         }
-        $post->images()->whereKey($imageIds->keys())->delete();
     }
 
     /**
      * @param \App\Models\PostItem $post
      * @param array $attributes
      */
-    protected function saveMedia(&$post, array $attributes)
+    protected function saveMedia(&$post, array $media)
     {
         // TODO: Implement updateMedia() method.
         if ($post->media) {
-            $post->media->update($attributes);
+            $post->media->fill($media)->save();
         } else {
-            $post->media()->create($attributes);
+            $post->media()->create($media);
         }
     }
 

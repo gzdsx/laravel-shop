@@ -77,15 +77,17 @@ trait ProductCategoryTrait
             $category->level = 1;
         }
 
-        if (!$category->identifier){
+        if (!$category->identifier) {
             $category->identifier = PinyinUtil::pinyin($category->name);
         }
 
-        if (!$category->displayorder){
-            $category->displayorder = $category->catid;
+        $category->save();
+
+        if (!$category->displayorder) {
+            $category->displayorder = $category->catid ?? 0;
+            $category->save();
         }
 
-        $category->save();
         $this->updateCache();
         return jsonSuccess(['category' => $category]);
     }

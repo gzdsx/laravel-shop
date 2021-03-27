@@ -25,9 +25,10 @@
                         <td>
                             <el-cascader
                                     :options="nodes"
+                                    v-model="cates"
+                                    @change="onCascaderChange"
                                     size="medium"
                                     class="w500"
-                                    v-model="cates"
                                     ref="cascader"
                             />
                         </td>
@@ -186,7 +187,8 @@
             AdminFrame,
             SkuPanel,
         },
-        data: function () {
+        data() {
+            var self = this;
             return {
                 itemid: 0,
                 product: {
@@ -196,7 +198,6 @@
                 images: [],
                 content: {},
                 skus: [],
-                cates: [],
                 freightTemplates: [],
                 showImagePicker: false,
                 defaultAttrList: [],
@@ -212,7 +213,7 @@
                         //console.log(node);
                         const {level} = node;
                         const fid = node.data ? node.data.catid : 0;
-                        Axios.get('/product/category/search?fid=' + fid).then(response => {
+                        self.$get('/product/category/search?fid=' + fid).then(response => {
                             resolve(response.data.items.map(c => ({
                                 ...c,
                                 leaf: level >= 1
@@ -221,6 +222,7 @@
                     }
                 },
                 nodes: [],
+                cates: []
             }
         },
         mounted() {
@@ -231,17 +233,14 @@
             if (itemid) {
                 this.itemid = itemid;
                 this.fetchData();
-            } else {
-                //let content = this.$refs.keditor.getCookie();
-                //if (content !== null) this.content.content = content;
             }
         },
         methods: {
             fetchData() {
-                this.$get('/product/get?itemid=' + this.itemid).then(response => {
+                this.$get('/product/get', {itemid: this.itemid}).then(response => {
                     //console.log(response.data);
                     const {product} = response.data;
-                    const {images, content, skus, attrs, categories} = product;
+                    const {images, content, skus, attrs, cate_path} = product;
 
                     this.product = product;
                     if (images) this.images = images;
@@ -263,11 +262,8 @@
                         this.defaultAttrInfo = defaultAttrInfo;
                     }
 
-                    let cates = [];
-                    if (categories !== null) {
-                        cates = categories.map((c) => c.catid);
-                    }
-                    this.cates = cates;
+                    this.cates = cate_path.map((c) => c.catid);
+                    //setTimeout(this.$refs.cascader.panel.lazyLoad, 300);
                 });
             },
             fetchCategories() {
@@ -304,8 +300,8 @@
                 this.changeImage = false;
             },
             handleSkuChange(data) {
-                this.skus = data.sku_list;
-                this.product.attrs = data.attr_list;
+                this.skus = data.skus;
+                this.product.attrs = data.attrs;
             },
             handleAttrChange(attrs) {
                 if (attrs.length === 0) {
@@ -313,13 +309,15 @@
                 }
             },
             handleSubmit(type) {
-                if (this.cates.length === 0) {
+                //console.log(this.product);
+                let product = this.product;
+                let {title, price, stock, catid} = product;
+
+                if (!catid) {
                     this.$showToast('请选择目录分类');
                     return false;
                 }
 
-                let product = this.product;
-                let {title, price, stock} = product;
                 if (!title) {
                     this.$showToast('标题不能为空');
                     return false;
@@ -382,24 +380,18 @@
                     }
                 }
 
+                product.skus = skus;
+                product.images = this.images;
+                product.content = this.content;
+                product.cates = this.cates;
                 product.on_sale = type;
+
                 const itemid = this.itemid;
-                this.$post('/product/save', {
-                    itemid,
-                    product,
-                    skus: this.skus,
-                    images: this.images,
-                    content: this.content,
-                    cates: this.cates
-                }).then(response => {
-                    if (response.errcode) {
-                        this.$showToast(response.data.errmsg);
-                    } else {
-                        var message = type === 1 ? '商品上架成功' : '商品下架成功';
-                        this.$showToast(message, this.$router.go(0));
-                    }
+                this.$post('/product/save', {itemid, product}).then(response => {
+                    var message = type === 1 ? '商品上架成功' : '商品下架成功';
+                    this.$showToast(message, this.$router.go(0));
                 }).catch(reason => {
-                    console.log(reason);
+                    this.$showToast(reason.data.errmsg);
                 });
             },
             serilazeProps: function (arr) {
@@ -418,11 +410,9 @@
 
                 return t(arr);
             },
-            setSascaderValue() {
-                let cascader = this.$refs['cascader'];
-                cascader.panel.activePath = [];
-                cascader.panel.loadCount = 0;
-                cascader.panel.lazyLoad();
+            onCascaderChange(val) {
+                //console.log(val);
+                this.product.catid = val[val.length - 1];
             }
         },
         watch: {}

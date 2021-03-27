@@ -3,7 +3,6 @@
 namespace App\Models;
 
 
-
 /**
  * App\Models\ProductCategory
  *
@@ -33,7 +32,7 @@ namespace App\Models;
  * @property-read int|null $props_count
  * @property-read \Illuminate\Database\Eloquent\Collection|ProductCategory[] $siblings
  * @property-read int|null $siblings_count
- * @method static Builder|CategoryModel enable()
+ * @method static \Illuminate\Database\Eloquent\Builder|CategoryModel enable()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory query()
@@ -63,20 +62,16 @@ class ProductCategory extends CategoryModel
         return 'product_categories';
     }
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function items()
+    public function products()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             ProductItem::class,
-            ProductCate::class,
+            'product_cate',
             'catid',
-            'itemid',
-            'catid',
-            'itemid'
-        );
+            'itemid')->without(['category']);
     }
 
     /**

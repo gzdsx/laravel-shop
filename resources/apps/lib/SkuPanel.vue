@@ -286,7 +286,7 @@
                         attrInfo.push(_this.defaultAttrInfo[properties]);
                     } else {
                         attrInfo.push({
-                            id: 0,
+                            sku_id: 0,
                             price: '',
                             stock: '',
                             code: '',
@@ -391,8 +391,8 @@
             },
             handleAttrInfoChange: function () {
                 this.$emit('sku-change', {
-                    sku_list: this.attrInfo,
-                    attr_list: this.attrList
+                    skus: this.attrInfo,
+                    attrs: this.attrList
                 });
             }
         },

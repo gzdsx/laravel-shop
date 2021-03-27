@@ -119,12 +119,9 @@ class ProductItemFilter extends ModelFilter
      */
     public function catid($catid)
     {
-        if ($catid > 0) {
-            return $this->whereHas('cates', function (Builder $builder) use ($catid) {
-                return $builder->where('catid', $catid);
-            });
-        }
-        return $this;
+        return $this->whereHas('cates', function (Builder $builder) use ($catid) {
+            return $builder->where('catid', $catid);
+        });
     }
 
     /**

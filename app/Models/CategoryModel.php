@@ -15,6 +15,9 @@ abstract class CategoryModel extends Model
         'template_index', 'template_list', 'template_detail'
     ];
     protected $appends = ['url'];
+    protected $casts = [
+        'displayorder' => 'int'
+    ];
 
     public $timestamps = false;
 
@@ -129,7 +132,8 @@ abstract class CategoryModel extends Model
     /**
      * @return Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function fetchAll(){
+    public static function fetchAll()
+    {
         return static::with('children')->where('fid', 0)->get();
     }
 

@@ -15,6 +15,7 @@ namespace App\Traits\Live;
 
 
 use App\Models\Live;
+use App\Models\LiveAdmin;
 use App\Models\PrePay;
 use App\Support\TradeUtil;
 use App\Traits\WeChat\WechatDefaultConfig;
@@ -99,6 +100,10 @@ trait LiveTrait
     {
         $live = $this->repository()->findOrFail($request->input('id'));
         if ($live->watch_mode == 1) {
+            return jsonSuccess(['ticket' => true]);
+        }
+
+        if (LiveAdmin::where('uid',Auth::id())->first()){
             return jsonSuccess(['ticket' => true]);
         }
 

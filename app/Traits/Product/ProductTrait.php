@@ -38,7 +38,7 @@ trait ProductTrait
     protected function findItem($itemid)
     {
         $item = $this->repository()->findOrFail($itemid);
-        $item->load(['images', 'props', 'skus', 'content', 'categories']);
+        $item->load(['images', 'props', 'skus', 'content', 'catePath']);
         return $item;
     }
 
@@ -128,33 +128,24 @@ trait ProductTrait
      */
     public function save(Request $request)
     {
+        $newProduct = collect($request->input('product', []));
         $product = $this->repository()->findOrNew($request->input('itemid'));
-        if ($request->has('product')) {
-            $product->fill($request->input('product', []))->save();
+        $product->fill($newProduct->all())->save();
+
+        if ($newProduct->has('content')) {
+            $product->content->fill($newProduct->get('content', []))->save();
         }
 
-        if ($request->has('content')) {
-            $content = $request->input('content', []);
-            if (is_array($content)) {
-                $product->content->update($content);
-            } else {
-                $product->content->update(['content' => $content]);
-            }
+        if ($newProduct->has('cates')) {
+            $product->catePath()->sync($newProduct->get('cates', []));
         }
 
-        if ($request->has('cates')) {
-            $product->cates()->delete();
-            foreach ($request->input('cates', []) as $catid) {
-                $product->cates()->create(['catid' => $catid]);
-            }
+        if ($newProduct->has('images')) {
+            $this->saveImages($product, $newProduct->get('images', []));
         }
 
-        if ($request->has('images')) {
-            $this->saveImages($product, $request->input('images', []));
-        }
-
-        if ($request->has('skus')) {
-            $this->saveSkus($product, $request->input('skus', []));
+        if ($newProduct->has('skus')) {
+            $this->saveSkus($product, $newProduct->get('skus', []));
         }
         return $this->sendSavedItemResponse($request, $product);
     }
@@ -162,36 +153,25 @@ trait ProductTrait
     /**
      * @param ProductItem $product
      * @param array $images
-     * @return mixed
      */
     protected function saveImages(&$product, $images)
     {
         $images = collect($images);
-        if ($images->count()) {
-            $firstImg = $images->first();
-            $product->thumb = $firstImg['thumb'];
-            $product->image = $firstImg['image'];
-            $product->save();
+        $product->images()->whereNotIn('id', $images->pluck('id'))->delete();
 
-            $displayorder = 0;
-            $imageIds = $product->images->pluck('id', 'id');
-            foreach ($images as $image) {
-                $imgid = $image['id'] ?? 0;
-                $image['displayorder'] = $displayorder++;
-                if ($imageIds->has($imgid)) {
-                    $image['thumb'] = strip_image_url($image['thumb'] ?? '');
-                    $image['image'] = strip_image_url($image['image'] ?? '');
-                    $product->images()->whereKey($imgid)->update($image);
-                    $imageIds->forget($imgid);
-                } else {
-                    $product->images()->create($image);
-                }
+        $displayorder = 0;
+        foreach ($images as $image) {
+            $newImage = $product->images()->findOrNew($image['id'] ?? 0);
+            $newImage->fill($image);
+            $newImage->displayorder = $displayorder++;
+            $newImage->save();
+
+            if ($product->thumb) {
+                $product->thumb = $newImage->thumb;
+                $product->image = $newImage->image;
+                $product->save();
             }
-            $product->images()->whereKey($imageIds)->delete();
-        } else {
-            $product->images()->delete();
         }
-        return $product;
     }
 
     /**
@@ -201,19 +181,10 @@ trait ProductTrait
     protected function saveSkus($product, $skus)
     {
         $skus = collect($skus);
-        $haveSkus = $product->skus()->get('properties')->pluck('properties', 'properties');
+        $product->skus()->whereNotIn('sku_id', $skus->pluck('sku_id'))->delete();
         foreach ($skus as $sku) {
-            $properties = $sku['properties'] ?? '';
-            if ($haveSkus->has($properties)) {
-                $product->skus()->where('properties', $properties)->update($sku);
-                $haveSkus->forget($properties);
-            } else {
-                $product->skus()->create($sku);
-            }
-        }
-
-        foreach ($haveSkus as $properties) {
-            $product->skus()->where('properties', $properties)->delete();
+            $newSku = $product->skus()->findOrNew($sku['sku_id'] ?? 0);
+            $newSku->fill($sku)->save();
         }
     }
 
