@@ -142,7 +142,7 @@ class User extends Authenticatable
         static::deleted(function (User $user) {
             $user->profile()->delete();
             $user->stat()->delete();
-            $user->auth()->create();
+            $user->auth()->delete();
             $user->account()->delete();
             $user->fields()->delete();
             $user->connects()->delete();
