@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class OrderCloseReason extends Model
 {
+    use HasDates;
+
     protected $table = 'order_close_reason';
     protected $primaryKey = 'order_id';
     protected $fillable = ['order_id', 'reason'];

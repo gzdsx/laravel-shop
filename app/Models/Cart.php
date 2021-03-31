@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
 use App\Models\Traits\HasThumbAttribute;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-
 
 
 /**
@@ -51,7 +50,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Cart extends Model
 {
-    use HasImageAttribute, HasThumbAttribute;
+    use HasImageAttribute, HasThumbAttribute, HasDates;
 
     protected $table = 'cart';
     protected $primaryKey = 'id';
@@ -65,11 +64,6 @@ class Cart extends Model
         static::creating(function (Cart $cart) {
             if (!$cart->uid) $cart->uid = Auth::id() ?? 0;
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**
@@ -95,14 +89,6 @@ class Cart extends Model
     public function scopeGroupByShop(Builder $query)
     {
         return $query->groupBy('shop_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function items()
-    {
-        return $this->hasMany(Cart::class, 'shop_id', 'shop_id');
     }
 
     /**

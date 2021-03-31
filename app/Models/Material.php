@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+
+use App\Models\Traits\HasDates;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -63,12 +64,12 @@ use Illuminate\Support\Facades\Auth;
  */
 class Material extends Model
 {
-    use Filterable;
+    use Filterable, HasDates;
 
     protected $table = 'material';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'uid', 'name', 'source', 'thumb', 'width', 'height', 'type', 'extension', 'size', 'views', 'downloads','mime'
+        'uid', 'name', 'source', 'thumb', 'width', 'height', 'type', 'extension', 'size', 'views', 'downloads', 'mime'
     ];
     protected $appends = [
         'formated_size',
@@ -84,20 +85,15 @@ class Material extends Model
             if (!$material->uid) $material->uid = Auth::id();
         });
 
-        static::deleted(function (Material $material) {
-            if (is_file(material_path($material->getOriginal('thumb')))){
+        static::deleting(function (Material $material) {
+            if (is_file(material_path($material->getOriginal('thumb')))) {
                 @unlink(material_path($material->getOriginal('thumb')));
             }
 
-            if (is_file(material_path($material->getOriginal('source')))){
+            if (is_file(material_path($material->getOriginal('source')))) {
                 @unlink(material_path($material->getOriginal('source')));
             }
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**
@@ -163,7 +159,8 @@ class Material extends Model
     /**
      * @return int|string
      */
-    public function getFormatedSizeAttribute(){
+    public function getFormatedSizeAttribute()
+    {
         return $this->size ? format_size($this->size) : 0;
     }
 

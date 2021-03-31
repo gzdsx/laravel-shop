@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -27,14 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Label extends Model
 {
+    use HasDates;
+
     protected $table = 'label';
     protected $primaryKey = 'id';
     protected $fillable = ['title', 'content', 'state'];
 
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     public static function updateCache()
     {

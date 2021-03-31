@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -33,14 +33,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserLog extends Model
 {
+    use HasDates;
+
     protected $table = 'user_log';
     protected $primaryKey = 'id';
     protected $fillable = ['uid', 'ip', 'operate', 'address', 'src'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

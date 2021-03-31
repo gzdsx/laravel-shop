@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -28,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PrePay extends Model
 {
+    use HasDates;
+
     protected $table = 'prepay';
     protected $primaryKey = 'out_trade_no';
     protected $keyType = 'string';

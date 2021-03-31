@@ -26,8 +26,19 @@ class ProductCate extends Model
     protected $fillable = ['itemid', 'catid'];
     public $timestamps = false;
 
-    public function catlog()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'catid', 'catid');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(ProductItem::class, 'itemid', 'itemid');
     }
 }

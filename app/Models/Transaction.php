@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use DateTimeInterface;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
@@ -61,7 +62,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Transaction extends Model
 {
-    use Filterable;
+    use Filterable,HasDates;
 
     protected $table = 'transaction';
     protected $primaryKey = 'transaction_id';
@@ -79,17 +80,6 @@ class Transaction extends Model
         'extra' => 'array',
         'data' => 'array',
     ];
-
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
-
-    public function buyable()
-    {
-        return $this->morphTo();
-    }
 
     /**
      * @return mixed|null

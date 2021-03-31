@@ -3,7 +3,8 @@
 namespace App\Models;
 
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
+use App\Models\Traits\HasImageAttribute;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -78,7 +79,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Live extends Model
 {
-    use Filterable;
+    use Filterable, HasDates, HasImageAttribute;
 
     protected $table = 'live';
     protected $primaryKey = 'id';
@@ -119,32 +120,6 @@ class Live extends Model
         static::saving(function (Live $live) {
             $live->expires_at = $live->start_at->addSeconds(172800);
         });
-
-        static::addGlobalScope('online', function (Builder $builder) {
-            //return $builder->where('state', 1);
-        });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getImageAttribute($value)
-    {
-        return $value ? image_url($value) : $value;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = strip_image_url($value);
     }
 
     /**
@@ -290,7 +265,7 @@ class Live extends Model
      */
     public function invites()
     {
-        return $this->hasMany(LiveInvite::class,'live_id','id');
+        return $this->hasMany(LiveInvite::class, 'live_id', 'id');
     }
 
     /**

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
 use App\Models\Traits\HasThumbAttribute;
-use DateTimeInterface;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -96,7 +96,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class ProductItem extends Model
 {
-    use Filterable, HasImageAttribute, HasThumbAttribute;
+    use Filterable, HasImageAttribute, HasThumbAttribute, HasDates;
 
     protected $table = 'product_item';
     protected $primaryKey = 'itemid';
@@ -121,17 +121,13 @@ class ProductItem extends Model
             $item->content()->create();
         });
 
-        static::deleted(function (ProductItem $item) {
+        static::deleting(function (ProductItem $item) {
             $item->content()->delete();
             $item->images()->delete();
             $item->props()->delete();
             $item->skus()->delete();
+            $item->cates()->delete();
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**

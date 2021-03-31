@@ -49,7 +49,7 @@ class MenuItem extends Model
     public static function boot()
     {
         parent::boot();;
-        static::deleted(function (MenuItem $menuItem) {
+        static::deleting(function (MenuItem $menuItem) {
             $menuItem->children()->delete();
         });
         static::addGlobalScope('sort', function (Builder $builder) {

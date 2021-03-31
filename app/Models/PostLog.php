@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -29,14 +29,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PostLog extends Model
 {
+    use HasDates;
+
     protected $table = 'post_log';
     protected $primaryKey = 'id';
     protected $fillable = ['aid', 'uid', 'title', 'action_type'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -33,14 +33,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserAuth extends Model
 {
+    use HasDates;
     protected $table = 'user_auth';
     protected $primaryKey = 'uid';
     protected $fillable = ['uid', 'name', 'pin', 'id_front', 'id_back', 'id_hand'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @param $value

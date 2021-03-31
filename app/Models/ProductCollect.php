@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -35,16 +35,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductCollect extends Model
 {
-    use HasImageAttribute;
+    use HasImageAttribute, HasDates;
 
     protected $table = 'product_collect';
     protected $primaryKey = 'id';
     protected $fillable = ['uid', 'itemid', 'title', 'image', 'price'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

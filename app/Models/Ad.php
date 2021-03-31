@@ -57,7 +57,7 @@ class Ad extends Model
      */
     public function getTypeDesAttribute()
     {
-        return __('ad.ad_types.' . $this->type);
+        return trans('ad.ad_types.' . $this->type);
     }
 
     /**
@@ -65,6 +65,6 @@ class Ad extends Model
      */
     public function getStateDesAttribute()
     {
-        return __('ad.ad_states.' . $this->available);
+        return trans('ad.ad_states.' . $this->available);
     }
 }

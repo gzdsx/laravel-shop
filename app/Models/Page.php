@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,17 +48,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Page extends Model
 {
+    use HasDates;
+
     protected $table = 'page';
     protected $primaryKey = 'pageid';
     protected $fillable = [
         'type', 'catid', 'title', 'alias', 'image', 'summary', 'content', 'template', 'displayorder'
     ];
     protected $appends = ['url', 'h5_url'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Contracts\Routing\UrlGenerator|string

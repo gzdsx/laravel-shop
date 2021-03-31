@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -46,6 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RefundShipping extends Model
 {
+    use HasDates;
     protected $table = 'refund_shipping';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -53,11 +54,6 @@ class RefundShipping extends Model
         'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
     ];
     protected $appends = ['full_address'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return string

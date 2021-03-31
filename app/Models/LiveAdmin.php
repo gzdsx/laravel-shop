@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use DateTimeInterface;
 
 /**
  * App\Models\LiveAdmin
@@ -21,14 +21,10 @@ use DateTimeInterface;
  */
 class LiveAdmin extends Model
 {
+    use HasDates;
     protected $table = 'live_admin';
     protected $primaryKey = 'id';
     protected $fillable = ['uid', 'remark'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     public function user()
     {

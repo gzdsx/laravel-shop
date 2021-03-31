@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
-use DateTimeInterface;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -97,7 +97,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class PostItem extends Model
 {
-    use Filterable, HasImageAttribute;
+    use Filterable, HasImageAttribute, HasDates;
 
     protected $table = 'post_item';
     protected $primaryKey = 'aid';
@@ -127,18 +127,13 @@ class PostItem extends Model
             $postItem->content()->create();
         });
 
-        static::deleted(function (PostItem $postItem) {
+        static::deleting(function (PostItem $postItem) {
             $postItem->content()->delete();
             $postItem->comments()->delete();
             $postItem->media()->delete();
             $postItem->images()->delete();
             $postItem->logs()->delete();
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**

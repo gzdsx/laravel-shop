@@ -36,7 +36,7 @@ class ProductProps extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function item()
+    public function product()
     {
         return $this->belongsTo(ProductItem::class, 'itemid', 'itemid');
     }

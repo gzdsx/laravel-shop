@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -30,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class OrderLog extends Model
 {
+    use HasDates;
+
     protected $table = 'order_log';
     protected $primaryKey = 'id';
     protected $fillable = ['order_id', 'uid', 'username', 'content'];

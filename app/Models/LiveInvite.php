@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,15 +26,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LiveInvite extends Model
 {
+    use HasDates;
+
     protected $table = 'live_invite';
     protected $primaryKey = 'id';
     protected $fillable = ['live_id', 'uid', 'code'];
     protected $appends = ['link'];
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -47,17 +47,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserProfile extends Model
 {
+    use HasDates;
+
     protected $table = 'user_profile';
     protected $primaryKey = 'uid';
     protected $fillable = [
         'uid', 'realname', 'gender', 'birthday', 'blood', 'star',
         'country', 'province', 'city', 'district', 'town', 'street', 'bio'
     ];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

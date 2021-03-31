@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -37,17 +37,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Video extends Model
 {
-    use HasImageAttribute;
+    use HasImageAttribute, HasDates;
 
     protected $table = 'video';
     protected $primaryKey = 'id';
     protected $fillable = ['title', 'content', 'image', 'link', 'views', 'source'];
     protected $appends = ['player', 'url', 'm_url'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
 
     public function getPlayerAttribute()

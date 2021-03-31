@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasImageAttribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 abstract class CategoryModel extends Model
 {
+    use HasImageAttribute;
+
     protected $primaryKey = 'catid';
     protected $fillable = [
         'fid', 'name', 'identifier', 'image', 'displayorder',
@@ -27,23 +30,6 @@ abstract class CategoryModel extends Model
         static::addGlobalScope('sort', function (Builder $builder) {
             return $builder->orderBy('level')->orderBy('displayorder')->orderBy('catid');
         });
-    }
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getImageAttribute($value)
-    {
-        return $value ? image_url($value) : $value;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = strip_image_url($value);
     }
 
     /**
@@ -85,27 +71,6 @@ abstract class CategoryModel extends Model
     public function scopeEnable(Builder $query)
     {
         return $query->where('enable', 1);
-    }
-
-    /**
-     * @param $catid
-     * @return array
-     */
-    public static function fetchAllChildIds($catid)
-    {
-        static $catloglist;
-        if (!$catloglist) {
-            $catloglist = self::all();
-        }
-
-        $Ids = [$catid];
-        foreach ($catloglist as $catlog) {
-            if ($catlog->fid == $catid) {
-                $Ids[] = $catlog->catid;
-                $Ids = array_merge($Ids, self::fetchAllChildIds($catlog->catid));
-            }
-        }
-        return $Ids;
     }
 
     /**

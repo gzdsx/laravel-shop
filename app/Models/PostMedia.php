@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasThumbAttribute;
 use Illuminate\Database\Eloquent\Model;
 
 

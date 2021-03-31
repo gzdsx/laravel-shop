@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -45,11 +46,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PostComment extends Model
 {
+    use HasDates;
+
     protected $table = 'post_comment';
     protected $primaryKey = 'cid';
     protected $fillable = [
-        'aid','uid','username','reply_uid','reply_name','message',
-        'province','city','street','likes','state','created_at','updated_at'
+        'aid', 'uid', 'username', 'reply_uid', 'reply_name', 'message',
+        'province', 'city', 'street', 'likes', 'state', 'created_at', 'updated_at'
     ];
 
     /**

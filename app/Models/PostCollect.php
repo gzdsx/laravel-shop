@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -26,14 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PostCollect extends Model
 {
+    use HasDates;
+
     protected $table = 'post_collect';
     protected $primaryKey = 'id';
     protected $fillable = ['aid', 'uid'];
-
-    protected function serializeDate(\DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

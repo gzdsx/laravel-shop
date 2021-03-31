@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasImageAttribute;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -36,28 +37,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BlockItem extends Model
 {
+    use HasImageAttribute;
+
     protected $table = 'block_item';
     protected $primaryKey = 'id';
     protected $fillable = ['block_id', 'title', 'image', 'url', 'subtitle', 'field_1', 'field_2', 'field_3', 'displayorder'];
 
     public $timestamps = false;
-
-    /**
-     * @param $value
-     * @return string
-     */
-    public function getImageAttribute($value)
-    {
-        return $value ? image_url($value) : $value;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = strip_image_url($value);
-    }
 
 
     /**

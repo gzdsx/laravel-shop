@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Jobs\ClearUserData;
+use App\Models\Traits\HasDates;
 use App\Models\Traits\UserHasOrders;
 use App\Models\Traits\UserHasPosts;
 use App\Models\Traits\UserHasCarts;
 use App\Models\Traits\UserHasProducts;
-use DateTimeInterface;
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -104,7 +104,7 @@ use Laravel\Passport\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use Notifiable, Filterable, HasApiTokens;
+    use Notifiable, Filterable, HasApiTokens, HasDates;
     use UserHasPosts, UserHasCarts, UserHasProducts, UserHasOrders;
 
     protected $table = 'user';
@@ -139,7 +139,7 @@ class User extends Authenticatable
             $user->account()->create();
         });
 
-        static::deleted(function (User $user) {
+        static::deleting(function (User $user) {
             $user->profile()->delete();
             $user->stat()->delete();
             $user->auth()->delete();
@@ -154,11 +154,6 @@ class User extends Authenticatable
 
             dispatch(new ClearUserData($user));
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**

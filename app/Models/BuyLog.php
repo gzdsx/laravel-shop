@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -32,14 +32,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BuyLog extends Model
 {
+    use HasDates;
+
     protected $table = 'buy_log';
     protected $primaryKey = 'id';
     protected $fillable = ['uid', 'buyable_type', 'buyable_id', 'transaction_id'];
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

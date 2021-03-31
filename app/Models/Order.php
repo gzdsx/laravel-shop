@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
+use App\Models\Traits\HasDates;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -106,7 +105,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Order extends Model
 {
-    use Filterable;
+    use Filterable,HasDates;
 
     protected $table = 'order';
     protected $primaryKey = 'order_id';
@@ -140,7 +139,7 @@ class Order extends Model
             $order->shipping()->create();
         });
 
-        static::deleted(function (Order $order) {
+        static::deleting(function (Order $order) {
             $order->items()->delete();
             $order->logs()->delete();
             $order->refunds()->delete();
@@ -148,11 +147,6 @@ class Order extends Model
             $order->transaction()->delete();
             $order->closeReason()->delete();
         });
-    }
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
     /**
