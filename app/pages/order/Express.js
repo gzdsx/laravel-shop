@@ -30,7 +30,7 @@ export default class Express extends React.Component {
         let order_id = this.props.navigation.getParam('order_id', '0');
         ApiClient.get('/express/get_express', {order_id}).then(response => {
             this.setState({
-                items: response.data.result.data
+                items: response.result.result.data
             });
         });
 

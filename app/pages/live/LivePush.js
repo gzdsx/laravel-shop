@@ -67,7 +67,7 @@ class LivePush extends React.Component {
     fetchMessage = () => {
         const live_id = this.state.live.id;
         ApiClient.get('/live/chat/get', {live_id}).then(response => {
-            const message = response.data.message;
+            const message = response.result.message;
             if (message.id === this.messageID) {
                 //return false;
             } else {
@@ -88,10 +88,10 @@ class LivePush extends React.Component {
 
     fetchData = async () => {
         let response = await ApiClient.get('/live/mylive');
-        const live = response.data.live;
+        const live = response.result.live;
 
         response = await ApiClient.get('/live/type/batchget');
-        const types = response.data.items;
+        const types = response.result.items;
 
         if (live) {
             const {title, image, type} = live;
@@ -446,7 +446,7 @@ class LivePush extends React.Component {
                                             live_id: this.state.live.id,
                                             message: event.nativeEvent.text
                                         }).then(response => {
-                                            console.log(response.data);
+                                            console.log(response.result);
                                         });
                                     }
                                     this.setState({showKeyBoard: false});
@@ -500,7 +500,7 @@ class LivePush extends React.Component {
                 return false;
             }
             ApiClient.post('/live/save', {title, image, typeid: type.typeid}).then(response => {
-                const live = response.data.live;
+                const live = response.result.live;
                 this.setState({
                     title: live.title,
                     image: live.image,
@@ -539,7 +539,7 @@ class LivePush extends React.Component {
                 name: oriImage.fileName
             });
             this.setState({
-                image: response.data.image.image,
+                image: response.result.image.image,
                 uploading: false
             });
         }

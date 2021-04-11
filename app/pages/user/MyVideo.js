@@ -53,9 +53,9 @@ export default class MyVideo extends React.Component {
         let items = this.state.items;
         let response = await ApiClient.get('/video/manager/batchget', {offset});
         if (this.state.isLoadMore) {
-            items = items.concat(response.data.items);
+            items = items.concat(response.result.items);
         } else {
-            items = response.data.items;
+            items = response.result.items;
         }
 
         this.setState({
@@ -64,7 +64,7 @@ export default class MyVideo extends React.Component {
             isLoadMore: false,
             items
         });
-        this.loadMoreAble = response.data.items.length === 20;
+        this.loadMoreAble = response.result.items.length === 20;
     };
 
     onRefresh = () => {

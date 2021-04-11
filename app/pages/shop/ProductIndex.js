@@ -72,7 +72,7 @@ export default class ProductIndex extends React.Component {
         ApiClient.get('/product/category/getall').then(response => {
             //console.log(response);
             this.setState({
-                categories: response.data.items
+                categories: response.result.items
             });
         });
     }

@@ -62,7 +62,7 @@ export default class DistrictSelector extends React.Component {
             .then(response => {
                 this.setState({
                     isLoading: false,
-                    items: response.data.items
+                    items: response.result.items
                 });
             });
     };

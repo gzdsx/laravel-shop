@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View,
     Image,
-    StyleSheet,
     Keyboard,
     DeviceEventEmitter,
     Text,
@@ -59,8 +58,8 @@ class Signin extends React.Component {
                                     grant_type: 'oauth',
                                     client_id: 2
                                 }).then(response => {
-                                    console.log(response.data);
-                                    const {access_token} = response.data;
+                                    console.log(response.result);
+                                    const {access_token} = response.result;
                                     this.doLogin(access_token);
                                 });
                             }).catch(reason => {
@@ -186,7 +185,7 @@ class Signin extends React.Component {
             'password': password,
             'scope': '*',
         }).then(response => {
-            //console.log(response.data);
+            //console.log(response.result);
             const {access_token} = response.data;
             if (access_token) this.doLogin(access_token);
         }).catch(reason => {
@@ -198,14 +197,12 @@ class Signin extends React.Component {
         AsyncStorage.setItem(AccessToken, access_token).then(() => {
             ApiClient.get('/user/info').then(response => {
                 //console.log('==========');
-                //console.log(response.data);
-                const userinfo = response.data.userinfo;
+                //console.log(response.result);
+                const userinfo = response.result.userinfo;
                 DeviceEventEmitter.emit(UserDidSigninedNotification, userinfo);
                 this.props.navigation.goBack();
             }).catch(reason => {
-                if (reason.data) {
-                    this.refs.toast.show(reason.data.errmsg);
-                }
+                this.refs.toast.show(reason.errmsg);
             });
         }).catch(reason => {
             console.log(reason);

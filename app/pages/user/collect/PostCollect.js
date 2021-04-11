@@ -8,9 +8,9 @@ export default class PostCollect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
-            isRefreshing: false,
-            isLoadMore: false,
+            loading: true,
+            refreshing: false,
+            loadMore: false,
             items: []
         };
         this.offset = 0;
@@ -19,12 +19,12 @@ export default class PostCollect extends React.Component {
 
 
     render(): React.ReactNode {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) return <LoadingView/>;
         return <FlatList
             keyExtractor={(item) => item.aid.toString()}
             data={this.state.items}
             renderItem={({item}) => this.renderItem(item)}
-            refreshing={this.state.isRefreshing}
+            refreshing={this.state.refreshing}
             onRefresh={this.onRefresh}
             onEndReached={this.onEndReached}
             onEndReachedThreshold={2}
@@ -47,40 +47,39 @@ export default class PostCollect extends React.Component {
         let offset = this.offset;
         let items = this.state.items;
         let response = await ApiClient.get('/post/collect/batchget', {offset});
-        if (this.state.isLoadMore) {
-            items = items.concat(response.data.items);
+        if (this.state.loadMore) {
+            items = items.concat(response.result.items);
         } else {
-            items = response.data.items;
+            items = response.result.items;
         }
 
         this.setState({
-            isLoading: false,
-            isRefreshing: false,
-            isLoadMore: false,
+            loading: false,
+            refreshing: false,
+            loadMore: false,
             items
         });
-        this.loadMoreAble = response.data.items.length === 20;
+        this.loadMoreAble = response.result.items.length === 20;
     };
 
     onRefresh = () => {
-        if (this.state.isRefreshing || this.state.isLoading
-            || this.state.isLoadMore) {
+        if (this.state.refreshing || this.state.loading || this.state.loadMore) {
             return false;
         }
 
         this.offset = 0;
-        this.setState({isRefreshing: true});
+        this.setState({refreshing: true});
         setTimeout(this.fetchData, 1000);
     };
 
     onEndReached = () => {
-        if (this.state.isRefreshing || this.state.isLoading
-            || this.state.isLoadMore || !this.loadMoreAble) {
+        if (this.state.refreshing || this.state.loading
+            || this.state.loadMore || !this.loadMoreAble) {
             return false;
         }
 
         this.offset += 20;
-        this.setState({isLoadMore: true});
+        this.setState({loadMore: true});
         setTimeout(this.fetchData, 500);
     };
 
@@ -98,7 +97,7 @@ export default class PostCollect extends React.Component {
                 }}
                 onPress={() => this.props.onPressItem(item)}
             >
-                <Text style={{fontSize: 16, fontWeight: '400', color: '#333'}} numberOfLines={2}>{item.title}</Text>
+                <Text style={{fontSize: 16, fontWeight: '400', color: '#333'}} numberOfLines={2}>{item.post.title}</Text>
             </TouchableOpacity>
         );
     };

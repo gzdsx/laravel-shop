@@ -76,7 +76,7 @@ class PostDetail extends React.Component {
         this.setNavigationOptions();
         const aid = this.props.route.params?.aid;
         ApiClient.get('/post/get', {aid}).then(response => {
-            const {post} = response.data;
+            const {post} = response.result;
             this.setState({
                 post,
                 shareMessage: {

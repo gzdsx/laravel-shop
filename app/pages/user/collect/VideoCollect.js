@@ -47,11 +47,11 @@ export default class VideoCollect extends React.Component {
         let offset = this.offset;
         let items = this.state.items;
         let response = await ApiClient.get('/video/collect/batchget', {offset});
-        console.log(response.data);
+        console.log(response.result);
         if (this.state.isLoadMore) {
-            items = items.concat(response.data.items);
+            items = items.concat(response.result.items);
         } else {
-            items = response.data.items;
+            items = response.result.items;
         }
 
         this.setState({
@@ -60,7 +60,7 @@ export default class VideoCollect extends React.Component {
             isLoadMore: false,
             items
         });
-        this.loadMoreAble = response.data.items.length === 20;
+        this.loadMoreAble = response.result.items.length === 20;
     };
 
     onRefresh = () => {

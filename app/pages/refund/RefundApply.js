@@ -45,8 +45,8 @@ export default class RefundApply extends React.Component {
             };
         }
         ApiClient.post('/refund/apply', data).then(response => {
-            //console.log(response.data);
-            let {refund} = response.data;
+            //console.log(response.result);
+            let {refund} = response.result;
             let {order, items, images} = refund;
             this.totalAmount = refund.refund_amount;
             this.setState({
@@ -59,7 +59,7 @@ export default class RefundApply extends React.Component {
         });
 
         ApiClient.get('/refundreason/getall').then(response => {
-            let reasons = response.data.items.map((item) => item.title);
+            let reasons = response.result.items.map((item) => item.title);
             this.setState({reasons});
         });
     }
@@ -365,7 +365,7 @@ export default class RefundApply extends React.Component {
                 ApiClient.post('/refund/create', data).then(response => {
                     //console.log(response);
                     this.refs.spinner.hide();
-                    const {refund_id} = response.data.refund;
+                    const {refund_id} = response.result.refund;
                     this.props.navigation.replace('RefundDetail', {refund_id});
                 }).catch(reason => {
                     this.refs.spinner.hide();
@@ -382,7 +382,7 @@ export default class RefundApply extends React.Component {
                     uri: file.uri,
                     name: file.fileName || file.uri.substring(file.uri.lastIndexOf('/'))
                 });
-                images.push(response.data.image);
+                images.push(response.result.image);
             } else {
                 images.push(file);
             }

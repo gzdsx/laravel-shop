@@ -78,7 +78,7 @@ class LiveIndex extends React.Component {
         });
         ApiClient.get('/block/item/batchget?block_id=4').then(response => {
             this.setState({
-                images: response.data.items
+                images: response.result.items
             });
         })
         this.fetchData();
@@ -89,8 +89,8 @@ class LiveIndex extends React.Component {
             state: 1,
             offset: this.offset,
         }).then(response => {
-            //console.log(response.data);
-            let items = response.data.items;
+            //console.log(response.result);
+            let items = response.result.items;
             this.setState({
                 items,
                 loading: false,

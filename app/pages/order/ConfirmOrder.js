@@ -21,21 +21,23 @@ export default class ConfirmOrder extends React.Component {
         super(props);
         this.state = {
             items: [],
-            isLoading: true,
+            loading: true,
             address: null,
             shipping_type: 1,
             pay_type: 1,
             remark: null,
-            totalCount: 0,
-            totalFee: 0,
-            totalShippingFee: 0,
+            product_fee: 0,
+            shipping_fee: 0,
+            discount_fee: 0,
+            order_fee: 0,
+            total_count: 0
         };
         this.submiting = false;
         this.order_data = [];
     }
 
     render() {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) return <LoadingView/>;
         return (
             <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
@@ -71,28 +73,23 @@ export default class ConfirmOrder extends React.Component {
         this.setNavigationOptions();
         InteractionManager.runAfterInteractions(() => {
             ApiClient.get('/address/get').then(response => {
-                if (response.data.address) {
-                    this.setState({
-                        address: response.data.address,
-                        isLoading: false
-                    });
-                } else {
-                    this.setState({
-                        address: null,
-                        isLoading: false
-                    });
-                }
+                const {address} = response.result;
+                this.setState({address});
             });
 
-            const items = this.props.route.params.items;
-            let totalFee = 0;
-            let totalCount = 0;
-            items.map((item) => {
-                totalFee += item.price * item.quantity;
-                totalCount += item.quantity;
+            const params = this.props.route.params.items || [];
+            ApiClient.post('/order/confirm', {items: params}).then(response => {
+                const {items, product_fee, shipping_fee, discount_fee, order_fee, total_count} = response.result.result;
+                this.setState({
+                    items,
+                    product_fee,
+                    shipping_fee,
+                    discount_fee,
+                    order_fee,
+                    total_count,
+                    loading: false
+                });
             });
-
-            this.setState({totalFee, totalCount});
         });
     }
 
@@ -156,12 +153,12 @@ export default class ConfirmOrder extends React.Component {
     };
 
     renderContent = () => {
-        const items = this.props.route.params.items;
+        const {items} = this.state;
         let itemContents = items.map((item) => {
             return (
-                <TableCell key={item.itemid.toString()}>
+                <TableCell key={item.product.itemid.toString()}>
                     <CacheImage
-                        source={{uri: item.thumb}}
+                        source={{uri: item.product.thumb}}
                         style={{
                             width: 80,
                             height: 80,
@@ -173,21 +170,17 @@ export default class ConfirmOrder extends React.Component {
                         <Text style={{
                             fontSize: 14,
                             color: '#333',
-                        }} numberOfLines={2}>{item.title}</Text>
-                        {
-                            item.sku_id ?
-                                <View style={{flexDirection: 'row', marginTop: 5}}>
-                                    <TouchableOpacity style={{
-                                        backgroundColor: '#f2f2f2',
-                                        paddingHorizontal: 5,
-                                        paddingVertical: 3,
-                                        borderRadius: 5
-                                    }}>
-                                        <Text style={{fontSize: 12, color: '#555'}}>{item.sku_title}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                : null
-                        }
+                        }} numberOfLines={2}>{item.product.title}</Text>
+                        <View style={{flexDirection: 'row', marginTop: 5}}>
+                            <TouchableOpacity style={{
+                                backgroundColor: '#f2f2f2',
+                                paddingHorizontal: 5,
+                                paddingVertical: 3,
+                                borderRadius: 5
+                            }}>
+                                <Text style={{fontSize: 12, color: '#555'}}>{item.sku.title || ''}</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{
                             flexDirection: 'row',
                             marginTop: 10
@@ -197,7 +190,7 @@ export default class ConfirmOrder extends React.Component {
                                 fontSize: 16,
                                 fontWeight: '500',
                                 flex: 1
-                            }}>￥{item.price}</Text>
+                            }}>￥{item.sku.price}</Text>
                             <Text style={{
                                 fontSize: 14,
                                 color: '#333'
@@ -235,6 +228,7 @@ export default class ConfirmOrder extends React.Component {
     };
 
     renderFooter = () => {
+        const {order_fee, total_count} = this.state;
         return (
             <View style={{
                 backgroundColor: '#fff',
@@ -248,12 +242,12 @@ export default class ConfirmOrder extends React.Component {
                         fontSize: 14,
                         color: '#333',
                         lineHeight: 49
-                    }}>共{this.state.totalCount}件商品, 总计:</Text>
+                    }}>共{total_count}件商品, 总计:</Text>
                     <Text style={{
                         color: '#f00',
                         fontSize: 14,
                         lineHeight: 49,
-                    }}>￥{this.state.totalFee.toFixed(2)}</Text>
+                    }}>￥{order_fee}</Text>
                 </View>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -266,9 +260,9 @@ export default class ConfirmOrder extends React.Component {
                         backgroundColor: '#FC461E',
                         flex: 1,
                         borderRadius: 20,
-                        flexDirection:'row',
-                        justifyContent:'center',
-                        alignItems:'center'
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}>
                         <Text style={{
                             color: '#fff',
@@ -288,19 +282,18 @@ export default class ConfirmOrder extends React.Component {
             this.submiting = true;
         }
 
-        const items = this.props.route.params.items.map((item) => item.itemid);
-        const address = this.state.address;
-        const {pay_type, shipping_type, remark} = this.state;
+        const items = this.props.route.params.items;
+        const {pay_type, shipping_type, remark, address} = this.state;
 
         ApiClient.post('/order/settlement', {
             items,
-            address,
             remark,
             pay_type,
-            shipping_type
+            shipping_type,
+            address
         }).then(response => {
             DeviceEventEmitter.emit(CartDidChangedNotification);
-            const order_id = response.data.order.order_id;
+            const order_id = response.result.order.order_id;
             this.props.navigation.replace('OrderDetail', {order_id});
         }).catch(() => {
             this.submiting = false;

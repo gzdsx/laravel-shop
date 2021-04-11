@@ -149,7 +149,7 @@ export default class AddressEdit extends React.Component {
         if (address_id) {
             ApiClient.get('/address/get', {address_id}).then(response => {
                 this.setState({
-                    address: response.data.address,
+                    address: response.result.address,
                     isLoading: false
                 });
             });
@@ -205,7 +205,7 @@ export default class AddressEdit extends React.Component {
 
         this.submiting = true;
         ApiClient.post('/address/save', {address, address_id}).then(response => {
-            //console.log(response.data);
+            //console.log(response.result);
             this.refs.toast.show('地址保存成功', {
                 onHide: () => {
                     this.props.navigation.goBack();

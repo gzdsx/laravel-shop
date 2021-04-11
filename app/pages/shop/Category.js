@@ -96,8 +96,8 @@ export default class Category extends React.Component {
     componentDidMount() {
         this.setNavigationOptions();
         ApiClient.get('/product/category/getall').then(response => {
-            //console.log(response.data);
-            const items = response.data.items;
+            //console.log(response.result);
+            const items = response.result.items;
             const category = items[0] || [];
             this.setState({
                 items,

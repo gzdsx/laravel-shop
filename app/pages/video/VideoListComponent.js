@@ -71,7 +71,7 @@ export default class VideoListComponent extends React.Component {
     fetchData = () => {
         const catid = this.props.catid;
         ApiClient.get('/video/batchget', {catid}).then(response => {
-            let items = response.data.items;
+            let items = response.result.items;
             this.setState({
                 items,
                 isLoading: false

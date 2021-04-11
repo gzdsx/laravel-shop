@@ -93,7 +93,7 @@ export default class AddressList extends React.Component {
             this.setState({
                 isLoading: false,
                 isRefreshing: false,
-                items: response.data.items
+                items: response.result.items
             });
         });
     };

@@ -129,13 +129,13 @@ class HomeIndex extends React.Component {
 
     fetchData = async () => {
         let response = await ApiClient.get('/block/item/batchget', {block_id: 1});
-        const images = response.data.items;
+        const images = response.result.items;
 
         response = await ApiClient.get('/post/batchget', {catid: 2, count: 6});
-        const posts = response.data.items;
+        const posts = response.result.items;
 
         response = await ApiClient.get('/product/batchget', {count: 20});
-        const items = response.data.items;
+        const items = response.result.items;
 
         this.setState({
             images,

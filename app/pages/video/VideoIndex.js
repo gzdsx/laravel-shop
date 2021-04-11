@@ -115,7 +115,7 @@ export default class VideoIndex extends React.Component {
 
     fetchData = () => {
         ApiClient.get('/video/batchget').then(response => {
-            let items = response.data.items;
+            let items = response.result.items;
             this.setState({
                 isLoading: false,
                 items

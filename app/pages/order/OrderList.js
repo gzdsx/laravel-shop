@@ -60,7 +60,7 @@ class OrderList extends React.Component {
         const tab = route.params?.tab || 'all'
         this.setState({tab}, this.fetchData);
         ApiClient.get('/order/closereason/getall').then(response => {
-            this.setState({reasons: response.data.items});
+            this.setState({reasons: response.result.items});
         });
     }
 
@@ -71,12 +71,12 @@ class OrderList extends React.Component {
             count: 10,
             tab
         }).then(response => {
-            //console.log(response.data);
+            //console.log(response.result);
             let orders = this.state.orders;
             if (this.state.isLoadMore) {
-                orders = orders.concat(response.data.items);
+                orders = orders.concat(response.result.items);
             } else {
-                orders = response.data.items;
+                orders = response.result.items;
             }
             this.setState({
                 orders,
@@ -84,7 +84,7 @@ class OrderList extends React.Component {
                 isLoading: false,
                 isRefreshing: false
             });
-            this.loadMoreAble = response.data.items.length >= 10;
+            this.loadMoreAble = response.result.items.length >= 10;
         });
     };
 

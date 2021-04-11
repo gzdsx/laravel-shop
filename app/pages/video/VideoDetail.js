@@ -53,7 +53,7 @@ export default class VideoDetail extends React.Component {
 
     componentDidMount(): void {
         ApiClient.get('/video/get', {id: this.props.navigation.getParam('id', 0)}).then(response => {
-            const video = response.data.video;
+            const video = response.result.video;
             this.setState({
                 video,
                 isLoading: false

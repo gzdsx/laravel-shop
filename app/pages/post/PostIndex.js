@@ -69,7 +69,7 @@ class PostIndex extends React.Component {
         ApiClient.get('/post/category/getall').then(response => {
             //console.log(response);
             this.setState({
-                items: response.data.items
+                items: response.result.items
             });
         });
     }

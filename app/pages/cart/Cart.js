@@ -98,7 +98,7 @@ class Cart extends React.Component {
         }).then(response => {
             this.setState({
                 isLoading: false,
-                items: response.data.items
+                items: response.result.items
             });
         });
     }
@@ -110,7 +110,7 @@ class Cart extends React.Component {
     fetchData = () => {
         if (this.props.auth.isSignined) {
             ApiClient.get('/cart/getall').then(response => {
-                let cartItems = response.data.items;
+                let cartItems = response.result.items;
                 this.setState({cartItems, isRefreshing: false, checkAll: false});
             });
         }
@@ -329,7 +329,7 @@ class Cart extends React.Component {
                         flex: 1,
                         flexDirection: 'row',
                         justifyContent: 'center',
-                        alignItems:'center'
+                        alignItems: 'center'
                     }}>
                         <Text style={{
                             fontSize: 14,
@@ -371,7 +371,8 @@ class Cart extends React.Component {
             return false;
         }
 
-        this.props.navigation.navigate('ConfirmOrder', {items: this.checkedItems});
+        let items = this.checkedItems.map((d) => d.itemid);
+        this.props.navigation.navigate('ConfirmOrder', {items});
     };
 }
 

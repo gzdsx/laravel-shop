@@ -108,7 +108,7 @@ class LivePlay extends React.Component {
 
         const id = route.params?.id || 0;
         ApiClient.get('/live/get', {id}).then(response => {
-            const live = response.data.live;
+            const live = response.result.live;
             this.setState({
                 live,
                 isLoading: false

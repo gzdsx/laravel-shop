@@ -142,18 +142,19 @@ class ProductDetail extends React.Component {
                     data={product}
                     onSubmit={(sku, quantity) => {
                         const _this = this;
+                        const itemid = product.itemid;
+                        const sku_id = sku.sku_id || 0;
                         if (this.actionType === 1) {
                             this.setState({showModal: false});
-                            let sku_id = sku.sku_id || 0;
-                            AddToCart(product.itemid, quantity, sku_id, (data) => {
+                            AddToCart(itemid, quantity, sku_id, (data) => {
                                 DeviceEventEmitter.emit(CartDidChangedNotification);
                                 _this.refs.toast.show('已成功加入购物车');
                             });
                         } else {
                             this.setState({showModal: false});
                             this.props.navigation.navigate('BuyNow', {
-                                product,
-                                sku,
+                                itemid,
+                                sku_id,
                                 quantity
                             });
                         }
@@ -169,8 +170,8 @@ class ProductDetail extends React.Component {
         this.setNavigationOptions();
         const {navigation, route} = this.props;
         ApiClient.get('/product/get', {itemid: route.params?.itemid}).then(response => {
-            //console.log(response.data);
-            const {product} = response.data;
+            //console.log(response.result);
+            const {product} = response.result;
             const {content, images, props} = product;
             this.setState({
                 product,

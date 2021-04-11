@@ -30,9 +30,9 @@ const request = async (path, data = {}, method = 'GET', headers = {}) => {
                 if (response.data.errcode === 401) {
                     DeviceEventEmitter.emit(UserDidSignoutedNotification);
                 }
-                reject(response);
+                reject(response.data);
             } else {
-                resolve(response);
+                resolve(response.data);
             }
         }).catch(error => {
             if (__DEV__) {

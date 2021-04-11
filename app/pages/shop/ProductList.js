@@ -157,9 +157,9 @@ class ProductList extends React.Component {
         }).then(response => {
             let items;
             if (this.state.loadMore) {
-                items = this.state.items.concat(response.data.items);
+                items = this.state.items.concat(response.result.items);
             } else {
-                items = response.data.items;
+                items = response.result.items;
             }
             setTimeout(() => {
                 this.setState({
@@ -168,7 +168,7 @@ class ProductList extends React.Component {
                     refreshing: false,
                     loadMore: false,
                 });
-                this.loadMoreAble = response.data.items.length >= 20;
+                this.loadMoreAble = response.result.items.length >= 20;
             }, 300);
         });
     };

@@ -28,8 +28,8 @@ export default class RefundDetail extends React.Component {
         this.setNavigationOptions();
         const {refund_id} = this.props.route.params;
         ApiClient.get('/refund/get', {refund_id}).then(response => {
-            //console.log(response.data);
-            const {refund} = response.data;
+            //console.log(response.result);
+            const {refund} = response.result;
             this.setState({
                 refund,
                 loading: false

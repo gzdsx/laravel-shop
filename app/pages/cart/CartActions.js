@@ -7,6 +7,6 @@ export const AddToCart = (itemid, quantity = 1, sku_id = 0, callback = () => nul
         quantity,
         sku_id
     }).then(response => {
-        if (callback) callback(response.data);
+        if (callback) callback(response.result);
     });
 };

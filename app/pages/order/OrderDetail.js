@@ -108,7 +108,7 @@ export default class OrderDetail extends React.Component {
         this.setNavigationOptions();
         this.fetchData();
         ApiClient.get('/order/closereason/getall').then(response => {
-            this.setState({reasons: response.data.items});
+            this.setState({reasons: response.result.items});
         });
     }
 
@@ -118,7 +118,7 @@ export default class OrderDetail extends React.Component {
     fetchData = () => {
         const {order_id} = this.props.route.params;
         ApiClient.get('/bought/get', {order_id}).then(response => {
-            const order = response.data.order;
+            const order = response.result.order;
             //console.log(order);
             const {items, shipping, transaction} = order;
             this.setState({
@@ -283,7 +283,7 @@ export default class OrderDetail extends React.Component {
                 }}>
                     <View style={css.row}>
                         <Text style={css.textLabel}>商品总价</Text>
-                        <Text style={css.detailLabel}>￥{order.goods_fee}</Text>
+                        <Text style={css.detailLabel}>￥{order.product_fee}</Text>
                     </View>
                     <View style={css.row}>
                         <Text style={css.textLabel}>运费</Text>
@@ -295,7 +295,7 @@ export default class OrderDetail extends React.Component {
                     </View>
                     <View style={css.row}>
                         <Text style={css.textLabel}>实付款</Text>
-                        <Text style={[css.detailLabel, {color: '#f00', fontSize: 14}]}>￥{order.total_fee}</Text>
+                        <Text style={[css.detailLabel, {color: '#f00', fontSize: 14}]}>￥{order.order_fee}</Text>
                     </View>
                 </View>
             </View>

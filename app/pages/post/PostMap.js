@@ -76,7 +76,7 @@ export default class PostMap extends React.Component {
 
     componentDidMount(): void {
         ApiClient.get('/post/catlog/tree').then(response => {
-            let catlogs = response.data.items;
+            let catlogs = response.result.items;
             this.setState({
                 isLoading: false,
                 catlogs

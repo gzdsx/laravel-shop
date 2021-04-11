@@ -23,8 +23,14 @@ export default class BuyNow extends React.Component {
             address: null,
             shipping_type: 1,
             pay_type: 1,
-            remark: '',
-            totalFee: 0,
+            remark: null,
+            product: {},
+            sku: {},
+            quantity: 1,
+            product_fee: 0,
+            shipping_fee: 0,
+            discount_fee: 0,
+            order_fee: 0,
             loading: true
         };
         this.submiting = false;
@@ -66,13 +72,24 @@ export default class BuyNow extends React.Component {
 
     componentDidMount() {
         this.setNavigationOptions();
-        const {sku, quantity} = this.props.route.params;
-        this.setState({totalFee: sku.price * quantity});
+        const {itemid, sku_id, quantity} = this.props.route.params;
+        ApiClient.post('/order/buynow', {itemid, sku_id, quantity}).then(response => {
+            const {product, sku, quantity, product_fee, shipping_fee, discount_fee, order_fee} = response.result.result;
+            this.setState({
+                product,
+                sku,
+                quantity,
+                product_fee,
+                shipping_fee,
+                discount_fee,
+                order_fee
+            });
+        });
 
         ApiClient.get('/address/get').then(response => {
-            if (response.data.address) {
+            if (response.result.address) {
                 this.setState({
-                    address: response.data.address,
+                    address: response.result.address,
                     loading: false
                 });
             } else {
@@ -144,7 +161,7 @@ export default class BuyNow extends React.Component {
     };
 
     renderContent = () => {
-        const {product, sku, quantity} = this.props.route.params;
+        const {product, sku, quantity} = this.state;
         return (
             <TableView style={{marginTop: 10}}>
                 <TableCell>
@@ -216,7 +233,7 @@ export default class BuyNow extends React.Component {
     };
 
     renderFooter = () => {
-        const {quantity} = this.props.route.params;
+        const {quantity, order_fee} = this.state;
         return (
             <View style={{
                 backgroundColor: '#fff',
@@ -235,7 +252,7 @@ export default class BuyNow extends React.Component {
                         color: '#f00',
                         fontSize: 15,
                         lineHeight: 49,
-                    }}>￥{this.state.totalFee.toFixed(2)}</Text>
+                    }}>￥{order_fee}</Text>
                 </View>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -248,9 +265,9 @@ export default class BuyNow extends React.Component {
                         backgroundColor: '#FC461E',
                         flex: 1,
                         borderRadius: 20,
-                        flexDirection:'row',
-                        justifyContent:'center',
-                        alignItems:'center'
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}>
                         <Text style={{
                             color: '#fff',
@@ -264,8 +281,8 @@ export default class BuyNow extends React.Component {
     };
 
     submit = () => {
-        const {product, sku, quantity} = this.props.route.params;
-        const {shipping_type, pay_type, remark, address} = this.state;
+        const {itemid, sku_id} = this.props.route.params;
+        const {quantity, shipping_type, pay_type, remark, address} = this.state;
 
         if (!address) {
             this.refs.toast.show('请选择收货地址');
@@ -279,15 +296,15 @@ export default class BuyNow extends React.Component {
         }
 
         ApiClient.post('/order/create', {
-            itemid: product.itemid,
-            sku_id: sku.sku_id || 0,
+            itemid,
+            sku_id,
+            quantity,
             shipping_type,
             pay_type,
             remark,
-            quantity,
             address
         }).then(response => {
-            const {order_id} = response.data.order;
+            const {order_id} = response.result.order;
             this.props.navigation.replace('OrderDetail', {order_id});
         }).catch((err) => {
             this.submiting = false;

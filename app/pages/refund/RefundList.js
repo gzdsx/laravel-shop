@@ -69,8 +69,8 @@ export default class RefundList extends React.Component {
 
     fetchData = () => {
         ApiClient.get('/refund/batchget').then(response => {
-            //console.log(response.data);
-            const {items} = response.data;
+            //console.log(response.result);
+            const {items} = response.result;
             this.setState({
                 items,
                 loading: false,

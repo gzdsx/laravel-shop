@@ -105,7 +105,7 @@ class MyProfile extends React.Component {
 
         ApiClient.get('/user/info').then(response => {
             //console.log(response);
-            const {userinfo} = response.data;
+            const {userinfo} = response.result;
             if (userinfo) {
                 this.setState({
                     userinfo,
@@ -155,20 +155,20 @@ class MyProfile extends React.Component {
             maxWidth: 1200,
             maxHeight: 1200,
             tintColor: '#666'
-        }, response => {
+        }, res => {
             Utils.setStatusBarStyle('light');
-            if (response.didCancel || response.error) {
+            if (res.didCancel || res.error) {
                 return false;
             }
 
             this.setState({uploading: true});
             ApiClient.upload('/user/avatar', {
-                uri: response.uri,
-                name: response.fileName
-            }).then(res => {
-                //console.log(res.data);
+                uri: res.uri,
+                name: res.fileName
+            }).then(response => {
+                //console.log(response);
                 let {userinfo} = this.state;
-                userinfo.avatar = res.data.avatar;
+                userinfo.avatar = response.result.avatar;
                 DeviceEventEmitter.emit(UserDidSigninedNotification, userinfo);
                 this.setState({
                     userinfo,

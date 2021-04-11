@@ -31,14 +31,14 @@ export default class RefundSend extends React.Component {
     componentDidMount(): void {
         this.setNavigationOptions();
         ApiClient.get('/express/getall').then(response => {
-            let expresses = response.data.items;
+            let expresses = response.result.items;
             this.setState({expresses});
         });
 
         let {refund_id} = this.props.route.params;
         ApiClient.get('/refund/get', {refund_id}).then(response => {
-            //console.log(response.data);
-            let {refund} = response.data;
+            //console.log(response.result);
+            let {refund} = response.result;
             let {shipping} = refund;
             this.setState({
                 refund,

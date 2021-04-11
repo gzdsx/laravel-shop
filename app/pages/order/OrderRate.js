@@ -249,7 +249,7 @@ export default class OrderRate extends React.Component {
                 uri: file.uri,
                 name: file.fileName || file.uri.substring(file.uri.lastIndexOf('/'))
             });
-            images.push(response.data.image);
+            images.push(response.result.image);
         }
 
         return new Promise(resolve => {

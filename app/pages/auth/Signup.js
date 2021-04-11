@@ -105,8 +105,8 @@ export default class Signup extends React.Component {
         }
 
         ApiClient.post('/register', data).then(response => {
-            //console.log(response.data);
-            const {userinfo, access_token} = response.data;
+            //console.log(response.result);
+            const {userinfo, access_token} = response.result;
             this.refs.toast.show('注册成功', {
                 onHide: () => {
                     AsyncStorage.setItem(AccessToken, access_token).then(() => {
