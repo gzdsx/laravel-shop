@@ -114,12 +114,12 @@
         methods: {
             fetchGroups() {
                 this.$get('/user/group/getall').then(response => {
-                    this.groups = response.data.items;
+                    this.groups = response.result.items;
                 });
             },
             fetchData() {
                 this.$get('/user/get', {uid: this.uid}).then(response => {
-                    this.user = response.data.user;
+                    this.user = response.result.user;
                 });
             },
             handleSave() {

@@ -96,7 +96,7 @@
         methods: {
             fetchList() {
                 this.$get('/refundreason/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

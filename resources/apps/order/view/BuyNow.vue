@@ -109,11 +109,11 @@
         },
         mounted() {
             this.$get('/address/get').then(response => {
-                this.address = response.data.address;
+                this.address = response.result.address;
             });
 
             this.$get('/address/batchget').then(response => {
-                this.addresses = response.data.items;
+                this.addresses = response.result.items;
             });
 
             this.fetchData();
@@ -123,7 +123,7 @@
                 const quantity = this.quantity;
                 const {itemid, sku_id} = pageConfig;
                 this.$post('/order/buynow', {itemid, sku_id, quantity}).then(response => {
-                    const {product, sku, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    const {product, sku, product_fee, shipping_fee, discount_fee, order_fee} = response.result.result;
                     this.sku = sku;
                     this.product = product;
                     this.product_fee = product_fee;
@@ -161,14 +161,14 @@
                     shipping_type,
                     address
                 }).then(response => {
-                    var url = '/order/pay?order_id=' + response.data.order.order_id;
+                    var url = '/order/pay?order_id=' + response.result.order.order_id;
                     if (window.location.replace) {
                         window.location.replace(url);
                     } else {
                         window.location.href = url;
                     }
                 }).catch(reason => {
-                    this.$showToast(response.data.errmsg);
+                    this.$showToast(response.result.errmsg);
                 });
             },
             handleAddAddress() {

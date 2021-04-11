@@ -23,6 +23,7 @@ trait WechatDefaultConfig
      */
     protected function officialAccount($account = 'default')
     {
+        $account = config('wechat.official_account.' . $account) ? $account : 'default';
         return EasyWeChat::officialAccount($account);
     }
 
@@ -32,6 +33,7 @@ trait WechatDefaultConfig
      */
     protected function miniProgram($account = 'default')
     {
+        $account = config('wechat.mini_program.' . $account) ? $account : 'default';
         return EasyWeChat::miniProgram($account);
     }
 
@@ -41,6 +43,7 @@ trait WechatDefaultConfig
      */
     protected function payment($account = 'default')
     {
+        $account = config('wechat.payment.' . $account) ? $account : 'default';
         return EasyWeChat::payment($account);
     }
 }

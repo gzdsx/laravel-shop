@@ -145,7 +145,7 @@
                     ...this.searchFields,
                     offset: this.offset
                 }).then(response => {
-                    const {items, total} = response.data;
+                    const {items, total} = response.result;
                     this.items = items;
                     this.total = total;
                     this.loading = false;
@@ -153,7 +153,7 @@
             },
             fetchCatlogs() {
                 this.$get('/post/category/getall').then(response => {
-                    this.nodes = this.serilazeProps(response.data.items);
+                    this.nodes = this.serilazeProps(response.result.items);
                 });
             },
             handleSelectionChange(val) {

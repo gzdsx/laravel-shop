@@ -124,7 +124,7 @@
         },
         mounted() {
             this.$get('/order/closereason/getall').then(response => {
-                this.reasons = response.data.items.map(o => ({name: o}));
+                this.reasons = response.result.items.map(o => ({name: o}));
             });
             this.order_id = this.$route.query.order_id;
             this.fetchData();
@@ -132,7 +132,7 @@
         methods: {
             fetchData: function () {
                 this.$get('/bought/get?order_id=' + this.order_id).then(response => {
-                    this.order = response.data.order;
+                    this.order = response.result.order;
                     const {shipping, transaction} = this.order;
                     if (shipping) this.shipping = shipping;
                     if (transaction) this.transaction = transaction;

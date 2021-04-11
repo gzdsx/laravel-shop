@@ -9,7 +9,7 @@
         name: "App",
         mounted() {
             this.$get('/user/info').then(response => {
-                this.$store.commit('signin', response.data.userinfo);
+                this.$store.commit('signin', response.result.userinfo);
             });
         }
     }

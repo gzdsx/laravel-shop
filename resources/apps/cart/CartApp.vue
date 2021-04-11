@@ -118,7 +118,7 @@
         methods: {
             fetchList() {
                 this.$get('/cart/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             decrease(item) {

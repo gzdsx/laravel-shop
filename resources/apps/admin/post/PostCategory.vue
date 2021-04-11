@@ -204,7 +204,7 @@
         methods: {
             fetchList() {
                 this.$get('/post/category/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {
@@ -221,7 +221,7 @@
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;
-                    if (cb) cb(response.data);
+                    if (cb) cb(response.result);
                 });
             },
             resetData() {

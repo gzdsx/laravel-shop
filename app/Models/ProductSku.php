@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $stock 库存
  * @property string|null $code SKU编码
  * @property string|null $properties 属性组合
- * @property-read \App\Models\ProductItem $item
+ * @property-read \App\Models\ProductItem $product
  * @method static Builder|ProductSku newModelQuery()
  * @method static Builder|ProductSku newQuery()
  * @method static Builder|ProductSku query()

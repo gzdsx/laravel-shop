@@ -78,7 +78,7 @@
         mounted() {
             this.live_id = this.$route.query.live_id;
             this.$get('/live/get', {id: this.live_id}).then(response => {
-                this.live = response.data.live;
+                this.live = response.result.live;
             });
             this.fetchList();
         },
@@ -88,7 +88,7 @@
                     offset: this.offset,
                     live_id: this.live_id
                 }).then(response => {
-                    const {items, total} = response.data;
+                    const {items, total} = response.result;
                     this.items = items;
                     this.total = total;
                     this.loading = false;

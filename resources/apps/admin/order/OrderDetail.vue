@@ -302,8 +302,8 @@
         methods: {
             fetchData() {
                 this.$get('/order/get?order_id=' + this.order_id).then(response => {
-                    this.order = response.data.order;
-                    const {shipping, transaction, items, buyer} = response.data.order;
+                    this.order = response.result.order;
+                    const {shipping, transaction, items, buyer} = response.result.order;
                     this.shipping = shipping;
                     this.transaction = transaction;
                     this.items = items;
@@ -313,7 +313,7 @@
             },
             fetchExpress() {
                 this.$get('/express/getall').then(response => {
-                    this.expresses = response.data.items;
+                    this.expresses = response.result.items;
                 });
             },
             handleChange(val) {

@@ -115,15 +115,15 @@
             fetchTicket() {
                 const id = pageConfig.id;
                 this.$get('/live/getticket', {id}).then(response => {
-                    if (response.data.ticket) {
-                        this.ticket = response.data.ticket;
+                    if (response.result.ticket) {
+                        this.ticket = response.result.ticket;
                     }
                 });
             },
             fetchData() {
                 const id = pageConfig.id;
                 this.$get('/live/get', {id}).then(response => {
-                    this.live = response.data.live;
+                    this.live = response.result.live;
                     this.loading = false;
                     this.initWebsocket();
                     this.setShareData();
@@ -203,7 +203,7 @@
                     openid,
                     appid: 1
                 }).then(response => {
-                    var config = response.data.config;
+                    var config = response.result.config;
                     if (!config.timestamp) {
                         config.timestamp = config.timeStamp;
                     }

@@ -63,7 +63,7 @@
         mounted() {
             const itemid = pageConfig.itemid;
             this.$get('/product/get', {itemid}).then(response => {
-                const {product} = response.data;
+                const {product} = response.result;
                 const {images, content} = product;
                 this.product = product;
                 this.images = images;

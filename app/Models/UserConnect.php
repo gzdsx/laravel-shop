@@ -56,7 +56,7 @@ class UserConnect extends Model
 
     /**
      * @param $openid
-     * @return Builder|Model|object|null
+     * @return Builder|Model|object|UserConnect|null
      */
     public static function findByOpenid($openid)
     {
@@ -65,7 +65,7 @@ class UserConnect extends Model
 
     /**
      * @param $unionid
-     * @return UserConnect|Builder|Model|object|null
+     * @return UserConnect|Builder|Model|object|UserConnect|null
      */
     public static function findByUnionid($unionid)
     {

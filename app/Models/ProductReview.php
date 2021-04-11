@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductReviewImage[] $images
  * @property-read int|null $images_count
- * @property-read \App\Models\ProductItem $item
  * @property-read \App\Models\Order $order
+ * @property-read \App\Models\ProductItem $product
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|ProductReview newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductReview newQuery()

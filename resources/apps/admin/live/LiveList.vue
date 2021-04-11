@@ -107,7 +107,7 @@
         methods: {
             fetchList() {
                 this.$get('/live/batchget', {offset: this.offset}).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleSelectionChange(val) {

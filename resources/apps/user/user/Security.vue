@@ -184,8 +184,8 @@
                 }
 
                 this.$post('/security/mobile/update', {mobile: this.mobile}).then(response => {
-                    if (response.data.errcode) {
-                        this.$showToast(response.data.errmsg);
+                    if (response.result.errcode) {
+                        this.$showToast(response.result.errmsg);
                     } else {
                         this.user.mobile = this.mobile;
                         this.showMobile = false;
@@ -205,8 +205,8 @@
                 }
 
                 this.$post('/security/email/update', {email: this.email}).then(response => {
-                    if (response.data.errcode) {
-                        this.$showToast(response.data.errmsg);
+                    if (response.result.errcode) {
+                        this.$showToast(response.result.errmsg);
                     } else {
                         this.user.email = this.email;
                         this.showEmail = false;
@@ -229,8 +229,8 @@
                     password: this.password,
                     newpassword: this.newpassword
                 }).then(response => {
-                    if (response.data.errcode) {
-                        this.$showToast(response.data.errmsg);
+                    if (response.result.errcode) {
+                        this.$showToast(response.result.errmsg);
                     } else {
                         this.showPass = false;
                         this.$showToast('密码已更新');

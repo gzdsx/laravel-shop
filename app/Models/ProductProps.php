@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $prop_id
  * @property string|null $prop_name
  * @property string|null $prop_value
- * @property-read \App\Models\ProductItem $item
+ * @property-read \App\Models\ProductItem $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductProps newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductProps newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductProps query()

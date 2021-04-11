@@ -12,10 +12,11 @@ Vue.prototype.$get = (path, params = {}, config = {}) => {
     if (params) config.params = params;
     return new Promise((resolve, reject) => {
         axios.get(API_URL + path, config).then(response => {
+            //console.log(response)
             if (response.data.errcode) {
-                reject(response);
+                reject(response.data);
             } else {
-                resolve(response);
+                resolve(response.data);
             }
         }).catch(reason => {
             reject(reason);
@@ -27,9 +28,9 @@ Vue.prototype.$post = (path, data = {}) => {
     return new Promise((resolve, reject) => {
         axios.post(API_URL + path, data).then(response => {
             if (response.data.errcode) {
-                reject(response);
+                reject(response.data);
             } else {
-                resolve(response);
+                resolve(response.data);
             }
         }).catch(reason => {
             reject(reason);

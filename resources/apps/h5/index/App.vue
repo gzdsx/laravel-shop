@@ -71,11 +71,11 @@
         mounted() {
             var $this = this;
             this.$get('/block/item/batchget?block_id=1').then(function (response) {
-                $this.images = response.data.items;
+                $this.images = response.result.items;
             });
 
             this.$get('/product/batchget').then(function (response) {
-                $this.items = response.data.items;
+                $this.items = response.result.items;
             });
         },
         methods: {

@@ -143,7 +143,7 @@
         methods: {
             fetchList () {
                 this.$get('/block/item/batchget?block_id=' + this.block_id).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

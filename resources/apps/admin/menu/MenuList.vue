@@ -89,7 +89,7 @@
         methods: {
             fetchList() {
                 this.$get('/menu/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

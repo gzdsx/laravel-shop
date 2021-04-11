@@ -59,7 +59,7 @@
         mounted() {
             const {refund_id} = this.$route.query;
             this.$get('/refund/get', {refund_id}).then(response => {
-                const {refund} = response.data;
+                const {refund} = response.result;
                 this.refund = refund;
                 this.order = refund.order;
             });

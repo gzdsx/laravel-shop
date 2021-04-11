@@ -57,7 +57,7 @@
         methods: {
             fetchExpress() {
                 this.$get('/express/getall').then(response => {
-                    this.expresses = response.data.items.map((d) => {
+                    this.expresses = response.result.items.map((d) => {
                         return {
                             text: d.name,
                             value: d

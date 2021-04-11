@@ -196,8 +196,8 @@
                     offset: this.offset,
                     count: 10
                 }).then(response => {
-                    this.orderList = response.data.items;
-                    this.total = response.data.total;
+                    this.orderList = response.result.items;
+                    this.total = response.result.total;
                     this.loading = false;
                 });
             },

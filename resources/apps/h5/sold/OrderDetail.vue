@@ -148,7 +148,7 @@
             },
             getOrder() {
                 this.$get('/sold/get?order_id=' + this.order_id).then(response => {
-                    this.order = response.data.order;
+                    this.order = response.result.order;
                     this.order_fee = this.order.order_fee;
                 });
             },

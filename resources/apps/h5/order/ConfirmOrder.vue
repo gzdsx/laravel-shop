@@ -109,7 +109,7 @@
         methods: {
             fetchData() {
                 this.$post('/order/confirm', {items: pageConfig.items}).then(response => {
-                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.result.result;
                     this.items = items;
                     this.product_fee = product_fee;
                     this.shipping_fee = shipping_fee;
@@ -137,8 +137,8 @@
                     remark: this.remark,
                     address: this.address,
                 }).then(response => {
-                    //console.log(response.data);
-                    this.order = response.data.order;
+                    //console.log(response.result);
+                    this.order = response.result.order;
                     const {order_id} = this.order;
                     OrderProcessor.pay(order_id).then(() => {
                         window.location.replace('/h5/user/#/order/detail?order_id=' + order_id);
@@ -155,7 +155,7 @@
             },
             getAddress() {
                 this.$get('/address/get').then(response => {
-                    this.address = response.data.address;
+                    this.address = response.result.address;
                 });
             }
         },

@@ -114,7 +114,7 @@
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
                         axios.get('/api/district/batchget?fid=' + fid).then(response => {
-                            const items = response.data.items.map((o) => ({
+                            const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2
                             }));
@@ -131,7 +131,7 @@
         methods: {
             fetchList() {
                 this.$get('/refund/address/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleShowAdd() {

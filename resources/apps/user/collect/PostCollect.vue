@@ -84,7 +84,7 @@
                     q: this.q,
                     offset: this.offset
                 }).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleDelete(aid) {

@@ -123,7 +123,7 @@
                 const {itemid, sku_id} = pageConfig;
                 const quantity = this.quantity;
                 this.$post('/order/buynow', {itemid, sku_id, quantity}).then(response => {
-                    const {product, sku, quantity, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    const {product, sku, quantity, product_fee, shipping_fee, discount_fee, order_fee} = response.result.result;
                     this.product = product;
                     this.sku = sku;
                     this.quantity = quantity;
@@ -158,8 +158,8 @@
                     remark: this.remark,
                     sku_id: this.sku ? this.sku.sku_id : 0
                 }).then(response => {
-                    //console.log(response.data);
-                    this.order = response.data.order;
+                    //console.log(response.result);
+                    this.order = response.result.order;
                     const {order_id} = this.order;
                     OrderProcessor.pay(order_id).then(() => {
                         window.location.replace('/h5/user/#/order/detail?order_id=' + order_id);
@@ -177,7 +177,7 @@
             },
             getAddress() {
                 this.$get('/address/get').then(response => {
-                    this.address = response.data.address;
+                    this.address = response.result.address;
                 });
             }
         },

@@ -152,7 +152,7 @@
         methods: {
             fetchData() {
                 this.$get('/post/get', {aid: this.aid}).then(response => {
-                    this.post = response.data.post;
+                    this.post = response.result.post;
                     const {content, images, media} = this.post;
                     if (content) this.content = content;
                     if (images) this.images = images;
@@ -161,7 +161,7 @@
             },
             fetchCategories() {
                 this.$get('/post/category/getall').then(response => {
-                    this.nodes = this.serilazeProps(response.data.items);
+                    this.nodes = this.serilazeProps(response.result.items);
                 });
             },
             onEditChange(content) {

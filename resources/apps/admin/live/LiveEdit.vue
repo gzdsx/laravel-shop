@@ -130,12 +130,12 @@
         methods: {
             fetchData() {
                 this.$get('/live/get?id=' + this.id).then(response => {
-                    this.live = response.data.live;
+                    this.live = response.result.live;
                 });
             },
             fetchChannels() {
                 this.$get('/live/channel/getall').then(response => {
-                    this.channels = response.data.items;
+                    this.channels = response.result.items;
                 });
             },
             handlePickedImage(data) {

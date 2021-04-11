@@ -77,7 +77,7 @@
             this.tab = this.$route.query.tab || 'all'
             this.fetchList();
             this.$get('/order/closereason/getall').then(response => {
-                this.reasons = response.data.items.map(o => ({name: o}));
+                this.reasons = response.result.items.map(o => ({name: o}));
             });
             bindLoadMore(this.onLoadMore);
         },
@@ -87,17 +87,17 @@
                     tab: this.tab,
                     offset: this.offset
                 }).then(response => {
-                    //console.log(response.data);
+                    //console.log(response.result);
                     if (this.loadMore) {
-                        this.orders = this.orders.concat(response.data.items);
+                        this.orders = this.orders.concat(response.result.items);
                     } else {
-                        this.orders = response.data.items;
+                        this.orders = response.result.items;
                     }
 
                     this.loading = false;
                     this.refreshing = false;
                     this.loadMore = false;
-                    this.loadMoreAble = response.data.items.length === 10;
+                    this.loadMoreAble = response.result.items.length === 10;
                 });
             },
             onCancel() {

@@ -6,11 +6,11 @@ export default {
                 appid: 1,
                 openid: window.openid
             }).then(response => {
-                //console.log(response.data);
-                if (response.data.errcode) {
+                //console.log(response.result);
+                if (response.result.errcode) {
                     reject(response);
                 } else {
-                    let config = response.data.config;
+                    let config = response.result.config;
                     if (!config.timestamp) {
                         config.timestamp = config.timeStamp;
                     }

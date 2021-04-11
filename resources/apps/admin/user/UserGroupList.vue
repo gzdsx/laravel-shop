@@ -135,7 +135,7 @@
         methods: {
             fetchList() {
                 this.$get('/user/group/getall').then(response => {
-                    this.groupList = response.data.items;
+                    this.groupList = response.result.items;
                 });
             },
             handleShowEdit(group) {

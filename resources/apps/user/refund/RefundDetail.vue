@@ -55,7 +55,7 @@
             fetchData() {
                 const refund_id = this.refund_id;
                 this.$get('/refund/get', {refund_id}).then(response => {
-                    this.refund = response.data.refund;
+                    this.refund = response.result.refund;
                 });
             },
             handleRevoke() {

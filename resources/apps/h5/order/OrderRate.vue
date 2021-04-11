@@ -64,7 +64,7 @@
             fetchData() {
                 const {order_id} = pageConfig;
                 this.$get('/bought/get', {order_id}).then(response => {
-                    this.order = response.data.order;
+                    this.order = response.result.order;
                     this.reviews = this.order.items.map(d => ({
                         item_star: 0,
                         service_star: 0,
@@ -90,7 +90,7 @@
                             var response = await this.$axios.post('/material/uploadimg', formData, {
                                 headers: {'Content-Type': 'multipart/form-data'}
                             });
-                            const {thumb, image} = response.data.image;
+                            const {thumb, image} = response.result.image;
                             images.push({
                                 thumb,
                                 image,

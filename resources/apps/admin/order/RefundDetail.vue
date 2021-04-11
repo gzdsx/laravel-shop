@@ -197,7 +197,7 @@
             fetchData() {
                 const refund_id = this.refund_id;
                 this.$get('/refund/get', {refund_id}).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     const {order, images, items, user} = refund;
                     this.refund = refund;
                     this.items = items;
@@ -207,7 +207,7 @@
             },
             fetchAddressList() {
                 this.$get('/refund/address/batchget').then(response => {
-                    this.addresses = response.data.items;
+                    this.addresses = response.result.items;
                 });
             },
             handleProcess(action_type) {
@@ -216,7 +216,7 @@
                     refund_id,
                     action_type
                 }).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     this.refund = {
                         ...this.refund,
                         ...refund
@@ -226,7 +226,7 @@
             saveRefund() {
                 const refund_id = this.refund_id;
                 this.$post('/refund/resolve', {refund_id}).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     this.refund = {
                         ...this.refund,
                         ...refund
@@ -244,7 +244,7 @@
             rejectRefund() {
                 const refund_id = this.refund_id;
                 this.$post('/refund/reject', {refund_id}).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     this.refund = {
                         ...this.refund,
                         ...refund

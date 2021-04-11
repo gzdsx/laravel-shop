@@ -24,7 +24,7 @@
         },
         mounted() {
             this.$get('/order/closereason/getall').then(response => {
-                this.actions = response.data.items.map(o => ({name: o}));
+                this.actions = response.result.items.map(o => ({name: o}));
             });
         },
         methods: {

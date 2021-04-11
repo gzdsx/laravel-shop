@@ -84,7 +84,7 @@
         methods: {
             fetchList: function () {
                 this.$get('/page/batchget?type=category').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

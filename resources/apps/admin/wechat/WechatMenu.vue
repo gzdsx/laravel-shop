@@ -209,12 +209,12 @@
         methods: {
             fetchList () {
                 this.$get('/wechat/menu/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             fetchTypes () {
                 this.$get('/wechat/menu/gettypes').then(response => {
-                    this.types = response.data.items;
+                    this.types = response.result.items;
                 });
             },
             saveData(cb) {
@@ -275,8 +275,8 @@
                     type: 'warning'
                 }).then(() => {
                     this.$post('/wechat/menu/apply').then(response => {
-                        if (response.data.errcode) {
-                            this.$showToast(response.data.errmsg);
+                        if (response.result.errcode) {
+                            this.$showToast(response.result.errmsg);
                         } else {
                             this.$showToast('菜单应用成功');
                         }

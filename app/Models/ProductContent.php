@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $itemid
  * @property string|null $content
- * @property-read \App\Models\ProductItem $item
+ * @property-read \App\Models\ProductItem $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductContent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductContent query()

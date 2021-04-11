@@ -21,51 +21,40 @@ use App\Services\Contracts\WechatServiceInterface;
 class WechatService implements WechatServiceInterface
 {
 
-    protected $wechatUserInfo;
-
-    public function __construct($wechatUserInfo = [])
-    {
-        $this->wechatUserInfo = collect($wechatUserInfo);
-    }
+    protected $userInfo;
 
     /**
-     * @param string $appid
-     * @param array $wechatUserInfo
-     * @param string $openid
-     * @param null $unionid
+     * @param array $userInfo
      * @return User|\Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed
      */
-    public function register($wechatUserInfo)
+    public function register($userInfo)
     {
         // TODO: Implement register() method.
-        $this->wechatUserInfo = collect($wechatUserInfo);
-        $connect = UserConnect::firstOrNew(['openid' => $this->wechatUserInfo->get('openid')]);
-        $connect->fill($wechatUserInfo);
+        $this->userInfo = collect($userInfo);
+        $connect = UserConnect::firstOrNew(['openid' => $this->userInfo->get('openid')]);
+        $connect->fill($userInfo);
         $connect->platform = 'wechat';
 
-        if (!$user = $connect->user) {
-            if ($this->wechatUserInfo->get('unionid')) {
-                if ($unionConnect = UserConnect::findByUnionid($this->wechatUserInfo->get('unionid'))) {
+        $user = new User(['state' => 1]);
+        if ($connect->user) {
+            $user = $connect->user;
+        } else {
+            if ($unionid = $this->userInfo->get('unionid')) {
+                if ($unionConnect = UserConnect::whereHas('user')->where('unionid', $unionid)->first()) {
                     $user = $unionConnect->user;
                 }
             }
         }
 
-        if (!$user) $user = new User();
         //更新用户信息
-        $user->username = $this->wechatUserInfo->get('nickname');
-        $user->avatar = $this->wechatUserInfo->get('avatar');
+        $user->username = $this->userInfo->get('nickname');
+        $user->avatar = $this->userInfo->get('avatar');
         $user->save();
-
+        //关联用户
         $connect->user()->associate($user);
         $connect->save();
-
-        $user->profile->fill([
-            'gender' => $this->wechatUserInfo->get('gender'),
-            'country' => $this->wechatUserInfo->get('country'),
-            'province' => $this->wechatUserInfo->get('province'),
-            'city' => $this->wechatUserInfo->get('city'),
-        ])->save();
+        //更新用户资料
+        $user->profile->fill($this->userInfo->all())->save();
 
         return $user;
     }

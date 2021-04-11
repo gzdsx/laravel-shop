@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Storage;
+
 if (!function_exists('setting')) {
     /**
      * @param null $name
@@ -164,19 +167,17 @@ function clean_style($str)
  */
 function material_path($path = '')
 {
-    return \Illuminate\Support\Facades\Storage::path($path);
+    return Storage::path($path);
 }
 
 /**
- * @param string $filename
+ * @param string $path
  * @return string
  */
-function material_url($filename = '')
+function material_url($path = '')
 {
-    if (preg_match("/([http|https|ftp]\:\/\/)(.*?)/is", $filename)) {
-        return $filename;
-    }
-    return \Illuminate\Support\Facades\Storage::url($filename);
+    if (URL::isValidUrl($path)) return $path;
+    return Storage::url($path);
 }
 
 /**
@@ -185,11 +186,11 @@ function material_url($filename = '')
  */
 function image_url($path = '')
 {
-    if (preg_match("/([http|https|ftp]\:\/\/)(.*?)/is", $path)) {
+    if (URL::isValidUrl($path)) {
         return $path;
     }
 
-    if (is_file(material_path($path))) {
+    if (Storage::exists($path)) {
         return material_url($path);
     }
 
@@ -203,17 +204,6 @@ function image_url($path = '')
 function strip_image_url($url)
 {
     return $url ? str_replace(material_url(), '', $url) : $url;
-}
-
-/**
- * @param $uid
- * @param string $size
- * @return string
- */
-function avatar($uid, $size = 'big')
-{
-    $code = base64_encode(serialize(['uid' => $uid, 'size' => $size]));
-    return url('avatar/' . $code);
 }
 
 /**
@@ -259,16 +249,16 @@ function label($id)
 }
 
 /**
- * @param $data
+ * @param mixed $data
  * @return \Illuminate\Http\JsonResponse
  */
-function jsonSuccess($data = [])
+function jsonSuccess($result = [])
 {
-    $data = array_merge($data, [
-        'retrun_code' => 'success',
-        'return_msg' => 'OK'
+    return response()->json([
+        'retrun_code' => 'OK',
+        'return_msg' => 'SUCCESS',
+        'result' => $result
     ]);
-    return response()->json($data);
 }
 
 /**
@@ -277,16 +267,12 @@ function jsonSuccess($data = [])
  * @param null $data
  * @return \Illuminate\Http\JsonResponse
  */
-function jsonError(int $errcode, string $errmsg, $data = null)
+function jsonError(int $errcode, string $errmsg, $extra = null)
 {
     $return = [
         'errcode' => $errcode,
         'errmsg' => $errmsg,
     ];
-    if (is_array($data)) {
-        $return = array_merge($data, $return);
-    } else {
-        $return['data'] = $data;
-    }
+    if ($extra) $return['extra'] = $extra;
     return response()->json($return);
 }

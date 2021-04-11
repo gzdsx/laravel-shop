@@ -8,6 +8,7 @@ use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -86,13 +87,8 @@ class Material extends Model
         });
 
         static::deleting(function (Material $material) {
-            if (is_file(material_path($material->getOriginal('thumb')))) {
-                @unlink(material_path($material->getOriginal('thumb')));
-            }
-
-            if (is_file(material_path($material->getOriginal('source')))) {
-                @unlink(material_path($material->getOriginal('source')));
-            }
+            Storage::delete($material->getRawOriginal('thumb'));
+            Storage::delete($material->getRawOriginal('source'));
         });
     }
 

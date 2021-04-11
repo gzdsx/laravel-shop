@@ -30,7 +30,7 @@ namespace App\Models;
  * @property-read int|null $posts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|PostCategory[] $siblings
  * @property-read int|null $siblings_count
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryModel enable()
+ * @method static Builder|CategoryModel enable()
  * @method static \Illuminate\Database\Eloquent\Builder|PostCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostCategory query()

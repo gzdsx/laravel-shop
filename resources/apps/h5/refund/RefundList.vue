@@ -48,7 +48,7 @@
         methods: {
             fetchData() {
                 this.$get('/refund/batchget').then(response => {
-                    this.refunds = response.data.items;
+                    this.refunds = response.result.items;
                 });
             },
             onRevoke(refund_id) {

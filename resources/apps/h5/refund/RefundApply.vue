@@ -92,7 +92,7 @@
         mounted() {
             const {order_id, sub_order_id, refund_type} = this.$route.query;
             this.$post('/refund/apply', {order_id, suborders: [sub_order_id], refund_type}).then(response => {
-                const {refund} = response.data;
+                const {refund} = response.result;
                 const {items, order, images, refund_amount} = refund;
                 this.refund = refund;
                 this.items = items;
@@ -108,7 +108,7 @@
         methods: {
             fetchReasons() {
                 this.$get('/refundreason/getall').then(response => {
-                    this.reasons = response.data.items.map(d => d.title);
+                    this.reasons = response.result.items.map(d => d.title);
                 });
             },
             async onSubmit() {
@@ -154,7 +154,7 @@
                             order_id,
                             suborders: this.items.map((item) => item.sub_order_id),
                         }).then(response => {
-                            const {refund_id} = response.data.refund;
+                            const {refund_id} = response.result.refund;
                             this.$router.replace({path: '/refund/detail', query: {refund_id}});
                         });
                     }
@@ -169,7 +169,7 @@
                         var response = await this.$post('/material/uploadimg', formData, {
                             headers: {'Content-Type': 'multipart/form-data'}
                         });
-                        images.push(response.data.image);
+                        images.push(response.result.image);
                     } else {
                         images.push(imgFile);
                     }

@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $letter
  * @property string|null $citycode 区号
  * @property string|null $zipcode 邮编
+ * @property-read \Illuminate\Database\Eloquent\Collection|District[] $children
+ * @property-read int|null $children_count
  * @property-read \Illuminate\Database\Eloquent\Collection|District[] $childs
  * @property-read int|null $childs_count
  * @property-read District $parent

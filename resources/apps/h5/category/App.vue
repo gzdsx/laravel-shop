@@ -47,20 +47,20 @@
                     offset: this.offset
                 }).then(response => {
                     if (this.isLoadMore) {
-                        this.items = this.items.concat(response.data.items);
+                        this.items = this.items.concat(response.result.items);
                     } else {
-                        this.items = response.data.items;
+                        this.items = response.result.items;
                     }
 
                     this.isLoading = false;
                     this.isRefreshing = false;
                     this.isLoadMore = false;
-                    this.loadMoreAble = response.data.items.length === 10;
+                    this.loadMoreAble = response.result.items.length === 10;
                 });
             },
             fetchCategories() {
                 this.$get('/product/category/getall').then(response => {
-                    this.categories = response.data.items;
+                    this.categories = response.result.items;
                     if (this.categories.length > 0){
                         this.searchFields.catid = this.categories[0].catid;
                     }

@@ -158,15 +158,15 @@
                 username:'大师兄'
             })
             this.$get('/dashboard/posts').then(response => {
-                this.posts = response.data.items;
+                this.posts = response.result.items;
             });
 
             this.$get('/dashboard/counts').then(response => {
-                this.counts = response.data.counts;
+                this.counts = response.result.counts;
             });
 
             this.$get('/dashboard/newuser').then(response => {
-                this.users = response.data.items;
+                this.users = response.result.items;
             });
         },
         methods: {

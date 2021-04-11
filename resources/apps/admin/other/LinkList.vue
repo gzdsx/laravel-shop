@@ -116,12 +116,12 @@
         methods: {
             fetchList() {
                 this.$get('/link/batchget?type=item&catid=' + this.catid).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             fetchCatlogs() {
                 this.$get('/link/batchget?type=category').then(response => {
-                    this.catlogs = response.data.items;
+                    this.catlogs = response.result.items;
                 });
             },
             handleSelectionChange(val) {

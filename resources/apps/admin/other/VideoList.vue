@@ -135,7 +135,7 @@
                 this.$get('/video/batchget', {
                     offset: this.offset
                 }).then(response => {
-                    const {total, items} = response.data;
+                    const {total, items} = response.result;
                     this.total = total;
                     this.items = items;
                 });

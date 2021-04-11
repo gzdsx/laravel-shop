@@ -55,7 +55,7 @@
         },
         mounted() {
             this.$get('/account/get').then(response => {
-                this.account = response.data.account;
+                this.account = response.result.account;
             });
         }
     }

@@ -96,7 +96,7 @@
         methods: {
             reloadOrder:function () {
                 this.$axios.get('/bought/get?order_id=' + this.order.order_id).then(response => {
-                    this.order = response.data.order;
+                    this.order = response.result.order;
                 });
             }
         },

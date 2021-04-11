@@ -97,7 +97,7 @@
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
                         self.$get('/district/batchget?fid=' + fid).then(response => {
-                            const items = response.data.items.map((o) => ({
+                            const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2
                             }));
@@ -116,7 +116,7 @@
         },
         mounted() {
             this.$get('/user/profile').then(response => {
-                const {profile} = response.data;
+                const {profile} = response.result;
                 const {province, city, district} = profile;
                 this.profile = profile;
                 this.cascaderValue = [province, city, district];
@@ -138,7 +138,7 @@
                 var avatar = d.image;
                 this.$post('/user/avatar/update', {avatar}).then(response => {
                     //this.$router.go(0);
-                    this.userinfo.avatar = response.data.avatar;
+                    this.userinfo.avatar = response.result.avatar;
                 });
             }
         },

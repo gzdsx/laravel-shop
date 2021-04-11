@@ -56,7 +56,7 @@
         methods: {
             fetchList () {
                 this.$get('/freighttemplate/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleDelete (template_id) {

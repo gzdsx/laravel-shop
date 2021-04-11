@@ -103,7 +103,7 @@
                     offset: this.offset,
                     count: this.pageSize
                 }).then(response => {
-                    const {total, items} = response.data;
+                    const {total, items} = response.result;
                     this.total = total;
                     this.items = items;
                     this.loading = false;

@@ -102,12 +102,12 @@
             fetchData() {
                 const pageid = this.pageid;
                 this.$get('/page/get', {pageid}).then(response => {
-                    this.page = response.data.page;
+                    this.page = response.result.page;
                 });
             },
             fetchCatlogs() {
                 this.$get('/page/batchget?type=category').then(response => {
-                    this.catlogs = response.data.items;
+                    this.catlogs = response.result.items;
                 });
             },
             handleSubmit() {

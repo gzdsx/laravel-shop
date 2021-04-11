@@ -159,12 +159,12 @@
         methods: {
             fetchList() {
                 this.$get('/district/batchget?fid=' + this.fid).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             fetchData() {
                 this.$get('/district/get?id=' + this.fid).then(response => {
-                    this.current = response.data.district;
+                    this.current = response.result.district;
                 });
             },
             handleLoadChildren(item) {

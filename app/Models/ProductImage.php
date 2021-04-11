@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $thumb
  * @property string $image
  * @property int $displayorder
- * @property-read \App\Models\ProductItem $item
+ * @property-read \App\Models\ProductItem $product
  * @method static Builder|ProductImage newModelQuery()
  * @method static Builder|ProductImage newQuery()
  * @method static Builder|ProductImage query()

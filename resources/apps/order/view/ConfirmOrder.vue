@@ -95,11 +95,11 @@
         },
         mounted() {
             this.$get('/address/get').then(response => {
-                this.address = response.data.address;
+                this.address = response.result.address;
             });
 
             this.$get('/address/batchget').then(response => {
-                this.addresses = response.data.items;
+                this.addresses = response.result.items;
             });
 
             this.fetchData();
@@ -113,7 +113,7 @@
             fetchData() {
                 const {items} = pageConfig;
                 this.$post('/order/confirm', {items}).then(response => {
-                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.data.result;
+                    const {items, product_fee, shipping_fee, discount_fee, order_fee} = response.result.result;
                     this.items = items;
                     this.product_fee = product_fee;
                     this.shipping_fee = shipping_fee;
@@ -139,7 +139,7 @@
                     shipping_type,
                     remark
                 }).then(response => {
-                    const order = response.data.order;
+                    const order = response.result.order;
                     window.location.href = '/order/pay?order_id=' + order.order_id;
                 });
             },

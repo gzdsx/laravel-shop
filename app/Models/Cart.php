@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $sku_title
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|Cart[] $items
- * @property-read int|null $items_count
  * @property-read \App\Models\ProductItem $product
  * @property-read \App\Models\ProductSku|null $sku
  * @property-read \App\Models\User $user

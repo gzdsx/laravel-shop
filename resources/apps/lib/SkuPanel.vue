@@ -342,7 +342,7 @@
                 if (queryString == null) queryString = '';
                 this.$get('/product/attrs/search?attr_title=' + queryString).then(response => {
                     var attrs = [];
-                    response.data.items.map((a) => {
+                    response.result.items.map((a) => {
                         if (_.findIndex(_this.tmpAttrList, (o) => o.attr_title === a.attr_title) === -1) {
                             attrs.push({
                                 ...a,
@@ -365,7 +365,7 @@
                 this.$get('/product/attrs/search?attr_title=' + attr_title + '&attr_value=' + queryString)
                     .then(response => {
                         var attrs = [];
-                        response.data.items.map((v) => {
+                        response.result.items.map((v) => {
                             if (_.findIndex(attr.attr_values, (o) => o.attr_value === v.attr_value) === -1) {
                                 attrs.push({
                                     ...v,
@@ -378,7 +378,7 @@
             },
             updateAttrs: function (params, cb) {
                 this.$post('/product/attrs/update', params).then(response => {
-                    if (cb) cb(response.data);
+                    if (cb) cb(response.result);
                 });
             },
             handleSelectAttrTitle: function (attr) {

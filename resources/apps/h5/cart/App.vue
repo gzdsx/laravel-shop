@@ -73,7 +73,7 @@
         methods: {
             fetchList: function () {
                 this.$get('/cart/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleSubmit: function () {

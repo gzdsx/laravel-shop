@@ -45,15 +45,15 @@
                     offset: this.offset
                 }).then(response => {
                     if (this.loadMore) {
-                        this.items = this.items.concat(response.data.items);
+                        this.items = this.items.concat(response.result.items);
                     } else {
-                        this.items = response.data.items;
+                        this.items = response.result.items;
                     }
 
                     this.loading = false;
                     this.refreshing = false;
                     this.loadMore = false;
-                    this.loadMoreAble = response.data.items.length === 10;
+                    this.loadMoreAble = response.result.items.length === 10;
                 });
             },
             onRefresh() {

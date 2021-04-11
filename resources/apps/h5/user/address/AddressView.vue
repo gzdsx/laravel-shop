@@ -43,8 +43,8 @@
         methods: {
             fetchList: function () {
                 this.$get('/address/batchget').then(response => {
-                    //console.log(response.data);
-                    this.itemList = response.data.items.map((d) => {
+                    //console.log(response.result);
+                    this.itemList = response.result.items.map((d) => {
                         if (d.isdefault) {
                             this.chosenAddressId = d.address_id;
                         }
@@ -95,7 +95,7 @@
             },
             handleEdit: function (addr) {
                 this.$get('/address/get?address_id=' + addr.id).then(response => {
-                    const {address_id, name, tel, province, city, district, street, postalcode, isdefault} = response.data.address;
+                    const {address_id, name, tel, province, city, district, street, postalcode, isdefault} = response.result.address;
                     this.addressInfo = {
                         id: address_id,
                         name,

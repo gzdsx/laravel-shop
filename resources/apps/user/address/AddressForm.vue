@@ -78,7 +78,7 @@
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
                         self.$get('/district/batchget?fid=' + fid).then(response => {
-                            const items = response.data.items.map((o) => ({
+                            const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2
                             }));
@@ -128,7 +128,7 @@
                 }).then(response => {
                     this.$showToast('地址保存成功');
                     this.visiable = false;
-                    this.$emit('saved', response.data.address);
+                    this.$emit('saved', response.result.address);
                 });
             }
         },

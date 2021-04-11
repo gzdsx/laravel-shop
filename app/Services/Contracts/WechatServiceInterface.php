@@ -17,8 +17,8 @@ namespace App\Services\Contracts;
 interface WechatServiceInterface
 {
     /**
-     * @param $wechatUserInfo
-     * @return mixed
+     * @param array $userInfo
+     * @return \App\Models\User
      */
-    public function register($wechatUserInfo);
+    public function register($userInfo);
 }

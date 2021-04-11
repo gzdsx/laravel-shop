@@ -159,7 +159,7 @@
             const {order_id, sub_order_id, refund_id} = this.$route.query;
             if (refund_id) {
                 this.$get('/refund/get', {refund_id}).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     const {images, items, order} = refund;
                     this.refund = refund;
                     this.images = images;
@@ -169,7 +169,7 @@
                 });
             } else {
                 this.$post('/refund/apply', {order_id, suborders: [sub_order_id]}).then(response => {
-                    const {refund} = response.data;
+                    const {refund} = response.result;
                     const {images, items, order} = refund;
                     this.refund = refund;
                     this.images = images;
@@ -183,7 +183,7 @@
         methods: {
             fetchReasons() {
                 this.$get('/refundreason/getall').then(response => {
-                    this.reasons = response.data.items;
+                    this.reasons = response.result.items;
                 });
             },
             handlePickedImage: function (img) {
@@ -219,7 +219,7 @@
                 const {refund_id} = refund;
                 if (refund_id) {
                     this.$post('/refund/save', {refund_id, refund, images}).then(response => {
-                        this.refund = response.data.refund;
+                        this.refund = response.result.refund;
                         this.$router.replace({path: '/refund/detail', query: {refund_id: this.refund.refund_id}});
                     });
                 } else {
@@ -230,7 +230,7 @@
                         images,
                         suborders: [sub_order_id]
                     }).then(response => {
-                        this.refund = response.data.refund;
+                        this.refund = response.result.refund;
                         this.$router.replace({path: '/refund/detail', query: {refund_id: this.refund.refund_id}});
                     });
                 }

@@ -91,7 +91,7 @@
         methods: {
             fetchData() {
                 this.$get('/freighttemplate/get?template_id=' + this.template_id).then(response => {
-                    this.template = response.data.template;
+                    this.template = response.result.template;
                 });
             },
             saveData() {

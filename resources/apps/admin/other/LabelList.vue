@@ -108,7 +108,7 @@
         methods: {
             fetchList() {
                 this.$get('/label/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

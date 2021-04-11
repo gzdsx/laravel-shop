@@ -189,8 +189,8 @@
             fetchData() {
                 const order_id = this.order_id;
                 this.$get('/bought/get', {order_id}).then(response => {
-                    this.order = response.data.order;
-                    const {shipping, transaction, items, buyer} = response.data.order;
+                    this.order = response.result.order;
+                    const {shipping, transaction, items, buyer} = response.result.order;
                     this.shipping = shipping;
                     this.transaction = transaction;
                     this.items = items;
@@ -202,8 +202,8 @@
                     order_id: this.order_id,
                     password: this.password
                 }).then(response => {
-                    if (response.data.errcode) {
-                        this.$showToast(response.data.errmsg);
+                    if (response.result.errcode) {
+                        this.$showToast(response.result.errmsg);
                     } else {
                         this.$router.go(0);
                     }

@@ -25,14 +25,14 @@ namespace App\Models;
  * @property-read \Illuminate\Database\Eloquent\Collection|ProductCategory[] $childs
  * @property-read int|null $childs_count
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string $url
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductItem[] $items
- * @property-read int|null $items_count
  * @property-read ProductCategory $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductItem[] $products
+ * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCategoryProps[] $props
  * @property-read int|null $props_count
  * @property-read \Illuminate\Database\Eloquent\Collection|ProductCategory[] $siblings
  * @property-read int|null $siblings_count
- * @method static \Illuminate\Database\Eloquent\Builder|CategoryModel enable()
+ * @method static Builder|CategoryModel enable()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCategory query()

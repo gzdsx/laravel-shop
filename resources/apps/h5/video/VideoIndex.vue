@@ -30,11 +30,11 @@
         },
         mounted() {
             this.$get('/block/item/batchget?block_id=6').then(response => {
-                this.images = response.data.items;
+                this.images = response.result.items;
             });
 
             this.$get('/video/batchget').then(response => {
-                this.items = response.data.items;
+                this.items = response.result.items;
             });
         }
     }

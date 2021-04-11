@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Notify;
 
 use App\Http\Controllers\Controller;
+use App\Services\WechatService;
 use App\Traits\WeChat\WechatDefaultConfig;
+use App\WeChat\Message\WechatServerMessage;
 use EasyWeChat\Kernel\Messages\Message;
 use EasyWeChat\Kernel\Messages\News;
 use EasyWeChat\Kernel\Messages\NewsItem;
 use EasyWeChat\Kernel\Support\XML;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class WechatController extends Controller
 {
@@ -29,8 +32,14 @@ class WechatController extends Controller
     {
         $app = $this->officialAccount();
         $app->server->push(function ($message) use ($app) {
+            $msg = new WechatServerMessage($message);
+            if ($msg->event() == 'subscribe') {
+                $user = $app->user->get($msg->fromUserName());
+                $this->register($user);
+            }
             return $this->wellComeMsg();
-        }, Message::EVENT);
+        });
+
         return $app->server->serve();
     }
 
@@ -47,5 +56,24 @@ class WechatController extends Controller
             'url' => setting('wechat_subscribe_msg_url')
         ]);
         return new News([$newsitem]);
+    }
+
+    /**
+     * @param array $user
+     */
+    protected function register(array $user)
+    {
+        $service = new WechatService();
+        $service->register([
+            'openid' => $user['openid'] ?? '',
+            'unionid' => $user['unionid'] ?? '',
+            'nickname' => $user['nickname'] ?? '',
+            'gender' => $user['sex'] ?? '',
+            'city' => $user['city'] ?? '',
+            'province' => $user['province'] ?? '',
+            'country' => $user['country'] ?? '',
+            'avatar' => $user['headimgurl'] ?? '',
+            'appid' => $this->officialAccount()->config->get('app_id')
+        ]);
     }
 }

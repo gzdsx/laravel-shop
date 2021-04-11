@@ -142,7 +142,7 @@
                     ...this.searchFields,
                     offset: this.offset
                 }).then(response => {
-                    const {items, total} = response.data;
+                    const {items, total} = response.result;
                     this.items = items;
                     this.total = total;
                     this.loading = false;

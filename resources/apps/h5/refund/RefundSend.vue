@@ -61,7 +61,7 @@
         mounted() {
             const {refund_id} = this.$route.query;
             this.$get('/refund/get', {refund_id}).then(response => {
-                const {refund} = response.data;
+                const {refund} = response.result;
                 const {items, images, order, shipping} = refund;
                 this.refund = refund;
                 this.items = items;
@@ -72,7 +72,7 @@
         methods: {
             fetchExpress() {
                 this.$get('/express/getall').then(response => {
-                    this.expresses = response.data.items.map((d) => {
+                    this.expresses = response.result.items.map((d) => {
                         return {
                             text: d.name,
                             value: d

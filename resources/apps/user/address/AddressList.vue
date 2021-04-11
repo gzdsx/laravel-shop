@@ -109,7 +109,7 @@
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
                         self.$get('/district/batchget?fid=' + fid).then(response => {
-                            const items = response.data.items.map((o) => ({
+                            const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2
                             }));
@@ -126,7 +126,7 @@
         methods: {
             fetchList() {
                 this.$get('/address/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             handleShowAdd() {

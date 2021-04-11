@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int|null $itemid
  * @property int|null $catid
- * @property-read \App\Models\ProductCategory|null $catlog
+ * @property-read \App\Models\ProductCategory|null $category
+ * @property-read \App\Models\ProductItem|null $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCate newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCate query()

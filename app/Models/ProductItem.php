@@ -41,8 +41,8 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductReview[] $buyerReviews
  * @property-read int|null $buyer_reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCategory[] $categories
- * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCategory[] $catePath
+ * @property-read int|null $cate_path_count
  * @property-read \App\Models\ProductCategory $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductCate[] $cates
  * @property-read int|null $cates_count

@@ -171,7 +171,7 @@
         methods: {
             fetchList () {
                 this.$get('/ad/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

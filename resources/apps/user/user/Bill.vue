@@ -139,7 +139,7 @@
         mounted() {
             this.fetchList();
             this.$get('/account/get').then(response => {
-                this.account = response.data.account;
+                this.account = response.result.account;
             });
         },
         methods: {
@@ -148,8 +148,8 @@
                     ...this.searchFields,
                     offset: this.offset
                 }).then(response => {
-                    this.items = response.data.items;
-                    this.total = response.data.total;
+                    this.items = response.result.items;
+                    this.total = response.result.total;
                 });
             },
             formatDate(date) {

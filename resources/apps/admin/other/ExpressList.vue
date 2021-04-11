@@ -103,7 +103,7 @@
         methods: {
             fetchList () {
                 this.$get('/express/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

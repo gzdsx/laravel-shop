@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property array|null $data 付款信息
  * @property \Illuminate\Support\Carbon|null $created_at 交易时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read Model|\Eloquent $buyable
  * @property-read mixed|null $pay_state_des
  * @property-read mixed|null $pay_type_des
  * @property-read mixed|null $transaction_type_des

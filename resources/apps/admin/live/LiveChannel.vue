@@ -95,7 +95,7 @@
         methods: {
             fetchList () {
                 this.$get('/live/channel/getall').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

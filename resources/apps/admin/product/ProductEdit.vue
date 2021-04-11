@@ -214,7 +214,7 @@
                         const {level} = node;
                         const fid = node.data ? node.data.catid : 0;
                         self.$get('/product/category/search?fid=' + fid).then(response => {
-                            resolve(response.data.items.map(c => ({
+                            resolve(response.result.items.map(c => ({
                                 ...c,
                                 leaf: level >= 1
                             })));
@@ -238,8 +238,8 @@
         methods: {
             fetchData() {
                 this.$get('/product/get', {itemid: this.itemid}).then(response => {
-                    //console.log(response.data);
-                    const {product} = response.data;
+                    //console.log(response.result);
+                    const {product} = response.result;
                     const {images, content, skus, attrs, cate_path} = product;
 
                     this.product = product;
@@ -268,12 +268,12 @@
             },
             fetchCategories() {
                 this.$get('/product/category/getall').then(response => {
-                    this.nodes = this.serilazeProps(response.data.items);
+                    this.nodes = this.serilazeProps(response.result.items);
                 });
             },
             fetchFreightTemplates() {
                 this.$get('/freighttemplate/getall').then(response => {
-                    this.freightTemplates = response.data.items;
+                    this.freightTemplates = response.result.items;
                 });
             },
             handleChangeImage(e, i) {

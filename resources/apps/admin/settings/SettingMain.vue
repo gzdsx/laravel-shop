@@ -75,7 +75,7 @@
         methods: {
             fetchAll () {
                 this.$get('/settings/getall').then(response => {
-                    this.settings = response.data.settings;
+                    this.settings = response.result.settings;
                 });
             },
             handleSubmit () {

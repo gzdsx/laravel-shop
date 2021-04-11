@@ -97,7 +97,7 @@
         methods: {
             fetchList: function () {
                 this.$get('/block/batchget').then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

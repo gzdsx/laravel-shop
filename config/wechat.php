@@ -93,17 +93,17 @@ return [
      * 小程序
      */
     'mini_program' => [
-        'wx03d632680294f15b' => [
+        'default' => [
             'app_id' => env('WECHAT_MINI_PROGRAM_APPID', ''),
             'secret' => env('WECHAT_MINI_PROGRAM_SECRET', ''),
             'token' => env('WECHAT_MINI_PROGRAM_TOKEN', ''),
             'aes_key' => env('WECHAT_MINI_PROGRAM_AES_KEY', ''),
         ],
         '1' => [
-            'app_id' => 'wx03d632680294f15b',
-            'secret' => '93e796460afb5bcec3be9251a7d7dc5c',
-            'token' => 'MUZZ5kdOS1pruFMhoB41YnKywiW2m',
-            'aes_key' => 'sDFpE7bbNFXL9eMUZZ5kdOS1pruFMhoB41YnKywiW2m',
+            'app_id' => env('WECHAT_MINI_PROGRAM_APPID', ''),
+            'secret' => env('WECHAT_MINI_PROGRAM_SECRET', ''),
+            'token' => env('WECHAT_MINI_PROGRAM_TOKEN', ''),
+            'aes_key' => env('WECHAT_MINI_PROGRAM_AES_KEY', ''),
         ]
     ],
 

@@ -84,7 +84,7 @@
                     ...this.searchFields,
                     offset: this.offset
                 }).then(response => {
-                    const {items, total} = response.data;
+                    const {items, total} = response.result;
                     this.total = total;
                     this.items = items;
                 });

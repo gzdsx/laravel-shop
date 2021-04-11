@@ -57,7 +57,7 @@
         mounted() {
             const {sub_order_id} = this.$route.query;
             this.$get('/bought/getitem', {sub_order_id}).then(response => {
-                this.item = response.data.item;
+                this.item = response.result.item;
             });
         },
         methods: {

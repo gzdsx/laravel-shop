@@ -35,11 +35,11 @@
         },
         mounted() {
             this.$get('/block/item/batchget?block_id=4').then(response => {
-                this.images = response.data.items;
+                this.images = response.result.items;
             });
 
             this.$get('/live/batchget?state=1').then(response => {
-                this.items = response.data.items;
+                this.items = response.result.items;
             });
         },
         methods: {}

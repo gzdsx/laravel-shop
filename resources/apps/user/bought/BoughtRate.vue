@@ -84,7 +84,7 @@
             fetchData() {
                 const order_id = this.order_id;
                 this.$get('/bought/get', {order_id}).then(response => {
-                    this.order = response.data.order;
+                    this.order = response.result.order;
                     this.reviews = this.order.items.map(it => {
                         return {
                             itemid: it.itemid,

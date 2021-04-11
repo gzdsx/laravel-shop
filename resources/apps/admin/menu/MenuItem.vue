@@ -158,7 +158,7 @@
             this.menu_id = this.$route.query.menu_id;
             this.fetchList();
             this.$get('/menu/get?menu_id=' + this.menu_id).then(response => {
-                this.menu = response.data.menu;
+                this.menu = response.result.menu;
             });
         },
         methods: {
@@ -166,7 +166,7 @@
                 this.$get('/menu/item/batchget', {
                     menu_id: this.menu_id
                 }).then(response => {
-                    this.items = response.data.items;
+                    this.items = response.result.items;
                 });
             },
             saveData(cb) {

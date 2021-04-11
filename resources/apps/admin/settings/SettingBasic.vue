@@ -10,7 +10,7 @@
                         <div class="img-placeholder img-120" v-else></div>
                     </div>
                 </td>
-                <td class="cell-tips">关注公众号时自动回复图文消息配图</td>
+                <td class="cell-tips">网站LOGO图片</td>
             </tr>
             <tr>
                 <td class="cell-label">网站名称:</td>

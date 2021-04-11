@@ -14,16 +14,18 @@
 namespace App\Traits\Common;
 
 
+use App\Models\Material;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 trait MaterialTrait
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder|Material
      */
     protected function repository()
     {
@@ -49,46 +51,54 @@ trait MaterialTrait
      */
     protected function storeImage(UploadedFile $file)
     {
-        $img = Image::make($file->getRealPath());
-        if ($img->exif('Orientation')) {
-            switch ($img->exif('Orientation')) {
+        $hashName = $file->hashName(date('Y') . '/' . date('m'));
+        $material = $this->repository()->make();
+        $material->type = 'image';
+        $material->name = $file->getClientOriginalName();
+        $material->extension = $file->getExtension();
+        $material->mime = $file->getMimeType();
+
+        $image = Image::make($file->getRealPath());
+        if ($image->exif('Orientation')) {
+            switch ($image->exif('Orientation')) {
                 case 8:
-                    $img->rotate(90);
+                    $image->rotate(90);
                     break;
                 case 3:
-                    $img->rotate(180);
+                    $image->rotate(180);
                     break;
                 case 6:
-                    $img->rotate(-90);
+                    $image->rotate(-90);
                     break;
             }
         }
 
-        $thumb = clone $img;
-
-        $filename = $file->hashName(date('Y') . '/' . date('m'));
-        $imagePath = 'image/' . $filename;
-        $thumbPath = 'thumb/' . $filename;
+        //缩略图
+        $thumb = clone $image;
+        $thumbPath = 'thumb/' . $hashName;
+        Storage::makeDirectory(dirname($thumbPath));
+        $thumbWidth = intval(setting('image_thumb_width'));
+        $thumb->resize($thumbWidth, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save(Storage::path($thumbPath), 80);
 
         //大图
-        @mkdir(dirname(material_path($imagePath)), 0777, true);
+        $imagePath = 'image/' . $hashName;
+        Storage::makeDirectory(dirname($imagePath));
         $maxWidth = intval(setting('image_max_width'));
-        $img->resize($maxWidth, null, function ($constraint) {
+        $image->resize($maxWidth, null, function ($constraint) {
             $constraint->aspectRatio();
         });
 
-        $size = $img->filesize();
-        $width = $img->width();
-        $height = $img->height();
-        $mime = $img->mime();
-
         //添加水印
         if (setting('water_mark') == '1') {
+            $width = $image->width();
+            $height = $image->height();
             $x = intval(setting('water_offset_x'));
             $y = intval(setting('water_offset_y'));
             if (setting('water_type') == '1') {
                 $water = Image::make(base_path(setting('water_image')));
-                $img->insert($water, setting('water_pos'), $x, $y);
+                $image->insert($water, setting('water_pos'), $x, $y);
             } else {
                 $text = setting('water_text');
                 $fontSize = intval(setting('water_size'));
@@ -134,7 +144,7 @@ trait MaterialTrait
                         $tx = $x;
                         $ty = $y;
                 }
-                $img->text($text, $tx, $ty, function ($font) {
+                $image->text($text, $tx, $ty, function ($font) {
                     $font->file(base_path(setting('water_font')));
                     $font->size(intval(setting('water_size')));
                     $font->color(setting('water_color'));
@@ -142,31 +152,16 @@ trait MaterialTrait
                     $font->valign('top');
                 });
             }
-            $size = $img->filesize();
         }
-        $img->save(material_path($imagePath), 80);
+        $image->save(Storage::path($imagePath), 80);
+        $material->size = $image->filesize();
+        $material->width = $image->width();
+        $material->height = $image->height();
+        $material->thumb = $thumbPath;
+        $material->source = $imagePath;
+        $material->save();
 
-
-        //缩略图
-        @mkdir(dirname(material_path($thumbPath)), 0777, true);
-        $thumbWidth = intval(setting('image_thumb_width'));
-        $thumb->resize($thumbWidth, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save(material_path($thumbPath), 80);
-
-        $material = [
-            'type' => 'image',
-            'extension' => $file->extension(),
-            'name' => $file->getClientOriginalName(),
-            'size' => $size,
-            'width' => $width,
-            'height' => $height,
-            'mime' => $mime,
-            'thumb' => $thumbPath,
-            'source' => $imagePath
-        ];
-
-        return $this->repository()->create($material);
+        return $material;
     }
 
     /**
@@ -208,30 +203,32 @@ trait MaterialTrait
      */
     public function storeFile(UploadedFile $file)
     {
-        $extension = $file->extension();
-        $material = [
-            'extension' => $extension,
+        $material = $this->repository()->make([
+            'extension' => $file->getExtension(),
             'size' => $file->getSize(),
             'name' => $file->getClientOriginalName(),
             'mime' => $file->getMimeType(),
-            'width' => 0,
-            'height' => 0
-        ];
+        ]);
 
+        $extension = $file->extension();
         if (in_array($extension, ['jpg', 'jpeg', 'gif', 'png', 'bmp'])) {
-            $material['type'] = 'image';
+            $material->type = 'image';
         } elseif (in_array($extension, ['mp4', 'mpeg', 'mpg', 'rmvb', 'rm', 'avi', 'wmv'])) {
-            $material['type'] = 'video';
+            $material->type = 'video';
         } elseif (in_array($extension, ['mp3', 'midi', 'wav'])) {
-            $material['type'] = 'voice';
+            $material->type = 'voice';
         } elseif (in_array($extension, ['doc', 'ppt', 'xls', 'docx', 'pptx', 'xlsx', 'pdf', 'txt'])) {
-            $material['type'] = 'doc';
+            $material->type = 'doc';
         } else {
-            $material['type'] = 'file';
+            $material->type = 'file';
         }
 
-        $material['source'] = $file->store($material['type'] . '/' . date('Y') . '/' . date('m'));
-        return $this->repository()->create($material);
+        $sourcePath = $material->type . '/' . date('Y') . '/' . date('m');
+        Storage::makeDirectory($sourcePath);
+        $material->source = $file->store($sourcePath);
+        $material->save();
+
+        return $material;
     }
 
     /**

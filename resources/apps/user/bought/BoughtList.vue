@@ -218,7 +218,7 @@
         mounted() {
             this.fetchList();
             this.$get('/order/closereason/getall').then(response => {
-                this.closeReasons = response.data.items;
+                this.closeReasons = response.result.items;
             });
         },
         methods: {
@@ -229,8 +229,8 @@
                     offset: this.offset,
                     count: 10
                 }).then(response => {
-                    this.orderList = response.data.items;
-                    this.total = response.data.total;
+                    this.orderList = response.result.items;
+                    this.total = response.result.total;
                     this.loading = false;
                 });
             },

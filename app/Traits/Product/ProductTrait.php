@@ -157,20 +157,17 @@ trait ProductTrait
     protected function saveImages(&$product, $images)
     {
         $images = collect($images);
+        if ($firstImg = $images->first()) {
+            $product->thumb = $firstImg['thumb'] ?? null;
+            $product->image = $firstImg['image'] ?? null;
+            $product->save();
+        }
         $product->images()->whereNotIn('id', $images->pluck('id'))->delete();
-
-        $displayorder = 0;
-        foreach ($images as $image) {
+        foreach ($images as $k => $image) {
             $newImage = $product->images()->findOrNew($image['id'] ?? 0);
             $newImage->fill($image);
-            $newImage->displayorder = $displayorder++;
+            $newImage->displayorder = $k;
             $newImage->save();
-
-            if ($product->thumb) {
-                $product->thumb = $newImage->thumb;
-                $product->image = $newImage->image;
-                $product->save();
-            }
         }
     }
 
