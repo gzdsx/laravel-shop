@@ -275,7 +275,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 order_id: 0,
                 order: {},

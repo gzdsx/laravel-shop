@@ -32,7 +32,8 @@
                     <el-table-column prop="created_at" width="170" label="申请时间"></el-table-column>
                     <el-table-column width="60" label="选项">
                         <template slot-scope="scope">
-                            <router-link :to="'/refund/detail?refund_id='+scope.row.refund_id" target="_blank">详情</router-link>
+                            <router-link :to="'/refund/detail?refund_id='+scope.row.refund_id" target="_blank">详情
+                            </router-link>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -63,7 +64,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 items: [],
                 total: 0,
@@ -71,7 +72,7 @@
                 pageSize: 15,
                 selectionIds: [],
                 searchFields: {
-                    refund_state:'all'
+                    refund_state: 'all'
                 },
             }
         },
@@ -79,7 +80,7 @@
             this.fetchList();
         },
         methods: {
-            fetchList () {
+            fetchList() {
                 this.$get('/refund/batchget', {
                     ...this.searchFields,
                     offset: this.offset
@@ -89,10 +90,10 @@
                     this.items = items;
                 });
             },
-            handleSelectionChange (val) {
+            handleSelectionChange(val) {
                 this.selectionIds = val;
             },
-            handleDelete () {
+            handleDelete() {
                 var items = this.selectionIds.map((d) => d.refund_id);
                 this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -104,14 +105,14 @@
                     });
                 });
             },
-            handlePageChange (page) {
+            handlePageChange(page) {
                 this.offset = (page - 1) * this.pageSize;
                 this.fetchList();
             },
             handleSearch: function () {
                 this.fetchList();
             },
-            handleTabClick (tab) {
+            handleTabClick(tab) {
                 this.searchFields.refund_state = tab.name;
                 this.offset = 0;
                 this.fetchList();

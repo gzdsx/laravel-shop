@@ -30,7 +30,7 @@ Vue.prototype.$get = (path, params = {}, config = {}) => {
             if (response.data.errcode) {
                 reject(response.data);
             } else {
-                resolve(response, data);
+                resolve(response.data);
             }
         }).catch(reason => {
             reject(reason);

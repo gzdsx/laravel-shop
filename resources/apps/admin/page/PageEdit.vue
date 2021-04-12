@@ -31,9 +31,9 @@
                         <td>
                             <el-select size="medium" class="w300" v-model="page.catid">
                                 <el-option
-                                        v-for="(catlog,index) in catlogs"
-                                        :value="catlog.pageid"
-                                        :label="catlog.title"
+                                        v-for="(category,index) in fetchCategories"
+                                        :value="category.pageid"
+                                        :label="category.title"
                                         :key="index"
                                 ></el-option>
                             </el-select>
@@ -78,7 +78,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 page: {
                     title: '',
@@ -90,13 +90,13 @@
                     type: 'page'
                 },
                 pageid: 0,
-                catlogs: []
+                categories: []
             }
         },
         mounted() {
             this.pageid = this.$route.query.pageid | 0;
             if (this.pageid) this.fetchData();
-            this.fetchCatlogs();
+            this.fetchCategories();
         },
         methods: {
             fetchData() {
@@ -105,9 +105,9 @@
                     this.page = response.result.page;
                 });
             },
-            fetchCatlogs() {
+            fetchCategories() {
                 this.$get('/page/batchget?type=category').then(response => {
-                    this.catlogs = response.result.items;
+                    this.categories = response.result.items;
                 });
             },
             handleSubmit() {

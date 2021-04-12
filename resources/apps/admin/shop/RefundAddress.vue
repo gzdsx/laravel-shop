@@ -100,6 +100,7 @@
             AdminFrame
         },
         data() {
+            var that = this;
             return {
                 items: [],
                 address_id: 0,
@@ -113,7 +114,7 @@
                     lazyLoad(node, resolve) {
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
-                        axios.get('/api/district/batchget?fid=' + fid).then(response => {
+                        that.$get('/district/batchget?fid=' + fid).then(response => {
                             const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2

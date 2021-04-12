@@ -26,7 +26,8 @@
                 </el-table>
             </div>
         </div>
-        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
@@ -82,7 +83,7 @@
             this.fetchList();
         },
         methods: {
-            fetchList: function () {
+            fetchList() {
                 this.$get('/page/batchget?type=category').then(response => {
                     this.items = response.result.items;
                 });
@@ -96,13 +97,13 @@
                     if (cb) cb(response);
                 });
             },
-            handleDelete: function (pageid) {
+            handleDelete(pageid) {
                 this.$confirm('此操作将永久删除所选页面, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/page/delete', {items:[pageid]}).then(response => {
+                    this.$post('/page/delete', {items: [pageid]}).then(response => {
                         this.fetchList();
                     });
                 });

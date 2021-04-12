@@ -70,7 +70,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
@@ -143,7 +144,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 items: [],
                 fid: 0,
@@ -214,10 +215,10 @@
                     });
                 });
             },
-            handleCheckAll(v){
+            handleCheckAll(v) {
                 if (v) {
-                    this.selectionIds = this.items.map((g)=>g.id);
-                }else {
+                    this.selectionIds = this.items.map((g) => g.id);
+                } else {
                     this.selectionIds = [];
                 }
             }

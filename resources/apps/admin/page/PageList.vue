@@ -9,13 +9,13 @@
         <div class="mainframe-content">
             <div class="content-block">
                 <div class="table-edit-header">
-                    <el-tabs @tab-click="handleTabClick">
-                        <el-tab-pane label="全部"></el-tab-pane>
+                    <el-tabs @tab-click="handleTabClick" value="all">
+                        <el-tab-pane label="全部" name="all"></el-tab-pane>
                         <el-tab-pane
-                                v-for="(catlog,index) in catlogs"
+                                v-for="(category,index) in categories"
                                 :key="index"
-                                :label="catlog.title"
-                                :name="catlog.pageid"
+                                :label="category.title"
+                                :name="category.pageid.toString()"
                         ></el-tab-pane>
                     </el-tabs>
                     <div class="buttons-wrapper">
@@ -41,7 +41,9 @@
                     </el-table-column>
                 </el-table>
                 <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">批量删除</el-button>
+                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="handleDelete">
+                        批量删除
+                    </el-button>
                     <div class="flex"></div>
                 </div>
             </div>
@@ -51,50 +53,51 @@
 
 <script>
     import AdminFrame from "../common/AdminFrame";
+
     export default {
         name: "PageList",
-        components:{
+        components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
-                catid:0,
+                catid: 0,
                 items: [],
-                catlogs: [],
-                selectionIds:[]
+                categories: [],
+                selectionIds: []
             }
         },
         mounted() {
             this.fetchList();
-            this.fetchCatlogs();
+            this.fetchCategories();
         },
         methods: {
-            fetchList: function () {
-                this.$get('/page/batchget',{catid:this.catid}).then(response => {
+            fetchList() {
+                this.$get('/page/batchget', {catid: this.catid}).then(response => {
                     this.items = response.result.items;
                 });
             },
-            fetchCatlogs: function () {
+            fetchCategories() {
                 this.$get('/page/batchget?type=category').then(response => {
-                    this.catlogs = response.result.items;
+                    this.categories = response.result.items;
                 });
             },
-            handleSelectionChange:function (val) {
+            handleSelectionChange(val) {
                 this.selectionIds = val;
             },
-            handleDelete:function () {
-                var items = this.selectionIds.map((d)=>d.pageid);
+            handleDelete() {
+                var items = this.selectionIds.map((d) => d.pageid);
                 this.$confirm('此操作将永久删除所选页面, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/page/delete',{items}).then(response=>{
+                    this.$post('/page/delete', {items}).then(response => {
                         this.fetchList();
                     });
                 });
             },
-            handleTabClick:function (tab) {
+            handleTabClick(tab) {
                 this.catid = tab.name;
                 this.fetchList();
             }

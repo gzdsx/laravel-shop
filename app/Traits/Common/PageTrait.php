@@ -29,11 +29,11 @@ trait PageTrait
 
     /**
      * @param Request $request
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
     public function get(Request $request)
     {
-        return ['page' => $this->repository()->findOrNew($request->input('pageid'))];
+        return jsonSuccess(['page' => $this->repository()->findOrNew($request->input('pageid'))]);
     }
 
     /**

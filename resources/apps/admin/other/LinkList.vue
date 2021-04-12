@@ -49,7 +49,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog :visible.sync="showDialog" width="35%" title="编辑链接" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog :visible.sync="showDialog" width="35%" title="编辑链接" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col class="w80">
@@ -97,7 +98,7 @@
         components: {
             AdminFrame,
         },
-        data: function () {
+        data() {
             return {
                 catid: 0,
                 items: [],

@@ -41,7 +41,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
@@ -125,7 +126,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 items: [],
                 id: 0,
@@ -141,7 +142,7 @@
             this.fetchList();
         },
         methods: {
-            fetchList () {
+            fetchList() {
                 this.$get('/block/item/batchget?block_id=' + this.block_id).then(response => {
                     this.items = response.result.items;
                 });
@@ -161,7 +162,7 @@
                 this.item = {};
             },
             handleDelete(id) {
-                var items = this.selectionIds.map((d)=>d.id);
+                var items = this.selectionIds.map((d) => d.id);
                 this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -197,7 +198,7 @@
             handleSelectionChange(val) {
                 this.selectionIds = val;
             },
-            handlePickImage(data){
+            handlePickImage(data) {
                 this.item.image = data.image;
             },
         }

@@ -170,7 +170,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 orderList: [],
                 total: 0,

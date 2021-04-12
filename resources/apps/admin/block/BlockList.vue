@@ -25,7 +25,8 @@
                     <el-table-column prop="block_desc" label="备注说明"></el-table-column>
                     <el-table-column width="120" label="选项">
                         <template slot-scope="scope">
-                            <router-link :to="'/block/item?block_id='+scope.row.block_id" target="_blank">管理项目</router-link>
+                            <router-link :to="'/block/item?block_id='+scope.row.block_id" target="_blank">管理项目
+                            </router-link>
                             <a @click="handleShowEdit(scope.row)">编辑</a>
                         </template>
                     </el-table-column>
@@ -37,7 +38,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
@@ -82,7 +84,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 items: [],
                 block: {},
@@ -95,7 +97,7 @@
             this.fetchList();
         },
         methods: {
-            fetchList: function () {
+            fetchList() {
                 this.$get('/block/batchget').then(response => {
                     this.items = response.result.items;
                 });
@@ -115,7 +117,7 @@
                 this.block = {};
             },
             handleDelete(id) {
-                var items = this.selectionIds.map((d)=>d.block_id);
+                var items = this.selectionIds.map((d) => d.block_id);
                 this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -143,7 +145,7 @@
                 this.block_id = d.block_id;
                 this.showDialog = true;
             },
-            handleSelectionChange(val){
+            handleSelectionChange(val) {
                 this.selectionIds = val;
             },
         }

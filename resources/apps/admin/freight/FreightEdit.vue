@@ -73,7 +73,7 @@
         components: {
             AdminFrame
         },
-        data: function () {
+        data() {
             return {
                 template: {
                     valuation: 1
@@ -102,8 +102,8 @@
                     this.$showToast('模板保存成功', () => this.$router.go(0));
                 });
             },
-            handleSubmit(){
-                if (!this.template.template_name){
+            handleSubmit() {
+                if (!this.template.template_name) {
                     this.$showToast('请填写模板名称');
                     return false;
                 }
