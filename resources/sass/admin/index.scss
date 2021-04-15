@@ -282,31 +282,6 @@ html, body {
     cursor: pointer;
 }
 
-.w-e-text {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    overflow-x: hidden;
-
-    * {
-        max-width: 100% !important;
-    }
-
-    p{
-        text-indent: 2em;
-    }
-}
-
-.we-toolbar {
-    background-color: #FFF;
-    border: 1px solid #c9d8db;
-    border-bottom: 1px solid #EEE;
-}
-
-.we-text-container {
-    border: 1px solid #c9d8db;
-    border-top: none;
-    height: 400px;
-}
 
 @import "dashboard";
 @import "order";

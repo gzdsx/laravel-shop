@@ -69,10 +69,10 @@ class TransactionFilter extends ModelFilter
         return $this->where('out_trade_no', $out_trade_no);
     }
 
-    public function transactionType($type)
+    public function type($type)
     {
         if ($type == 'all') return $this;
-        return $this->where('transaction_type', $type);
+        return $this->where('type', $type);
     }
 
     public function timeBegin($time)

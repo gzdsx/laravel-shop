@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductItem;
 use App\Models\Refund;
+use App\Models\Transaction;
 use App\Notifications\RegisteredNotification;
 use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Http\Request;
@@ -85,6 +86,8 @@ class TestController extends Controller
 //        ]);
 //
 //        dd($res);
+
+        return Transaction::find(103)->fill([])->markAsPaid();
     }
 
     public function video(Request $request)

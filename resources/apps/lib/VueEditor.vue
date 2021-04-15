@@ -2,7 +2,7 @@
     <div>
         <div :id="id">
             <div ref="toolbar" class="we-toolbar"></div>
-            <div ref="editor" class="we-text-container" :style="{'height':height+'px'}"></div>
+            <div ref="editor" class="w-text-container" :style="{'height':height+'px','padding-right':'35px'}"></div>
         </div>
         <image-picker v-model="showPicker" @confirm="insertImage"></image-picker>
     </div>
@@ -74,6 +74,31 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .we-toolbar {
+        background-color: #FFF;
+        border: 1px solid #c9d8db;
+        border-bottom: 1px solid #EEE;
+    }
 
+    .w-text-container {
+        border: 1px solid #c9d8db;
+        border-top: none;
+        min-height: 400px !important;
+        padding: 0 20px !important;
+
+        * {
+            max-width: 100% !important;
+        }
+
+        .w-e-text {
+            box-sizing: border-box;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            * {
+                max-width: 100% !important;
+            }
+        }
+    }
 </style>

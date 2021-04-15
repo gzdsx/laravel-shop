@@ -105,7 +105,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
-    use Filterable,HasDates;
+    use Filterable, HasDates;
 
     protected $table = 'order';
     protected $primaryKey = 'order_id';
@@ -252,5 +252,37 @@ class Order extends Model
     public static function findByOrderNo($order_no)
     {
         return Order::where('order_no', $order_no)->first();
+    }
+
+    public function markAsPaid()
+    {
+        $this->forceFill([
+            'pay_state' => 1,
+            'pay_at' => now()
+        ])->save();
+    }
+
+    public function markAsUnPaid()
+    {
+        $this->forceFill([
+            'pay_state' => 0,
+            'pay_at' => null
+        ])->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return $this->pay_state == 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnPaid()
+    {
+        return $this->pay_state == 0;
     }
 }

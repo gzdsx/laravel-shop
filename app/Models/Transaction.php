@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Traits\HasDates;
-use DateTimeInterface;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Transaction
  *
  * @property int $transaction_id 主键
- * @property string|null $transaction_type 交易类型
+ * @property string|null $type 交易类型
  * @property string|null $out_trade_no 交易流水
  * @property int $payer_id 付款方ID
  * @property string|null $payer_name 付款方账号
@@ -55,37 +54,36 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereRemark($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereSubject($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTransactionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTransactionType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Transaction extends Model
 {
-    use Filterable,HasDates;
+    use Filterable, HasDates;
 
     protected $table = 'transaction';
     protected $primaryKey = 'transaction_id';
     protected $appends = [
         'pay_type_des',
         'pay_state_des',
-        'transaction_type_des'
+        'type_des'
     ];
     protected $fillable = [
-        'transaction_type', 'out_trade_no', 'payer_id', 'payer_name', 'payee_id', 'payee_name',
-        'pay_type', 'pay_state', 'pay_at', 'subject', 'amount', 'remark', 'data', 'order_id'
+        'type', 'out_trade_no', 'payer_id', 'payer_name', 'payee_id', 'payee_name',
+        'pay_type', 'pay_state', 'pay_at', 'subject', 'amount', 'remark', 'data'
     ];
     protected $dates = ['pay_at'];
     protected $casts = [
-        'extra' => 'array',
         'data' => 'array',
     ];
 
     /**
      * @return mixed|null
      */
-    public function getTransactionTypeDesAttribute()
+    public function getTypeDesAttribute()
     {
-        return !is_null($this->transaction_type) ? trans('transaction.transaction_types.' . $this->transaction_type) : null;
+        return !is_null($this->type) ? trans('transaction.types.' . $this->type) : null;
     }
 
     /**
@@ -93,7 +91,7 @@ class Transaction extends Model
      */
     public function getPayTypeDesAttribute()
     {
-        return !is_null($this->pay_type) ? trans('transaction.pay_types.' . $this->pay_type) : null;
+        return !is_null($this->pay_type) ? trans('transaction.pay.types.' . $this->pay_type) : null;
     }
 
     /**
@@ -101,7 +99,7 @@ class Transaction extends Model
      */
     public function getPayStateDesAttribute()
     {
-        return !is_null($this->pay_state) ? trans('transaction.pay_states.' . $this->pay_state) : null;
+        return !is_null($this->pay_state) ? trans('transaction.pay.states.' . $this->pay_state) : null;
     }
 
     /**
@@ -135,5 +133,38 @@ class Transaction extends Model
     public static function findByOutTradeNo($out_trade_no)
     {
         return Transaction::whereOutTradeNo($out_trade_no)->first();
+    }
+
+    public function markAsPaid()
+    {
+        $this->forceFill([
+            'pay_state' => 1,
+            'pay_at' => now()
+        ])->save();
+    }
+
+    public function markAsUnPaid()
+    {
+        $this->forceFill([
+            'pay_type' => null,
+            'pay_state' => 0,
+            'pay_at' => null
+        ])->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaid()
+    {
+        return $this->pay_state == 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnPaid()
+    {
+        return $this->pay_state == 0;
     }
 }

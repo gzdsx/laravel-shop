@@ -23,17 +23,16 @@ class WechatPayController extends Controller
     public function paid(Request $request, $appid)
     {
         return $this->payment($appid)->handlePaidNotify(function ($message, $fail) {
-            Storage::put('wxpay', json_encode($message));
+            //Storage::put('wxpay', json_encode($message));
             $notify = new PaidNotify($message);
             if ($notify->tradeSuccess()) {
                 $transaction = Transaction::findByOutTradeNo($notify->outTradeNo());
                 if ($transaction) {
-                    if ($transaction->pay_state == 0) {
-                        $transaction->pay_state = 1;
-                        $transaction->pay_at = now();
-                        $transaction->pay_type = 'wechatpay';
-                        $transaction->data = $message;
-                        $transaction->save();
+                    if ($transaction->isUnPaid()) {
+                        $transaction->forceFill([
+                            'pay_type' => 'wechatpay',
+                            'data' => $message
+                        ])->markAsPaid();
                         if ($transaction->order) {
                             app(OrderServiceInterface::class)->paid($transaction->order);
                         }

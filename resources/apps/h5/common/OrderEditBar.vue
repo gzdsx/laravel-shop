@@ -45,7 +45,8 @@
                 OrderProcessor.pay(order_id).then(() => {
                     this.$emit('pay', this.order);
                 }).catch(reason => {
-                    let message = reason.data ? reason.data.errmsg : reason.errMsg;
+                    console.log(reason);
+                    let message = reason.errmsg ? reason.errmsg : reason.errMsg;
                     this.$toast.fail({
                         message,
                         onClose: () => {

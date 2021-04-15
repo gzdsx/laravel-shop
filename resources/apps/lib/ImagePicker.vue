@@ -122,7 +122,7 @@
                 this.handleClose();
             },
             handleUploadSuccess(response, file, fileList) {
-                this.handlePicked(response.image);
+                this.handlePicked(response.result.image);
                 this.fetchList();
             }
         }

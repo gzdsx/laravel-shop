@@ -12,20 +12,22 @@
  */
 
 return [
-    'transaction_types'=>[
-        'shopping'=>'购物',
-        'charge'=>'缴费',
-        'withdraw'=>'提现',
-        'other'=>'其他'
+    'types' => [
+        'shopping' => '购物',
+        'charge' => '缴费',
+        'withdraw' => '提现',
+        'other' => '其他'
     ],
-    'pay_states' => [
-        '0' => '未支付',
-        '1' => '已支付'
-    ],
-    'pay_types'=>[
-        'balance'=>'余额支付',
-        'wechatpay'=>'微信支付',
-        'alipay'=>'支付宝支付'
+    'pay' => [
+        'states' => [
+            '0' => '未支付',
+            '1' => '已支付'
+        ],
+        'types' => [
+            'balance' => '余额支付',
+            'wechatpay' => '微信支付',
+            'alipay' => '支付宝支付'
+        ]
     ],
     'transaction_subject_formater' => '%s等%d件商品',
     'close the transaction' => '关闭交易',

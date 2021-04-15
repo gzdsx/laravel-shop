@@ -99,7 +99,8 @@
                 product_fee: 0,
                 shipping_fee: 0,
                 discount_fee: 0,
-                order_fee: 0
+                order_fee: 0,
+                submited: false
             }
         },
         mounted() {
@@ -125,6 +126,13 @@
                 if (!this.address) {
                     this.$toast.success('请选择收货地址');
                     return false;
+                }
+
+                //防止重复提交
+                if (this.submited) {
+                    return;
+                } else {
+                    this.submited = true;
                 }
 
                 var toast = this.$toast.loading({

@@ -10,13 +10,22 @@ use Illuminate\Http\Request;
 class WechatMenuController extends BaseController
 {
     use WechatDefaultConfig;
+
+    /**
+     * @return WechatMenu|\Illuminate\Database\Eloquent\Builder
+     */
+    protected function repository()
+    {
+        return WechatMenu::query();
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAll(Request $request)
     {
-        return jsonSuccess(['items' => WechatMenu::with('children')->where('fid', 0)->get()]);
+        return jsonSuccess(['items' => $this->repository()->with('children')->where('fid', 0)->get()]);
     }
 
     /**
@@ -25,7 +34,7 @@ class WechatMenuController extends BaseController
      */
     public function getAllTypes(Request $request)
     {
-        return jsonSuccess(['items' => __('wechat.menu_types')]);
+        return jsonSuccess(['items' => trans('wechat.menu.types')]);
     }
 
     /**
@@ -34,7 +43,7 @@ class WechatMenuController extends BaseController
      */
     public function save(Request $request)
     {
-        $menu = WechatMenu::findOrNew($request->input('id', 0));
+        $menu = $this->repository()->findOrNew($request->input('id', 0));
         $menu->fill($request->input('menu', []))->save();
         return jsonSuccess(['menu' => $menu]);
     }
@@ -46,7 +55,7 @@ class WechatMenuController extends BaseController
      */
     public function delete(Request $request)
     {
-        WechatMenu::whereKey($request->input('id', 0))->delete();
+        $this->repository()->whereKey($request->input('id', 0))->delete();
         return jsonSuccess();
     }
 
@@ -58,7 +67,7 @@ class WechatMenuController extends BaseController
      */
     public function apply(Request $request)
     {
-        $menus = WechatMenu::with('children')->where('fid', 0)->orderBy('id')->get();
+        $menus = $this->repository()->with('children')->where('fid', 0)->get();
         if ($menus) {
             $buttons = [];
             foreach ($menus as $menu) {
@@ -146,7 +155,7 @@ class WechatMenuController extends BaseController
             try {
                 $res = $this->officialAccount()->menu->create($buttons);
                 return jsonSuccess($res);
-            }catch (\GuzzleHttp\Exception\GuzzleException $exception){
+            } catch (\GuzzleHttp\Exception\GuzzleException $exception) {
                 return jsonError($exception->getCode(), $exception->getMessage());
             }
         } else {

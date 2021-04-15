@@ -7,10 +7,10 @@ export default {
                 openid: window.openid
             }).then(response => {
                 //console.log(response.result);
-                if (response.result.errcode) {
-                    reject(response);
+                if (response.data.errcode) {
+                    reject(response.data);
                 } else {
-                    let config = response.result.config;
+                    let config = response.data.result.config;
                     if (!config.timestamp) {
                         config.timestamp = config.timeStamp;
                     }
