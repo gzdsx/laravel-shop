@@ -69,7 +69,7 @@ export default {
         if (type === 1) {
             return new Promise((resolve, reject) => {
                 ApiClient.get('/alipay/sign', {order_id}).then(response => {
-                    Alipay.pay(response.data.payStr).then((data) => {
+                    Alipay.pay(response.result.payStr).then((data) => {
                         //console.log(data);
                         resolve(data);
                     }, (code, domain, message) => {

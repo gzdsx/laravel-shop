@@ -99,8 +99,8 @@ class App extends React.Component {
     checkUserStatus = () => {
         const {authActions} = this.props;
         ApiClient.get('/user/info').then(response => {
-            //console.log(response.data);
-            authActions.userDidSignIn(response.data.userinfo);
+            //console.log(response.result);
+            authActions.userDidSignIn(response.result.userinfo);
         }).catch(reason => {
 
         });
@@ -142,8 +142,8 @@ class App extends React.Component {
     checkVersion = () => {
         //检测新版本
         ApiClient.get('/getversion', {platform: Platform.OS}).then(response => {
-            //console.log(response.data);
-            if (response.data.version > AppVersion) {
+            //console.log(response.result);
+            if (response.result.version > AppVersion) {
                 Alert.alert(null, 'APP已有新的版本,是否现在升级?', [
                     {text: '取消'},
                     {text: '确定', onPress: () => Linking.openURL(AppUrl)},
@@ -158,7 +158,7 @@ class App extends React.Component {
             registrationid,
             uid
         }).then((response => {
-            //console.log(response.data);
+            //console.log(response.result);
         })).catch(reason => {
             console.log(reason);
         });
