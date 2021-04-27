@@ -31,7 +31,7 @@
                         <td>
                             <el-select size="medium" class="w300" v-model="page.catid">
                                 <el-option
-                                        v-for="(category,index) in fetchCategories"
+                                        v-for="(category,index) in categories"
                                         :value="category.pageid"
                                         :label="category.title"
                                         :key="index"

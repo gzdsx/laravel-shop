@@ -16,6 +16,7 @@
                 </div>
 
                 <el-table :data="items" style="width: 100%">
+                    <el-table-column prop="pageid" label="ID" width="60"></el-table-column>
                     <el-table-column prop="title" label="分类名称"></el-table-column>
                     <el-table-column width="90" label="操作选项">
                         <template slot-scope="scope">

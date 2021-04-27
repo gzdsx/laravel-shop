@@ -23,7 +23,7 @@
                     <div>{{order.shipping.tel}}</div>
                 </div>
                 <div>
-                    {{order.shipping.full_address}}
+                    {{order.shipping.formatted_address}}
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\CopyImage;
+use App\Models\OrderShipping;
 use App\Models\ProductItem;
 use App\Models\ProductCate;
 use App\Models\ProductCategory;
@@ -27,19 +28,16 @@ class UpgradeController extends Controller
 
     public function index(Request $request)
     {
-//        foreach (ProductCate::all() as $cate) {
-//            ProductItem::where('itemid', $cate->itemid)->update(['catid' => $cate->catid]);
-//        }
-//        foreach (Transaction::all() as $transaction) {
-//            Order::where('order_id', $transaction->order_id)->update(['transaction_id' => $transaction->transaction_id]);
-//        }
-//        return 'ok';
+        OrderShipping::get()->map(function (OrderShipping $shipping) {
+            if ($shipping->province == $shipping->city) {
+                $shipping->address = $shipping->city . $shipping->district . $shipping->street;
+            } else {
+                $shipping->address = $shipping->province . $shipping->city . $shipping->district . $shipping->street;
+            }
+            $shipping->save();
+        });
 
-//        return Order::with(['transaction' => function (Builder $builder) {
-//            return $builder->where('payer_id', 1000000);
-//        }])->toSql();
-
-        User::whereKey(1042820)->update(['password' => bcrypt('12345678')]);
+        return 'ok';
     }
 
     protected function transferItems()

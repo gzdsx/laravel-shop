@@ -22,15 +22,15 @@
                 <tr v-for="(item,index) in items" :key="index">
                     <td height="50"><b>{{item.name}}</b></td>
                     <td>{{item.tel}}</td>
-                    <td>{{item.full_address}}</td>
+                    <td>{{item.formatted_address}}</td>
                     <td>{{item.postalcode}}</td>
                     <td>
                         <a @click="handleShowEdit(item)">修改</a>
-                        <a @click="handleDelete(item.address_id)">删除</a>
+                        <a @click="handleDelete(item.id)">删除</a>
                     </td>
                     <td>
                         <div v-if="item.isdefault" style="color: #f00;">默认地址</div>
-                        <a v-else @click="handleSetDefault(item.address_id)">设为默认</a>
+                        <a v-else @click="handleSetDefault(item.id)">设为默认</a>
                     </td>
                 </tr>
                 </tbody>
@@ -59,7 +59,8 @@
                 <tr>
                     <td class="cell-label">所在地</td>
                     <td>
-                        <el-cascader :props.sync="props" class="w300" v-model="cascaderValue" ref="cascader"></el-cascader>
+                        <el-cascader :props.sync="props" class="w300" v-model="cascaderValue"
+                                     ref="cascader"></el-cascader>
                     </td>
                 </tr>
                 <tr>
@@ -108,7 +109,7 @@
                     lazyLoad(node, resolve) {
                         const {level} = node;
                         const fid = node.data ? node.data.id : 0;
-                        self.$get('/district/batchget?fid=' + fid).then(response => {
+                        self.$get('/district/batchget', {fid}).then(response => {
                             const items = response.result.items.map((o) => ({
                                 ...o,
                                 leaf: level >= 2
@@ -141,23 +142,22 @@
                     address.district
                 ];
                 this.showDialog = true;
-                setTimeout(this.$refs.cascader.panel.lazyLoad, 300);
             },
             handleSave() {
                 this.saveData();
             },
-            handleSetDefault(address_id) {
-                this.$post('/address/setdefault', {address_id}).then(response => {
+            handleSetDefault(id) {
+                this.$post('/address/setdefault', {id}).then(response => {
                     this.fetchList();
                 });
             },
-            handleDelete(address_id) {
+            handleDelete(id) {
                 this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/address/delete', {address_id}).then(response => {
+                    this.$post('/address/delete', {id}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -176,13 +176,13 @@
                     return false;
                 }
 
-                if (this.cities.length === 0) {
+                if (this.cascaderValue.length === 0) {
                     this.$showToast('请选择所在地区');
                     return false;
                 } else {
-                    this.address.province = this.cities[0];
-                    this.address.city = this.cities[1];
-                    this.address.district = this.cities[2];
+                    this.address.province = this.cascaderValue[0];
+                    this.address.city = this.cascaderValue[1];
+                    this.address.district = this.cascaderValue[2];
                 }
 
                 if (!this.address.street) {
@@ -192,7 +192,7 @@
 
                 this.showDialog = false;
                 this.$post('/address/save', {
-                    address_id: this.address.address_id || 0,
+                    id: this.address.id || 0,
                     address: this.address
                 }).then(response => {
                     this.resetData();

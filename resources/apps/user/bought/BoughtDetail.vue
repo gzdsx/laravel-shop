@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <td class="cell-label">收货信息</td>
-                    <td>{{shipping.full_address}} {{shipping.name}} {{shipping.tel}}</td>
+                    <td>{{shipping.formatted_address}} {{shipping.name}} {{shipping.tel}}</td>
                 </tr>
                 </tbody>
             </table>

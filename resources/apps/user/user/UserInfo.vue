@@ -120,7 +120,9 @@
                 const {province, city, district} = profile;
                 this.profile = profile;
                 this.cascaderValue = [province, city, district];
-                setTimeout(this.$refs.cascader.panel.lazyLoad, 300);
+                setTimeout(() => {
+                    this.$refs.cascader.panel.lazyLoad();
+                }, 300);
             });
         },
         methods: {

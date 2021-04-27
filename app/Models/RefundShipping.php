@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $postalcode 邮编
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read string $full_address
+ * @property-read string $formatted_address
  * @property-read \App\Models\Refund $refund
  * @method static \Illuminate\Database\Eloquent\Builder|RefundShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundShipping newQuery()
@@ -47,21 +47,14 @@ use Illuminate\Database\Eloquent\Model;
 class RefundShipping extends Model
 {
     use HasDates;
+
     protected $table = 'refund_shipping';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'refund_id', 'express_code', 'express_name', 'express_no',
-        'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
+        'refund_id', 'express_code', 'express_name', 'express_no', 'name', 'tel',
+        'province', 'city', 'district', 'street', 'postalcode'
     ];
-    protected $appends = ['full_address'];
-
-    /**
-     * @return string
-     */
-    public function getFullAddressAttribute()
-    {
-        return $this->province . $this->city . $this->district . $this->street;
-    }
+    protected $appends = ['formatted_address'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -69,5 +62,16 @@ class RefundShipping extends Model
     public function refund()
     {
         return $this->belongsTo(Refund::class, 'refund_id', 'refund_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedAddressAttribute()
+    {
+        if ($this->province == $this->city) {
+            return $this->city . $this->district . $this->street;
+        }
+        return $this->province . $this->city . $this->district . $this->street;
     }
 }

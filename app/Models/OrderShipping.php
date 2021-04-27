@@ -9,21 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\OrderShipping
  *
- * @property int $id
+ * @property int $id 主键
  * @property int $order_id 订单ID
  * @property string|null $express_code 快递公司编号
  * @property string|null $express_name 快递名称
  * @property string|null $express_no 快递单号
  * @property string|null $name 联系人
  * @property string|null $tel 联系电话
- * @property string|null $province
- * @property string|null $city
- * @property string|null $district
- * @property string|null $street
- * @property string|null $postalcode
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $full_address
+ * @property string|null $province 省
+ * @property string|null $city 市
+ * @property string|null $district 县
+ * @property string|null $street 街道
+ * @property string|null $postalcode 邮政编码
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
+ * @property-read string $formatted_address
  * @property-read \App\Models\Order $order
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping newQuery()
@@ -51,18 +51,10 @@ class OrderShipping extends Model
     protected $table = 'order_shipping';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'order_id', 'shipping_type', 'express_code', 'express_name', 'express_no',
-        'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode'
+        'order_id', 'express_code', 'express_name', 'express_no', 'name', 'tel',
+        'province', 'city', 'district', 'street', 'postalcode'
     ];
-    protected $appends = ['full_address'];
-
-    /**
-     * @return string
-     */
-    public function getFullAddressAttribute()
-    {
-        return $this->province . $this->city . $this->district . $this->street;
-    }
+    protected $appends = ['formatted_address'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -70,5 +62,16 @@ class OrderShipping extends Model
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id', 'order_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedAddressAttribute()
+    {
+        if ($this->province == $this->city) {
+            return $this->city . $this->district . $this->street;
+        }
+        return $this->province . $this->city . $this->district . $this->street;
     }
 }

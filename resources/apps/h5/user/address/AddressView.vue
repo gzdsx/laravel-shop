@@ -37,7 +37,7 @@
                 showPopup: false,
                 chosenAddressId: 0,
                 addressInfo: {},
-                showDelete:false
+                showDelete: false
             };
         },
         methods: {
@@ -46,22 +46,22 @@
                     //console.log(response.result);
                     this.itemList = response.result.items.map((d) => {
                         if (d.isdefault) {
-                            this.chosenAddressId = d.address_id;
+                            this.chosenAddressId = d.id;
                         }
                         return {
-                            id: d.address_id,
+                            id: d.id,
                             name: d.name,
                             tel: d.tel,
-                            address: d.full_address,
+                            address: d.formatted_address,
                             isDefault: d.isdefault,
-                            original:d
+                            original: d
                         }
                     });
                 });
             },
             handleSave: function (content) {
                 //console.log(content);
-                const address_id = this.addressInfo.id ? this.addressInfo.id : 0;
+                const id = this.addressInfo.id ? this.addressInfo.id : 0;
                 const {name, tel, province, city, county, isDefault, addressDetail, areaCode} = content;
                 const address = {
                     name,
@@ -74,7 +74,7 @@
                     isdefault: isDefault
                 };
                 this.showPopup = false;
-                this.$post('/address/update', {address_id, address}).then(response => {
+                this.$post('/address/update', {id, address}).then(response => {
                     this.$toast.success({
                         message: '收货地址已保存',
                         onClose: () => {
@@ -86,7 +86,7 @@
             },
             handleDelete: function (addr) {
                 this.showPopup = false;
-                this.$post('/address/delete', {address_id: this.addressInfo.id}).then(response => {
+                this.$post('/address/delete', {id: this.addressInfo.id}).then(response => {
                     this.fetchList();
                 });
             },
@@ -94,10 +94,10 @@
                 this.$emit('select', addr.original);
             },
             handleEdit: function (addr) {
-                this.$get('/address/get?address_id=' + addr.id).then(response => {
-                    const {address_id, name, tel, province, city, district, street, postalcode, isdefault} = response.result.address;
+                this.$get('/address/get?id=' + addr.id).then(response => {
+                    const {id, name, tel, province, city, district, street, postalcode, isdefault} = response.result.address;
                     this.addressInfo = {
-                        id: address_id,
+                        id,
                         name,
                         tel,
                         province,

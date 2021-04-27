@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read mixed|null $pay_state_des
  * @property-read mixed|null $pay_type_des
- * @property-read mixed|null $transaction_type_des
+ * @property-read mixed|null $type_des
  * @property-read \App\Models\Order|null $order
  * @property-read \App\Models\User $payee
  * @property-read \App\Models\User $payer

@@ -9,24 +9,24 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Address
  *
- * @property int $address_id
- * @property int $uid
- * @property string|null $name
- * @property string|null $tel
- * @property string|null $province
- * @property string|null $city
- * @property string|null $district
- * @property string|null $street
- * @property string|null $postalcode
- * @property int $isdefault
- * @property-read string $full_address
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $name 姓名
+ * @property string|null $tel 联系电话
+ * @property string|null $province 省
+ * @property string|null $city 市
+ * @property string|null $district 县
+ * @property string|null $street 街道
+ * @property string|null $postalcode 邮编
+ * @property int $isdefault 是否默认地址
+ * @property-read string $formatted_address
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereAddressId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereDistrict($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereIsdefault($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress wherePostalcode($value)
@@ -39,11 +39,11 @@ use Illuminate\Support\Facades\Auth;
 class UserAddress extends Model
 {
     protected $table = 'user_address';
-    protected $primaryKey = 'address_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'uid', 'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode', 'isdefault'
     ];
-    protected $appends = ['full_address'];
+    protected $appends = ['formatted_address'];
 
     public $timestamps = false;
 
@@ -66,8 +66,11 @@ class UserAddress extends Model
     /**
      * @return string
      */
-    public function getFullAddressAttribute()
+    public function getFormattedAddressAttribute()
     {
+        if ($this->province == $this->city) {
+            return $this->city . $this->district . $this->street;
+        }
         return $this->province . $this->city . $this->district . $this->street;
     }
 }

@@ -12,7 +12,7 @@
                             <span>{{address.name}}</span>
                             <span>{{address.tel}}</span>
                         </div>
-                        <p>{{address.full_address}}</p>
+                        <p>{{address.formatted_address}}</p>
                     </div>
                 </div>
                 <div class="address" v-else>

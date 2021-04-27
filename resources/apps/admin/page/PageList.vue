@@ -27,6 +27,7 @@
 
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="pageid" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="pageid" label="ID" width="60"></el-table-column>
                     <el-table-column prop="title" label="页面标题">
                         <template slot-scope="scope">
                             <a :href="scope.row.url" target="_blank">{{scope.row.title}}</a>

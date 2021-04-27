@@ -19,10 +19,10 @@
                     </div>
                 </header>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column prop="address_id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="id" width="45" type="selection"></el-table-column>
                     <el-table-column prop="name" width="200" label="收货人"></el-table-column>
                     <el-table-column prop="tel" width="200" label="联系电话"></el-table-column>
-                    <el-table-column prop="full_address" label="收货地址"></el-table-column>
+                    <el-table-column prop="formatted_address" label="收货地址"></el-table-column>
                     <el-table-column width="50" label="选项">
                         <template slot-scope="scope">
                             <a @click="handleShowEdit(scope.row)">编辑</a>
@@ -103,7 +103,7 @@
             var that = this;
             return {
                 items: [],
-                address_id: 0,
+                id: 0,
                 address: {},
                 showDialog: false,
                 selectionIds: [],
@@ -158,7 +158,7 @@
                 });
             },
             handleDelete() {
-                var items = this.selectionIds.map((d) => d.address_id);
+                var items = this.selectionIds.map((d) => d.id);
                 this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -199,7 +199,7 @@
 
                 this.showDialog = false;
                 this.$post('/refund/address/save', {
-                    address_id: this.address.address_id || 0,
+                    id: this.address.id || 0,
                     address: this.address
                 }).then(response => {
                     this.resetData();

@@ -32,8 +32,7 @@ trait UserAddressTrait
      */
     public function save(Request $request)
     {
-        $address_id = $request->input('address_id');
-        $address = $this->repository()->findOrNew($address_id);
+        $address = $this->repository()->findOrNew($request->input('id'));
         $address->fill($request->input('address', []));
         if ($address->isdefault == 1) {
             $this->repository()->update(['isdefault' => 0]);
@@ -57,9 +56,8 @@ trait UserAddressTrait
      */
     public function setDefault(Request $request)
     {
-        $address_id = $request->input('address_id', 0);
         $this->repository()->update(['isdefault' => 0]);
-        $this->repository()->whereKey($address_id)->update(['isdefault' => 1]);
+        $this->repository()->whereKey($request->input('id'))->update(['isdefault' => 1]);
         return jsonSuccess();
     }
 
@@ -69,7 +67,7 @@ trait UserAddressTrait
      */
     public function delete(Request $request)
     {
-        $this->repository()->whereKey($request->input('address_id', 0))->delete();
+        $this->repository()->whereKey($request->input('id', 0))->delete();
         return jsonSuccess();
     }
 
@@ -79,14 +77,17 @@ trait UserAddressTrait
      */
     public function get(Request $request)
     {
-        $address_id = $request->get('address_id', 0);
-        if ($address_id) {
-            $address = $this->repository()->find($address_id);
+        if ($id = $request->input('id')) {
+            $address = $this->repository()->find($id);
         } else {
-            $address = $this->repository()->orderByDesc('isdefault')->first();
+            $address = $this->repository()->where('isdefault', 1)->first();
         }
 
-        return jsonSuccess(['address' => $address]);
+        if ($address) {
+            return jsonSuccess(['address' => $address]);
+        }
+
+        return jsonError(404, 'address not found');
     }
 
     /**
@@ -94,7 +95,7 @@ trait UserAddressTrait
      */
     public function batchget(Request $request)
     {
-        $items = $this->repository()->orderByDesc('isdefault')->orderBy('address_id')->get();
+        $items = $this->repository()->orderByDesc('isdefault')->get();
         return jsonSuccess(['items' => $items]);
     }
 }

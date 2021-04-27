@@ -123,7 +123,7 @@
 
                 this.showDialog = false;
                 this.$post('/address/save', {
-                    address_id: this.address.address_id || 0,
+                    id: this.address.id || 0,
                     address: this.address
                 }).then(response => {
                     this.$showToast('地址保存成功');
