@@ -9,7 +9,7 @@
                 <div class="frame-main-content">
                     <form method="get" id="Form" autocomplete="off" action="{{url('order/buynow')}}">
                         <input type="hidden" name="itemid" value="{{$product->itemid}}">
-                        <input type="hidden" name="sku_id" value="" id="sku_id">
+                        <input type="hidden" name="sku_id" value="0" id="sku_id">
                         <div class="flex-row">
                             <div class="preview-wrapper">
                                 <div class="preview">
@@ -293,7 +293,7 @@
                         return false;
                     }
                 }
-                $.post('/webapi/cart/create', {
+                $.post('/api/cart/create', {
                     itemid: item.itemid,
                     quantity: quantity,
                     sku_id: skuIdEl.val()
@@ -351,7 +351,7 @@
                 $(this).addClass('active').siblings().removeClass();
                 $(".detail-content-contents .content-block").eq($(this).index()).removeClass('hidden').siblings().addClass('hidden');
             });
-            $.ajax('/item/reviews', {
+            $.ajax('/product/reviews', {
                 success: function (c) {
                     $("#reviews").html(c);
                 }

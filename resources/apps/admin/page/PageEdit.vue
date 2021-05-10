@@ -47,13 +47,7 @@
                 <table class="dsxui-formtable">
                     <tbody>
                     <tr>
-                        <td class="w60">摘要</td>
-                        <td>
-                            <el-input type="textarea" rows="5" v-model="page.summary"></el-input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>内容</td>
+                        <td class="w60">内容</td>
                         <td>
                             <vue-editor v-model="page.content"></vue-editor>
                         </td>
@@ -80,33 +74,30 @@
         },
         data() {
             return {
+                id: 0,
                 page: {
                     title: '',
                     catid: '',
                     alias: '',
                     template: '',
-                    summary: '',
-                    content: '',
-                    type: 'page'
+                    content: ''
                 },
-                pageid: 0,
                 categories: []
             }
         },
         mounted() {
-            this.pageid = this.$route.query.pageid | 0;
-            if (this.pageid) this.fetchData();
+            this.id = this.$route.query.id | 0;
+            if (this.id) this.fetchData();
             this.fetchCategories();
         },
         methods: {
             fetchData() {
-                const pageid = this.pageid;
-                this.$get('/page/get', {pageid}).then(response => {
+                this.$get('/page/get', {id: this.id}).then(response => {
                     this.page = response.result.page;
                 });
             },
             fetchCategories() {
-                this.$get('/page/batchget?type=category').then(response => {
+                this.$get('/page/category/getall').then(response => {
                     this.categories = response.result.items;
                 });
             },
@@ -122,8 +113,8 @@
                 }
 
                 this.$post('/page/save', {
-                    page: this.page,
-                    pageid: this.pageid
+                    id: this.id,
+                    page: this.page
                 }).then(response => {
                     this.$showToast('页面保存成功', () => this.$router.go(0));
                 });

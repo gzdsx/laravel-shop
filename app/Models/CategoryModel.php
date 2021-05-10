@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Class CategoryModel
+ * @package App\Models
+ */
 abstract class CategoryModel extends Model
 {
     use HasImageAttribute;
@@ -75,6 +79,7 @@ abstract class CategoryModel extends Model
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public static function updateCache()
     {
@@ -102,5 +107,7 @@ abstract class CategoryModel extends Model
         return static::with('children')->where('fid', 0)->get();
     }
 
-    abstract static function cacheName();
+    abstract static public function cacheName();
+
+    abstract public function getUrlAttribute();
 }

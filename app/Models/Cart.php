@@ -55,6 +55,10 @@ class Cart extends Model
     protected $fillable = [
         'uid', 'itemid', 'title', 'quantity', 'price', 'thumb', 'image', 'sku_id', 'sku_title'
     ];
+    protected $casts = [
+        'quantity' => 'int',
+        'sku_id' => 'int'
+    ];
 
     public static function boot()
     {

@@ -63,6 +63,14 @@ class ProductCategory extends CategoryModel
     }
 
     /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public function getUrlAttribute()
+    {
+        return url('product/category/' . $this->catid);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function products()
@@ -80,13 +88,5 @@ class ProductCategory extends CategoryModel
     public function props()
     {
         return $this->hasMany(ProductCategoryProps::class, 'catid', 'catid');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string
-     */
-    public function getUrlAttribute()
-    {
-        return url('product/category/' . $this->catid);
     }
 }

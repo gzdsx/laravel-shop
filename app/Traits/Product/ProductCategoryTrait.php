@@ -15,11 +15,13 @@ namespace App\Traits\Product;
 
 
 use App\Models\ProductCategory;
-use App\Support\PinyinUtil;
+use App\Traits\Foundation\CategoryTrait;
 use Illuminate\Http\Request;
 
 trait ProductCategoryTrait
 {
+    use CategoryTrait;
+
     /**
      * @return ProductCategory|\Illuminate\Database\Eloquent\Builder
      */
@@ -31,134 +33,5 @@ trait ProductCategoryTrait
     protected function updateCache()
     {
         ProductCategory::updateCache();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function get(Request $request)
-    {
-        return jsonSuccess(['category' => $this->repository()->findOrFail($request->input('catid'))]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getAll(Request $request)
-    {
-        return jsonSuccess(['items' => ProductCategory::fetchAll()]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function search(Request $request)
-    {
-        $fid = $request->input('fid', 0);
-        return jsonSuccess(['items' => $this->repository()->where('fid', $fid)->get()]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function save(Request $request)
-    {
-        $catid = $request->input('catid', 0);
-        $category = $this->repository()->findOrNew($catid);
-        $category->fill($request->input('category', []));
-
-        if ($category->parent) {
-            $category->level = $category->parent->level + 1;
-        } else {
-            $category->level = 1;
-        }
-
-        if (!$category->identifier) {
-            $category->identifier = PinyinUtil::pinyin($category->name);
-        }
-
-        $category->save();
-
-        if (!$category->displayorder) {
-            $category->displayorder = $category->catid ?? 0;
-            $category->save();
-        }
-
-        $this->updateCache();
-        return jsonSuccess(['category' => $category]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function increase(Request $request)
-    {
-        $category = $this->repository()->find($request->input('catid'));
-        $category->displayorder--;
-        $category->save();
-        $this->updateCache();
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function decrease(Request $request)
-    {
-        $category = $this->repository()->find($request->input('catid'));
-        $category->displayorder++;
-        $category->save();
-        $this->updateCache();
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function upgrade(Request $request)
-    {
-        $category = $this->repository()->find($request->input('catid'));
-        if ($category->parent) {
-            $category->fid = $category->parent->fid;
-            $category->save();
-            $this->updateCache();
-        }
-        return jsonSuccess(['category' => $category]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function delete(Request $request)
-    {
-        $this->deleteAll($request->input('catid'));
-        $this->updateCache();
-        return jsonSuccess();
-    }
-
-    /**
-     * @param $catid
-     * @throws \Exception
-     */
-    private function deleteAll($catid)
-    {
-        $category = $this->repository()->find($catid);
-        if ($category) {
-            $category->delete();
-            if ($category->children) {
-                foreach ($category->children as $child) {
-                    $this->deleteAll($child->catid);
-                }
-            }
-        }
     }
 }

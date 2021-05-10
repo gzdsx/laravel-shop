@@ -22,6 +22,7 @@
                 </header>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="channel_id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="channel_id" label="ID" width="50"></el-table-column>
                     <el-table-column prop="name" label="名称"></el-table-column>
                     <el-table-column width="50" label="选项">
                         <template slot-scope="scope">

@@ -14,16 +14,16 @@
 namespace App\Services;
 
 
-use App\Models\Account;
+use App\Models\UserAccount;
 use App\Services\Contracts\AccountServiceInterface;
 
 class AccountService implements AccountServiceInterface
 {
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function incrementBalance(Account $account, $amount)
+    public function incrementBalance(UserAccount $account, $amount)
     {
         // TODO: Implement incrementBalance() method.
         if ($amount > 0) {
@@ -34,10 +34,10 @@ class AccountService implements AccountServiceInterface
     }
 
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function decrementBalance(Account $account, $amount)
+    public function decrementBalance(UserAccount $account, $amount)
     {
         // TODO: Implement decrementBalance() method.
         $amount = floatval($amount);
@@ -51,20 +51,20 @@ class AccountService implements AccountServiceInterface
     }
 
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function incrementFreeze(Account $account, $amount)
+    public function incrementFreeze(UserAccount $account, $amount)
     {
         // TODO: Implement incrementFreeze() method.
         if ($amount) $account->increment('freeze', floatval($amount));
     }
 
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function decrementFreeze(Account $account, $amount)
+    public function decrementFreeze(UserAccount $account, $amount)
     {
         // TODO: Implement decrementFreeze() method.
         $amount = floatval($amount);
@@ -76,10 +76,10 @@ class AccountService implements AccountServiceInterface
     }
 
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function freeze(Account $account, $amount)
+    public function freeze(UserAccount $account, $amount)
     {
         // TODO: Implement freeze() method.
         $amount = floatval($amount);
@@ -93,10 +93,10 @@ class AccountService implements AccountServiceInterface
     }
 
     /**
-     * @param Account $account
+     * @param UserAccount $account
      * @param $amount
      */
-    public function unFreeze(Account $account, $amount)
+    public function unFreeze(UserAccount $account, $amount)
     {
         // TODO: Implement unFreeze() method.
         $amount = floatval($amount);

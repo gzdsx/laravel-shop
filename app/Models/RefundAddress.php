@@ -20,18 +20,18 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $postalcode 邮编
  * @property int $isdefault 是否默认地址
  * @property-read string $formatted_address
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress query()
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereDistrict($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereIsdefault($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress wherePostalcode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereProvince($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RefundAddress whereTel($value)
+ * @method static Builder|RefundAddress newModelQuery()
+ * @method static Builder|RefundAddress newQuery()
+ * @method static Builder|RefundAddress query()
+ * @method static Builder|RefundAddress whereCity($value)
+ * @method static Builder|RefundAddress whereDistrict($value)
+ * @method static Builder|RefundAddress whereId($value)
+ * @method static Builder|RefundAddress whereIsdefault($value)
+ * @method static Builder|RefundAddress whereName($value)
+ * @method static Builder|RefundAddress wherePostalcode($value)
+ * @method static Builder|RefundAddress whereProvince($value)
+ * @method static Builder|RefundAddress whereStreet($value)
+ * @method static Builder|RefundAddress whereTel($value)
  * @mixin \Eloquent
  */
 class RefundAddress extends Model

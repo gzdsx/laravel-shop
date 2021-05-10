@@ -14,19 +14,19 @@
 namespace App\Services\Contracts;
 
 
-use App\Models\Account;
+use App\Models\UserAccount;
 
 interface AccountServiceInterface
 {
-    public function incrementBalance(Account $account, $amount);
+    public function incrementBalance(UserAccount $account, $amount);
 
-    public function decrementBalance(Account $account, $amount);
+    public function decrementBalance(UserAccount $account, $amount);
 
-    public function incrementFreeze(Account $account, $amount);
+    public function incrementFreeze(UserAccount $account, $amount);
 
-    public function decrementFreeze(Account $account, $amount);
+    public function decrementFreeze(UserAccount $account, $amount);
 
-    public function freeze(Account $account, $amount);
+    public function freeze(UserAccount $account, $amount);
 
-    public function unFreeze(Account $account, $amount);
+    public function unFreeze(UserAccount $account, $amount);
 }

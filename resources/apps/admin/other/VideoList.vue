@@ -20,6 +20,7 @@
                 </header>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="id" label="ID" width="50"></el-table-column>
                     <el-table-column label="图片" width="70">
                         <template slot-scope="scope">
                             <el-image class="w50 h50" fit="cover" :src="scope.row.image"></el-image>

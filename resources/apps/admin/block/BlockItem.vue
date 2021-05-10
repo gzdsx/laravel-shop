@@ -3,7 +3,8 @@
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>内容模块</el-breadcrumb-item>
-                <el-breadcrumb-item>模块列表</el-breadcrumb-item>
+                <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+                <el-breadcrumb-item>项目列表</el-breadcrumb-item>
             </el-breadcrumb>
         </header>
 

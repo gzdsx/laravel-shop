@@ -20,6 +20,7 @@
                 </header>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="menu_id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="menu_id" width="50" label="ID"></el-table-column>
                     <el-table-column prop="title" label="菜单名称"></el-table-column>
                     <el-table-column width="140" label="选项">
                         <template slot-scope="scope">

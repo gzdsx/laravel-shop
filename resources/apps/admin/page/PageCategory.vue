@@ -16,18 +16,18 @@
                 </div>
 
                 <el-table :data="items" style="width: 100%">
-                    <el-table-column prop="pageid" label="ID" width="60"></el-table-column>
-                    <el-table-column prop="title" label="分类名称"></el-table-column>
+                    <el-table-column prop="catid" label="ID" width="60"></el-table-column>
+                    <el-table-column prop="name" label="分类名称"></el-table-column>
                     <el-table-column width="90" label="操作选项">
                         <template slot-scope="scope">
                             <a @click="handleShowEdit(scope.row)">编辑</a>
-                            <a @click="handleDelete(scope.row.pageid)">删除</a>
+                            <a @click="handleDelete(scope.row.catid)">删除</a>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
-        <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+        <el-dialog title="编辑分类" closeable :visible.sync="showDialog" :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
@@ -37,16 +37,16 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td class="cell-label">标题</td>
+                    <td class="cell-label">分类名称</td>
                     <td class="cell-input">
-                        <el-input size="medium" v-model="page.title"></el-input>
+                        <el-input size="medium" v-model="category.name"></el-input>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="cell-label">排序</td>
+                    <td class="cell-label">分类排序</td>
                     <td class="cell-input">
-                        <el-input size="medium" v-model="page.displayorder"></el-input>
+                        <el-input size="medium" v-model="category.displayorder"></el-input>
                     </td>
                     <td class="cell-tips"></td>
                 </tr>
@@ -76,7 +76,7 @@
         data: function () {
             return {
                 items: [],
-                page: {},
+                category: {},
                 showDialog: false,
             }
         },
@@ -85,33 +85,33 @@
         },
         methods: {
             fetchList() {
-                this.$get('/page/batchget?type=category').then(response => {
+                this.$get('/page/category/getall').then(response => {
                     this.items = response.result.items;
                 });
             },
             saveData(cb) {
-                this.$post('/page/save', {
-                    page: this.page,
-                    pageid: this.page.pageid || 0
+                this.$post('/page/category/save', {
+                    category: this.category,
+                    catid: this.category.catid || 0
                 }).then(response => {
                     this.resetData();
                     if (cb) cb(response);
                 });
             },
-            handleDelete(pageid) {
-                this.$confirm('此操作将永久删除所选页面, 是否继续?', '提示', {
+            handleDelete(catid) {
+                this.$confirm('此操作将永久删除所选分类, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/page/delete', {items: [pageid]}).then(response => {
+                    this.$post('/page/category/delete', {items: [catid]}).then(response => {
                         this.fetchList();
                     });
                 });
             },
             handleSave() {
-                if (!this.page.title) {
-                    this.$showToast('请填写标题');
+                if (!this.category.name) {
+                    this.$showToast('请填写分类名称');
                     return false;
                 }
                 this.showDialog = false;
@@ -125,14 +125,11 @@
                 this.showDialog = true;
             },
             handleShowEdit(d) {
-                this.page = d;
+                this.category = d;
                 this.showDialog = true;
             },
             resetData() {
-                this.page = {
-                    type: 'category',
-                    pageid: 0
-                };
+                this.category = {};
             }
         }
     }

@@ -21,6 +21,7 @@
 
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="id" label="ID" width="50"></el-table-column>
                     <el-table-column prop="title" label="话题">
                         <template slot-scope="scope">
                             <a @click="handleShowLive(scope.row)">{{scope.row.title}}</a>
@@ -31,7 +32,7 @@
                     <el-table-column prop="views" width="100" label="观看人次"></el-table-column>
                     <el-table-column prop="start_at" width="170" label="开播时间"></el-table-column>
                     <el-table-column prop="created_at" width="170" label="创建时间"></el-table-column>
-                    <el-table-column width="150" label="选项">
+                    <el-table-column width="110" label="选项">
                         <template slot-scope="scope">
                             <router-link :to="'/live/invite?live_id='+scope.row.id" target="_blank">邀请码</router-link>
                             <span>|</span>

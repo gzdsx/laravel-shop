@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id ID
  * @property int $fid 父级ID
  * @property string|null $name 名称
+ * @property string|null $fullname 全称
  * @property int $level 级别
- * @property int $usetype 使用类型
- * @property int $displayorder 排序
- * @property string|null $zone_code
- * @property float|null $lng
- * @property float|null $lat
- * @property string|null $pinyin
- * @property string|null $letter
+ * @property float|null $lng 经度
+ * @property float|null $lat 纬度
+ * @property string|null $pinyin 拼音
+ * @property string|null $letter 首字母
+ * @property string|null $zonecode 区位代码
  * @property string|null $citycode 区号
  * @property string|null $zipcode 邮编
+ * @property int $displayorder 排序
  * @property-read \Illuminate\Database\Eloquent\Collection|District[] $children
  * @property-read int|null $children_count
  * @property-read \Illuminate\Database\Eloquent\Collection|District[] $childs
@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereCitycode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereDisplayorder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereFid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|District whereFullname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereLat($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereLetter($value)
@@ -39,9 +40,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereLng($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District wherePinyin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|District whereUsetype($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereZipcode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|District whereZoneCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|District whereZonecode($value)
  * @mixin \Eloquent
  */
 class District extends Model
@@ -49,8 +49,7 @@ class District extends Model
     protected $table = 'district';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'fid', 'name', 'level', 'usetype', 'displayorder',
-        'zone_code', 'lng', 'lat', 'pinyin', 'letter', 'citycode', 'zipcode'
+        'fid', 'name', 'fullname', 'level', 'lng', 'lat', 'pinyin', 'letter', 'zonecode', 'citycode', 'zipcode', 'displayorder'
     ];
 
     public $timestamps = false;

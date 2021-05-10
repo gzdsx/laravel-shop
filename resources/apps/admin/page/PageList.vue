@@ -9,13 +9,13 @@
         <div class="mainframe-content">
             <div class="content-block">
                 <div class="table-edit-header">
-                    <el-tabs @tab-click="handleTabClick" value="all">
-                        <el-tab-pane label="全部" name="all"></el-tab-pane>
+                    <el-tabs @tab-click="handleTabClick" value="0">
+                        <el-tab-pane label="全部" name="0"></el-tab-pane>
                         <el-tab-pane
                                 v-for="(category,index) in categories"
                                 :key="index"
-                                :label="category.title"
-                                :name="category.pageid.toString()"
+                                :label="category.name"
+                                :name="category.catid.toString()"
                         ></el-tab-pane>
                     </el-tabs>
                     <div class="buttons-wrapper">
@@ -26,8 +26,8 @@
                 </div>
 
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
-                    <el-table-column prop="pageid" width="45" type="selection"></el-table-column>
-                    <el-table-column prop="pageid" label="ID" width="60"></el-table-column>
+                    <el-table-column prop="id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="id" label="ID" width="60"></el-table-column>
                     <el-table-column prop="title" label="页面标题">
                         <template slot-scope="scope">
                             <a :href="scope.row.url" target="_blank">{{scope.row.title}}</a>
@@ -37,7 +37,7 @@
                     <el-table-column prop="created_at" width="170" label="发布时间"></el-table-column>
                     <el-table-column width="50">
                         <template slot-scope="scope">
-                            <router-link :to="'/page/edit?pageid='+scope.row.pageid">编辑</router-link>
+                            <router-link :to="'/page/edit?id='+scope.row.id">编辑</router-link>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -79,7 +79,7 @@
                 });
             },
             fetchCategories() {
-                this.$get('/page/batchget?type=category').then(response => {
+                this.$get('/page/category/getall').then(response => {
                     this.categories = response.result.items;
                 });
             },
@@ -87,7 +87,7 @@
                 this.selectionIds = val;
             },
             handleDelete() {
-                var items = this.selectionIds.map((d) => d.pageid);
+                var items = this.selectionIds.map((d) => d.id);
                 this.$confirm('此操作将永久删除所选页面, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

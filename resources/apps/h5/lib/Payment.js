@@ -1,7 +1,7 @@
 export default {
     requestPay(order_id) {
         return new Promise((resolve, reject) => {
-            axios.post('/api/wechat/pay/unify', {
+            axios.post('/api/paument/wechatpay/unify', {
                 order_id,
                 appid: 1,
                 openid: window.openid

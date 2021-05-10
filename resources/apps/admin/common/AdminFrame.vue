@@ -35,7 +35,7 @@
                                     <router-link to="/">后台首页</router-link>
                                 </div>
                                 <div class="v-common-nav-link">
-                                    <a href="/" target="_blank">店铺首页</a>
+                                    <a href="/" target="_blank">网站首页</a>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="v-common-nav-link-wrapper">
                                 <div class="v-common-nav-link">
-                                    <router-link to="/settings">店铺设置</router-link>
+                                    <router-link to="/settings">系统设置</router-link>
                                 </div>
                                 <div class="v-common-nav-link">
                                     <router-link to="/freight/list">运费模板</router-link>
@@ -98,25 +98,6 @@
                         </div>
                         <div class="v-common-nav-model">
                             <div class="v-common-nav-model-link">
-                                <router-link to="/order/list">
-                                    <span class="iconfont icon-attention_light"></span>
-                                    <span>交易</span>
-                                </router-link>
-                            </div>
-                            <div class="v-common-nav-link-wrapper">
-                                <div class="v-common-nav-link">
-                                    <router-link to="/order/list">订单列表</router-link>
-                                </div>
-                                <div class="v-common-nav-link">
-                                    <router-link to="/transaction/list">交易流水</router-link>
-                                </div>
-                                <div class="v-common-nav-link">
-                                    <router-link to="/refund/list">退款处理</router-link>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="v-common-nav-model">
-                            <div class="v-common-nav-model-link">
                                 <router-link to="/post">
                                     <span class="iconfont icon-news_light"></span>
                                     <span>文章</span>
@@ -147,6 +128,25 @@
                                 </div>
                                 <div class="v-common-nav-link">
                                     <router-link to="/live/admins">人员设置</router-link>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="v-common-nav-model">
+                            <div class="v-common-nav-model-link">
+                                <router-link to="/order/list">
+                                    <span class="iconfont icon-attention_light"></span>
+                                    <span>交易</span>
+                                </router-link>
+                            </div>
+                            <div class="v-common-nav-link-wrapper">
+                                <div class="v-common-nav-link">
+                                    <router-link to="/order/list">订单列表</router-link>
+                                </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/transaction/list">交易流水</router-link>
+                                </div>
+                                <div class="v-common-nav-link">
+                                    <router-link to="/refund/list">退款处理</router-link>
                                 </div>
                             </div>
                         </div>

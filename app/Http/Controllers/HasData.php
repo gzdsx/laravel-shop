@@ -14,7 +14,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Traits\Common\SysMessages;
+use App\Traits\Foundation\SysMessages;
 use Illuminate\Contracts\Support\Arrayable;
 
 trait HasData

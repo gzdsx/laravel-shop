@@ -21,11 +21,13 @@
                 </header>
                 <el-table :data="items" style="width: 100%" @selection-change="handleSelectionChange">
                     <el-table-column prop="block_id" width="45" type="selection"></el-table-column>
+                    <el-table-column prop="block_id" width="50" label="ID"></el-table-column>
                     <el-table-column prop="block_name" width="200" label="模块名称"></el-table-column>
                     <el-table-column prop="block_desc" label="备注说明"></el-table-column>
                     <el-table-column width="120" label="选项">
                         <template slot-scope="scope">
-                            <router-link :to="'/block/item?block_id='+scope.row.block_id" target="_blank">管理项目
+                            <router-link :to="'/block/item?block_id='+scope.row.block_id" target="_blank">
+                                项目管理
                             </router-link>
                             <a @click="handleShowEdit(scope.row)">编辑</a>
                         </template>

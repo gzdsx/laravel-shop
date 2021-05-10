@@ -33,7 +33,7 @@ use Laravel\Passport\HasApiTokens;
  * @property int $freeze 冻结账户
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\UserAccount|null $account
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\UserAuth|null $auth
@@ -233,6 +233,14 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function member()
+    {
+        return $this->belongsTo(UserMember::class, 'level', 'level');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile()
@@ -266,7 +274,7 @@ class User extends Authenticatable
      */
     public function account()
     {
-        return $this->hasOne(Account::class, 'uid', 'uid');
+        return $this->hasOne(UserAccount::class, 'uid', 'uid');
     }
 
     /**

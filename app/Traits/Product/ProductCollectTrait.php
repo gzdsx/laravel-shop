@@ -14,7 +14,6 @@
 namespace App\Traits\Product;
 
 
-use App\Models\ProductCollect;
 use App\Models\ProductItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 trait ProductCollectTrait
 {
     /**
-     * @return ProductCollect|\Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     protected function repository()
     {

@@ -31,6 +31,8 @@
                             <col>
                             <col>
                             <col>
+                            <col>
+                            <col>
                             <col style="width: 50px;">
                         </colgroup>
                         <thead>
@@ -38,7 +40,9 @@
                             <th>
                                 <el-checkbox @change="handleCheckAll"></el-checkbox>
                             </th>
+                            <th>ID</th>
                             <th>名称</th>
+                            <th>全称</th>
                             <th>拼音</th>
                             <th>首字母</th>
                             <th>区域代码</th>
@@ -52,10 +56,12 @@
                             <td>
                                 <el-checkbox :label="item.id">{{''}}</el-checkbox>
                             </td>
+                            <td>{{item.id}}</td>
                             <td><a @click="handleLoadChildren(item)">{{item.name}}</a></td>
+                            <td><a @click="handleLoadChildren(item)">{{item.fullname}}</a></td>
                             <td>{{item.pinyin}}</td>
                             <td>{{item.letter}}</td>
-                            <td>{{item.zone_code}}</td>
+                            <td>{{item.zonecode}}</td>
                             <td>{{item.lng}}</td>
                             <td>{{item.lat}}</td>
                             <td><a @click="handleShowEdit(item)">编辑</a></td>
@@ -80,9 +86,16 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td class="cell-label">名称</td>
+                    <td class="cell-label">简称</td>
                     <td class="cell-input">
                         <el-input size="medium" v-model="district.name"></el-input>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="cell-label">全称</td>
+                    <td class="cell-input">
+                        <el-input size="medium" v-model="district.fullname"></el-input>
                     </td>
                     <td></td>
                 </tr>
@@ -103,7 +116,7 @@
                 <tr>
                     <td class="cell-label">区位代码</td>
                     <td class="cell-input">
-                        <el-input size="medium" v-model="district.zone_code"></el-input>
+                        <el-input size="medium" v-model="district.zonecode"></el-input>
                     </td>
                     <td class="cell-tips"></td>
                 </tr>
@@ -118,6 +131,20 @@
                     <td class="cell-label">纬度</td>
                     <td class="cell-input">
                         <el-input size="medium" v-model="district.lat"></el-input>
+                    </td>
+                    <td class="cell-tips"></td>
+                </tr>
+                <tr>
+                    <td class="cell-label">区号</td>
+                    <td class="cell-input">
+                        <el-input size="medium" v-model="district.citycode"></el-input>
+                    </td>
+                    <td class="cell-tips"></td>
+                </tr>
+                <tr>
+                    <td class="cell-label">邮编</td>
+                    <td class="cell-input">
+                        <el-input size="medium" v-model="district.zipcode"></el-input>
                     </td>
                     <td class="cell-tips"></td>
                 </tr>

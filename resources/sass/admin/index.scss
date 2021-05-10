@@ -255,6 +255,11 @@ html, body {
     }
 }
 
+.el-table-column--selection .cell {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .el-button--primary {
     a {
         &,

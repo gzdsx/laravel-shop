@@ -69,6 +69,6 @@ class WechatMenu extends Model
      */
     public function getTypeDesAttribute()
     {
-        return $this->type ? trans('wechat.menu_types.' . $this->type) : null;
+        return $this->type ? trans('wechat.menu.types.' . $this->type) : null;
     }
 }

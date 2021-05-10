@@ -26,8 +26,13 @@
                         node-key="id"
                         default-expand-all
                         :expand-on-click-node="false">
-                    <div class="flex-row flex-fill" slot-scope="{ node, data }">
-                        <div class="flex-fill">{{ node.label }}</div>
+                    <div class="flex-row flex-fill" style="margin-bottom: 15px" slot-scope="{ node, data }">
+                        <div class="flex-fill flex-row">
+                            <img :src="data.image" class="img-20 border-radius-10" style="margin-right: 5px;">
+                            <div class="flex-column justify-content-center">
+                                <span>{{ node.label }}</span>
+                            </div>
+                        </div>
                         <div v-if="data.fid">
                             <a @click="handleShowEdit(data)">编辑</a>
                             <span>|</span>
@@ -190,7 +195,7 @@
                     this.$showToast('请填写菜单名称');
                     return false;
                 }
-                if (!this.item.url){
+                if (!this.item.url) {
                     this.$showToast('请填写菜单链接');
                     return false;
                 }

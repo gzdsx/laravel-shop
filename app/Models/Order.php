@@ -186,7 +186,7 @@ class Order extends Model
      */
     public function getPayStateDesAttribute()
     {
-        return is_null($this->pay_state) ?: trans('transaction.pay_states.' . $this->pay_state);
+        return is_null($this->pay_state) ?: trans('trade.pay_states.' . $this->pay_state);
     }
 
     /**
@@ -258,15 +258,18 @@ class Order extends Model
     {
         $this->forceFill([
             'pay_state' => 1,
-            'pay_at' => now()
+            'pay_at' => now(),
+            'order_state' => 2
         ])->save();
     }
+
 
     public function markAsUnPaid()
     {
         $this->forceFill([
             'pay_state' => 0,
-            'pay_at' => null
+            'pay_at' => null,
+            'order_state' => 1
         ])->save();
     }
 
@@ -284,5 +287,56 @@ class Order extends Model
     public function isUnPaid()
     {
         return $this->pay_state == 0;
+    }
+
+    public function markAsShipped()
+    {
+        $this->forceFill([
+            'shipping_state' => 1,
+            'shipping_at' => now(),
+            'order_state' => 3
+        ])->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShipped()
+    {
+        return $this->shipping_state == 1;
+    }
+
+    public function markAsReceived()
+    {
+        $this->forceFill([
+            'receive_state' => 1,
+            'receive_at' => now(),
+            'order_state' => 4
+        ])->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReceived()
+    {
+        return $this->receive_state == 1;
+    }
+
+    public function markAsClosed()
+    {
+        $this->forceFill([
+            'closed' => 1,
+            'closed_at' => now(),
+            'order_state' => 5
+        ])->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed()
+    {
+        return $this->closed == 1;
     }
 }

@@ -61,18 +61,18 @@ class PostCategory extends CategoryModel
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function posts()
-    {
-        return $this->hasMany(PostItem::class, 'catid', 'catid');
-    }
-
-    /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string
      */
     public function getUrlAttribute()
     {
         return url('post/category/' . $this->catid);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(PostItem::class, 'catid', 'catid');
     }
 }

@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Auth;
  *
  * @property int $id 主键
  * @property int $uid 用户ID
+ * @property string|null $tag 标签
  * @property string|null $name 姓名
+ * @property int $gender 性别
  * @property string|null $tel 联系电话
  * @property string|null $province 省
  * @property string|null $city 市
@@ -26,12 +28,14 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress query()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereDistrict($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereIsdefault($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress wherePostalcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereTag($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress whereUid($value)
  * @mixin \Eloquent
@@ -41,7 +45,7 @@ class UserAddress extends Model
     protected $table = 'user_address';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'uid', 'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode', 'isdefault'
+        'uid', 'tag', 'name', 'gender', 'tel', 'province', 'city', 'district', 'street', 'postalcode', 'isdefault'
     ];
     protected $appends = ['formatted_address'];
 
