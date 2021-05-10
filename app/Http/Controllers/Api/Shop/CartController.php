@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Shop;
 
 
 use App\Http\Controllers\Api\BaseController;
-use App\Traits\Cart\CartTrait;
+use App\Traits\Shop\CartTrait;
 use Illuminate\Http\Request;
 
 class CartController extends BaseController

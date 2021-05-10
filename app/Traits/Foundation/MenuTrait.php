@@ -15,7 +15,6 @@ namespace App\Traits\Foundation;
 
 
 use App\Models\Menu;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 trait MenuTrait
@@ -34,10 +33,11 @@ trait MenuTrait
      */
     public function get(Request $request)
     {
-        $menu = $this->repository()->with(['items' => function (HasMany $hasMany) {
-            return $hasMany->with('children')->where('fid', 0);
-        }])->findOrFail($request->input('menu_id'));
-        return jsonSuccess(['menu' => $menu]);
+        $menu = $this->repository()->findOrFail($request->input('menu_id'));
+        return jsonSuccess([
+            'menu' => $menu,
+            'items' => $menu->items()->with('children')->get()
+        ]);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
-use App\Traits\Cart\CartTrait;
+use App\Traits\Shop\CartTrait;
 use Illuminate\Http\Request;
 
 class CartController extends BaseController

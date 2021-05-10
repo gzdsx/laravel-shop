@@ -11,7 +11,7 @@
  * Time: 17:09
  */
 
-namespace App\Traits\Cart;
+namespace App\Traits\Shop;
 
 
 use App\Models\Cart;

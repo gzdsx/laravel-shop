@@ -33,8 +33,11 @@ trait BlockTrait
      */
     public function get(Request $request)
     {
-        $block = $this->repository()->with('items')->findOrFail($request->input('block_id'));
-        return jsonSuccess(['block' => $block]);
+        $block = $this->repository()->findOrFail($request->input('block_id'));
+        return jsonSuccess([
+            'block' => $block,
+            'items' => $block->items()->get()
+        ]);
     }
 
     /**
