@@ -84,9 +84,12 @@ trait ProductCollectTrait
      */
     public function batchget(Request $request)
     {
-        $query = $this->repository()->with('product')->whereHas('product');
+        $query = $this->repository();
         $total = $query->count();
-        $items = $query->orderByDesc('id')->get();
+        $items = $query->with('product')
+            ->offset($request->input('offset', 0))
+            ->take($request->input('count', 10))
+            ->orderByDesc('id')->get();
         return $this->showCollectedItemsView($request, $items, $total);
     }
 

@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductCollect
  *
- * @property int $id
- * @property int $uid
- * @property int $itemid
- * @property string|null $title
- * @property string $image
- * @property string $price
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\ProductItem|null $product
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property int $itemid 产品ID
+ * @property string|null $title 产品名称
+ * @property string $image 图片
+ * @property string $price 价格
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
+ * @property-read \App\Models\ProductItem $product
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCollect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductCollect newQuery()
@@ -42,11 +42,11 @@ class ProductCollect extends Model
     protected $fillable = ['uid', 'itemid', 'title', 'image', 'price'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()
     {
-        return $this->hasOne(ProductItem::class, 'itemid', 'itemid');
+        return $this->belongsTo(ProductItem::class, 'itemid', 'itemid');
     }
 
     /**

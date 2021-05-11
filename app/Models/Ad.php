@@ -3,21 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 
 /**
  * App\Models\Ad
  *
  * @property int $id ID
- * @property int $uid
+ * @property int $uid 用户ID
  * @property string|null $title 标题
- * @property string $type
- * @property array|null $data
- * @property int $clicks
+ * @property string $type 类型
+ * @property array|null $data 内容
+ * @property int $clicks 点击
  * @property int $available 是否可用
- * @property string|null $begin_at
- * @property string|null $end_at
+ * @property \Illuminate\Support\Carbon|null $begin_at 开始时间
+ * @property \Illuminate\Support\Carbon|null $end_at 结束时间
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read array|string|null $state_des
  * @property-read mixed|null $type_des
  * @method static \Illuminate\Database\Eloquent\Builder|Ad newModelQuery()
@@ -26,12 +27,14 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereAvailable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereBeginAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereClicks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Ad whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereEndAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ad whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Ad whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Ad extends Model
@@ -45,19 +48,17 @@ class Ad extends Model
         'type_des',
         'state_des'
     ];
-
     protected $fillable = [
         'uid', 'title', 'type', 'data'
     ];
-
-    public $timestamps = false;
+    protected $dates = ['begin_at', 'end_at'];
 
     /**
      * @return mixed|null
      */
     public function getTypeDesAttribute()
     {
-        return trans('ad.ad_types.' . $this->type);
+        return trans('ad.types.' . $this->type);
     }
 
     /**
@@ -65,6 +66,6 @@ class Ad extends Model
      */
     public function getStateDesAttribute()
     {
-        return trans('ad.ad_states.' . $this->available);
+        return trans('ad.states.' . $this->available);
     }
 }

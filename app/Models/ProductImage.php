@@ -11,11 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductImage
  *
- * @property int $id
- * @property int $itemid
- * @property string $thumb
- * @property string $image
- * @property int $displayorder
+ * @property int $id 主键
+ * @property int $itemid 产品ID
+ * @property string $thumb 小图
+ * @property string $image 大图
+ * @property int $displayorder 显示顺序
  * @property-read \App\Models\ProductItem $product
  * @method static Builder|ProductImage newModelQuery()
  * @method static Builder|ProductImage newQuery()

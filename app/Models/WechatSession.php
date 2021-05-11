@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\WechatSession
  *
- * @property int $id
- * @property string|null $openid
- * @property string|null $unionid
- * @property string|null $session_key
+ * @property int $id 主键
+ * @property string|null $openid openid
+ * @property string|null $unionid unionid
+ * @property string|null $session_key session key
  * @method static \Illuminate\Database\Eloquent\Builder|WechatSession newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatSession newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatSession query()

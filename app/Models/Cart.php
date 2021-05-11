@@ -13,18 +13,18 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Cart
  *
- * @property int $id
- * @property int $uid
- * @property int $itemid
- * @property string|null $title
- * @property int $quantity
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property int $itemid 产品ID
+ * @property string|null $title 产品名称
+ * @property int $quantity 产品数量
  * @property string $price 商品价格
- * @property string $thumb
- * @property string $image
- * @property int $sku_id
- * @property string|null $sku_title
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $thumb 小图
+ * @property string $image 大图
+ * @property int $sku_id skuID
+ * @property string|null $sku_title sku描述
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \App\Models\ProductItem $product
  * @property-read \App\Models\ProductSku|null $sku
  * @property-read \App\Models\User $user

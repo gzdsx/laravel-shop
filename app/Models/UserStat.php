@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserStat
  *
- * @property int $uid
- * @property int $posts
- * @property int $comments
+ * @property int $uid 用户ID
+ * @property int $posts 文章数
+ * @property int $comments 评论数
  * @property int $albums
  * @property int $photos
  * @property int $follower

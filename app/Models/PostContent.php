@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\PostContent
  *
- * @property int $aid
- * @property string|null $content
- * @property int $pageorder
+ * @property int $aid 文章ID
+ * @property string|null $content 文章内容
+ * @property int $pageorder 排序
  * @property-read \App\Models\PostItem $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent newQuery()

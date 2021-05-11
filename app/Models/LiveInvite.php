@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\LiveInvite
  *
- * @property int $id
- * @property int|null $live_id
- * @property int|null $uid
- * @property string|null $code
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int|null $live_id 直播ID
+ * @property int|null $uid 用户ID
+ * @property string|null $code 邀请码
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string $link
  * @property-read \App\Models\Live|null $live
  * @property-read \App\Models\User|null $user

@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserField
  *
- * @property int $id
- * @property int $uid
- * @property string|null $name
- * @property string|null $value
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $name 字段名
+ * @property string|null $value 字段值
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserField newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserField newQuery()

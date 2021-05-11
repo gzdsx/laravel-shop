@@ -23,7 +23,7 @@ Route::group(['namespace' => 'Home'], function () {
     Route::get('app', 'IndexController@app');
     Route::get('upgrade', 'UpgradeController@index');
     Route::any('test', 'TestController@index');
-    Route::get('test/video', 'TestController@video');
+    Route::get('table', 'TestController@table');
 });
 
 //页面

@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Link
  *
- * @property int $id
- * @property int $catid
- * @property string $type
- * @property string|null $title
- * @property string|null $url
- * @property string $image
- * @property string|null $description
- * @property int $displayorder
+ * @property int $id 主键
+ * @property int $catid 分类ID
+ * @property string $type 类型
+ * @property string|null $title 名称
+ * @property string|null $url URL
+ * @property string $image 图片
+ * @property string|null $description 描述
+ * @property int $displayorder 显示顺序
  * @property-read Link $category
  * @property-read \Illuminate\Database\Eloquent\Collection|Link[] $links
  * @property-read int|null $links_count

@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\PostMedia
  *
- * @property int $id
- * @property int $aid
- * @property string|null $media_id
- * @property string|null $media_from
- * @property string|null $media_title
- * @property string $media_thumb
- * @property string|null $media_player
- * @property string|null $media_link
- * @property string|null $media_tags
- * @property string|null $media_description
- * @property string|null $media_source
+ * @property int $id 主键
+ * @property int $aid 文章ID
+ * @property string|null $media_id 媒体ID
+ * @property string|null $media_from 来源
+ * @property string|null $media_title 标题
+ * @property string $media_thumb 缩略图
+ * @property string|null $media_player 播放器
+ * @property string|null $media_link 链接
+ * @property string|null $media_tags 标签
+ * @property string|null $media_description 说明
+ * @property string|null $media_source 源地址
  * @property-read \App\Models\PostItem $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostMedia newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostMedia newQuery()

@@ -14,6 +14,7 @@
 namespace App\Traits\Post;
 
 
+use App\Models\PostItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,10 @@ trait PostCollectTrait
      */
     public function create(Request $request)
     {
-        $collect = $this->repository()->firstOrCreate(['aid' => $request->input('aid')]);
+        $aid = $request->input('aid');
+        $post = PostItem::find($aid);
+        $collect = $this->repository()->firstOrNew(['aid' => $aid]);
+        $collect->fill($post->only(['aid', 'title'])->toArray())->save();
         return jsonSuccess(['collect' => $collect]);
     }
 
@@ -53,7 +57,7 @@ trait PostCollectTrait
      */
     public function batchget(Request $request)
     {
-        $query = $this->repository()->with('post')->whereHas('post');
+        $query = $this->repository();
         return jsonSuccess([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))

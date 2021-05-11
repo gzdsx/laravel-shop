@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\BlockItem
  *
- * @property int $id
- * @property int $block_id
+ * @property int $id ID
+ * @property int $block_id 模块ID
  * @property string|null $title 标题
  * @property string $image 图片
  * @property string|null $url 链接
  * @property string|null $subtitle 副标题
- * @property string|null $field_1
- * @property string|null $field_2
- * @property string|null $field_3
+ * @property string|null $field_1 附近字段1
+ * @property string|null $field_2 附近字段2
+ * @property string|null $field_3 附近字段3
  * @property int|null $displayorder 显示顺序
  * @property-read \App\Models\Block $block
  * @method static Builder|BlockItem newModelQuery()

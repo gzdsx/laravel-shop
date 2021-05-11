@@ -18,6 +18,7 @@ use App\Traits\WeChat\WechatDefaultConfig;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Ramsey\Uuid\Uuid;
@@ -35,5 +36,10 @@ class TestController extends Controller
     {
 
         return $this->view('home.video');
+    }
+
+    public function table()
+    {
+        return str_replace('"', "'", json_encode(Schema::getColumnListing('post_comment')));
     }
 }

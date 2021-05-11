@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $username 付款人账号
  * @property string|null $prepay_id prepay_id
  * @property array|null $data 支付数据
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @method static \Illuminate\Database\Eloquent\Builder|PrePay newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PrePay newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PrePay query()

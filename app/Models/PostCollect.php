@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\PostCollect
  *
- * @property int $id
- * @property int $uid
- * @property int $aid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\PostItem|null $post
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property int $aid 文章ID
+ * @property string|null $title 文章标题
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
+ * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string|null $url
+ * @property-read \App\Models\PostItem $post
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect newQuery()
@@ -21,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereAid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostCollect whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -31,7 +34,8 @@ class PostCollect extends Model
 
     protected $table = 'post_collect';
     protected $primaryKey = 'id';
-    protected $fillable = ['aid', 'uid'];
+    protected $fillable = ['aid', 'uid', 'title'];
+    protected $appends = ['url'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -42,10 +46,18 @@ class PostCollect extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function post()
     {
-        return $this->hasOne(PostItem::class, 'aid', 'aid');
+        return $this->belongsTo(PostItem::class, 'aid', 'aid');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string|null
+     */
+    public function getUrlAttribute()
+    {
+        return $this->aid ? url('post/' . $this->aid . '.html') : null;
     }
 }

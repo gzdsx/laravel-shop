@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\RefundImage
  *
- * @property int $id
- * @property int $refund_id
- * @property string $thumb
- * @property string $image
+ * @property int $id 主键
+ * @property int $refund_id 退款ID
+ * @property string $thumb 小图
+ * @property string $image 大图
  * @method static \Illuminate\Database\Eloquent\Builder|RefundImage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundImage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundImage query()

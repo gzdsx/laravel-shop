@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Express
  *
- * @property int $id
- * @property string|null $name
- * @property string|null $code
- * @property string|null $regular
- * @property int $displayorder
+ * @property int $id 主键
+ * @property string|null $name 快递名称
+ * @property string|null $code 快递编码
+ * @property string|null $regular 单号规则
+ * @property int $displayorder 显示顺序
  * @method static \Illuminate\Database\Eloquent\Builder|Express newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Express newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Express query()

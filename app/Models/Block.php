@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Block
  *
- * @property int $block_id
- * @property string|null $block_name
- * @property string|null $block_desc
+ * @property int $block_id 模块ID
+ * @property string|null $block_name 模块名称
+ * @property string|null $block_desc 说明
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BlockItem[] $items
  * @property-read int|null $items_count
  * @method static \Illuminate\Database\Eloquent\Builder|Block newModelQuery()

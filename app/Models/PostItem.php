@@ -40,8 +40,8 @@ use Illuminate\Support\Facades\Auth;
  * @property int $click5
  * @property int $click6
  * @property int $click7
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\PostCategory $category
  * @property-read int|null $comments_count
  * @property-read \App\Models\PostContent|null $content

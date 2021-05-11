@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\MenuItem
  *
- * @property int $id
- * @property int $menu_id
- * @property int $fid
- * @property string|null $title
- * @property string|null $url
- * @property string $image
- * @property string $target
- * @property int $displayorder
- * @property int $available
+ * @property int $id 主键
+ * @property int $menu_id 菜单ID
+ * @property int $fid 父级ID
+ * @property string|null $title 标题
+ * @property string|null $url 链接
+ * @property string $image 图片
+ * @property string $target 目标
+ * @property int $displayorder 显示顺序
+ * @property int $available 是否可用
  * @property-read \Illuminate\Database\Eloquent\Collection|MenuItem[] $children
  * @property-read int|null $children_count
  * @property-read \App\Models\Menu $menu

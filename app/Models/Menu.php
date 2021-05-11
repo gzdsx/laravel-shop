@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Menu
  *
- * @property int $menu_id
- * @property string|null $title
+ * @property int $menu_id 菜单ID
+ * @property string|null $title 菜单名称
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MenuItem[] $items
  * @property-read int|null $items_count
  * @method static Builder|Menu newModelQuery()

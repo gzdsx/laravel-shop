@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $title 标题
  * @property string|null $alias 别名
  * @property string $image 图片
- * @property string|null $digest 摘要
  * @property string|null $content 内容
  * @property string|null $template 模板
  * @property int $displayorder 排序
@@ -32,7 +31,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Page whereCatid($value)
  * @method static Builder|Page whereContent($value)
  * @method static Builder|Page whereCreatedAt($value)
- * @method static Builder|Page whereDigest($value)
  * @method static Builder|Page whereDisplayorder($value)
  * @method static Builder|Page whereId($value)
  * @method static Builder|Page whereImage($value)

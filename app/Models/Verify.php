@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Verify
  *
- * @property int $id
+ * @property int $id 主键
  * @property string|null $code 验证码
  * @property string|null $mobile 手机号
  * @property string|null $email 邮箱

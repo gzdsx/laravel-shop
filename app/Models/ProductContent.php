@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductContent
  *
- * @property int $itemid
- * @property string|null $content
+ * @property int $itemid 产品ID
+ * @property string|null $content 内容
  * @property-read \App\Models\ProductItem $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductContent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductContent newQuery()

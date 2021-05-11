@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\RefundReason
  *
- * @property int $id
- * @property string|null $title
- * @property int|null $displayorder
+ * @property int $id 主键
+ * @property string|null $title 标题
+ * @property int|null $displayorder 显示顺序
  * @method static Builder|RefundReason newModelQuery()
  * @method static Builder|RefundReason newQuery()
  * @method static Builder|RefundReason query()

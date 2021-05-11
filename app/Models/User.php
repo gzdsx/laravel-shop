@@ -24,8 +24,9 @@ use Laravel\Passport\HasApiTokens;
  * @property string|null $email 邮箱
  * @property string|null $mobile 手机号
  * @property string|null $password 密码
- * @property string|null $remember_token
+ * @property string|null $remember_token token
  * @property string|null $avatar 头像
+ * @property int $level 会员等级
  * @property int $state 状态
  * @property int $email_state 邮箱验证状态
  * @property int $avatar_state 头像验证状态
@@ -59,6 +60,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $logs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Material[] $materials
  * @property-read int|null $materials_count
+ * @property-read \App\Models\UserMember $member
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostCollect[] $postCollects
@@ -92,6 +94,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEndsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFreeze($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLevel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLike(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMobile($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)

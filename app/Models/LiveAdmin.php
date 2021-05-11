@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\LiveAdmin
  *
- * @property int $id
- * @property int $uid
- * @property string|null $remark
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $remark 备注
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|LiveAdmin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LiveAdmin newQuery()

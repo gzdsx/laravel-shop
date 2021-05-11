@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Live
  *
- * @property int $id
+ * @property int $id 主键
  * @property int|null $uid 用户
  * @property int $channel_id 频道
  * @property string|null $stream_id 直播流ID

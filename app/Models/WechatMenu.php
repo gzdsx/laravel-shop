@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\WechatMenu
  *
- * @property int $id
- * @property int $fid
- * @property string|null $name
- * @property string|null $type
- * @property string|null $key
- * @property string|null $media_id
- * @property string|null $url
- * @property string|null $appid
- * @property string|null $pagepath
- * @property int $displayorder
+ * @property int $id 主键
+ * @property int $fid 父级ID
+ * @property string|null $name 名称
+ * @property string|null $type 菜单类型
+ * @property string|null $key 菜单KEY
+ * @property string|null $media_id 素材ID
+ * @property string|null $url 链接
+ * @property string|null $appid 小程序APPID
+ * @property string|null $pagepath 小程序页面地址
+ * @property int $displayorder 显示顺序
  * @property-read \Illuminate\Database\Eloquent\Collection|WechatMenu[] $children
  * @property-read int|null $children_count
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $type_des

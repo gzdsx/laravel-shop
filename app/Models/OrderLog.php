@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\OrderAction
  *
- * @property int $id
+ * @property int $id 主键
  * @property int $order_id 订单ID
  * @property int $uid 操作用户ID
- * @property string|null $username
+ * @property string|null $username 操作内容
  * @property string|null $content 操作内容
  * @property \Illuminate\Support\Carbon|null $created_at 操作时间
  * @property \Illuminate\Support\Carbon|null $updated_at

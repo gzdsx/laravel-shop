@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductSku
  *
- * @property int $sku_id
+ * @property int $sku_id 主键
  * @property int $itemid 商品ID
- * @property string|null $title
+ * @property string|null $title SKU名称
  * @property string|null $image 图片
  * @property string $price 价格
  * @property int $stock 库存

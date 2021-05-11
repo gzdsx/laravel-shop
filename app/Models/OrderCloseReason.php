@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\OrderClosed
  *
- * @property int $id
+ * @property int $id 主键
  * @property int $order_id 订单ID
  * @property string|null $reason 关闭原因
  * @property \Illuminate\Support\Carbon|null $created_at 关闭时间

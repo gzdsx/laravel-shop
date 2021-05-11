@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Video
  *
- * @property int $id
- * @property string|null $title
- * @property string $image
- * @property string|null $content
- * @property string|null $source
- * @property string|null $link
- * @property int $views
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property string|null $title 标题
+ * @property string $image 封面图
+ * @property string|null $content 内容
+ * @property string|null $source 源地址
+ * @property string|null $link 链接
+ * @property int $views 浏览数
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string|null $m_url
  * @property-read mixed $player
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string|null $url

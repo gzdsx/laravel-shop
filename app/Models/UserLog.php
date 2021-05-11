@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserLog
  *
- * @property int $id
- * @property int $uid
- * @property string|null $ip
- * @property string|null $operate
- * @property string|null $address
- * @property string|null $src
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $ip IP地址
+ * @property string|null $operate 操作
+ * @property string|null $address 地址
+ * @property string|null $src 来源
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog newQuery()

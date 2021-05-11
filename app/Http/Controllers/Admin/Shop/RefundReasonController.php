@@ -10,11 +10,11 @@ class RefundReasonController extends BaseController
 {
     /**
      * @param Request $request
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getAll(Request $request)
     {
-        return ['items' => RefundReason::all()];
+        return jsonSuccess(['items' => RefundReason::all()]);
     }
 
     /**

@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserGroup
  *
- * @property int $gid
- * @property string|null $title
- * @property string|null $type
- * @property int $creditslower
- * @property int $creditshigher
- * @property array|null $privileges
+ * @property int $gid 分组ID
+ * @property string|null $title 分组名称
+ * @property string|null $type 组类别
+ * @property int $creditslower 积分下限
+ * @property int $creditshigher 积分上限
+ * @property array|null $privileges 权限
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static Builder|UserGroup newModelQuery()

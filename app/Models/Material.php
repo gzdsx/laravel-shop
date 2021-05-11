@@ -14,21 +14,21 @@ use Illuminate\Support\Facades\Storage;
 /**
  * App\Models\Material
  *
- * @property int $id
- * @property int $uid
- * @property string|null $name
- * @property string $thumb
- * @property string $source
- * @property string|null $width
- * @property string|null $height
- * @property string|null $type
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $name 名称
+ * @property string $thumb 缩略图
+ * @property string $source 存储路径
+ * @property string|null $width 宽
+ * @property string|null $height 高
+ * @property string|null $type 类型
  * @property string|null $extension 扩展名
- * @property int $size
- * @property string|null $mime
- * @property int $views
- * @property int $downloads
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $size 大小
+ * @property string|null $mime MIME
+ * @property int $views 点击数
+ * @property int $downloads 下载数
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read int|string $formated_size
  * @property-read string $image
  * @property-read \App\Models\User $user

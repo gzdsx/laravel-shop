@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductReviewImage
  *
- * @property int $id
- * @property int $review_id
- * @property string $thumb
- * @property string $image
+ * @property int $id 主键
+ * @property int $review_id 评价ID
+ * @property string $thumb 小图
+ * @property string $image 大图
  * @method static \Illuminate\Database\Eloquent\Builder|ProductReviewImage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductReviewImage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductReviewImage query()

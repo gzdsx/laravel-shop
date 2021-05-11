@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\ProductProps
  *
- * @property int $id
- * @property int $itemid
- * @property int $prop_id
- * @property string|null $prop_name
- * @property string|null $prop_value
+ * @property int $id 主键
+ * @property int $itemid 产品ID
+ * @property int $prop_id 属性ID
+ * @property string|null $prop_name 属性名称
+ * @property string|null $prop_value 属性值
  * @property-read \App\Models\ProductItem $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductProps newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductProps newQuery()

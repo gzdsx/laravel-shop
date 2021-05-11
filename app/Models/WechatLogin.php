@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\WxLogin
  *
- * @property int $id
- * @property int $uid
- * @property string|null $basestr
- * @property string|null $openid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $basestr 识别码
+ * @property string|null $openid OPENID
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin query()
