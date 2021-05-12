@@ -18,16 +18,24 @@ use AlibabaCloud\Client\AlibabaCloud;
 
 class SmsClient
 {
-    public $accessKeyId = 'LTAI4G5BMQoogLhbkjf1y4R5';
-    public $accessSecret = 'VaGAZ4KE95CWQDO8nxGIjcUyc8n7rq';
-    public $SignName = '贵州小猿科技有限公司';
-    public $TemplateCode = 'SMS_197185201';
+    public $accessKeyId = '';
+    public $accessSecret = '';
+    public $SignName = '';
+    public $TemplateCode = '';
     public $PhoneNumbers;
 
     public function __construct($accessKeyId = null, $accessSecret = null)
     {
-        if ($accessKeyId) $this->accessKeyId = $accessKeyId;
-        if ($accessSecret) $this->accessSecret = $accessSecret;
+        if ($accessKeyId) {
+            $this->accessKeyId = $accessKeyId;
+        } else {
+            $this->accessKeyId = env('ALIYUN_ACCESSKEYID');
+        }
+        if ($accessSecret) {
+            $this->accessSecret = $accessSecret;
+        } else {
+            $this->accessSecret = env('ALIYUN_ACCESSSECRET');
+        }
         AlibabaCloud::accessKeyClient($this->accessKeyId, $this->accessSecret)
             ->regionId('cn-hangzhou')
             ->asDefaultClient();
@@ -45,8 +53,16 @@ class SmsClient
     public function send($PhoneNumbers = null, $TemplateParam = [], $SignName = null, $TemplateCode = null)
     {
         if ($PhoneNumbers) $this->PhoneNumbers = $PhoneNumbers;
-        if ($SignName) $this->SignName = $SignName;
-        if ($TemplateCode) $this->TemplateCode = $TemplateCode;
+        if ($SignName) {
+            $this->SignName = $SignName;
+        } else {
+            $this->SignName = env('ALIYUN_SMS_SIGNNAME');
+        }
+        if ($TemplateCode) {
+            $this->TemplateCode = $TemplateCode;
+        } else {
+            $this->TemplateCode = env('ALIYUN_SMS_TEMPLATECODE');
+        }
         if ($TemplateParam) $this->TemplateParam = $TemplateParam;
 
         return AlibabaCloud::rpc()
