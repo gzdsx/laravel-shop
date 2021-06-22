@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -167,15 +167,12 @@
                 <el-button size="medium" type="primary" @click="handleUpdateShipping">确 定</el-button>
             </div>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "RefundDetail",
-        components: {AdminFrame},
         data() {
             return {
                 refund_id: 0,

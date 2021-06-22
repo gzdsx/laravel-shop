@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>广告管理</el-breadcrumb-item>
@@ -141,19 +141,12 @@
             </table>
         </el-dialog>
         <image-picker v-model="showPicker" @confirm="handleSelectImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-    import ImagePicker from "../../lib/ImagePicker";
-
     export default {
         name: "AdList",
-        components: {
-            AdminFrame,
-            ImagePicker
-        },
         data () {
             return {
                 items: [],

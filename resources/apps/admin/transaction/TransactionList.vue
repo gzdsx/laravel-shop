@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>付款记录</el-breadcrumb-item>
@@ -60,17 +60,12 @@
                 </div>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "TransactionList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 items: [],

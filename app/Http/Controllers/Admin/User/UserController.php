@@ -115,11 +115,8 @@ class UserController extends BaseController
      */
     public function batchUpdate(Request $request)
     {
-        $this->repository()->whereKey($request->input('items', []))->get()->map(function ($user) use ($request) {
-            if ($user->uid != 1000000) {
-                $user->update($request->input('data', []));
-            }
-        });
+        $data = $request->input('data', []);
+        $this->repository()->whereKey($request->input('items', []))->get()->each->update($data);
         return jsonSuccess();
     }
 }

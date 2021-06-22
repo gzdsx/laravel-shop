@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>页面管理</el-breadcrumb-item>
@@ -49,17 +49,12 @@
                 </div>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "PageList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 catid: 0,

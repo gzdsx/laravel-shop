@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="page-title">店铺设置</div>
         </header>
@@ -38,11 +38,10 @@
         <div class="edit-bottom">
             <el-button type="primary" @click="handleSubmit">更新配置</el-button>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
     import SettingBasic from "./SettingBasic";
     import SettingRegister from "./SettingRegister";
     import SettingAttach from "./SettingAttach";
@@ -52,7 +51,6 @@
     export default {
         name: "SettingMain",
         components: {
-            AdminFrame,
             SettingBasic,
             SettingRegister,
             SettingAttach,

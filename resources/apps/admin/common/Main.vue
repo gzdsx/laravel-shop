@@ -219,8 +219,8 @@
             </div>
         </div>
         <div class="mainframe">
-            <div class="mainframe-container">
-                <slot></slot>
+            <div class="mainframe-container" id="app">
+                <router-view/>
             </div>
         </div>
     </div>
@@ -228,7 +228,7 @@
 
 <script>
     export default {
-        name: "AdminFrame"
+        name: "Main"
     }
 </script>
 

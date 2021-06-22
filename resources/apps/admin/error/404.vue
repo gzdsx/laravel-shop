@@ -1,5 +1,5 @@
 <template>
-<admin-frame>
+<div>
     <div class="image">
         <img src="/images/common/404.png">
     </div>
@@ -8,16 +8,12 @@
         <router-link to="/">返回首页</router-link>
         <router-link to="">返回上一页</router-link>
     </div>
-</admin-frame>
+</div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
     export default {
         name: "404",
-        components:{
-            AdminFrame
-        }
     }
 </script>
 

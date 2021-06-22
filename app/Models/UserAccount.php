@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class UserAccount extends Model
 {
-    protected $table = 'account';
+    protected $table = 'user_account';
     protected $primaryKey = 'uid';
     protected $fillable = ['uid', 'password', 'balance', 'freeze', 'total_income', 'total_cost', 'points'];
     protected $hidden = ['password'];

@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>视频管理</el-breadcrumb-item>
@@ -104,17 +104,12 @@
             </table>
         </el-dialog>
         <image-picker v-model="showPicker" @confirm="handlePickImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "VideoList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 items: [],

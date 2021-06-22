@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -178,17 +178,12 @@
             </table>
         </el-dialog>
         <image-picker v-model="showPicker" @confirm="handleConfirmImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "ProductCategory",
-        components: {
-            AdminFrame,
-        },
         data() {
             return {
                 catid: 0,

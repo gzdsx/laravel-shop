@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>直播管理</el-breadcrumb-item>
@@ -79,17 +79,12 @@
                 </tbody>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "LiveList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 id: 0,

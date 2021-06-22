@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex-fill">
                 <el-breadcrumb separator="/">
@@ -71,17 +71,12 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "LiveChannel",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 items: [],

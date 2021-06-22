@@ -1,9 +1,9 @@
 import Vuex from 'vuex';
 import vuedraggable from 'vuedraggable';
-import App from './common/App';
 import ImagePicker from "../lib/ImagePicker";
 // import KindEditor from "../lib/KindEditor";
 import VueEditor from "../lib/VueEditor";
+import Main from './common/Main';
 
 Vue.use(Vuex);
 
@@ -57,6 +57,6 @@ new Vue({
     router,
     store,
     render(h) {
-        return h(App);
+        return h(Main);
     }
 }).$mount('#app');

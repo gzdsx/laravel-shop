@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -85,17 +85,12 @@
                 </table>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "UserEdit",
-        components: {
-            AdminFrame
-        },
         data () {
             return {
                 uid: 0,

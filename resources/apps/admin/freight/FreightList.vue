@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>运费设置</el-breadcrumb-item>
@@ -35,16 +35,12 @@
                 </el-table>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
     export default {
         name: "FreightList",
-        components:{
-            AdminFrame
-        },
         data () {
             return {
                 items: [],

@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>快递管理</el-breadcrumb-item>
@@ -77,17 +77,12 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "ExpressList",
-        components: {
-            AdminFrame
-        },
         data () {
             return {
                 items: [],

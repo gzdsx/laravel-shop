@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>区位管理</el-breadcrumb-item>
@@ -160,17 +160,12 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "DistrictList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 items: [],

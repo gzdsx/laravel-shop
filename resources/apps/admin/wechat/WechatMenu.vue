@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>微信管理</el-breadcrumb-item>
@@ -92,7 +92,8 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="编辑菜单" closeable :visible.sync="showDialog" :close-on-click-modal="false" :close-on-press-escape="false">
+        <el-dialog title="编辑菜单" closeable :visible.sync="showDialog" :close-on-click-modal="false"
+                   :close-on-press-escape="false">
             <table class="dsxui-formtable">
                 <colgroup>
                     <col style="width: 80px;">
@@ -182,18 +183,13 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "WechatMenu",
-        components: {
-            AdminFrame
-        },
-        data () {
+        data() {
             return {
                 items: [],
                 id: 0,
@@ -207,12 +203,12 @@
             this.fetchTypes();
         },
         methods: {
-            fetchList () {
+            fetchList() {
                 this.$get('/wechat/menu/getall').then(response => {
                     this.items = response.result.items;
                 });
             },
-            fetchTypes () {
+            fetchTypes() {
                 this.$get('/wechat/menu/gettypes').then(response => {
                     this.types = response.result.items;
                 });

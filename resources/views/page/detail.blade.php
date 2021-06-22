@@ -7,11 +7,11 @@
         <div class="area">
             <div class="page-div">
                 <div class="frame-left">
-                    @foreach ($categories as $p)
-                        <h3>{{$p->title}}</h3>
+                    @foreach ($categories as $c)
+                        <h3>{{$c->name}}</h3>
                         <ul>
-                            @foreach($p->pages as $pp)
-                                <li><a href="{{$pp->url}}" class="{{$pp->pageid==$page->pageid ? 'active' :''}}">{{$pp->title}}</a></li>
+                            @foreach($c->pages as $p)
+                                <li><a href="{{$p->url}}" class="{{$p->id==$page->id ? 'active' :''}}">{{$p->title}}</a></li>
                             @endforeach
                         </ul>
                     @endforeach

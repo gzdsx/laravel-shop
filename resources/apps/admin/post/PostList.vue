@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>文章管理</el-breadcrumb-item>
@@ -105,18 +105,13 @@
                 </div>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "PostList",
-        components: {
-            AdminFrame
-        },
-        data: function () {
+        data () {
             return {
                 items: [],
                 total: 0,

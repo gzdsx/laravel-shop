@@ -2,7 +2,11 @@
     <div>
         <div :id="id">
             <div ref="toolbar" class="we-toolbar"></div>
-            <div ref="editor" class="w-text-container" :style="{'height':height+'px','padding-right':'35px'}"></div>
+            <div class="we-container">
+                <div class="w-text-container" :style="{'height':height+'px'}">
+                    <div ref="editor"></div>
+                </div>
+            </div>
         </div>
         <image-picker v-model="showPicker" @confirm="insertImage"></image-picker>
     </div>
@@ -19,8 +23,14 @@
             event: 'change'//事件名称
         },
         props: {
-            value: '',
-            height: 450,
+            value: {
+                type: String,
+                default: ''
+            },
+            height: {
+                type: Number,
+                default: 450
+            },
             id: {
                 type: String,
                 default: 'vueeditor'
@@ -81,21 +91,26 @@
         border-bottom: 1px solid #EEE;
     }
 
-    .w-text-container {
+    .we-container {
         border: 1px solid #c9d8db;
         border-top: none;
+    }
+
+    .w-text-container {
         min-height: 400px !important;
-        padding: 0 20px !important;
+        overflow-y: auto;
 
         * {
             max-width: 100% !important;
         }
 
+        .w-e-text-container {
+            border: none !important;
+            padding: 20px;
+        }
+
         .w-e-text {
             box-sizing: border-box;
-            padding-top: 10px;
-            padding-bottom: 10px;
-
             * {
                 max-width: 100% !important;
             }

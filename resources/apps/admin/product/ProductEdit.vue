@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -174,17 +174,15 @@
             <el-button type="primary" @click="handleSubmit(1)">上架出售</el-button>
         </div>
         <image-picker v-model="showImagePicker" @confirm="handlePickImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
     import SkuPanel from "../../lib/SkuPanel";
 
     export default {
         name: "ProductEdit",
         components: {
-            AdminFrame,
             SkuPanel,
         },
         data() {

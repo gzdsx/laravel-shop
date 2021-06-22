@@ -28,7 +28,7 @@ Route::group(['namespace' => 'Home'], function () {
 
 //页面
 Route::group(['namespace' => 'Page', 'prefix' => 'page'], function () {
-    Route::get('{pageid}.html', 'DetailController@index');
+    Route::get('{id}.html', 'IndexController@detail');
 });
 
 Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function () {

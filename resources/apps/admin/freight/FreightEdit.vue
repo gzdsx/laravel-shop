@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>运费设置</el-breadcrumb-item>
@@ -62,17 +62,12 @@
             <el-button @click="$router.go(-1)" class="w100">取消</el-button>
             <el-button type="primary" @click="handleSubmit" class="w100">保存</el-button>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "FreightEdit",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 template: {

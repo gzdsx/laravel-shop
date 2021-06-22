@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -61,17 +61,12 @@
             <el-button class="w100" @click="$router.go(-1)">取消</el-button>
             <el-button class="w100" type="primary" @click="handleSubmit">保存</el-button>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "PageEdit",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 id: 0,

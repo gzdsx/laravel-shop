@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex-fill">
                 <el-breadcrumb separator="/">
@@ -49,17 +49,12 @@
                 <p>请将二维码或邀请链接发给微信好友</p>
             </div>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "LiveInvite",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 live_id: 0,

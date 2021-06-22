@@ -203,9 +203,7 @@ trait ProductTrait
      */
     public function delete(Request $request)
     {
-        foreach ($this->repository()->whereKey($request->input('items', []))->get() as $product) {
-            $product->delete();
-        }
+        $this->repository()->whereKey($request->input('items', []))->get()->each->delete();
         return $this->sendDeletedItemResponse($request);
     }
 

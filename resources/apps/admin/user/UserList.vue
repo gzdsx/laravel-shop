@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>用户管理</el-breadcrumb-item>
@@ -103,17 +103,12 @@
                 </div>
             </div>
         </div>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "UserList",
-        components: {
-            AdminFrame
-        },
         data() {
             return {
                 items: [],

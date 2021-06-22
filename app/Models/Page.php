@@ -63,7 +63,7 @@ class Page extends Model
      */
     public function getUrlAttribute()
     {
-        return $this->pageid ? url('page/' . $this->pageid . '.html') : null;
+        return $this->id ? url('page/' . $this->id . '.html') : null;
     }
 
     /**
@@ -71,7 +71,7 @@ class Page extends Model
      */
     public function getMUrlAttribute()
     {
-        return $this->pageid ? url('h5/page/' . $this->pageid . '.html') : null;
+        return $this->id ? url('h5/page/' . $this->id . '.html') : null;
     }
 
 

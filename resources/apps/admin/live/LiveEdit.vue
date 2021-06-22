@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex-fill">
                 <el-breadcrumb separator="/">
@@ -97,19 +97,12 @@
             <el-button class="w100" type="primary" @click="handleSubmit">保存</el-button>
         </div>
         <image-picker v-model="showPicker" @confirm="handlePickedImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-    import KindEditor from "../../lib/KindEditor";
-
     export default {
         name: "LiveEdit",
-        components: {
-            AdminFrame,
-            KindEditor,
-        },
         data() {
             return {
                 id: 0,

@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>退货地址</el-breadcrumb-item>
@@ -88,17 +88,12 @@
                 </tbody>
             </table>
         </el-dialog>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "RefundAddress",
-        components: {
-            AdminFrame
-        },
         data() {
             var that = this;
             return {

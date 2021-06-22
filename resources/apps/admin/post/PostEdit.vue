@@ -1,5 +1,5 @@
 <template>
-    <admin-frame>
+    <div>
         <header class="page-header">
             <div class="flex">
                 <el-breadcrumb separator="/">
@@ -117,17 +117,12 @@
             <el-button type="primary" @click="handleSubmit(1)">立即发布</el-button>
         </div>
         <image-picker v-model="showPicker" @confirm="handlePickImage"></image-picker>
-    </admin-frame>
+    </div>
 </template>
 
 <script>
-    import AdminFrame from "../common/AdminFrame";
-
     export default {
         name: "PostEdit",
-        components: {
-            AdminFrame,
-        },
         data() {
             return {
                 aid: 0,
