@@ -131,7 +131,7 @@
                 </div>
             </div>
         </section>
-        <image-picker v-model="showImagePicker" @confirm="handlePickedImage"></image-picker>
+        <image-picker :show.sync="showImagePicker" @confirm="handlePickedImage"></image-picker>
     </div>
 </template>
 

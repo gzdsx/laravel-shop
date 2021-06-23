@@ -116,7 +116,7 @@
             <el-button @click="submit(0)">存入草稿</el-button>
             <el-button type="primary" @click="handleSubmit(1)">立即发布</el-button>
         </div>
-        <image-picker v-model="showPicker" @confirm="handlePickImage"></image-picker>
+        <image-picker :show.sync="showPicker" @confirm="handlePickImage"></image-picker>
     </div>
 </template>
 

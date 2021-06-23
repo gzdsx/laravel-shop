@@ -173,7 +173,7 @@
             <el-button @click="handleSubmit(0)">放入仓库</el-button>
             <el-button type="primary" @click="handleSubmit(1)">上架出售</el-button>
         </div>
-        <image-picker v-model="showImagePicker" @confirm="handlePickImage"></image-picker>
+        <image-picker :show.sync="showImagePicker" @confirm="handlePickImage"></image-picker>
     </div>
 </template>
 

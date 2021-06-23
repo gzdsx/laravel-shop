@@ -6,28 +6,28 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
     >
-        <el-container style="margin-top: -20px; margin-bottom: 10px;">
-            <div class="flex" style="line-height: 32px;">
-                图片上传仅支持JPG,JPEG,PNG,GIF格式，大小不能超过5MB
+        <el-container direction="vertical">
+            <div class="flex-row">
+                <div class="flex-column justify-content-center flex-fill">
+                    <span>图片上传仅支持JPG,JPEG,PNG,GIF格式，大小不能超过5MB</span>
+                </div>
+                <div>
+                    <el-upload
+                            class="upload-demo"
+                            action="/api/material/uploadimg"
+                            accept="image/png, image/jpeg, image/jpg, image/gif"
+                            :multiple="false"
+                            :data="formData"
+                            :headers="headers"
+                            :show-file-list="false"
+                            :on-success="handleUploadSuccess"
+                    >
+                        <el-button size="small" type="primary">点击上传</el-button>
+                    </el-upload>
+                </div>
             </div>
-            <div class="display-flex" style="align-items: flex-end; text-align: right;">
-                <el-upload
-                        class="upload-demo"
-                        action="/api/material/uploadimg"
-                        accept="image/png, image/jpeg, image/jpg, image/gif"
-                        :multiple="false"
-                        :data="formData"
-                        :headers="headers"
-                        :show-file-list="false"
-                        :on-success="handleUploadSuccess"
-                >
-                    <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
-            </div>
-        </el-container>
-        <el-container style="flex-direction: column;" v-loading="loading">
-            <div class="flex-row" style="flex-wrap: wrap; height: 410px; margin: 0 -5px;">
-                <div class="image-wrapper" v-for="(item,index) in items" :key="index">
+            <div class="flex-row flex-wrap" style="margin: 0 -5px; min-height:410px;">
+                <div class="image-item" v-for="(item,index) in items" :key="index">
                     <el-image
                             @click="handlePicked(item)"
                             :src="item.thumb"
@@ -36,7 +36,7 @@
                     ></el-image>
                 </div>
             </div>
-            <div class="display-flex" v-show="total>pageSize">
+            <div class="flex-row" v-show="total>pageSize">
                 <div class="flex"></div>
                 <el-pagination
                         background
@@ -55,10 +55,6 @@
 <script>
     export default {
         name: "ImagePicker",
-        model: {
-            prop: 'show',//指向props的参数名
-            event: 'change'//事件名称
-        },
         props: {
             show: {
                 type: Boolean,
@@ -72,7 +68,7 @@
                 offset: 0,
                 total: 0,
                 pageSize: 15,
-                visible: false,
+                visible: this.show,
                 formData: {
                     '_token': token
                 },
@@ -96,7 +92,7 @@
             }
         },
         methods: {
-            fetchList: function () {
+            fetchList() {
                 this.loading = true;
                 this.$get('/material/batchget', {
                     type: 'image',
@@ -110,15 +106,14 @@
                 });
             },
             handleClose() {
-                this.visible = false;
-                this.$emit('change', false);
+                this.$emit('update:show', false);
             },
             handlerPageChange(page) {
                 this.offset = (page - 1) * 15;
                 this.fetchList();
             },
-            handlePicked(item) {
-                this.$emit('confirm', item);
+            handlePicked(data) {
+                this.$emit('confirm', data);
                 this.handleClose();
             },
             handleUploadSuccess(response, file, fileList) {
@@ -130,13 +125,12 @@
 </script>
 
 <style scoped>
-    .image-wrapper {
-        width: 20%;
+    .image-item {
         max-width: 20%;
         min-width: 20%;
         display: block;
         cursor: pointer;
-        flex: 0.2;
+        flex: 1;
         text-align: center;
         padding: 5px;
     }

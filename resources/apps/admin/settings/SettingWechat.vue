@@ -46,7 +46,7 @@
             </tr>
             </tbody>
         </table>
-        <image-picker v-model="showPicker" @confirm="handlePickedImage"></image-picker>
+        <image-picker :show.sync="showPicker" @confirm="handlePickedImage"></image-picker>
     </div>
 </template>
 

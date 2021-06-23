@@ -96,7 +96,7 @@
             <el-button class="w100" @click="$router.go(-1)">取消</el-button>
             <el-button class="w100" type="primary" @click="handleSubmit">保存</el-button>
         </div>
-        <image-picker v-model="showPicker" @confirm="handlePickedImage"></image-picker>
+        <image-picker :show.sync="showPicker" @confirm="handlePickedImage"></image-picker>
     </div>
 </template>
 

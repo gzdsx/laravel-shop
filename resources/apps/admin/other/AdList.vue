@@ -140,7 +140,7 @@
                 </tfoot>
             </table>
         </el-dialog>
-        <image-picker v-model="showPicker" @confirm="handleSelectImage"></image-picker>
+        <image-picker :show.sync="showPicker" @confirm="handleSelectImage"></image-picker>
     </div>
 </template>
 

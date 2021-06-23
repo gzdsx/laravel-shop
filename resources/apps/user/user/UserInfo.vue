@@ -72,7 +72,7 @@
                 </table>
             </div>
         </section>
-        <image-picker v-model="showPicker" @confirm="handleSaveAvatar"></image-picker>
+        <image-picker :show.sync="showPicker" @confirm="handleSaveAvatar"></image-picker>
     </div>
 </template>
 
