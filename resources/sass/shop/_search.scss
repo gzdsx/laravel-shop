@@ -1,0 +1,204 @@
+@import "../variables";
+
+.search-wrapper{
+    display: block;
+
+    .main-frame{
+        flex: 1;
+        float: left;
+        margin-right: 30px;
+
+        .top-bar{
+            background-color: #f5f5f5;
+            border: 1px #ddd solid;
+            display: flex;
+
+            .sort-tabs{
+                display: flex;
+                flex: 1;
+                margin-left: -1px;
+
+                .tab-item{
+                    padding: 12px 20px;
+                    font-size: 14px;
+                    color: #222;
+                    border-left: 1px transparent solid;
+                    border-right: 1px transparent solid;
+                }
+
+                .active{
+                    background-color: #fff;
+                    border-color: #ddd;
+                }
+            }
+
+            .total-count{
+                padding: 12px;
+            }
+        }
+
+        .item-list-grid{
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+
+            .grid-item{
+                width: 25%;
+                margin: 10px 0;
+                &-content{
+                    margin: 0 10px;
+                    border: 1px #e5e5e5 solid;
+                    border-radius: 1px;
+
+                    &:hover{
+                        border-color: #f00;
+                    }
+
+                    .image{
+                        display: block;
+                        padding-top: 100%;
+                    }
+
+                    .content{
+                        padding: 10px;
+
+                        .sales{
+                            display: flex;
+
+                            .price{
+                                color: #f40;
+                                font-size: 18px;
+                                font-weight: 800;
+                                flex: 1;
+
+                                .yuan{
+                                    float: left;
+                                    font-weight: 400;
+                                }
+                            }
+
+                            .sold{
+                                font-size: 12px;
+                                padding-top: 6px;
+                                color: #666;
+                            }
+                        }
+
+                        .title{
+                            font-size: 14px;
+                            line-height: 1.2;
+                            height: 32px;
+                            overflow: hidden;
+                            margin: 7px 0;
+                            text-overflow: clip;
+                        }
+
+                        .shop{
+                            font-size: 12px;
+                            margin-top: 5px;
+                            display: block;
+
+                            a{
+                                color: #999;
+                            }
+
+                            .iconfont{
+                                vertical-align: -1px;
+                                font-size: 14px;
+                                color: #666;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .pagination-wrapper{
+            display: block;
+            margin-top: 20px;
+
+            .pagination{
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    .right-frame{
+        width: 235px;
+
+        .section-title{
+            padding: 10px 0;
+            font-size: 18px;
+            color: #333;
+            border-bottom: 1px #e5e5e5 solid;
+        }
+
+        .item-list{
+            display: block;
+            margin-top: 10px;
+
+            .list-item{
+                display: block;
+                margin-bottom: 10px;
+                border: 1px #e5e5e5 solid;
+                border-radius: 1px;
+
+                .image{
+                    display: block;
+                    padding-top: 100%;
+                    position: relative;
+
+                    .title{
+                        display: none;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        font-size: 14px;
+
+                        p{
+                            display: block;
+                            padding: 10px;
+                            background-color: #fff;
+                        }
+                    }
+
+                    &:hover{
+                        .title{
+                            display: block;
+                        }
+                    }
+                }
+
+                .sales{
+                    padding: 8px;
+                    display: flex;
+
+                    .price{
+                        font-size: 18px;
+                        color: #f40;
+                        flex: 1;
+
+                        .cny{
+                            float: left;
+                            font-weight: 400;
+                        }
+                    }
+
+                    .sold{
+                        font-size: 14px;
+
+                        .t{
+                            color: #666;
+                        }
+
+                        .n{
+                            color: #000;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,76 @@
+.biz-header {
+    background-color: #222;
+    color: #fff;
+
+    &-inner {
+        margin: 0 30px;
+        display: flex;
+    }
+
+    .seller-header-bd {
+        margin: 0 30px;
+        display: block;
+    }
+
+    .logo {
+        display: block;
+        padding: 15px 0;
+
+        img {
+            height: 40px;
+            display: block;
+        }
+    }
+
+    .header-r {
+        padding: 15px;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-right: 5px;
+        vertical-align: -15px;
+    }
+
+    .username {
+        font-size: 16px;
+        line-height: 40px;
+        display: inline-block;
+    }
+
+    .logout{
+        font-size: 16px;
+        line-height: 40px;
+        display: inline-block;
+        margin-left: 10px;
+        color: #ffffff;
+    }
+}
+
+.mainframe {
+    display: block;
+    flex: 1;
+
+    .frame-content {
+        width: 100%;
+        font-size: 14px;
+        box-sizing: border-box;
+        position: static;
+        min-height: 576px;
+
+        .breadcrumb-wrap {
+            background-color: #ffffff;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .content-wrap {
+            padding: 20px;
+            display: block;
+        }
+    }
+}

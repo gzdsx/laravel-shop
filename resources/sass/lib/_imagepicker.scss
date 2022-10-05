@@ -1,0 +1,60 @@
+.image-picker {
+    display: block;
+
+    .image-picker {
+        &-header {
+            margin-top: -20px;
+            margin-bottom: 10px;
+        }
+
+        &-tips {
+            display: flex;
+            flex: 1;
+            align-items: center;
+        }
+
+        &-body {
+            height: 450px;
+        }
+
+        &-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -5px;
+
+            .list-item{
+                width: 20%;
+                max-width: 20%;
+                min-width: 20%;
+                display: inline-block;
+                cursor: pointer;
+                text-align: center;
+                padding: 5px;
+            }
+
+            .image-wrapper{
+                position: relative;
+                display: block;
+            }
+
+            .image-mask {
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .el-icon-success::before{
+                    font-size: 24px;
+                    background-color: #FFFFFF;
+                    border-radius: 50%;
+                    color: #409EFF;
+                }
+            }
+        }
+    }
+}

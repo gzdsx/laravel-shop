@@ -1,0 +1,25 @@
+.pages {
+    display: block;
+    padding: 15px;
+    background-color: #fff;
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 20px;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .page-content {
+        font-size: 16px;
+        text-align: justify;
+        line-height: 1.5;
+        overflow: hidden;
+
+        * {
+            max-width: 100%;
+        }
+    }
+}

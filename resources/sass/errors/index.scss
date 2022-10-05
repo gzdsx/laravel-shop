@@ -1,0 +1,114 @@
+@import "../variables";
+* {
+    outline: none;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    color: $g-color;
+    word-break: break-all;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    font-family: $g-font-family;
+    font-size: $g-font-size;
+    line-height: $g-line-height;
+    background: $g-body-bg;
+}
+
+ul, li, p, dd, dl, dt, h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div:after, p:after, ul:after, li:after, ol:after, dl:after, dd:after, dt:after,
+h1:after, h2:after, h3:after, h4:after, h5:after {
+    clear: both;
+    content: " ";
+    display: block;
+    overflow: hidden;
+}
+
+dd, dt {
+    font-weight: normal;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    &,
+    &:link,
+    &:active,
+    &:visited {
+        color: $g-link-color;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    &:hover {
+        text-decoration: none;
+        color: $g-link-hover-color;
+    }
+}
+
+.app{
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    .error-content{
+        text-align: center;
+        padding-top: 100px;
+        min-height: 530px;
+
+        .image{
+            text-align: center;
+            display: block;
+
+            img{
+                width: 200px;
+                display: inline-block;
+            }
+        }
+
+        .error-icon{
+            text-align: center;
+
+            img{
+                width: 80px;
+                display: inline-block;
+                margin-bottom: 10px;
+            }
+        }
+
+        h2{
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 3.6;
+        }
+
+        .links{
+            text-align: center;
+            font-size: 14px;
+        }
+
+        a{
+            margin: 0 5px;
+            text-decoration: none;
+
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .foot{
+
+    }
+}

@@ -1,0 +1,148 @@
+@import "../variables";
+@import "../base";
+
+html, body {
+    background-image: url("#{$image-path}/auth/bg.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: 50%;
+    background-attachment: fixed;
+}
+
+.regional{
+    background-image: url("#{$image-path}/auth/bg2.jpg");
+}
+
+.area {
+    display: block;
+    margin: 0 auto;
+    width: 1080px;
+}
+
+.header-container {
+    background-color: #ffffff;
+
+    .header {
+        height: 60px;
+        margin: 0 auto;
+        padding: 0 30px;
+        color: #555555;
+        box-sizing: border-box;
+        display: flex;
+        line-height: 60px;
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 24px;
+        }
+
+        .logo-desc {
+            position: relative;
+            color: #111;
+            font-size: 18px;
+
+            &::after {
+                position: absolute;
+                top: 50%;
+                left: -12px;
+                margin-top: -10px;
+                width: 1px;
+                height: 20px;
+                background-color: #333;
+                content: "";
+            }
+        }
+    }
+}
+
+.login-wrapper {
+    min-height: 550px;
+    padding-top: 100px;
+}
+
+.login-form {
+    display: inline-block;
+
+    .login-tabs {
+        display: flex;
+        margin-bottom: 40px;
+
+        .login-tab-item {
+            font-size: 18px;
+            padding-bottom: 15px;
+            border-bottom: 2px transparent solid;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .login-tab-active {
+            border-color: #000;
+            color: #000;
+            font-weight: bold;
+        }
+    }
+
+    &-inner {
+        padding: 30px;
+        display: block;
+        background-color: #fff;
+        border-radius: 10px;
+        width: 420px;
+    }
+
+    &-header {
+        font-size: 18px;
+        padding-bottom: 15px;
+        border-bottom: 2px #E4B8AF solid;
+        margin-bottom: 40px;
+    }
+
+    &-group {
+        margin-bottom: 30px;
+
+        .iconfont {
+            font-size: 18px;
+            color: #666;
+            font-weight: 500;
+        }
+    }
+
+    &-links {
+        display: block;
+        font-size: 14px;
+        padding-top: 15px;
+    }
+
+    .is-invalid:focus {
+        box-shadow: none;
+    }
+
+    .textinput {
+        height: 42px;
+        font-size: 14px;
+    }
+
+    .btn-login {
+        width: 100%;
+        height: 42px;
+        font-size: 16px;
+    }
+}
+
+.register-container {
+    padding: 30px 0;
+    min-height: 550px;
+    display: block;
+}
+
+.footer {
+    padding: 30px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 14px;
+
+    a{
+        color: #ffffff;
+    }
+}

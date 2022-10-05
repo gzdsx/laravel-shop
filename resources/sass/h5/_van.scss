@@ -1,0 +1,96 @@
+.van-search-action-slot {
+    padding: 0 10px;
+}
+
+.van-pull-refresh-body {
+    min-height: 75vh;
+}
+
+.van-cell--large {
+    .van-field__control {
+        font-size: 16px !important;
+    }
+}
+
+.van-cell-icon-slot {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.van-swipe-cell-delete-slot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: #f00;
+    color: #fff;
+    width: 90px;
+    height: 100%;
+}
+
+.van-cell-time {
+    font-size: 12px;
+    color: #969799;
+}
+
+.van-cell-label-slot {
+    line-height: 1.5;
+}
+
+.van-uploader__wrapper {
+    padding-top: 10px !important;
+}
+
+.van-field-large {
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    .van-field__control {
+        font-size: 16px !important;
+    }
+}
+
+.van-toast {
+    width: auto !important;
+    min-height: auto !important;
+    white-space: normal !important;
+}
+
+.van-loading {
+    text-align: center;
+}
+
+.van-tabbar-item--active {
+    color: #F24208 !important;
+}
+
+.van-loading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    flex: 1;
+}
+
+.van-loading-fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.van-popup-toolbar {
+    display: flex;
+    padding: 15px 10px;
+    line-height: 1;
+
+    .title {
+        font-size: 16px;
+        text-align: center;
+        line-height: 1;
+        flex: 1;
+    }
+}

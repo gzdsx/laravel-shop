@@ -1,0 +1,12 @@
+.address {
+    &-list {
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 10px;
+
+        .icon-edit-square{
+            font-size: 24px;
+            color: #737373;
+        }
+    }
+}

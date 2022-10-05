@@ -1,0 +1,108 @@
+@import "../variables";
+
+* {
+    outline: none;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    color: $g-color;
+    word-break: break-all;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    font-family: $g-font-family;
+    font-size: $g-font-size;
+    line-height: $g-line-height;
+    background: $g-body-bg;
+}
+
+ul, li, p, dd, dl, dt, h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div:after, p:after, ul:after, li:after, ol:after, dl:after, dd:after, dt:after,
+h1:after, h2:after, h3:after, h4:after, h5:after {
+    clear: both;
+    content: " ";
+    display: block;
+    overflow: hidden;
+}
+
+.top {
+    background-color: #222;
+    height: 75px;
+    display: block;
+    color: #fff;
+    padding-top: 15px;
+
+    h2{
+        font-size: 30px;
+    }
+}
+
+.container {
+    display: flex;
+    width: 1100px;
+    margin: 0 auto;
+}
+
+.form-wrapper {
+    width: 350px;
+    display: block;
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+.form-group {
+    margin: 25px 0;
+    clear: both;
+    display: block;
+
+    .form-control {
+        height: 40px;
+        font-size: 16px;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+
+        &:focus{
+            border-color: $cyan;
+        }
+    }
+
+    .invalid-feedback {
+        font-size: 14px;
+        color: $red;
+        margin-top: 3px;
+    }
+
+    h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .btn-login{
+        background-color: $red;
+        color: #fff;
+        border: 0;
+
+        &:hover{
+            color: #fff;
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    }
+}

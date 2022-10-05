@@ -1,0 +1,357 @@
+.shop-index {
+    .header-info {
+        background-color: #FF5B4D;
+        color: #fff;
+        border-radius: 3px;
+
+        a {
+            display: block;
+            padding: 20px 0;
+            font-weight: 300;
+            text-align: center;
+            color: #ffffff;
+
+            &:hover {
+                background-color: #F13E2F;
+            }
+        }
+
+        .info-num {
+            font-size: 30px;
+            display: block;
+            line-height: 2.6;
+        }
+
+        .info-text {
+            font-size: 16px;
+            display: block;
+            line-height: 2;
+        }
+    }
+
+    .entry-title {
+        font-weight: 400;
+        font-size: 18px;
+    }
+
+    .quick-entry {
+        margin-top: 30px;
+
+        .entry-module-div {
+            margin: 10px -5px;
+
+            .entry-module {
+                padding: 5px;
+                float: left;
+                box-sizing: border-box;
+
+                .module {
+                    background-color: #F7F7F7;
+                    border-radius: 3px;
+                    display: block;
+                    text-align: center;
+
+                    .module-title {
+                        line-height: 60px;
+                    }
+
+                    a {
+                        display: block;
+
+                        &:hover {
+                            background-color: #F2F2F2;
+                        }
+                    }
+
+                    .iconfont {
+                        font-size: 30px;
+                        color: #0B90EF;
+                        line-height: 1;
+                        display: inline-block;
+                        vertical-align: -5px;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+
+    .index-foot {
+        margin-top: 20px;
+
+        .notice-content {
+            background-color: #f7f7f7;
+            border-radius: 3px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .notice-content ul {
+            display: block;
+
+            li {
+                font-size: 15px;
+                color: #777;
+                line-height: 2.2;
+                overflow: hidden;
+                display: block;
+                font-weight: 300;
+
+                span {
+                    float: right;
+                }
+            }
+        }
+
+        .learn-content {
+            display: block;
+            margin-top: 10px;
+
+            .learn-item {
+                display: block;
+
+                a {
+                    background-color: #f7f7f7;
+                    border-radius: 3px;
+                    display: block;
+                    color: #666;
+                    padding-left: 50px;
+
+                    &:hover {
+                        background-color: #F2F2F2;
+                        color: #333;
+                    }
+                }
+
+                .iconfont {
+                    font-size: 56px;
+                    display: inline-block;
+                    margin-right: 10px;
+                    color: #777;
+                }
+
+                .learn-text {
+                    display: inline-block;
+
+                    .title {
+                        font-size: 16px;
+                        line-height: 2;
+                        padding-top: 6px;
+                        display: block;
+                    }
+
+                    .text {
+                        font-size: 14px;
+                        color: #777;
+                        font-weight: 300;
+                        line-height: 1;
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+.auth-pending {
+    padding: 30px;
+    font-size: 16px;
+    color: #888;
+    background-color: #f7f7f5;
+    border-radius: 5px;
+}
+
+.catlog-table {
+    display: block;
+
+    .table-tr {
+        display: block;
+    }
+
+    .table-tr-group {
+        margin-top: 10px;
+        border: 1px #ddd solid;
+    }
+
+    .table-th {
+        background-color: #F7F7F7;
+        padding: 10px 15px;
+        font-weight: 500;
+    }
+
+    .table-td {
+        padding: 10px 15px;
+    }
+
+    .th1 {
+        width: 80%;
+        display: inline-block;
+        float: left;
+    }
+
+    .th2 {
+        width: auto;
+        overflow: auto;
+
+        a {
+            display: inline-block;
+            width: 50%;
+            float: left;
+        }
+    }
+
+    .child-catlog {
+        padding-left: 66px;
+    }
+
+    .add-child {
+        padding: 15px 66px;
+    }
+
+}
+
+.sku-wrapper {
+    border: 1px #ddd solid;
+}
+
+.sku-wrapper .sku-group {
+    display: block;
+}
+
+.sku-wrapper .sku-name {
+    padding: 15px;
+    background-color: #f7f7f7;
+}
+
+.sku-wrapper .sku-attr {
+    display: block;
+    padding: 15px;
+}
+
+.sku-wrapper .sku-attr-values {
+
+}
+
+.sku-wrapper .sku-attr-values li {
+    float: left;
+    line-height: 3;
+    margin-right: 10px;
+}
+
+.sku-table {
+    border: 1px #ddd solid;
+}
+
+.sku-table td, .sku-table th {
+    padding: 10px;
+}
+
+.sku-table th {
+    background-color: #f7f7f7;
+}
+
+.sku-table td {
+    border-top: 1px #ddd solid;
+    border-right: 1px #ddd solid;
+}
+
+.order-item {
+    margin: 10px 0;
+}
+
+.order-item td p {
+    font-size: 12px;
+}
+
+.ds-list {
+    display: block;
+
+    .cell-title {
+        background-color: #f5f5f5;
+        border-radius: 3px;
+        display: flex;
+    }
+
+    .cell-row {
+        border-bottom: 1px #f2f2f2 solid;
+        display: flex;
+    }
+
+    .cell-column {
+        padding: 15px 5px;
+        font-size: 14px;
+        float: left;
+        box-sizing: border-box;
+        color: #666;
+        align-self: center;
+
+        a {
+            color: #0B90EF;
+        }
+    }
+
+    .column-1 {
+        padding: 15px 20px;
+        width: 20%;
+    }
+
+    .column-2 {
+        width: 20%;
+    }
+
+    .column-3 {
+        width: 53%;
+    }
+
+    .column-4 {
+        width: auto;
+    }
+
+    .opened {
+        color: #0BB20C;
+    }
+
+    .closed {
+        color: #777;
+    }
+}
+
+.ds-option {
+    display: flex;
+    padding: 10px 0;
+
+    &-radio {
+        width: 40px;
+        padding: 0 10px;
+        text-align: center;
+
+        .radio {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            vertical-align: -4px;
+        }
+    }
+
+    &-content {
+        flex: 1;
+
+        .t1 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .t2 {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-self: center;
+            align-content: center;
+
+            .lb {
+                color: #222;
+            }
+        }
+    }
+
+}

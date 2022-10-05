@@ -1,0 +1,115 @@
+.dealer-enroll {
+    display: block;
+    background-color: #FFFFFF;
+
+    .dealer {
+        &-banner {
+            background-image: url("#{$image-path}/app/member/vip_banner.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            padding-top: 46%;
+            border-radius: 5px;
+        }
+
+        &-head {
+            display: flex;
+            flex-direction: column;
+            background-image: url("#{$image-path}/app/member/vip_head.png");
+            background-size: 100% auto;
+            background-position: top center;
+            background-repeat: no-repeat;
+            padding-top: 22%;
+            position: relative;
+            margin-bottom: 50px;
+
+            .dealer {
+                &-user {
+                    display: block;
+                    text-align: center;
+
+                    .avatar {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 40px;
+                        border: 2px #fff solid;
+                        display: inline-block;
+                    }
+
+                    .username {
+                        font-size: 16px;
+                    }
+                }
+
+                &-action {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+
+                &-tips {
+                    color: #9D9C9C;
+                    font-size: 14px;
+                    text-align: center;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        &-body {
+            padding: 15px;
+            display: block;
+
+            .dealer {
+                &-privilege {
+                    &-header {
+                        display: flex;
+
+                        .title {
+                            font-size: 18px;
+                            font-weight: 500;
+                        }
+                    }
+
+                    &-body {
+                        display: block;
+                        margin-top: 10px;
+
+                        img {
+                            width: 100%;
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.dealer-home {
+    .dealer-home {
+        &-header {
+            display: flex;
+            padding: 20px 15px;
+            background-color: #5E2727;
+            color: #FFFFFF;
+
+            .dealer {
+                &-avatar {
+                    width: 64px;
+                    margin-right: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+
+                &-name {
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                &-grade {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

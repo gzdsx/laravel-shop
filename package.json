@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "babel-preset-react": "^6.24.1",
+    "bootstrap": "^4.4.1",
+    "core-js": "^3.6.4",
+    "cross-env": "^7.0.2",
+    "es6-promise": "^4.2.5",
+    "jquery": "1.12.4",
+    "jquery-form": "^4.2.2",
+    "laravel-mix": "^5.0.4",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "lodash": "^4.17.5",
+    "popper.js": "^1.16.1",
+    "resolve-url-loader": "^3.1.1",
+    "sass": "^1.20.1",
+    "sass-loader": "^8.0.0",
+    "sortablejs": "^1.10.2",
+    "vant": "^2.5.8",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.6",
+    "vue-template-compiler": "^2.6.11",
+    "vuedraggable": "^2.23.2",
+    "vuex": "^3.0.1"
+  },
+  "dependencies": {
+    "gzdsx-validate": "^1.0.0",
+    "vue-clipboard2": "^0.3.3",
+    "wangeditor": "^4.6.1"
+  }
+}

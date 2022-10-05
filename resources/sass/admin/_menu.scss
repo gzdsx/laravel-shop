@@ -1,0 +1,138 @@
+.v-common-menu-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 92px;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    display: flex;
+    overflow: -moz-scrollbars-none;
+
+    .v-common {
+        &-logo {
+            width: 92px;
+            padding: 17px 0 12px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: #383737;
+
+            img {
+                height: 30px;
+            }
+        }
+
+        &-main-nav {
+            width: 92px;
+            background-color: #383737;
+            overflow: hidden;
+        }
+
+        &-menu-list {
+            height: 100%;
+        }
+
+        &-menu {
+            width: 92px;
+            height: 100%;
+            padding-top: 65px;
+            padding-bottom: 140px;
+            margin-bottom: -64px;
+            letter-spacing: 1px;
+            box-sizing: border-box;
+            overflow-y: -moz-hidden-unscrollable;
+            overflow-x: hidden;
+            -ms-overflow-style: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+        }
+
+        &-nav-model {
+            &-link {
+                display: flex;
+                width: 100%;
+                padding: 4px 0 4px 17px;
+                height: 40px;
+                line-height: 32px;
+                font-size: 14px;
+                color: #afafaf;
+                position: relative;
+                font-weight: 400;
+                box-sizing: border-box;
+
+                .v-common-icon {
+                    margin-right: 6px;
+                    line-height: 32px;
+                }
+
+                .v-common-menu-name {
+                }
+            }
+
+            &-active {
+                width: 100%;
+                height: 40px;
+                background: #fff;
+
+                a {
+                    color: #222;
+                }
+            }
+        }
+
+        &-second-nav {
+            width: 120px;
+            background: #fff;
+            height: 100%;
+            float: left;
+            overflow-y: -moz-hidden-unscrollable;
+            border-right: 1px solid #eee;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            &-title {
+                height: 64px;
+                line-height: 64px;
+                font-size: 14px;
+                color: #222;
+                text-align: center;
+                font-weight: 500;
+                border-bottom: 1px solid #eee;
+                margin-bottom: 18px;
+            }
+
+            &-wrapper {
+                padding-bottom: 45px;
+            }
+
+            &-name {
+                font-size: 14px;
+                position: relative;
+                cursor: pointer;
+
+                a {
+                    height: 35px;
+                    line-height: 35px;
+                    color: #404040;
+                    text-indent: 30px;
+                    display: block;
+                }
+
+                .router-link-active {
+                    color: #297ce6 !important;
+                }
+            }
+        }
+    }
+
+}

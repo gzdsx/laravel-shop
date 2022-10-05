@@ -1,0 +1,51 @@
+.sidebar {
+    width: 180px;
+    background-color: #F7F7F7;
+
+    &-content {
+        padding: 10px 0;
+        display: block;
+        font-weight: 300;
+
+        .nav-model {
+            display: block;
+
+            a, .label {
+                display: block;
+                padding-left: 25px;
+                line-height: 2.6;
+                font-size: 16px;
+                color: #666;
+                margin: 0;
+            }
+
+            a:hover {
+                background-color: #fff;
+                color: #333;
+            }
+
+            .iconfont {
+                font-size: 20px;
+                vertical-align: bottom;
+                margin-right: 10px;
+                line-height: 2.1;
+            }
+
+            .children {
+                display: block;
+
+                a {
+                    display: block;
+                    padding-left: 60px;
+                }
+
+            }
+
+            .active, .router-link-exact-active {
+                color: #D14250 !important;
+                font-weight: 500 !important;
+                background-color: #fff !important;
+            }
+        }
+    }
+}

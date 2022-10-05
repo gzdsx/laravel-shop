@@ -1,0 +1,153 @@
+.sku-wrapper {
+    border: 1px #ddd solid;
+}
+
+.sku-wrapper .sku-group {
+    display: block;
+}
+
+.sku-wrapper .sku-name {
+    padding: 15px;
+    background-color: #f7f7f7;
+}
+
+.sku-wrapper .sku-attr {
+    display: block;
+    padding: 15px;
+}
+
+.sku-wrapper .sku-attr-values {
+
+}
+
+.sku-wrapper .sku-attr-values li {
+    float: left;
+    line-height: 3;
+    margin-right: 10px;
+}
+
+
+.sku-panel {
+    .sku-classify {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #efeff4;
+
+        &-header {
+            background-color: #F7F7F7;
+            padding: 10px;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &-del {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        &-content {
+            display: flex;
+            padding: 10px;
+        }
+
+        &-attribute {
+            margin-right: 10px;
+        }
+
+        &-select {
+
+        }
+
+        .sku-sort-types {
+            margin-right: 10px;
+            display: flex;
+            flex-wrap: wrap;
+
+            .sku-type {
+                position: relative;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                width: 180px;
+
+                &-value {
+
+                }
+
+                &-del {
+                    position: absolute;
+                    font-size: 20px;
+                    top: -10px;
+                    right: -10px;
+                    display: none;
+                    cursor: pointer;
+                }
+
+                &:hover {
+                    .sku-type-del {
+                        display: block;
+                    }
+                }
+
+                &-add {
+                    position: relative;
+                    padding-left: 16px;
+                    height: 30px;
+                    line-height: 30px;
+                    font-size: 14px;
+                    color: #1790ff;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .sku-operate-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    .sku-table-wrapper {
+        flex: 1;
+    }
+
+    .sku-table {
+        border-color: #efeff4;
+        border-style: solid;
+        border-width: 1px 0 1px 1px;
+        width: 100%;
+        margin-top: 20px;
+
+        .col-120 {
+            width: 120px;
+        }
+
+        th {
+            padding: 10px;
+            background-color: #f7f7f7;
+            font-weight: 400;
+
+            .h-title{
+                line-height: 1.2;
+                text-align: left;
+            }
+
+            .h-input{
+
+            }
+
+            .star {
+                color: #f00;
+            }
+        }
+
+        td {
+            padding: 10px;
+            background-color: #fff;
+            border-color: #efeff4;
+            border-style: solid;
+            border-width: 1px 1px 0 0;
+        }
+    }
+}

@@ -1,0 +1,78 @@
+.user-head {
+    background-image: url("#{$image-path}/app/user/head.png");
+    background-size: cover;
+    background-position: center center;
+    padding: 20px 30px;
+    display: flex;
+    color: #fff;
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        border: 2px #fff solid;
+        margin-right: 20px;
+        background-image: url("#{$image-path}/common/avatar_default.png");
+        background-size: cover;
+    }
+
+    .username {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        h3 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .uid {
+            font-size: 14px;
+        }
+    }
+}
+
+.order-states {
+    background-color: #fff;
+    display: flex;
+    padding: 0 15px;
+
+    .order-action {
+        padding: 15px 10px;
+        text-align: center;
+
+        .iconfont {
+            font-size: 30px;
+        }
+
+        img {
+            width: 24px;
+            height: 18px;
+            display: inline-block;
+            object-fit: contain;
+        }
+
+        p {
+            font-size: 12px;
+        }
+    }
+}
+
+
+.superior {
+    text-align: center;
+    padding: 20px 0;
+
+    h1 {
+        font-size: 24px;
+        font-weight: 400;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #555;
+    }
+}

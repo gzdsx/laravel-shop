@@ -1,0 +1,127 @@
+.swiper-area {
+    padding: 40px 0;
+    background-color: #F3F6F7;
+
+    .swiper-div {
+        height: 418px;
+        overflow: hidden;
+    }
+}
+
+.color-wapper {
+    display: block;
+    padding: 40px 0;
+    background-color: #ffffff;
+
+    h1.title {
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 20px;
+        clear: both;
+    }
+
+    .bigtitle {
+        background-image: url("#{$image-path}/shop/fresh_mod_head_bg.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto 30px;
+        text-align: center;
+        padding: 10px 0;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 10px;
+
+        strong {
+            padding: 10px 20px;
+            font-size: 22px;
+        }
+    }
+
+    .item-list-div {
+        background-color: #fff;
+        border-radius: 5px;
+        display: block;
+        overflow: hidden;
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+
+            li {
+                width: 20%;
+                min-width: 20%;
+                max-width: 20%;
+                float: left;
+                display: block;
+
+                &:hover{
+                    background-color: #F2F2F2;
+                }
+
+                .thumb {
+                    display: block;
+                    margin: 20px;
+
+                    .bg {
+                        display: block;
+                        padding-top: 100%;
+                    }
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: block;
+                    }
+                }
+
+                .title {
+                    font-size: 14px;
+                    line-height: 1.2;
+                    color: #333;
+                    padding: 10px;
+                }
+
+                .price {
+                    font-size: 18px;
+                    float: left;
+                    color: $amount-color;
+                }
+
+                .sold {
+                    font-size: 12px;
+                    color: #666;
+                    overflow: hidden;
+                    padding-top: 5px;
+                }
+
+                .more-info {
+                    display: flex;
+                    padding: 10px;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
+
+.headbg {
+    background-image: url("#{$image-path}/shop/headbg.jpg");
+    background-size: 100% 100%;
+    padding-top: 0;
+}
+
+.apps{
+    display: flex;
+
+    li{
+        flex: 0.25;
+        display: block;
+        text-align: center;
+
+        img{
+            display: inline-block;
+            width: 70%;
+        }
+    }
+}

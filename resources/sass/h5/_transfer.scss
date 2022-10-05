@@ -1,0 +1,188 @@
+.transfer {
+    display: block;
+
+    .transfer {
+        &-header {
+            background-color: #E9B682;
+            color: #fff;
+            padding: 20px;
+
+            .input-container{
+                border-radius: 8px;
+                overflow: hidden;
+                display: flex;
+            }
+
+            .input {
+                height: 45px;
+                font-size: 16px;
+                border: none;
+                padding: 0 15px;
+                color: #000;
+                font-weight: 500;
+                flex: 1;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            .button{
+                height: 45px;
+                border: none;
+                background-color: #B8A362;
+                color: #fff;
+                font-size: 14px;
+                padding: 0 20px;
+                border-radius: 0;
+                display: block;
+                margin: 0;
+            }
+        }
+
+        &-commonly {
+            margin: 10px;
+            display: block;
+            border-radius: 5px;
+            background-color: #ffffff;
+
+            &-header {
+                padding: 10px 15px;
+                font-size: 14px;
+                font-weight: 500;
+
+                border-bottom: 1px #efefef solid;
+            }
+
+            &-list {
+                display: block;
+
+                .list-item {
+                    padding: 10px 15px;
+                    position: relative;
+                    display: flex;
+
+                    &::after {
+                        position: absolute;
+                        content: " ";
+                        border-bottom: 1px #e5e5e5 solid;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        transform: scaleY(.5);
+                        transform-origin: 0 0;
+                        z-index: 2;
+                    }
+
+                    .avatar {
+                        width: 40px;
+                        height: 40px;
+                        object-fit: cover;
+                        margin-right: 15px;
+                        border-radius: 5px;
+                    }
+
+                    .username {
+                        font-size: 14px;
+                        color: #222;
+                    }
+
+                    .tel {
+                        font-size: 12px;
+                        color: #999;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.transfer-fill{
+    position: relative;
+    background-color: #fff;
+    padding: 15px;
+
+    .transfer{
+        &-user{
+            display: block;
+            text-align: center;
+
+            .avatar{
+               display: block;
+                text-align: center;
+
+                img{
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 6px;
+                    object-fit: cover;
+                }
+            }
+
+            .username{
+                font-size: 14px;
+            }
+
+            .mobile{
+                font-size: 12px;
+                color: #999;
+            }
+        }
+
+        &-title {
+            font-size: 16px;
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+
+        &-amount {
+            display: flex;
+            position: relative;
+            padding: 15px 0;
+
+            &::after {
+                position: absolute;
+                content: " ";
+                border-bottom: 1px #e5e5e5 solid;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                transform: scaleY(.5);
+                transform-origin: 0 0;
+                z-index: 2;
+            }
+
+            span {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+                padding-top: 8px;
+                line-height: 1;
+            }
+
+            .input {
+                font-size: 24px;
+                border: 0;
+                flex: 1;
+                padding: 0 10px;
+                font-weight: 700;
+            }
+        }
+
+        &-balance{
+            color: #666;
+            font-size: 12px;
+        }
+
+        &-remark{
+            height: 30px;
+            font-size: 12px;
+            border: 0;
+            appearance: none;
+            width: 100%;
+        }
+
+        &-button {
+            padding: 30px 15px;
+        }
+    }
+}

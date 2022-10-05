@@ -1,0 +1,210 @@
+.wallet {
+    display: block;
+
+    .wallet {
+        &-header {
+            background-color: #ff4d51;
+            display: flex;
+            padding: 30px 20px;
+            color: #fff;
+
+            h3 {
+                text-align: center;
+                font-size: 18px;
+                flex: 1;
+            }
+        }
+
+        &-amount {
+            color: #222;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        &-summary{
+            background-color: #E9B682;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+            display: flex;
+            flex: 1;
+        }
+    }
+
+    .cell-icon {
+        display: flex;
+        justify-content: center;
+        margin-right: 15px;
+
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+        }
+    }
+
+    .cell-title {
+        font-size: 14px;
+        line-height: 1.2 !important;
+    }
+
+    .cell-label {
+        margin-top: 6px;
+    }
+
+    .cell-value {
+        flex: none !important;
+        width: 80px !important;
+        display: block;
+    }
+}
+
+.van-loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.withdraw {
+    display: block;
+
+    .withdraw {
+        &-content {
+            background-color: #fff;
+            display: block;
+            padding: 0 15px;
+        }
+
+        &-title {
+            font-size: 16px;
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+
+        &-amount {
+            display: flex;
+            position: relative;
+            padding: 15px 0;
+
+            &::after {
+                position: absolute;
+                content: " ";
+                border-bottom: 1px #e5e5e5 solid;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                transform: scaleY(.5);
+                transform-origin: 0 0;
+                z-index: 2;
+            }
+
+            span {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+                padding-top: 8px;
+                line-height: 1;
+            }
+
+            .input {
+                font-size: 24px;
+                border: 0;
+                flex: 1;
+                padding: 0 10px;
+                font-weight: 700;
+            }
+        }
+
+        &-balance {
+            font-size: 12px;
+            color: #999;
+            padding: 12px 0;
+        }
+
+        &-button {
+            padding: 30px 15px;
+        }
+    }
+}
+
+.payment-popup {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -85%, 0);
+
+    .payment-popup {
+        &-container {
+            padding: 15px;
+        }
+
+        &-header {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        &-desc {
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        &-amount {
+            display: block;
+            text-align: center;
+            margin-bottom: 8px;
+            padding: 10px 0;
+            position: relative;
+
+            &::after{
+                content: " ";
+                border-bottom: 1px #e5e5e5 solid;
+                position: absolute;
+                left: 0;
+                right: 0;
+                border-bottom: 0;
+                transform: scaleY(.5);
+                transform-origin: center center;
+                z-index: 1;
+            }
+
+            i {
+                font-style: normal;
+                font-size: 14px;
+                display: inline-block;
+                line-height: 22px;
+            }
+
+            span {
+                font-size: 28px;
+                display: inline-block;
+                font-weight: 500;
+                line-height: 1;
+            }
+        }
+
+        &-cell {
+            display: flex;
+            padding: 3px 0;
+            font-size: 12px;
+
+            .title {
+                color: #777;
+                flex: 1;
+            }
+        }
+
+        &-password {
+            display: block;
+            margin-top: 8px;
+
+            .van-password-input{
+                margin: 0 !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+@import "../variables";
+@import "../base";
+@import "../swiper";
+@import "../common/top";
+@import "../common/header";
+@import "../common/footer";
+
+.area {
+    display: block;
+    margin: 0 auto;
+    width: 1180px;
+}
+
+.yourpos {
+    display: block;
+    padding: 15px 0;
+    font-size: 14px;
+    background-color: #F2F2F2;
+}
+
+@import "home";
+@import "post";
+@import "item";
+@import "search";
+@import "pages";

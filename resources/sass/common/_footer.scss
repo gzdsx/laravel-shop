@@ -1,0 +1,35 @@
+.global-footer{
+    display: block;
+
+    .container{
+        padding: 20px;
+        display: block;
+        width: 1180px;
+        margin: 0 auto;
+
+        p{
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            text-align: center;
+        }
+    }
+}
+
+.float-cart{
+    background-color: #dddddd;
+    padding: 10px;
+    border-radius: 100%;
+    line-height: 1;
+    text-align: center;
+    position: fixed;
+    z-index: 100;
+    right: 10px;
+    bottom: 20%;
+
+    .iconfont{
+        font-size: 30px;
+        line-height: 1;
+        color: #f40;
+    }
+}

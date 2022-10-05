@@ -1,0 +1,354 @@
+.home{
+    .category-panel {
+        width: 160px;
+        float: left;
+        position: relative;
+        height: 418px;
+
+        .cat-list {
+            background-color: #f8f8f8;
+            display: block;
+            height: 418px;
+
+            li {
+                font-size: 14px;
+
+                a {
+                    display: block;
+                    padding: 0 8px 0 30px;
+                    color: #333;
+                    height: 38px;
+                    line-height: 38px;
+
+                    span {
+                        background-size: 16px 16px;
+                        display: block;
+                        height: 33px;
+                        padding-right: 20px;
+                        overflow: hidden;
+                    }
+                }
+
+                &.cur a,a:hover{
+                    color: #fff;
+                    background-color: $primary-color;
+                }
+            }
+        }
+
+        .children-panel {
+            position: absolute;
+            width: 780px;
+            height: 418px;
+            background-color: #fff;
+            border: 1px #DDD solid;
+            border-left: none;
+            left: 100%;
+            top: 0;
+            z-index: 300;
+            display: none;
+
+            .cat-group {
+                padding: 20px;
+                display: none;
+
+                h3 {
+                    font-size: 13px;
+                    padding-bottom: 7px;
+                    border-bottom: 1px #e5e5e5 solid;
+
+                    .more {
+                        float: right;
+                        font-size: 12px;
+                        font-weight: normal;
+                    }
+                }
+
+                ul {
+                    display: block;
+                    padding-top: 10px;
+
+                    li {
+                        float: left;
+                        margin: 0 10px 7px 0;
+                        font-size: 12px;
+
+                        a:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .swiper-div {
+        width: 780px;
+        height: 418px;
+        overflow: hidden;
+        position: absolute;
+        left: 160px;
+        top: 0;
+    }
+
+    .news {
+        position: absolute;
+        width: 240px;
+        height: 418px;
+        right: 0;
+        top: 0;
+        background-color: #f8f8f8;
+        overflow: hidden;
+
+        .content {
+            background-color: #fff;
+
+            h3 {
+                font-size: 18px;
+                padding: 15px 0 5px 0;
+                color: #1EC561;
+                text-align: center;
+            }
+
+            ul {
+                display: block;
+                padding: 5px 15px;
+            }
+
+            li {
+                height: 26px;
+                line-height: 26px;
+                overflow: hidden;
+                display: block;
+                font-size: 12px;
+
+                a:hover {
+                    color: #1EC561;
+                }
+
+            }
+        }
+    }
+}
+
+.color-wapper {
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    background-color: #F2F2F2;
+
+    h1.title {
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 10px;
+        clear: both;
+    }
+
+    .bigtitle {
+        background-image: url("#{$image-path}/shop/fresh_mod_head_bg.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto 30px;
+        text-align: center;
+        padding: 10px 0;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 10px;
+
+        strong {
+            padding: 10px 20px;
+            font-size: 22px;
+        }
+    }
+
+    .item-wrapper{
+        background-color: #fff;
+        border-radius: 5px;
+        display: block;
+        overflow: hidden;
+
+        ul{
+           display: flex;
+            flex-wrap: wrap;
+
+            li {
+                width: 196px;
+                float: left;
+                display: block;
+
+                .thumb {
+                    display: block;
+                    margin: 20px;
+
+                    .bg {
+                        display: block;
+                        padding-top: 100%;
+                    }
+                }
+
+                .title {
+                    font-size: 14px;
+                    line-height: 1.2;
+                    color: #333;
+                    padding: 10px;
+                }
+
+                .price {
+                    font-size: 18px;
+                    float: left;
+                    color: $amount-color;
+                }
+
+                .sold {
+                    font-size: 12px;
+                    color: #666;
+                    overflow: hidden;
+                    padding-top: 5px;
+                }
+
+                .more-info{
+                    display: flex;
+                    padding: 10px;
+                    align-items: center;
+                }
+
+                .btn-buynow{
+                    background-color: #FF4200;
+                    color: #fff;
+                    padding: 5px 15px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    text-align: center;
+                    display: inline-block;
+                }
+                .flex-center{
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+.headbg {
+    background-image: url("#{$image-path}/shop/headbg.jpg");
+    background-size: 100% 100%;
+    padding-top: 0;
+}
+
+.item-catlog-wrapper {
+    display: flex;
+    height: 300px;
+
+    .catlogs {
+        width: 200px;
+        height: 300px;
+        float: left;
+        color: #fff;
+
+        .content {
+            display: block;
+            padding: 20px;
+
+            .title {
+                font-size: 26px;
+            }
+
+            .subtitle {
+                font-size: 15px;
+                font-weight: 500;
+                border-bottom: 3px #fff solid;
+                padding-bottom: 5px;
+            }
+
+            .cats {
+                display: block;
+                margin: 10px -10px 10px 0;
+
+                a {
+                    display: inline-block;
+                    padding: 3px 10px;
+                    border-radius: 15px;
+                    border: 1px #fff solid;
+                    font-size: 13px;
+                    color: #fff;
+                    margin: 7px 10px 7px 0;
+                }
+            }
+
+            .btn-more {
+                display: block;
+                margin-top: 15px;
+                padding: 3px 0;
+                font-size: 16px;
+                font-weight: 600;
+                background-color: #ECF2F9;
+                color: #1EC462;
+                border-radius: 10px;
+                text-align: center;
+                clear: both;
+
+                a {
+                    display: block;
+                    color: #1EC462;
+                }
+            }
+        }
+    }
+
+    .catlog-img1 {
+        height: 300px;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .catlog-img2 {
+        float: right;
+        width: 350px;
+        height: 300px;
+        background-position: left top;
+    }
+}
+
+.cat-fresh-bg {
+    &-1{
+        background-image: url("#{$image-path}/shop/fresh-bgimg-1.png");
+    }
+
+    &-2{
+        background-image: url("#{$image-path}/shop/fresh-bgimg-2.jpg");
+    }
+
+    &-3{
+        background-image: url("#{$image-path}/shop/fresh-bgimg-3.png");
+    }
+}
+
+.cat-vegetables-bg{
+    &-1{
+        background-image: url("#{$image-path}/shop/vegetables-bgimg-2.jpg");
+    }
+
+    &-2{
+        background-image: url("#{$image-path}/shop/vegetables-bgimg-2.jpg");
+    }
+
+    &-3{
+        background-image: url("#{$image-path}/shop/vegetables-bgimg-3.jpg");
+    }
+}
+
+.cat-fushi-bg{
+    &-1{
+        background-image: url("#{$image-path}/shop/fushi-bgimg-1.png");
+    }
+
+    &-2{
+        background-image: url("#{$image-path}/shop/fushi-bgimg-2.jpg");
+    }
+
+    &-3{
+        background-image: url("#{$image-path}/shop/fushi-bgimg-3.png");
+    }
+}

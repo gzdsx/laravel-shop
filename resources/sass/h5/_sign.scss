@@ -1,0 +1,174 @@
+.sign-container {
+    display: block;
+    background-color: #ffffff;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    .input-container {
+        display: block;
+        position: relative;
+        padding: 10px 0;
+
+        &::after {
+            border-bottom: 1px #e5e5e5 solid;
+            position: absolute;
+            content: " ";
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transform: scaleY(.5);
+            transform-origin: 0 0;
+        }
+
+    }
+
+    .button-container {
+        display: block;
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+
+    .sign {
+        &-content {
+            display: block;
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 40px 10px 20px;
+        }
+
+        &-logo {
+            text-align: center;
+
+            img {
+                display: inline-block;
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        &-header {
+            text-align: center;
+            margin-bottom: 30px;
+
+            h1 {
+                font-size: 28px;
+                font-weight: 400;
+                color: #555;
+            }
+
+            p {
+                font-size: 14px;
+                color: #999;
+            }
+        }
+
+        &-form {
+            display: block;
+
+            .van-field__control {
+                font-size: 18px;
+            }
+        }
+
+        &-input {
+            font-size: 16px;
+            border: 0;
+            width: 100%;
+        }
+    }
+
+    .quick-button {
+        display: flex;
+        color: #777;
+        margin-top: 10px;
+        padding: 0 16px;
+
+        a {
+            font-size: 14px;
+            color: #777;
+        }
+    }
+
+    .quick-login {
+        display: block;
+        margin-top: 50px;
+        padding: 0 16px;
+
+        &-title {
+            display: block;
+            position: relative;
+            text-align: center;
+
+            h4 {
+                font-size: 14px;
+                display: inline-block;
+                color: #666;
+                padding: 10px 20px;
+                background-color: #fff;
+                z-index: 10;
+                position: relative;
+                font-weight: 400;
+            }
+
+            .strik {
+                border-bottom: 1px #cccccc solid;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 50%;
+                z-index: 0;
+            }
+        }
+
+        .quick-type {
+            display: block;
+            text-align: center;
+            margin: 10px 0;
+
+            a {
+                display: inline-block;
+                text-align: center;
+
+                i {
+                    font-size: 30px;
+                    border: 1px #efefef solid;
+                    border-radius: 25px;
+                    background-color: #f0f0f0;
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    display: block;
+                    color: #999;
+                    margin-bottom: 3px;
+                }
+
+                span {
+                    font-size: 14px;
+                    display: block;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .policy-tip {
+        display: flex;
+        font-size: 13px;
+        color: #B6B6B6;
+        margin-top: 20px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 16px;
+
+        a {
+            color: #00a2d4;
+        }
+    }
+}

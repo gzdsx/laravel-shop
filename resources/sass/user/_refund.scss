@@ -1,0 +1,120 @@
+.refund {
+    & {
+        &-form {
+            flex: 1;
+
+            .refund-item {
+                display: flex;
+
+                &-thumb {
+                    margin-right: 10px;
+                    width: 60px;
+                    height: 60px;
+                }
+
+                &-title {
+                    font-size: 14px;
+                }
+
+                &-sku {
+                    font-size: 12px;
+                    color: #666;
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        &-info{
+            flex: 1;
+
+            .tips{
+                padding: 5px 0;
+                li{
+                    font-size: 12px;
+                    color: #9D9D9D;
+                    list-style-position: inside;
+                    list-style-type: square;
+                }
+            }
+
+            .op-buttons{
+                margin: 10px 0;
+            }
+
+            &-detail{
+                display: block;
+                padding: 10px 0;
+
+                dl{
+                    display: flex;
+                    color: #9D9D9D;
+                    padding: 3px 0;
+
+                    dt{
+                        width: 60px;
+                    }
+
+                    dd{
+                        flex: 1;
+                    }
+                }
+            }
+        }
+
+        &-order {
+            width: 300px;
+            padding: 10px;
+
+            &-title {
+                font-size: 14px;
+                font-weight: 500;
+                border-bottom: 1px #e7e7e7 solid;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+
+            .item-info {
+                font-size: 12px;
+                margin-bottom: 10px;
+
+                .item {
+                    &-thumb {
+                        margin-right: 10px;
+                    }
+
+                    &-title {
+                        font-size: 12px;
+                        line-height: 1.1;
+                    }
+
+                    &-sku {
+                        color: #9D9D9D;
+                        margin-top: 3px;
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            &-row {
+                display: flex;
+                font-size: 12px;
+                padding: 5px 0;
+
+                span {
+                    color: #9D9D9D;
+                }
+
+                &-label {
+                    text-align: justify;
+                    text-align-last: justify;
+                    width: 50px;
+                }
+
+                &-value {
+                    flex: 1;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}

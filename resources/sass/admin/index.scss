@@ -1,0 +1,190 @@
+@import "../base";
+
+html, body {
+    background-color: #EBEBEF;
+}
+
+.iconfont {
+    vertical-align: -1px;
+    margin-right: 2px;
+}
+
+.admin-wrapper {
+    display: flex;
+}
+
+.sidebar {
+    min-width: 212px;
+}
+
+.mainframe {
+    display: block;
+    overflow: auto;
+    flex: 1;
+
+    &-container {
+        padding: 0;
+        height: 100%;
+        display: block;
+        position: relative;
+        padding-bottom: 60px;
+    }
+
+    &-content {
+        display: block;
+        padding: 10px;
+        position: relative;
+    }
+
+    .page-header {
+        height: 64px;
+        font-size: 14px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        border-bottom: 1px #EFEFF4 solid;
+
+        .page-title {
+            font-size: 18px;
+        }
+    }
+
+    .content-block {
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        transition: .2s;
+        background-color: #fff;
+        margin-bottom: 24px;
+        padding: 24px;
+    }
+
+    .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+
+        .el-form-item {
+            margin: 0 10px 0 0;
+            padding: 0;
+
+            &__content {
+                line-height: 1;
+            }
+        }
+    }
+
+    .table-edit-header {
+        position: relative;
+        display: block;
+        margin-bottom: 10px;
+
+        .buttons-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+        }
+
+        .button-item {
+            margin-left: 5px;
+        }
+
+        .table-edit-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+
+    .table-edit-footer {
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+    }
+
+    .edit-title {
+        background-color: #F7F7F7;
+        padding: 0 15px;
+        display: flex;
+        height: 30px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        line-height: 30px;
+
+        span {
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+
+    .edit-bottom {
+        background-color: #F2F2F2;
+        position: fixed;
+        left: 210px;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.el-button--primary {
+    a {
+        &,
+        &:link,
+        &:active,
+        &:visited {
+            color: #fff;
+        }
+    }
+}
+
+.sortable-ghost {
+    border: 1px #409EFF dashed;
+}
+
+.sortable-chosen {
+    border: 1px #409EFF dashed;
+}
+
+.sort-icon {
+    color: #409EFF;
+    font-size: 16px;
+    font-weight: bolder;
+    margin: 2px 0;
+    cursor: pointer;
+}
+
+.el-table-column--selection .cell {
+    padding: 0 10px !important;
+}
+
+.description-form {
+    .el-form-item {
+        margin-bottom: 0 !important;
+    }
+}
+
+.image-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #F5F7FA;
+    color: #909399;
+
+    .el-icon {
+        font-size: 40px;
+    }
+}
+
+@import "menu";
+@import "dashboard";
+@import "order";
+@import "../lib/sku";
+@import "../lib/imagepicker";
+@import "../user/refund";

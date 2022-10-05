@@ -1,0 +1,105 @@
+.order-list {
+    display: block;
+}
+
+.order-table {
+    margin-bottom: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px #e7e8e9 solid;
+
+    &:hover {
+        border-color: #ccc;
+    }
+
+    thead {
+        th {
+            background-color: #F7F7F7;
+            padding: 12px 10px;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: left;
+        }
+    }
+
+    tbody {
+        td {
+            padding: 12px 10px;
+            font-size: 12px;
+            font-weight: 400;
+            vertical-align: top;
+
+            p {
+                margin-bottom: 5px;
+            }
+
+            .ac-link{
+                display: block;
+                margin-top: 5px;
+            }
+
+            .el-button--mini{
+                padding: 6px 10px;
+            }
+        }
+    }
+
+    col {
+        vertical-align: top;
+    }
+
+    .col-checkbox {
+        margin-right: 1px;
+        line-height: 20px;
+    }
+
+    .col-order-time {
+        margin-right: 10px;
+        font-weight: 500;
+        color: #555;
+        vertical-align: center;
+    }
+
+    .col-order-no{
+        color: #666;
+        vertical-align: center;
+    }
+
+    .col-order-buyer{
+        margin-left: 10px;
+        .iconfont{
+            font-size: 13px;
+            margin: 0;
+            vertical-align: 0;
+        }
+    }
+
+    .col-freight {
+        font-size: 12px !important;
+        color: #999;
+    }
+
+    .order-item {
+        display: flex;
+
+        .thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            margin-bottom: 5px;
+        }
+
+        .sku {
+            color: #888;
+        }
+    }
+}

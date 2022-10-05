@@ -1,0 +1,45 @@
+.shop-text {
+    .t-title {
+        span {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    }
+
+    .t-content {
+
+        ul {
+            display: block;
+            list-style-type: disc;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0;
+            margin-inline-end: 0;
+            padding-inline-start: 40px;
+
+            li {
+                font-size: 14px;
+                margin-top: 16px;
+
+                label {
+                    display: inline-block;
+                    width: 120px;
+                    min-height: 15px;
+                    text-align: right;
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+}
+
+
+.shop-edit {
+    .e-title {
+        margin-bottom: 15px;
+
+        span {
+            font-size: 16px;
+        }
+    }
+}

@@ -1,0 +1,133 @@
+.member {
+    .header {
+        background-image: url("#{$image-path}/app/member/head.png");
+        background-size: 100% 100%;
+        padding: 30px 20px 60px;
+        color: #fff;
+        position: relative;
+    }
+
+    .avatar-container {
+        margin-right: 15px;
+    }
+
+    .username {
+        font-size: 24px;
+        font-weight: 400;
+        color: #222;
+        line-height: 28px;
+    }
+
+    .member{
+        font-size: 14px;
+        color: #222;
+        display: flex;
+    }
+
+    .member-icon{
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+
+    .data-container {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .data-item {
+        padding: 0 10px;
+        font-size: 16px;
+        text-align: center;
+
+        a{
+            color: #fff;
+        }
+    }
+
+    .cumulative-block {
+        background-color: #fff;
+        padding-bottom: 15px;
+        z-index: 10;
+    }
+
+    .cumulative {
+        box-shadow: 0 5px 15px 0 rgb(0 0 0 / 6%);
+        margin: -20px 10px 0;
+        padding: 15px;
+        display: flex;
+        font-size: 14px;
+        background-color: #fff;
+        position: relative;
+        z-index: 10;
+        border-radius: 8px;
+        overflow: hidden;
+
+        .amount{
+            margin-left: 3px;
+            font-size: 16px;
+        }
+    }
+
+    .data-block {
+        padding: 15px;
+        background-color: #fff;
+    }
+
+    .data-title {
+        padding: 10px 0;
+        position: relative;
+        font-size: 14px;
+
+        //&::after {
+        //    position: absolute;
+        //    content: " ";
+        //    left: 0;
+        //    right: 0;
+        //    bottom: 0;
+        //    z-index: 10;
+        //    border-bottom: 1px #E5E5E5 solid;
+        //    transform: scaleY(.5);
+        //    transform-origin: 0 0;
+        //    display: block;
+        //}
+    }
+
+    .data-source-block {
+        display: flex;
+        padding: 20px 0;
+    }
+
+    .data-source-item {
+        text-align: center;
+        font-size: 16px;
+        flex: 1;
+    }
+
+    .menu-block {
+        padding: 15px;
+        display: flex;
+        margin-top: 10px;
+        background-color: #fff;
+
+        .menu-item {
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .menu-icon {
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    }
+
+    .subuser-avatar{
+        margin-right: 10px;
+    }
+}

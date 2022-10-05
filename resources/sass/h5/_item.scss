@@ -1,0 +1,137 @@
+.item-grid-view {
+    display: block;
+
+    ul {
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        li {
+            width: 50%;
+            margin-bottom: 10px;
+            overflow: hidden;
+            display: block;
+
+            .inner {
+                display: block;
+                margin: 0 5px;
+                background-color: #fff;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+
+            .pic-box {
+                padding-top: 100%;
+                position: relative;
+
+                .pic {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    object-fit: cover;
+                }
+            }
+
+            .ctx-box {
+                padding: 7px 5px;
+
+                .title {
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 400;
+                    height: 32px;
+                    line-height: 16px;
+                    overflow: hidden;
+                    margin-bottom: 9px;
+                    text-overflow: ellipsis;
+                }
+
+                .price {
+                    flex: 1;
+                    font-size: 16px;
+                    color: #FF0000;
+                    font-weight: 500;
+                    line-height: 1;
+                }
+
+                .sold {
+                    font-size: 12px;
+                    color: #888;
+                    line-height: 16px;
+                }
+            }
+        }
+    }
+}
+
+.item-list-view {
+    display: block;
+    background-color: #fff;
+
+    .items{
+        .item{
+            display: block;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-bottom: 1px #ebedf0 solid;
+                z-index: 5;
+                transform: scaleY(0.5);
+                transform-origin: 0 0;
+                content: " ";
+            }
+
+            .inner{
+                display: flex;
+                padding: 12px;
+                position: relative;
+            }
+
+            .pic-box{
+                width: 100px;
+                height: 100px;
+                margin-right: 15px;
+
+                .pic{
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    border-radius: 5px;
+                    object-fit: cover;
+                }
+            }
+
+            .ctx-box{
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+
+                .title {
+                    font-size: 14px;
+                    line-height: 16px;
+                }
+
+                .price {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #f40;
+                    flex: 1;
+                }
+
+                .sold {
+                    font-size: 12px;
+                    color: #666;
+                    padding-top: 6px;
+                }
+            }
+        }
+    }
+}

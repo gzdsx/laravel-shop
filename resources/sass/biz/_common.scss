@@ -1,0 +1,82 @@
+.table-edit-header {
+    position: relative;
+    display: block;
+    margin-bottom: 10px;
+
+    .buttons-wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+    }
+
+    .button-item {
+        margin-left: 5px;
+    }
+
+    .table-edit-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+.table-edit-footer {
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.edit-title {
+    background-color: #F7F7F7;
+    padding: 0 15px;
+    display: flex;
+    height: 30px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 30px;
+
+    span {
+        font-size: 14px;
+        line-height: 30px;
+    }
+}
+
+.edit-bottom {
+    background-color: #F2F2F2;
+    position: fixed;
+    left: 210px;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-block {
+    display: block;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 2px;
+}
+
+.show {
+    display: block !important;
+}
+
+.el-table-column--selection .cell {
+    padding: 0 10px !important;
+}
+
+.description-form {
+    .el-form-item {
+        margin-bottom: 0 !important;
+    }
+}
+
+.el-button--danger {
+    color: #fff;
+    background-color: #e53a40 !important;
+    border-color: #e53a40 !important;
+}
