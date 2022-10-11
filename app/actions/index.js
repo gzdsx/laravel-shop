@@ -1,7 +1,9 @@
-import * as authActionCreators from './auth';
+import * as oauthActionCreators from './oauth';
 import * as locationActionCreators from './location';
+import * as userActionCreators from './userInfo';
 
 export {
-    authActionCreators,
-    locationActionCreators
+    oauthActionCreators,
+    locationActionCreators,
+    userActionCreators,
 }

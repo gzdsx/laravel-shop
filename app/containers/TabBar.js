@@ -1,13 +1,12 @@
 import React from 'react';
 import {Image} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Colors} from "../styles";
-import HomeIndex from '../pages/home/HomeIndex';
-// import Category from "../pages/shop/Category";
-import UserIndex from '../pages/user/UserIndex';
+import EcomIndex from '../pages/ecom/EcomIndex';
 import Cart from "../pages/cart/Cart";
 import PostIndex from "../pages/post/PostIndex";
+import HomeIndex from "../pages/home/HomeIndex";
+import NotificationIndex from "../pages/notification/NotificationIndex";
 
 function iconStyle(tintColor) {
     return {
@@ -17,56 +16,23 @@ function iconStyle(tintColor) {
     };
 }
 
-const HomeStack = createStackNavigator();
-const HomeScreen = () => (
-    <HomeStack.Navigator>
-        <HomeStack.Screen name={"Home"} component={HomeIndex} options={HomeIndex.navigationOptions}/>
-    </HomeStack.Navigator>
-)
-
-// const CategoryStack = createStackNavigator();
-// const CategoryScreen = () => (
-//     <CategoryStack.Navigator>
-//         <CategoryStack.Screen name={"Category"} component={Category} options={Category.navigationOptions}/>
-//     </CategoryStack.Navigator>
-// )
-
-const PostStack = createStackNavigator();
-const PostScreen = () => (
-    <PostStack.Navigator>
-        <PostStack.Screen name={"PostIndex"} component={PostIndex} options={PostIndex.navigationOptions}/>
-    </PostStack.Navigator>
-)
-
-const CartStack = createStackNavigator();
-const CartScreen = () => (
-    <CartStack.Navigator>
-        <CartStack.Screen name={"Cart"} component={Cart} options={Cart.navigationOptions}/>
-    </CartStack.Navigator>
-)
-
-const UserStack = createStackNavigator();
-const UserScreen = () => (
-    <UserStack.Navigator>
-        <UserStack.Screen name={"User"} component={UserIndex} options={UserIndex.navigationOptions}/>
-    </UserStack.Navigator>
-)
-
 const Tab = createBottomTabNavigator();
 
 class TabBar extends React.Component {
     render() {
         return (
             <Tab.Navigator
-                tabBarOptions={{
-                    activeTintColor: Colors.primary,
-                    inactiveTintColor: '#777',
-                    labelStyle: {height: 14}
+                screenOptions={{
+                    tabBarActiveTintColor: Colors.primary,
+                    tabBarInactiveTintColor: '#777',
+                    tabBarLabelStyle: {
+                        height: 14
+                    },
                 }}
             >
                 <Tab.Screen
-                    name="Home"
-                    component={HomeScreen}
+                    name="EcomIndex"
+                    component={EcomIndex}
                     options={{
                         tabBarLabel: '首页',
                         tabBarIcon: ({focused, color, size}) => (
@@ -76,15 +42,29 @@ class TabBar extends React.Component {
                             />
                         ),
                     }}
+
                 />
                 <Tab.Screen
-                    name="Post"
-                    component={PostScreen}
+                    name="PostIndex"
+                    component={PostIndex}
                     options={{
                         tabBarLabel: '发现',
                         tabBarIcon: ({focused, color, size}) => (
                             <Image
-                                source={focused ? require('../images/tabbar/we-fill.png') : require('../images/tabbar/we.png')}
+                                source={focused ? require('../images/tabbar/compass-fill.png') : require('../images/tabbar/compass.png')}
+                                style={iconStyle(color)}
+                            />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="NotificationIndex"
+                    component={NotificationIndex}
+                    options={{
+                        tabBarLabel: '消息',
+                        tabBarIcon: ({focused, color, size}) => (
+                            <Image
+                                source={focused ? require('../images/tabbar/message-fill.png') : require('../images/tabbar/message.png')}
                                 style={iconStyle(color)}
                             />
                         ),
@@ -92,7 +72,7 @@ class TabBar extends React.Component {
                 />
                 <Tab.Screen
                     name="CartView"
-                    component={CartScreen}
+                    component={Cart}
                     options={{
                         tabBarLabel: '购物车',
                         tabBarIcon: ({focused, color, size}) => (
@@ -104,8 +84,8 @@ class TabBar extends React.Component {
                     }}
                 />
                 <Tab.Screen
-                    name="我的"
-                    component={UserScreen}
+                    name="HomeIndex"
+                    component={HomeIndex}
                     options={{
                         tabBarLabel: '我的',
                         tabBarIcon: ({focused, color, size}) => (

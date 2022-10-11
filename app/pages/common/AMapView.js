@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Linking, Platform} from 'react-native';
-import {MapView, Marker} from 'react-native-amap3d';
+import {MapView} from 'react-native-gzdsx-amap';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Size} from "../../styles";
 import {Toast} from '../../utils';
@@ -24,7 +24,7 @@ export default class AMapView extends React.Component {
                         coordinate={coordinate}
                         zoomLevel={13}
                     >
-                        <Marker
+                        <MapView.Marker
                             coordinate={coordinate}
                             title={"红果经济开发区管委会"}
                             active={true}

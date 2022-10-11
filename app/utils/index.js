@@ -1,5 +1,5 @@
-import ApiClient from './apiclient';
-import Utils from './utils';
+import ApiClient from './ApiClient';
+import Utils from './Utils';
 
 export {
     ApiClient,

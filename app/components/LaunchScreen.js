@@ -18,21 +18,14 @@ const css = StyleSheet.create({
     }
 });
 
-export default class LaunchScreen extends React.Component{
-    constructor(props) {
-        super(props);
-
-    }
-
-    render(){
-        return (
-            <View style={css.view}>
-                <StatusBar barStyle={"light-content"} hidden={true} translucent={true}/>
-                <Image
-                    source={require('../images/common/launchimage.png')}
-                    style={css.image}
-                />
-            </View>
-        );
-    }
+export default function LaunchScreen (){
+    return (
+        <View style={css.view}>
+            <StatusBar barStyle={"light-content"} hidden={true} translucent={true}/>
+            <Image
+                source={require('../images/common/launchimage.png')}
+                style={css.image}
+            />
+        </View>
+    );
 }

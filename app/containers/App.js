@@ -5,84 +5,80 @@ import {DeviceEventEmitter, AppState, Linking, Alert} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import JPush from 'jpush-react-native';
 import CodePush from 'react-native-code-push';
-import GeoLocation from '@react-native-community/geolocation';
-import {NavigationContainer} from '@react-navigation/native';
-import {authActionCreators, locationActionCreators} from '../actions';
-import {ApiClient, Utils} from '../utils';
-import {LaunchScreen} from "../components";
+import Geolocation from '@react-native-community/geolocation';
+import {oauthActionCreators, locationActionCreators, userActionCreators} from '../actions';
+import {ApiClient} from '../utils';
 import AppContainer from "./AppContainer";
 import {
     AccessToken,
     AppUrl,
     AppVersion,
-    CodePushDeploymentKey,
     isAndroid,
     UserDidSigninedNotification,
     UserDidSignoutedNotification,
+    UserDidChangedNotification
 } from "../base/constants";
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            showLaunch: isAndroid
-        };
+        this.state = {};
     }
 
     render() {
-        if (this.state.showLaunch) return <LaunchScreen/>;
         return (
-            <NavigationContainer>
-                <AppContainer/>
-            </NavigationContainer>
+            <AppContainer/>
         );
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.checkUserStatus();
-        Utils.setStatusBarStyle('light');
-        AppState.addEventListener('change', this.onAppStateChange);
+    componentDidMount() {
+        this.addListeners();
+        this.watchPosition();
+        this.setupJPush();
     }
 
-    componentDidMount() {
-        const {authActions, locationActions} = this.props;
-        DeviceEventEmitter.addListener(UserDidSigninedNotification, (userinfo) => {
-            authActions.userDidSignIn(userinfo);
+    componentWillUnmount() {
+        DeviceEventEmitter.removeAllListeners();
+        this.setState = (state, callback) => {
+        };
+    }
+
+    addListeners = () => {
+        const {oauthActions, userActions} = this.props;
+        AppState.addEventListener('change', this.onAppStateChange);
+        DeviceEventEmitter.addListener(UserDidSigninedNotification, (res) => {
+            oauthActions.userDidSignIn();
             AsyncStorage.getItem('RegistrationID').then(registrationid => {
-                this.registerJpushToken(registrationid, userinfo.uid);
+                this.registerJpushToken(registrationid);
             });
         });
 
-        DeviceEventEmitter.addListener(UserDidSignoutedNotification, () => {
-            authActions.userDidSignOut();
+        DeviceEventEmitter.addListener(UserDidSignoutedNotification, _ => {
             AsyncStorage.removeItem(AccessToken);
+            oauthActions.userDidSignOut();
         });
 
+        DeviceEventEmitter.addListener(UserDidChangedNotification, userInfo => {
+            userActions.userDidChanged(userInfo);
+        });
+    };
+
+    watchPosition = () => {
         //获取位置信息
-        GeoLocation.getCurrentPosition(position => {
-            //console.log(position);
-            locationActions.userLocationDidChanged(position);
-            GeoLocation.watchPosition(position => {
+        const {locationActions} = this.props;
+        Geolocation.requestAuthorization(() => {
+            Geolocation.watchPosition(position => {
                 locationActions.userLocationDidChanged(position);
             }, error => {
                 console.log(error);
             }, {
-                maximumAge: 600000
+                maximumAge: 600000,
             });
         }, error => {
             console.log(error);
         });
-
-        setTimeout(() => {
-            this.setState({
-                showLaunch: false
-            });
-        }, 2000);
-
-        //注册通知
-        this.setupJPush();
-    }
+    };
 
     onAppStateChange = (appState) => {
         if (Platform.OS === 'ios') {
@@ -94,16 +90,6 @@ class App extends React.Component {
             //检测新版本
             this.checkVersion();
         }
-    };
-
-    checkUserStatus = () => {
-        const {authActions} = this.props;
-        ApiClient.get('/user/info').then(response => {
-            //console.log(response.result);
-            authActions.userDidSignIn(response.result.userinfo);
-        }).catch(reason => {
-
-        });
     };
 
     setupJPush = () => {
@@ -126,11 +112,6 @@ class App extends React.Component {
             }
         });
 
-        JPush.addCustomMessagegListener((message) => {
-            // console.log('addReceiveCustomMsgListener');
-            // console.log(message);
-        });
-
         JPush.getRegistrationID(res => {
             //console.log(res);
             AsyncStorage.setItem('RegistrationID', res.registerID).then(() => {
@@ -141,7 +122,7 @@ class App extends React.Component {
 
     checkVersion = () => {
         //检测新版本
-        ApiClient.get('/getversion', {platform: Platform.OS}).then(response => {
+        ApiClient.get('/app/getversion', {platform: Platform.OS}).then(response => {
             //console.log(response.result);
             if (response.result.version > AppVersion) {
                 Alert.alert(null, 'APP已有新的版本,是否现在升级?', [
@@ -152,37 +133,37 @@ class App extends React.Component {
         });
     };
 
-    registerJpushToken = (registrationid, uid = 0) => {
+    registerJpushToken = (registrationid) => {
         ApiClient.post('/apns/jpush', {
             platform: Platform.OS,
-            registrationid,
-            uid
+            registrationid
         }).then((response => {
             //console.log(response.result);
         })).catch(reason => {
             console.log(reason);
         });
-    }
+    };
 }
 
-const mapStateToProps = (store) => {
-    return {...store};
+const mapStateToProps = state => {
+    return state;
 };
 
 const mapDispatchToProps = (dispatch) => {
-    const authActions = bindActionCreators(authActionCreators, dispatch);
+    const userActions = bindActionCreators(userActionCreators, dispatch);
+    const oauthActions = bindActionCreators(oauthActionCreators, dispatch);
     const locationActions = bindActionCreators(locationActionCreators, dispatch);
     return {
-        authActions,
-        locationActions
-    }
+        userActions,
+        oauthActions,
+        locationActions,
+    };
 };
 
 const codePushOptions = {
-    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
     updateDialog: false,
-    installMode: CodePush.InstallMode.IMMEDIATE,
-    deploymentKey: CodePushDeploymentKey
+    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+    installMode: CodePush.InstallMode.IMMEDIATE
 };
 
 App = CodePush(codePushOptions)(App);

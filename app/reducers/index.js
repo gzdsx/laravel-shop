@@ -1,10 +1,12 @@
 "use strict";
 
 import {combineReducers} from 'redux';
-import auth from './auth';
+import oauth from './oauth';
 import location from './location';
+import userInfo from './userInfo';
 
 module.exports = combineReducers({
-    auth,
-    location
+    oauth,
+    location,
+    userInfo
 });

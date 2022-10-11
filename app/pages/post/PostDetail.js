@@ -15,7 +15,7 @@ class PostDetail extends React.Component {
         const {navigation, route, auth} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
-            headerTitle: '正文',
+            title: '正文',
             headerRight: () => (
                 <View style={Styles.headerRight}>
                     <TouchableOpacity

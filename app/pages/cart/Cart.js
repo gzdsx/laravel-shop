@@ -15,7 +15,7 @@ import {CacheImage} from 'react-native-gzdsx-cache-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
 import ProductGridView from "../shop/components/ProductGridView";
-import {Styles} from "../../styles";
+import {HeaderStyles} from "../../styles";
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {NumberControl} from "../shop/components/NumberControl";
@@ -31,12 +31,12 @@ class Cart extends React.Component {
                 let canBack = route.params?.canBack;
                 if (canBack) {
                     return (
-                        <TouchableOpacity onPress={navigation.goBack} activeOpacity={1} style={Styles.headerLeft}>
+                        <TouchableOpacity onPress={navigation.goBack} activeOpacity={1} style={HeaderStyles.headerLeft}>
                             <Ticon name={"back-light"} size={28} color={"#fff"}/>
                         </TouchableOpacity>
                     );
                 } else {
-                    return <View style={Styles.headerLeft}/>;
+                    return <View style={HeaderStyles.headerLeft}/>;
                 }
             }
         })
@@ -58,7 +58,7 @@ class Cart extends React.Component {
 
 
     render() {
-        const {auth, navigation} = this.props;
+        const {oauth, navigation} = this.props;
         return (
             <View style={{flex: 1}}>
                 <ScrollView
@@ -82,7 +82,7 @@ class Cart extends React.Component {
                         }}
                     />
                 </ScrollView>
-                {auth.isSignined && this.renderFootBar()}
+                {oauth.isAuthenticated && this.renderFootBar()}
                 <Toast ref={"toast"}/>
             </View>
         );
@@ -108,7 +108,7 @@ class Cart extends React.Component {
     };
 
     fetchData = () => {
-        if (this.props.auth.isSignined) {
+        if (this.props.oauth.isAuthenticated) {
             ApiClient.get('/cart/getall').then(response => {
                 let cartItems = response.result.items;
                 this.setState({cartItems, isRefreshing: false, checkAll: false});
@@ -117,8 +117,8 @@ class Cart extends React.Component {
     };
 
     renderCartView = () => {
-        const {auth} = this.props;
-        if (auth.isSignined) {
+        const {oauth} = this.props;
+        if (oauth.isAuthenticated) {
             if (this.state.cartItems.length > 0) {
                 return this.renderItems();
             } else {
@@ -376,8 +376,8 @@ class Cart extends React.Component {
     };
 }
 
-const mapStateToProps = (store) => {
-    return {...store};
+const mapStateToProps = state => {
+    return state;
 };
 
 export default connect(mapStateToProps)(Cart);

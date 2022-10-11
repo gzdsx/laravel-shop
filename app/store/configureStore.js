@@ -1,7 +1,9 @@
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleWare, {END} from 'redux-saga';
-import {persistStore} from 'redux-persist';
+import {persistStore, persistReducer} from 'redux-persist';
 import reducers from '../reducers';
+import {sagas} from '../sagas';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const middlewares = [];
 
@@ -15,16 +17,19 @@ if (__DEV__) {
 }
 
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
+const persistedReducer = persistReducer({
+    key: 'rootReducers',
+    storage: AsyncStorage,
+}, reducers);
 
-function configureStore(onComplete: ?() => void) {
-    const store = createStoreWithMiddleware(reducers);
-    // install saga run
-    store.runSaga = sagaMiddleWare.run;
+async function configureStore(onCompelete: ?()=>void) {
+    const store = createStoreWithMiddleware(persistedReducer);
     store.close = () => store.dispatch(END);
-
-    persistStore(store, {}, _ => onComplete(store));
-
-    return store;
+    let persistor = persistStore(store, {}, () => {
+        // install saga run
+        sagaMiddleWare.run(sagas);
+        onCompelete && onCompelete({store, persistor});
+    });
 }
 
 module.exports = configureStore;

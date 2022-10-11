@@ -1,9 +1,28 @@
 import {StyleSheet} from "react-native";
-import {Colors} from "./index";
+import Colors from "./Colors";
 
-export const ButtonStyles = StyleSheet.create({
+const buttonHeight = 45;
+const ButtonStyles = StyleSheet.create({
     primary: {
         backgroundColor: Colors.primary,
-        height: 40
+        height: buttonHeight
+    },
+    success: {
+        backgroundColor: Colors.success,
+        height: buttonHeight
+    },
+    info: {
+        backgroundColor: Colors.info,
+        height: buttonHeight
+    },
+    warning: {
+        backgroundColor: Colors.warning,
+        height: buttonHeight
+    },
+    danger: {
+        backgroundColor: Colors.danger,
+        height: buttonHeight
     }
-})
+});
+
+export default ButtonStyles;

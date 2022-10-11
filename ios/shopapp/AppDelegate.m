@@ -1,10 +1,10 @@
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
-
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
+#import <CodePush/CodePush.h>
+#import <AlipayModule.h>
 
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
 #import <UserNotifications/UserNotifications.h>
@@ -33,8 +33,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if DEBUG
+  InitializeFlipper(application);
+#endif
   // JPush初始化配置
-  [JPUSHService setupWithOption:launchOptions appKey:@"3a6bc7e415e21e3de84356ba" channel:nil apsForProduction:YES];
+  [JPUSHService setupWithOption:launchOptions appKey:@"3a6bc7e415e21e3de84356ba" channel:@"default" apsForProduction:YES];
   // APNS
   JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
   if (@available(iOS 12.0, *)) {
@@ -48,10 +51,6 @@ static void InitializeFlipper(UIApplication *application) {
   // 地理围栏
   [JPUSHService registerLbsGeofenceDelegate:self withLaunchOptions:launchOptions];
   // ReactNative环境配置
-#if DEBUG
-  InitializeFlipper(application);
-#endif
-
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"shopapp"
@@ -64,7 +63,10 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [NSThread sleepForTimeInterval:2];
+  // Place this code after "[self.window makeKeyAndVisible]" and before "return YES;"
+  UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];
+  UIViewController *vc = [sb instantiateInitialViewController];
+  rootView.loadingView = vc.view;
   return YES;
 }
 
@@ -79,6 +81,7 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+  [AlipayModule handleCallback:url];
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 
@@ -144,13 +147,6 @@ static void InitializeFlipper(UIApplication *application) {
   
 }
 
-- (void)jpushGeofenceIdentifer:(NSString *)geofenceId didEnterRegion:(NSDictionary *)userInfo error:(NSError *)error {
-  
-}
-
-- (void)jpushGeofenceIdentifer:(NSString *)geofenceId didExitRegion:(NSDictionary *)userInfo error:(NSError *)error {
-  
-}
 
 //自定义消息
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
@@ -164,6 +160,22 @@ static void InitializeFlipper(UIApplication *application) {
  * @param notification 当前管理的通知对象
  */
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification NS_AVAILABLE_IOS(12.0){
+  
+}
+
+- (void)jpushCallbackGeofenceReceived:(NSArray<NSDictionary *> *)geofenceList {
+  
+}
+
+- (void)jpushGeofenceIdentifer:(NSString *)geofenceId didEnterRegion:(NSDictionary *)userInfo error:(NSError *)error {
+  
+}
+
+- (void)jpushGeofenceIdentifer:(NSString *)geofenceId didExitRegion:(NSDictionary *)userInfo error:(NSError *)error {
+  
+}
+
+- (void)jpushGeofenceRegion:(NSDictionary *)geofence error:(NSError *)error {
   
 }
 

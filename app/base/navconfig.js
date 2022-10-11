@@ -1,24 +1,71 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import {Ticon} from 'react-native-gzdsx-elements';
-import {Colors, Styles} from '../styles';
+import {View} from 'react-native';
+import {Colors, HeaderStyles} from '../styles';
+import Icon from "react-native-vector-icons/Entypo";
 
 const defaultNavigationConfigure = (navigation) => {
     return {
-        headerStyle: Styles.headerStyle,
-        headerTitle: 'title',
+        title: 'title',
         headerTitleAlign: 'center',
-        headerTitleStyle: Styles.headerTitleStyle,
+        headerStyle: HeaderStyles.headerStyle,
+        headerTitleStyle: HeaderStyles.headerTitleStyle,
         headerTintColor: Colors.headerTintColor,
         headerLeft: () => (
-            <TouchableOpacity activeOpacity={1} onPress={() => navigation.goBack()} style={Styles.headerLeft}>
-                <Ticon name={'back-light'} size={28} color={'#fff'}/>
-            </TouchableOpacity>
+            <View style={HeaderStyles.headerLeft}>
+                {
+                    navigation.canGoBack() ?
+                        <Icon
+                            name={'chevron-thin-left'}
+                            color={Colors.headerTintColor}
+                            size={22}
+                            suppressHighlighting={true}
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        />
+                        : null
+                }
+            </View>
         ),
-        headerRight: () => (<View style={Styles.headerRight}/>),
+        headerRight: () => null,
+        headerShadowVisible: false
+    };
+};
+
+const lightNavigationConfigure = (navigation) => {
+    return {
+        title: 'title',
+        headerTitleAlign: 'center',
+        headerStyle: {
+            backgroundColor: Colors.primary,
+        },
+        headerTitleStyle: {
+            fontSize: 18
+        },
+        headerTintColor: '#fff',
+        headerLeft: () => (
+            <View>
+                {
+                    navigation.canGoBack() ?
+                        <Icon
+                            name={'chevron-thin-left'}
+                            color={'#fff'}
+                            size={22}
+                            suppressHighlighting={true}
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        />
+                        : null
+                }
+            </View>
+        ),
+        headerRight: () => null,
+        headerShadowVisible: false
     };
 };
 
 export {
     defaultNavigationConfigure,
+    lightNavigationConfigure
 };

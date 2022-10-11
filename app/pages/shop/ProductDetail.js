@@ -1,5 +1,15 @@
 import React from 'react';
-import {ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, DeviceEventEmitter, Linking} from 'react-native';
+import {
+    ScrollView,
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    DeviceEventEmitter,
+    Linking,
+    SafeAreaView
+} from 'react-native';
 import {connect} from 'react-redux';
 import Swiper from 'react-native-swiper';
 import {LoadingView, Ticon, Toast} from "react-native-gzdsx-elements";
@@ -80,89 +90,94 @@ class ProductDetail extends React.Component {
         if (this.state.isOffSale) return this.renderOffSale();
         let html = content.content || `<img src="${product.image}" style="width: 100%;"/>`;
         return (
-            <View style={{flex: 1}}>
-                <ScrollView style={{flex: 1}}>
-                    {this.renderSwiper()}
-                    {this.renderItemData()}
-                    <View style={{
-                        paddingTop: 15,
-                        paddingBottom: 15
-                    }}>
-                        <Text style={{
-                            textAlign: 'center',
-                            fontSize: 16,
-                            color: '#666'
-                        }}>宝贝详情</Text>
-                    </View>
-                    {this.renderProperties()}
-                    <HTML
-                        html={html}
-                        imagesMaxWidth={Size.screenWidth}
-                        imagesInitialDimensions={{...Size.screenSize}}
-                        ignoredStyles={['font-family']}
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: '#fff'
+            }}>
+                <View style={{flex: 1}}>
+                    <ScrollView style={{flex: 1}}>
+                        {this.renderSwiper()}
+                        {this.renderItemData()}
+                        <View style={{
+                            paddingTop: 15,
+                            paddingBottom: 15
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                fontSize: 16,
+                                color: '#666'
+                            }}>宝贝详情</Text>
+                        </View>
+                        {this.renderProperties()}
+                        <HTML
+                            html={html}
+                            imagesMaxWidth={Size.screenWidth}
+                            imagesInitialDimensions={{...Size.screenSize}}
+                            ignoredStyles={['font-family']}
+                        />
+                    </ScrollView>
+                    <GoodsActionBar
+                        onPressAddCart={() => {
+                            if (auth.isSignined) {
+                                this.actionType = 1;
+                                this.setState({
+                                    showModal: true
+                                });
+                            } else {
+                                this.showLogin();
+                            }
+                        }}
+                        onPressBuyNow={() => {
+                            if (auth.isSignined) {
+                                this.actionType = 2;
+                                this.setState({
+                                    showModal: true
+                                });
+                            } else {
+                                this.showLogin();
+                            }
+                        }}
+                        onAddCollection={() => {
+                            if (auth.isSignined) {
+                                const itemid = product.itemid;
+                                ApiClient.post('/product/collect/create', {itemid}).then(() => {
+                                    this.refs.toast.show('已成功加入收藏夹');
+                                });
+                            } else {
+                                this.showLogin();
+                            }
+                        }}
+                        onConnectKefu={() => {
+                            Linking.openURL('tel:18685849696');
+                        }}
                     />
-                </ScrollView>
-                <GoodsActionBar
-                    onPressAddCart={() => {
-                        if (auth.isSignined) {
-                            this.actionType = 1;
-                            this.setState({
-                                showModal: true
-                            });
-                        } else {
-                            this.showLogin();
-                        }
-                    }}
-                    onPressBuyNow={() => {
-                        if (auth.isSignined) {
-                            this.actionType = 2;
-                            this.setState({
-                                showModal: true
-                            });
-                        } else {
-                            this.showLogin();
-                        }
-                    }}
-                    onAddCollection={() => {
-                        if (auth.isSignined) {
+                    <SkuPannel
+                        show={this.state.showModal}
+                        data={product}
+                        onSubmit={(sku, quantity) => {
+                            const _this = this;
                             const itemid = product.itemid;
-                            ApiClient.post('/product/collect/create', {itemid}).then(() => {
-                                this.refs.toast.show('已成功加入收藏夹');
-                            });
-                        } else {
-                            this.showLogin();
-                        }
-                    }}
-                    onConnectKefu={() => {
-                        Linking.openURL('tel:18685849696');
-                    }}
-                />
-                <SkuPannel
-                    show={this.state.showModal}
-                    data={product}
-                    onSubmit={(sku, quantity) => {
-                        const _this = this;
-                        const itemid = product.itemid;
-                        const sku_id = sku.sku_id || 0;
-                        if (this.actionType === 1) {
-                            this.setState({showModal: false});
-                            AddToCart(itemid, quantity, sku_id, (data) => {
-                                DeviceEventEmitter.emit(CartDidChangedNotification);
-                                _this.refs.toast.show('已成功加入购物车');
-                            });
-                        } else {
-                            this.setState({showModal: false});
-                            this.props.navigation.navigate('BuyNow', {
-                                itemid,
-                                sku_id,
-                                quantity
-                            });
-                        }
-                    }}
-                />
-                <ShareView show={this.state.showShare} shareMessage={this.state.shareMessage}/>
-                <Toast ref={"toast"}/>
-            </View>
+                            const sku_id = sku.sku_id || 0;
+                            if (this.actionType === 1) {
+                                this.setState({showModal: false});
+                                AddToCart(itemid, quantity, sku_id, (data) => {
+                                    DeviceEventEmitter.emit(CartDidChangedNotification);
+                                    _this.refs.toast.show('已成功加入购物车');
+                                });
+                            } else {
+                                this.setState({showModal: false});
+                                this.props.navigation.navigate('BuyNow', {
+                                    itemid,
+                                    sku_id,
+                                    quantity
+                                });
+                            }
+                        }}
+                    />
+                    <ShareView show={this.state.showShare} shareMessage={this.state.shareMessage}/>
+                    <Toast ref={"toast"}/>
+                </View>
+            </SafeAreaView>
         );
     }
 
