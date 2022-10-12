@@ -1,5 +1,5 @@
 import AdminIndex from "./index/AdminIndex";
-import SettingsMain from "./settings/SettingsMain";
+import SettingsMain from "./setting/SettingsMain";
 
 const router = new VueRouter({
     routes: [
@@ -28,9 +28,6 @@ router.addRoutes(PostRoutes);
 
 const EcomRoutes = require('./ecom/routes');
 router.addRoutes(EcomRoutes);
-
-const TalentRoutes = require('./talent/routes');
-router.addRoutes(TalentRoutes);
 
 router.addRoutes([
     {

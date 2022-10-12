@@ -27,10 +27,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="shop_name" label="店铺名称"/>
-                    <el-table-column prop="seller.username" width="120px" label="店主"></el-table-column>
+                    <el-table-column prop="seller.nickname" width="120px" label="店主"></el-table-column>
                     <el-table-column prop="state_des" width="120px" label="店铺状态"></el-table-column>
                     <el-table-column prop="created_at" width="170" label="创建时间"></el-table-column>
-                    <el-table-column width="50" label="选项">
+                    <el-table-column width="50" label="选项" align="right">
                         <template slot-scope="scope">
                             <router-link :to="'/shop/edit/'+scope.row.shop_id">编辑</router-link>
                         </template>
@@ -112,7 +112,7 @@
                 nodes: [],
                 shop: {},
                 showDialog: false,
-                listApi: '/ecom/shop.list',
+                listApi: '/ecom/shop.getList',
                 params: {
                     closed: ''
                 }
@@ -126,7 +126,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/ecom/shop.batchdelete', {ids}).then(response => {
+                    this.$post('/ecom/shop.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -141,7 +141,7 @@
             },
             onBatchUpdate(data) {
                 let ids = this.selectionIds.map((d) => d.shop_id);
-                this.$post('/ecom/shop.batchupdate', {ids, data}).then(response => {
+                this.$post('/ecom/shop.batchUpdate', {ids, data}).then(response => {
                     this.fetchList();
                 });
             },

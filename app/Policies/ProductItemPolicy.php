@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProductItemPolicy
@@ -19,10 +19,10 @@ class ProductItemPolicy
      * Determine whether the user can view the item.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\ProductItem $productItem
+     * @param \App\Models\EcomProductItem $productItem
      * @return mixed
      */
-    public function view(User $user, ProductItem $productItem)
+    public function view(User $user, EcomProductItem $productItem)
     {
         if ($user->isAdmin()) {
             return true;
@@ -50,10 +50,10 @@ class ProductItemPolicy
      * Determine whether the user can update the item.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\ProductItem $productItem
+     * @param \App\Models\EcomProductItem $productItem
      * @return mixed
      */
-    public function update(User $user, ProductItem $productItem)
+    public function update(User $user, EcomProductItem $productItem)
     {
         return $user->uid == $productItem->uid;
     }
@@ -62,10 +62,10 @@ class ProductItemPolicy
      * Determine whether the user can delete the item.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\ProductItem $productItem
+     * @param \App\Models\EcomProductItem $productItem
      * @return mixed
      */
-    public function delete(User $user, ProductItem $productItem)
+    public function delete(User $user, EcomProductItem $productItem)
     {
         if ($user->isAdmin()) {
             return true;
@@ -76,10 +76,10 @@ class ProductItemPolicy
 
     /**
      * @param User $user
-     * @param ProductItem $productItem
+     * @param EcomProductItem $productItem
      * @return bool
      */
-    public function buy(User $user, ProductItem $productItem)
+    public function buy(User $user, EcomProductItem $productItem)
     {
         if ($user->uid == $productItem->uid) {
             return false;

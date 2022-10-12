@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Common;
 
 use App\Http\Controllers\Admin\BaseController;
-use App\Models\ProductItem;
-use App\Models\Material;
+use App\Models\EcomProductItem;
+use App\Models\CommonMaterial;
 use App\Models\Order;
 use App\Models\PostItem;
 use App\Models\User;
@@ -31,8 +31,8 @@ class DashboardController extends BaseController
         return jsonSuccess([
             'users' => User::count(),
             'posts' => PostItem::count(),
-            'products' => ProductItem::count(),
-            'materials' => Material::count(),
+            'products' => EcomProductItem::count(),
+            'materials' => CommonMaterial::count(),
             'orders' => Order::count()
         ]);
     }

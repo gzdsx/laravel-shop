@@ -64,7 +64,7 @@
         mounted() {
             let {group} = this.$route.meta;
             this.navs.map((nav, i) => {
-                if (nav.group == group) {
+                if (nav.group === group) {
                     this.current = i;
                     this.currentNav = this.navs[i];
                 }

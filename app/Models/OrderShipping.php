@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read string $formatted_address
- * @property-read \App\Models\Order $order
+ * @property-read \App\Models\Order|null $order
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderShipping query()

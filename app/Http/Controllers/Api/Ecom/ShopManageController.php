@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Ecom;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Models\Shop;
-use App\Models\ShopSession;
+use App\Models\EcomShop;
+use App\Models\EcomShopSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +28,7 @@ class ShopManageController extends BaseController
      */
     public function getList(Request $request)
     {
-        $items = Shop::with(['certify'])->whereSellerId(Auth::id())->get();
+        $items = EcomShop::with(['certify'])->whereSellerId(Auth::id())->get();
         return jsonSuccess([
             'items' => $items,
             'total' => $items->count()
@@ -53,7 +53,7 @@ class ShopManageController extends BaseController
      */
     public function switchShop(Request $request)
     {
-        $session = ShopSession::firstOrCreate(['uid' => Auth::id()]);
+        $session = EcomShopSession::firstOrCreate(['uid' => Auth::id()]);
         $session->shop()->associate($request->input('shop_id'))->save();
         return jsonSuccess();
     }

@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $total_fee 订单总价
  * @property int $refund_state 退款状态
  * @property string|null $refund_at 退款时间
- * @property-read \App\Models\Order $order
+ * @property-read \App\Models\Order|null $order
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()

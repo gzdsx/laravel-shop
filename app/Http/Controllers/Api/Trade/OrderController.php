@@ -144,13 +144,18 @@ class OrderController extends BaseController
      */
     public function aliPay(Order $order)
     {
-        $transaction = $order->transaction;
+        if ($order->isPaid()) {
+            return jsonError(600, '订单已支付');
+        }
+
+        $detail = $order->items()->first()->title;
         $params = AliPay::appPay(config('alipay.default'))->sendRequest([
-            'subject' => $transaction->subject,
-            'out_trade_no' => $transaction->out_trade_no,
-            'total_amount' => $transaction->amount,
+            'subject' => $detail,
+            'out_trade_no' => $order->order_no,
+            'total_amount' => $order->order_fee,
         ]);
 
+        //return jsonSuccess($params);
         return jsonSuccess(['payStr' => http_build_query($params)]);
     }
 }

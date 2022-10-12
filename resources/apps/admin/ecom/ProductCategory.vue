@@ -136,11 +136,11 @@
                         <el-select class="w-100" v-model="category.parent_id">
                             <el-option :value="0" label="设为一级分类"></el-option>
                             <el-option
-                                    v-for="(cat,idx) in categories"
+                                    v-for="(cat,idx) in dataList"
                                     :label="cat.cate_name"
                                     :value="cat.cate_id"
                                     :key="idx"
-                                    v-if="cat.cate_id!=category.cate_id"
+                                    v-if="cat.cate_id!==category.cate_id"
                             />
                         </el-select>
                     </td>
@@ -189,7 +189,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/ecom/product.category.list').then(response => {
+                this.$get('/ecom/product.category.getList').then(response => {
                     this.dataList = response.result.items;
                 });
             },

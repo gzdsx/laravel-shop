@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property array|null $data 支付数据
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay query()

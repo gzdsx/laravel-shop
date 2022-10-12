@@ -14,9 +14,9 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\Cart;
-use App\Models\ProductItem;
-use App\Models\ProductSku;
+use App\Models\EcomCart;
+use App\Models\EcomProductItem;
+use App\Models\EcomProductSku;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
 trait CartTrait
 {
     /**
-     * @return Cart|\Illuminate\Database\Eloquent\Builder|HasMany
+     * @return EcomCart|\Illuminate\Database\Eloquent\Builder|HasMany
      */
     protected function repository()
     {
@@ -41,11 +41,11 @@ trait CartTrait
         $sku_id = $request->input('sku_id', 0);
         $quantity = $request->input('quantity', 1);
 
-        $product = ProductItem::findOrFail($itemid);
+        $product = EcomProductItem::findOrFail($itemid);
         $price = $product->price;
         $sku_title = null;
         if ($sku_id) {
-            $sku = ProductSku::find($sku_id);
+            $sku = EcomProductSku::find($sku_id);
             if ($sku) {
                 $price = $sku->price;
                 $sku_title = $sku->title;

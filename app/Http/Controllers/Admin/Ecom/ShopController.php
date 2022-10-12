@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Ecom;
 
 use App\Http\Controllers\Admin\BaseController;
-use App\Models\Shop;
+use App\Models\EcomShop;
 use App\Traits\Ecom\ShopTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +13,11 @@ class ShopController extends BaseController
     use ShopTrait;
 
     /**
-     * @return Shop|\Illuminate\Database\Eloquent\Builder
+     * @return EcomShop|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Shop::query();
+        return EcomShop::query();
     }
 
     /**

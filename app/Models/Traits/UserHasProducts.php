@@ -15,7 +15,7 @@ namespace App\Models\Traits;
 
 
 use App\Models\ProductCollect;
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait UserHasProducts
@@ -25,7 +25,7 @@ trait UserHasProducts
      */
     public function products()
     {
-        return $this->hasMany(ProductItem::class, 'uid', 'uid');
+        return $this->hasMany(EcomProductItem::class, 'uid', 'uid');
     }
 
     /**

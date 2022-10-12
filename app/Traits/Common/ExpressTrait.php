@@ -14,17 +14,17 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Express;
+use App\Models\CommonExpress;
 use Illuminate\Http\Request;
 
 trait ExpressTrait
 {
     /**
-     * @return Express|\Illuminate\Database\Eloquent\Builder
+     * @return CommonExpress|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Express::query();
+        return CommonExpress::query();
     }
 
     /**

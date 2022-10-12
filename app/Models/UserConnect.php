@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $avatar 头像地址
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static Builder|UserConnect newModelQuery()
  * @method static Builder|UserConnect newQuery()
  * @method static Builder|UserConnect query()

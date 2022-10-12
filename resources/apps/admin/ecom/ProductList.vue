@@ -58,16 +58,18 @@
                     </el-table-column>
                     <el-table-column label="产品名称">
                         <template slot-scope="scope">
-                            <a :href="'/#'+scope.row.m_url" target="_blank">
-                                {{scope.row.title}}
-                            </a>
+                            <div><a :href="scope.row.url" target="_blank">{{scope.row.title}}</a></div>
+                            <p>
+                                <a :href="scope.row.shop.url" target="_blank" style="font-size: 12px;color: #838383;">
+                                    {{scope.row.shop.shop_name}}</a>
+                            </p>
                         </template>
                     </el-table-column>
                     <el-table-column prop="price" width="100" label="单价"/>
                     <el-table-column prop="sold" width="80" label="销量"/>
                     <el-table-column prop="state_des" width="80" label="状态"/>
                     <el-table-column prop="created_at" width="170" label="上架时间"/>
-                    <el-table-column width="50" label="选项">
+                    <el-table-column width="50" label="选项" align="right">
                         <template slot-scope="scope">
                             <router-link :to="'/product/edit/'+scope.row.itemid" target="_blank">编辑
                             </router-link>
@@ -108,7 +110,7 @@
         mixins: [PaginationMixin],
         data() {
             return {
-                listApi: '/ecom/product.list',
+                listApi: '/ecom/product.getList',
                 params: {
                     title: '',
                     cate_id: '',
@@ -122,7 +124,7 @@
         },
         methods: {
             fetchCategoryList() {
-                this.$get('/ecom/product.category.list').then(response => {
+                this.$get('/ecom/product.category.getList').then(response => {
                     this.nodes = this.serilazeProps(response.result.items);
                 });
             },
@@ -133,7 +135,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/ecom/product.batchdelete', {ids}).then(() => {
+                    this.$post('/ecom/product.batchDelete', {ids}).then(() => {
                         this.fetchList();
                     });
                 });
@@ -144,7 +146,7 @@
             },
             onBatchUpdate(data) {
                 let ids = this.selectionIds.map((d) => d.itemid);
-                this.$post('/ecom/product.batchupdate', {ids, data}).then(() => {
+                this.$post('/ecom/product.batchUpdate', {ids, data}).then(() => {
                     this.fetchList();
                 });
             },

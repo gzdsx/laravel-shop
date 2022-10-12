@@ -14,18 +14,18 @@
 namespace App\Traits\Common;
 
 
-use App\Models\District;
+use App\Models\CommonDistrict;
 use Illuminate\Http\Request;
 use Overtrue\Pinyin\Pinyin;
 
 trait DistrictTrait
 {
     /**
-     * @return District|\Illuminate\Database\Eloquent\Builder
+     * @return CommonDistrict|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return District::query();
+        return CommonDistrict::query();
     }
 
     /**

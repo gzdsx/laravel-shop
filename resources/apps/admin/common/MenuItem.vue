@@ -228,7 +228,7 @@
         methods: {
             fetchList() {
                 let {menu_id} = this.$route.params;
-                this.$get('/menu/item.getList', {menu_id}).then(response => {
+                this.$get('/common/menu.item.getList', {menu_id}).then(response => {
                     let {menu, items} = response.result;
                     this.menu = menu;
                     this.dataList = items;
@@ -250,7 +250,7 @@
                     return false;
                 }
 
-                this.$post('/menu/item.save', {id, item}).then(() => {
+                this.$post('/common/menu.item.save', {id, item}).then(() => {
                     this.showDialog = false;
                     this.resetData();
                     this.fetchList();
@@ -271,7 +271,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/menu/item.batchDelete', {ids: [id]}).then(() => {
+                    this.$post('/common/menu.item.batchDelete', {ids: [id]}).then(() => {
                         this.fetchList();
                     });
                 });
@@ -284,7 +284,7 @@
             },
             onToggle(item) {
                 let {id} = item;
-                this.$post('/menu/item.toggle', {id}).then(() => {
+                this.$post('/common/menu.item.toggle', {id}).then(() => {
                     item.hide = item.hide === 0 ? 1 : 0;
                 });
             }

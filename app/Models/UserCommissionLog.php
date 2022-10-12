@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserCommissionLog
  *
- * @property-read \App\Models\User $payer
+ * @property-read \App\Models\User|null $payer
  * @method static \Illuminate\Database\Eloquent\Builder|UserCommissionLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserCommissionLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserCommissionLog query()

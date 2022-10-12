@@ -28,9 +28,7 @@ Route::group(['namespace' => 'Notify'], function () {
 
 
     Route::group(['namespace'=>'Alipay','prefix'=>'alipay'],function (){
-        Route::any('order/paid', 'OrderController@paid');
-        Route::any('matchmaker/paid', 'MatchmakerController@paid');
-        Route::any('lovenote/paid', 'LoveNoteController@paid');
+        Route::any('order.paid', 'OrderController@paid');
     });
 
     Route::group(['namespace'=>'Live','prefix'=>'live'],function (){

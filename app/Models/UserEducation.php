@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $school_name 学校名称
  * @property string|null $degree_name 学位名称
  * @property string|null $field_of_study_name 专业名称
- * @property \datetime|null $start_at 入学时间
- * @property \datetime|null $end_at 毕业时间
+ * @property \Illuminate\Support\Carbon|null $start_at 入学时间
+ * @property \Illuminate\Support\Carbon|null $end_at 毕业时间
  * @property string|null $description 描述
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间

@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $sort_num 显示顺序
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\PageCategory $category
+ * @property-read \App\Models\PageCategory|null $category
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $m_url
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @method static Builder|Page newModelQuery()

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserWithrawalLog
  *
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $state_des
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserWithrawalLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserWithrawalLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserWithrawalLog query()

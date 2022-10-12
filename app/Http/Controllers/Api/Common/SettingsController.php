@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Common;
 
 use App\Http\Controllers\Controller;
-use App\Models\Settings;
+use App\Models\CommonSetting;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller
@@ -15,7 +15,7 @@ class SettingsController extends Controller
     public function settings(Request $request)
     {
         $settings = [];
-        foreach (Settings::all() as $setting) {
+        foreach (CommonSetting::all() as $setting) {
             $svalue = json_decode($setting->svalue, true);
             $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
         }
@@ -31,7 +31,7 @@ class SettingsController extends Controller
     {
         foreach ($request->input('settings', []) as $skey => $svalue) {
             if (is_array($svalue)) $svalue = json_encode($svalue);
-            Settings::updateOrInsert(['skey'=>$skey], ['svalue' => $svalue]);
+            CommonSetting::updateOrInsert(['skey'=>$skey], ['svalue' => $svalue]);
         }
 
         $this->updateCache();
@@ -45,7 +45,7 @@ class SettingsController extends Controller
     {
         // TODO: Implement updateCache() method.
         $settings = [];
-        foreach (Settings::all() as $setting) {
+        foreach (CommonSetting::all() as $setting) {
             $svalue = json_decode($setting->svalue, true);
             $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
         }

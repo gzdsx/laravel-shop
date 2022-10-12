@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $openid openid
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WechatLogin query()

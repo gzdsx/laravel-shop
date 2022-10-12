@@ -14,7 +14,7 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,7 +36,7 @@ trait ProductCollectTrait
     {
         $itemid = $request->input('itemid');
         if (!$collect = $this->repository()->where('itemid', $itemid)->first()) {
-            $product = ProductItem::find($itemid);
+            $product = EcomProductItem::find($itemid);
             $collect = $this->repository()->create([
                 'itemid' => $itemid,
                 'image' => $product->image,

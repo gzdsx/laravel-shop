@@ -38,13 +38,13 @@
                     <tr>
                         <td class="cell-label">商品名称</td>
                         <td>
-                            <el-input type="text" size="medium" class="w500" v-model="product.title"/>
+                            <el-input type="text" size="medium" class="w500" v-model="item.title"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="cell-label">商品卖点</td>
                         <td>
-                            <el-input type="textarea" class="w500" v-model="product.subtitle"></el-input>
+                            <el-input type="textarea" class="w500" v-model="item.subtitle"></el-input>
                         </td>
                     </tr>
                     <tr>
@@ -58,6 +58,19 @@
                                     class="w500"
                                     ref="cascader"
                             />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cell-label">关联门店</td>
+                        <td>
+                            <el-select class="w500" size="medium" v-model="item.shop_id" placeholder="请选择">
+                                <el-option
+                                        v-for="(shop,index) in shopList"
+                                        :key="index"
+                                        :label="shop.shop_name"
+                                        :value="shop.shop_id"
+                                />
+                            </el-select>
                         </td>
                     </tr>
                     <!--                    <tr>-->
@@ -87,14 +100,14 @@
                         <tr>
                             <td class="cell-label w80">商品型号</td>
                             <td>
-                                <el-radio-group v-model="product.has_sku_attr">
+                                <el-radio-group v-model="item.has_sku_attr">
                                     <el-radio :label="0">统一型号</el-radio>
                                     <el-radio :label="1">多级型号</el-radio>
                                 </el-radio-group>
                             </td>
                         </tr>
                         </tbody>
-                        <tbody v-if="product.has_sku_attr">
+                        <tbody v-if="item.has_sku_attr">
                         <tr>
                             <td></td>
                             <td>
@@ -110,21 +123,21 @@
                         <tr>
                             <td class="cell-label w80"><i class="star">*</i>产品价格</td>
                             <td>
-                                <el-input type="text" class="w200" v-model="product.price" :min="0"
+                                <el-input type="text" class="w200" v-model="item.price" :min="0"
                                           :max="99999999"></el-input>
                             </td>
                         </tr>
                         <!--                        <tr>-->
                         <!--                            <td class="cell-label w80"><i class="star">*</i>拼团价格</td>-->
                         <!--                            <td>-->
-                        <!--                                <el-input type="text" class="w200" v-model="product.pin_price" :min="0"-->
+                        <!--                                <el-input type="text" class="w200" v-model="item.pin_price" :min="0"-->
                         <!--                                          :max="99999999"></el-input>-->
                         <!--                            </td>-->
                         <!--                        </tr>-->
                         <tr>
                             <td class="cell-label"><i class="star">*</i>产品库存</td>
                             <td>
-                                <el-input type="number" class="w200" v-model="product.stock" :min="0"
+                                <el-input type="number" class="w200" v-model="item.stock" :min="0"
                                           :max="99999999"></el-input>
                             </td>
                         </tr>
@@ -136,7 +149,7 @@
                                 <el-input
                                         type="text"
                                         class="w200"
-                                        v-model="product.original_price"
+                                        v-model="item.original_price"
                                         :min="0"
                                         :max="99999999"></el-input>
                             </td>
@@ -152,27 +165,26 @@
                     <tr>
                         <td class="cell-label w80">宝贝详情</td>
                         <td>
-                            <vue-editor v-model="content" ref="keditor"></vue-editor>
+                            <vue-editor v-model="content" ref="keditor"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="cell-label">运费模板</td>
                         <td>
-                            <el-select size="medium" v-model="product.template_id">
-                                <el-option :value="0" label="请选择"></el-option>
-                                <el-option v-for="(tpl,index) in templateList"
-                                           :label="tpl.template_name"
-                                           :value="tpl.template_id"
-                                           :key="index"
-                                ></el-option>
+                            <el-select size="medium" v-model="item.template_id" placeholder="请选择">
+                                <el-option
+                                        v-for="(tpl,index) in templateList"
+                                        :label="tpl.template_name"
+                                        :value="tpl.template_id"
+                                        :key="index"
+                                />
                             </el-select>
                         </td>
                     </tr>
                     <tr>
                         <td class="cell-label w80">初始销量</td>
                         <td>
-                            <el-input type="text" class="w200" v-model="product.sold" :min="0"
-                                      :max="99999999"></el-input>
+                            <el-input type="text" class="w200" v-model="item.sold" :min="0" :max="99999999"/>
                         </td>
                     </tr>
                     </tbody>
@@ -199,7 +211,7 @@
         data() {
             let self = this;
             return {
-                product: {
+                item: {
                     template_id: '',
                     has_sku_attr: 0,
                     is_pin: 0,
@@ -217,22 +229,6 @@
                 maxImageCount: 5,
                 defaultAttrList: [],
                 defaultAttrInfo: {},
-                props: {
-                    lazy: true,
-                    label: 'cate_name',
-                    value: 'cate_id',
-                    lazyLoad(node, resolve) {
-                        //console.log(node);
-                        const {level} = node;
-                        const fid = node.data ? node.data.catid : 0;
-                        self.$get('/ecom/product/category/search?fid=' + fid).then(response => {
-                            resolve(response.result.items.map(c => ({
-                                ...c,
-                                leaf: level >= 1
-                            })));
-                        });
-                    }
-                },
                 nodes: [],
                 cates: []
             }
@@ -241,15 +237,15 @@
             fetchData() {
                 let {itemid} = this.$route.params;
                 if (!itemid) return false;
-                this.$get('/ecom/product.info', {itemid}).then(response => {
+                this.$get('/ecom/product.getInfo', {itemid}).then(response => {
                     //console.log(response.result);
-                    const product = response.result;
-                    const {images, content, skus, attrs} = product;
+                    const item = response.result;
+                    const {images, skus, attrs} = item;
 
-                    this.product = product;
+                    this.item = item;
+                    this.cates = item.cate_id;
                     if (skus) this.skus = skus;
                     if (images) this.images = images;
-                    if (content) this.content = content.content;
 
                     if (attrs !== null && attrs !== undefined) {
                         this.defaultAttrList = attrs;
@@ -263,23 +259,26 @@
                         this.defaultAttrInfo = defaultAttrInfo;
                     }
 
-                    this.cates = [product.cate_id];
-
                     //setTimeout(this.$refs.cascader.panel.lazyLoad, 300);
+                });
+
+                this.$get('/ecom/product.content.getInfo', {itemid}).then(response => {
+                    let {content} = response.result;
+                    this.content = content;
                 });
             },
             fetchCategoryList() {
-                this.$get('/ecom/product.category.list').then(response => {
+                this.$get('/ecom/product.category.getList').then(response => {
                     this.nodes = this.serilazeProps(response.result.items);
                 });
             },
             fetchTemplateList() {
-                this.$get('/ecom/product.template.list').then(response => {
+                this.$get('/ecom/product.template.getList').then(response => {
                     this.templateList = response.result.items;
                 });
             },
             fetchShopList() {
-                this.$get('/ecom/shop.list', {count: 50}).then(response => {
+                this.$get('/ecom/shop.getList', {count: 50}).then(response => {
                     this.shopList = response.result.items;
                 });
             },
@@ -300,13 +299,13 @@
             },
             onSkuChange(data) {
                 this.skus = data.skus;
-                this.product.skus = data.skus;
-                this.product.attrs = data.attrs;
+                this.item.skus = data.skus;
+                this.item.attrs = data.attrs;
             },
             onSubmit(type) {
                 //console.log(this.product);
-                let {product, images, content, skus, cates} = this;
-                let {title, price, stock, cate_id} = product;
+                let {item, images, content, skus, cates} = this;
+                let {title, price, stock, cate_id} = item;
 
                 if (images.length === 0) {
                     this.$showToast('请至少上传一张图片');
@@ -350,8 +349,8 @@
                         stocks.push(parseInt(skus[i].stock));
                     }
 
-                    product.price = _.min(prices);
-                    product.stock = _.sum(stocks);
+                    item.price = _.min(prices);
+                    item.stock = _.sum(stocks);
                 } else {
                     if (!price) {
                         this.$showToast('请填写产品价格');
@@ -374,9 +373,9 @@
                     }
                 }
 
-                let {itemid} = product;
-                product.state = type;
-                this.$post('/ecom/product.save', {itemid, product, content, images, skus}).then(response => {
+                let {itemid} = item;
+                item.state = type;
+                this.$post('/ecom/product.save', {itemid, item, content, images, skus}).then(() => {
                     let message = type === 1 ? '商品上架成功' : '商品下架成功';
                     this.$showToast(message, this.$router.go(0));
                 }).catch(reason => {
@@ -400,14 +399,14 @@
                 return t(arr);
             },
             onCascaderChange(val) {
-                if (val) this.product.cate_id = val[val.length - 1];
+                if (val) this.item.cate_id = val[val.length - 1];
             }
         },
         mounted() {
             this.fetchData();
             this.fetchCategoryList();
             this.fetchTemplateList();
-            //this.fetchShopList();
+            this.fetchShopList();
         },
     }
 </script>

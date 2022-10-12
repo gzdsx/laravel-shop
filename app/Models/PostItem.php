@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $click7
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\PostCategory $category
+ * @property-read \App\Models\PostCategory|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostComment[] $comments
  * @property-read int|null $comments_count
  * @property-read \App\Models\PostContent|null $content
@@ -57,7 +57,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\PostMedia|null $media
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
  * @property-read int|null $subscribed_users_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static Builder|PostItem filter(array $input = [], $filter = null)
  * @method static Builder|PostItem newModelQuery()
  * @method static Builder|PostItem newQuery()

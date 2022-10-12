@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use App\Models\Live;
 use App\Models\Order;
 use App\Models\PostItem;
@@ -24,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Order::class => OrderPolicy::class,
-        ProductItem::class => ProductItemPolicy::class,
+        EcomProductItem::class => ProductItemPolicy::class,
         PostItem::class => PostItemPolicy::class,
         Live::class => LivePolicy::class
     ];

@@ -95,7 +95,7 @@
                     username: '',
                     type: 'image'
                 },
-                listApi:'/material/material.getList'
+                listApi:'/common/material.getList'
             }
         },
         methods: {
@@ -106,7 +106,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/material/material.batchDelete', {ids}).then(() => {
+                    this.$post('/common/material.batchDelete', {ids}).then(() => {
                         this.fetchList();
                     });
                 });

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $uid
  * @property string|null $name
  * @property string|null $value
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserField newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserField newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserField query()

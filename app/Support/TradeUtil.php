@@ -18,24 +18,15 @@ class TradeUtil
 {
     /**
      * 生成订单号
-     * @param string $prefix
      * @return string
      */
-    public static function createOrderNo($prefix = '6')
-    {
-        return $prefix . time() . substr(microtime(), 2, 6) . rand(0, 9);
-    }
-
-    /**
-     * 生成交易流水号
-     * @return string
-     */
-    public static function createTransactionNo()
+    public static function createOrderNo()
     {
         return date('YmdHis') . rand(100, 999) . rand(100, 999);
     }
 
     /**
+     * 生成退货单号
      * @return string
      */
     public static function createReundNo()

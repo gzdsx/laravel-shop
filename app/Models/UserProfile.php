@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $firstname 名
  * @property string|null $lastname 姓
  * @property int $gender 性别
- * @property mixed|null $birthday 生日
+ * @property \Illuminate\Support\Carbon|null $birthday 生日
  * @property int $age 年龄
  * @property float|null $height 身高
  * @property float|null $weight 体重
@@ -28,13 +28,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $town 乡镇
  * @property string|null $street 街道
  * @property string|null $bio 个人简介
- * @property mixed|null $start_work_at 参加工作时间
+ * @property \Illuminate\Support\Carbon|null $start_work_at 参加工作时间
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read mixed $fullname
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $gender_des
  * @property-read mixed $work_years
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile query()

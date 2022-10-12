@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Ecom;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductClassify;
+use App\Models\EcomProductClassify;
 use Illuminate\Http\Request;
 
 class ProductClassifyController extends Controller
@@ -11,7 +11,7 @@ class ProductClassifyController extends Controller
     use HasEcomShopSession;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|ProductClassify
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|EcomProductClassify
      */
     protected function repository()
     {

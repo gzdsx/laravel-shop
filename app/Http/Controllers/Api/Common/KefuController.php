@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\Common;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\Kefu;
+use App\Models\CommonKefu;
 use Illuminate\Http\Request;
 
 class KefuController extends BaseController
 {
     /**
-     * @return Kefu|\Illuminate\Database\Eloquent\Builder
+     * @return CommonKefu|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Kefu::query();
+        return CommonKefu::query();
     }
 
     /**

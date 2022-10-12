@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\District;
+use App\Models\CommonDistrict;
 use App\Support\PinyinUtil;
 use Illuminate\Console\Command;
 
@@ -39,7 +39,7 @@ class UpdateDistrict extends Command
      */
     public function handle()
     {
-        District::get()->map(function (District $district) {
+        CommonDistrict::get()->map(function (CommonDistrict $district) {
             if (!$district->letter) {
                 $district->letter = PinyinUtil::firstChar($district->name);
             }

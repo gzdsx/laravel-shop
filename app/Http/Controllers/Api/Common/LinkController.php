@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\Common;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\Link;
+use App\Models\CommonLink;
 use Illuminate\Http\Request;
 
 class LinkController extends BaseController
 {
     /**
-     * @return Link|\Illuminate\Database\Eloquent\Builder
+     * @return CommonLink|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Link::query();
+        return CommonLink::query();
     }
 
     /**

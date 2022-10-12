@@ -14,18 +14,18 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductAttr;
-use App\Models\ProductAttrValue;
+use App\Models\EcomProductAttr;
+use App\Models\EcomProductAttrValue;
 use Illuminate\Http\Request;
 
 trait ProductAttrValueTrait
 {
     /**
-     * @return ProductAttrValue|\Illuminate\Database\Eloquent\Builder
+     * @return EcomProductAttrValue|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return ProductAttrValue::query();
+        return EcomProductAttrValue::query();
     }
 
     /**
@@ -34,7 +34,7 @@ trait ProductAttrValueTrait
      */
     public function getList(Request $request)
     {
-        $model = ProductAttr::findOrFail($request->input('attr_cate_id'));
+        $model = EcomProductAttr::findOrFail($request->input('attr_cate_id'));
         $model->load(['attrValues']);
 
         return jsonSuccess($model);

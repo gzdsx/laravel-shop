@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $content 操作内容
  * @property \Illuminate\Support\Carbon|null $created_at 操作时间
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Order $order
+ * @property-read \App\Models\Order|null $order
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderLog query()

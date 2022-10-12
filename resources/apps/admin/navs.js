@@ -66,40 +66,6 @@ export default [
         ]
     },
     {
-        name: '招聘',
-        fullName: '招聘管理',
-        icon: 'icon-form',
-        path: '/talent/company/list',
-        group: 'talent',
-        children: [
-            {
-                name: '企业管理',
-                path: '/talent/company/list',
-                isLink: false
-            },
-            {
-                name: '简历管理',
-                path: '/talent/resume/list',
-                isLink: false
-            },
-            {
-                name: '福利选项',
-                path: '/talent/welfare',
-                isLink: false
-            },
-            {
-                name: '职位管理',
-                path: '/talent/job/list',
-                isLink: false
-            },
-            {
-                name: '职位分类',
-                path: '/talent/job/category',
-                isLink: false
-            }
-        ]
-    },
-    {
         name: '电商',
         fullName: '商品管理',
         icon: 'icon-goodsnew',

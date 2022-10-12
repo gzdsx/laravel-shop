@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $fans_id 粉丝ID
  * @property \Illuminate\Support\Carbon|null $created_at 关注时间
  * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
- * @property-read \App\Models\User $fans
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $fans
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans query()

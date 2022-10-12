@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $pay_at 付款时间
  * @property string|null $detail 交易说明
  * @property string $amount 交易金额
- * @property string|null $remark 交易备注
+ * @property string|null $memo 交易备注
  * @property array|null $data 付款信息
  * @property int $other_account_id 对方账户ID
  * @property string|null $other_account_name 对方账户名称
@@ -29,8 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read mixed|null $pay_type_des
  * @property-read mixed|null $type_des
  * @property-read \App\Models\Order|null $order
- * @property-read \App\Models\User $otherAccount
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $otherAccount
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction newQuery()
@@ -46,13 +46,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereEndsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereLike(string $column, string $value, string $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereMemo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereOtherAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereOtherAccountName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereOutTradeNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction wherePayAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction wherePayState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction wherePayType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereRemark($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereUpdatedAt($value)
@@ -71,7 +71,7 @@ class UserTransaction extends Model
     ];
     protected $fillable = [
         'uid', 'type', 'account_type', 'out_trade_no', 'pay_type', 'pay_state', 'pay_at',
-        'detail', 'amount', 'remark', 'data', 'other_account_id', 'other_account_name'
+        'detail', 'amount', 'memo', 'data', 'other_account_id', 'other_account_name'
     ];
     protected $dates = ['pay_at'];
     protected $casts = [

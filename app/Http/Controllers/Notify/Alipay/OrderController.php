@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Notify\Alipay;
 
+use App\Events\Order\OrderPaid;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\UserTransaction;
-use App\Services\Contracts\OrderServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
@@ -15,7 +17,8 @@ class OrderController extends Controller
 
     /**
      * @param Request $request
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return string
+     * @throws \Throwable
      */
     public function paid(Request $request)
     {
@@ -49,18 +52,26 @@ class OrderController extends Controller
          */
         Storage::put('alipay', json_encode($request->all()));
         $out_trade_no = $request->input('out_trade_no');
-        $transaction = UserTransaction::findByOutTradeNo($out_trade_no);
-        if (!$transaction->pay_state) {
-            $transaction->data = $request->all();
-            $transaction->pay_state = 1;
-            $transaction->pay_at = now();
-            $transaction->pay_type = 'alipay';
-            $transaction->save();
+        $order = Order::findByOrderNo($out_trade_no);
+        if ($order->isUnPaid()) {
+            DB::transaction(function () use ($order, $request) {
+                $order->markAsPaid();
+                //创建交易流水
+                $transaction = new UserTransaction();
+                $transaction->user()->associate($order->buyer_id);
+                $transaction->out_trade_no = $order->order_no;
+                $transaction->detail = $request->input('subject');
+                $transaction->type = 2;
+                $transaction->account_type = 1;
+                $transaction->amount = $request->input('total_amount');
+                $transaction->pay_type = 'alipay';
+                $transaction->data = $request->all();
+                $transaction->markAsPaid();
+                //发送通知
+                event(new OrderPaid($order));
+            });
         }
 
-        if ($transaction->order) {
-            app(OrderServiceInterface::class)->paid($transaction->order);
-        }
         return static::SUCCESS;
     }
 }

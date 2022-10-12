@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Api\Ecom;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\ProductAttr;
-use App\Models\ProductAttrValue;
+use App\Models\EcomProductAttr;
+use App\Models\EcomProductAttrValue;
 use Illuminate\Http\Request;
 
 class ProductAttrValueController extends BaseController
 {
     /**
-     * @return ProductAttrValue|\Illuminate\Database\Eloquent\Builder
+     * @return EcomProductAttrValue|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return ProductAttrValue::query();
+        return EcomProductAttrValue::query();
     }
 
     /**
@@ -24,7 +24,7 @@ class ProductAttrValueController extends BaseController
      */
     public function getList(Request $request)
     {
-        $attr = ProductAttr::findOrFail($request->input('attr_cate_id'));
+        $attr = EcomProductAttr::findOrFail($request->input('attr_cate_id'));
         $attr->load(['attrValues']);
 
         return jsonSuccess(['attr' => $attr]);

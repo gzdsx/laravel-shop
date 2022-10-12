@@ -14,7 +14,7 @@
 namespace App\Models\Traits;
 
 
-use App\Models\Cart;
+use App\Models\EcomCart;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait UserHasCarts
@@ -24,6 +24,6 @@ trait UserHasCarts
      */
     public function carts()
     {
-        return $this->hasMany(Cart::class, 'uid', 'uid');
+        return $this->hasMany(EcomCart::class, 'uid', 'uid');
     }
 }

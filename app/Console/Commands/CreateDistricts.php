@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\District;
+use App\Models\CommonDistrict;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use function Stringy\create;
@@ -115,7 +115,7 @@ class CreateDistricts extends Command
         $districts = [];
 
         foreach ($cache[0] as $province) {
-            $np = District::create([
+            $np = CommonDistrict::create([
                 'zonecode' => $province['id'],
                 'name' => $province['name'],
                 'fullname' => $province['fullname'],
@@ -133,7 +133,7 @@ class CreateDistricts extends Command
         }
 
         foreach ($cities as $city) {
-            $nc = District::create([
+            $nc = CommonDistrict::create([
                 'name' => $city['name'],
                 'fullname' => $city['fullname'],
                 'lat' => $city['location']['lat'],
@@ -154,7 +154,7 @@ class CreateDistricts extends Command
         }
 
         foreach ($districts as $district) {
-            District::create([
+            CommonDistrict::create([
                 'name' => $district['name'] ?? $district['fullname'],
                 'fullname' => $district['fullname'],
                 'lat' => $district['location']['lat'],

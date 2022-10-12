@@ -14,7 +14,7 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductCategory;
+use App\Models\EcomProductCategory;
 use App\Traits\Common\CategoryTrait;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -28,7 +28,7 @@ trait ProductCategoryTrait
     protected function repository()
     {
         // TODO: Implement repository() method.
-        return ProductCategory::withGlobalScope('filter', function (Builder $builder) {
+        return EcomProductCategory::withGlobalScope('filter', function (Builder $builder) {
             return $builder->where('available', 1);
         });
     }

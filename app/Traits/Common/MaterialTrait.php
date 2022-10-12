@@ -14,7 +14,7 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Material;
+use App\Models\CommonMaterial;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ use Intervention\Image\Facades\Image;
 trait MaterialTrait
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder|Material
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder|CommonMaterial
      */
     protected function repository()
     {
@@ -33,7 +33,7 @@ trait MaterialTrait
 
     /**
      * @param Request $request
-     * @return Material|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse
+     * @return CommonMaterial|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse
      */
     public function upload(Request $request)
     {

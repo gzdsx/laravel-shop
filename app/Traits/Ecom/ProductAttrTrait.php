@@ -14,17 +14,17 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductAttr;
+use App\Models\EcomProductAttr;
 use Illuminate\Http\Request;
 
 trait ProductAttrTrait
 {
     /**
-     * @return ProductAttr|\Illuminate\Database\Eloquent\Builder
+     * @return EcomProductAttr|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return ProductAttr::query();
+        return EcomProductAttr::query();
     }
 
     /**

@@ -24,7 +24,7 @@ namespace App\Models;
  * @property-read \Illuminate\Database\Eloquent\Collection|PostCategory[] $childs
  * @property-read int|null $childs_count
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string $url
- * @property-read PostCategory $parent
+ * @property-read PostCategory|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|PostCategory[] $siblings

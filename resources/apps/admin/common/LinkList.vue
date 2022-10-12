@@ -116,12 +116,12 @@
         methods: {
             fetchList() {
                 let {cate_id} = this;
-                this.$get('/link/link.getList', {cate_id}).then(response => {
+                this.$get('/common/link.getList', {cate_id}).then(response => {
                     this.dataList = response.result.items;
                 });
             },
             fetchCategoryList() {
-                this.$get('/link/link.getCategoryList').then(response => {
+                this.$get('/common/link.getCategoryList').then(response => {
                     this.categoryList = this.categoryList.concat(response.result.items);
                 });
             },
@@ -135,7 +135,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/link/link.batchDelete', {ids}).then(response => {
+                    this.$post('/common/link.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -158,7 +158,7 @@
                     return false;
                 }
 
-                this.$post('/link/link.save', {id, link}).then(response => {
+                this.$post('/common/link.save', {id, link}).then(response => {
                     this.$showToast('链接保存成功');
                     this.showDialog = false;
                     this.fetchList();
@@ -169,7 +169,7 @@
                 this.showPicker = true;
             },
             onChooseImage(data) {
-                this.$post('/link/link.save', {
+                this.$post('/common/link.save', {
                     id: this.link.id,
                     link: {image: data.image}
                 }).then(() => {

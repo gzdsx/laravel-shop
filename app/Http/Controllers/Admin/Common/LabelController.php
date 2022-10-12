@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin\Common;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\Label;
+use App\Models\CommonLabel;
 use Illuminate\Http\Request;
 
 class LabelController extends BaseController
 {
     /**
-     * @return Label|\Illuminate\Database\Eloquent\Builder
+     * @return CommonLabel|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Label::query();
+        return CommonLabel::query();
     }
 
     /**
@@ -48,7 +48,7 @@ class LabelController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        Label::updateCache();
+        CommonLabel::updateCache();
         return jsonSuccess();
     }
 
@@ -60,7 +60,7 @@ class LabelController extends BaseController
     {
         $model = $this->repository()->findOrNew($request->input('id'));
         $model->fill($request->input('label', []))->save();
-        Label::updateCache();
+        CommonLabel::updateCache();
         return jsonSuccess($model);
     }
 
@@ -71,7 +71,7 @@ class LabelController extends BaseController
     public function batchUpdate(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->update($request->input('data', []));
-        Label::updateCache();
+        CommonLabel::updateCache();
         return jsonSuccess();
     }
 }

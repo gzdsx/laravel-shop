@@ -148,15 +148,15 @@
             }
         },
         mounted() {
-            this.$get('/dashboard/posts').then(response => {
+            this.$get('/common/dashboard.posts').then(response => {
                 this.postList = response.result.items;
             });
 
-            this.$get('/dashboard/newusers').then(response => {
+            this.$get('/common/dashboard.newusers').then(response => {
                 this.userList = response.result.items;
             });
 
-            this.$get('/dashboard/stats').then(response => {
+            this.$get('/common/dashboard.stats').then(response => {
                 this.stats = {
                     ...this.stats,
                     ...response.result

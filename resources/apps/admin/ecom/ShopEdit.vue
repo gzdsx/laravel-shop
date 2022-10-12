@@ -128,7 +128,7 @@
             fetchData() {
                 let {shop_id} = this.$route.params;
                 if (!shop_id) return;
-                this.$get('/ecom/shop.info', {shop_id}).then(response => {
+                this.$get('/ecom/shop.getInfo', {shop_id}).then(response => {
                     this.shop = response.result;
                     let {province, city, district, street, images} = response.result;
                     this.region = province + city + district;

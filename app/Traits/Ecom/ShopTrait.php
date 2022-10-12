@@ -14,7 +14,7 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\Shop;
+use App\Models\EcomShop;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,11 +22,11 @@ use Illuminate\Support\Facades\Auth;
 trait ShopTrait
 {
     /**
-     * @return Shop|\Illuminate\Database\Eloquent\Builder
+     * @return EcomShop|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Shop::withGlobalScope('avalaible', function (Builder $builder) {
+        return EcomShop::withGlobalScope('avalaible', function (Builder $builder) {
             return $builder->where('closed', 0)->where('auth_state', 1);
         });
     }
@@ -105,7 +105,7 @@ trait ShopTrait
      */
     public function create(Request $request)
     {
-        $shop = new Shop();
+        $shop = new EcomShop();
         $shop->fill($request->input('shop', []));
         //$shop->seller()->associate(Auth::id());
         $shop->save();

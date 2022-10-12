@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 
-use App\Models\BlockItem;
+use App\Models\CommonBlockItem;
 use App\Models\PostCategory;
 use App\Traits\Post\PostItemTrait;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class IndexController extends BaseController
      */
     public function showPosts(Request $request, $catid)
     {
-        $images = BlockItem::where('block_id', 5)->get();
+        $images = CommonBlockItem::where('block_id', 5)->get();
         $categories = PostCategory::allFromCache();
         $category = PostCategory::find($catid);
 

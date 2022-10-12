@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $gid 主键
  * @property string|null $name 名称
  * @property int $credits 积分下限
- * @property string|null $remark 备注
+ * @property string|null $memo 备注
  * @property array|null $privileges 权限
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
@@ -21,9 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|UserGroup query()
  * @method static Builder|UserGroup whereCredits($value)
  * @method static Builder|UserGroup whereGid($value)
+ * @method static Builder|UserGroup whereMemo($value)
  * @method static Builder|UserGroup whereName($value)
  * @method static Builder|UserGroup wherePrivileges($value)
- * @method static Builder|UserGroup whereRemark($value)
  * @mixin \Eloquent
  */
 class UserGroup extends Model

@@ -14,7 +14,7 @@
 namespace App\Repositories\Eloquent;
 
 
-use App\Models\Shop;
+use App\Models\EcomShop;
 use App\Repositories\Contracts\ShopRepositoryInterface;
 
 class ShopRepository extends BaseRepository implements ShopRepositoryInterface
@@ -25,13 +25,13 @@ class ShopRepository extends BaseRepository implements ShopRepositoryInterface
     public function model()
     {
         // TODO: Implement getModel() method.
-        return Shop::class;
+        return EcomShop::class;
     }
 
     /**
-     * @param \App\Models\Shop $shop
+     * @param \App\Models\EcomShop $shop
      * @param $content
-     * @return Shop
+     * @return EcomShop
      */
     public function updateContent($shop, $content)
     {
@@ -45,9 +45,9 @@ class ShopRepository extends BaseRepository implements ShopRepositoryInterface
     }
 
     /**
-     * @param \App\Models\Shop $shop
+     * @param \App\Models\EcomShop $shop
      * @param array $auth
-     * @return Shop
+     * @return EcomShop
      */
     public function updateAuth($shop, array $auth)
     {
@@ -59,7 +59,7 @@ class ShopRepository extends BaseRepository implements ShopRepositoryInterface
     }
 
     /**
-     * @param \App\Models\Shop $shop
+     * @param \App\Models\EcomShop $shop
      * @param $uid
      * @return mixed
      */
@@ -70,7 +70,7 @@ class ShopRepository extends BaseRepository implements ShopRepositoryInterface
     }
 
     /**
-     * @param Shop $shop
+     * @param EcomShop $shop
      * @param $id
      * @return mixed|void
      */

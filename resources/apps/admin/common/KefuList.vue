@@ -90,7 +90,7 @@
             return {
                 kefu: {},
                 showDialog: false,
-                listApi: '/kefu/kefu.getList'
+                listApi: '/common/kefu.getList'
             }
         },
         methods: {
@@ -104,7 +104,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/kefu/kefu.batchDelete', {ids}).then(response => {
+                    this.$post('/common/kefu.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -121,7 +121,7 @@
                 }
 
                 let {id} = kefu;
-                this.$post('/kefu/kefu.save', {id, kefu}).then(response => {
+                this.$post('/common/kefu.save', {id, kefu}).then(response => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;

@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $src
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog query()

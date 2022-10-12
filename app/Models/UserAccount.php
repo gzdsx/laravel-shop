@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $cumulative_commission 累计佣金
  * @property string $withdrawal_commission 成功提现佣金
  * @property float $reward 奖励
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount query()

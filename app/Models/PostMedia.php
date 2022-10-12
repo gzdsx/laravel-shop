@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $media_tags
  * @property string|null $media_description
  * @property string|null $media_source
- * @property-read \App\Models\PostItem $post
+ * @property-read \App\Models\PostItem|null $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostMedia newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostMedia newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostMedia query()

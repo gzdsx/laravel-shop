@@ -91,7 +91,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/express/express.getList').then(response => {
+                this.$get('/common/express.getList').then(response => {
                     this.dataList = response.result.items;
                 });
             },
@@ -102,7 +102,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/express/express.batchDelete', {ids}).then(response => {
+                    this.$post('/common/express.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -119,7 +119,7 @@
                     return false;
                 }
 
-                this.$post('/express/express.save', {id,express}).then(response => {
+                this.$post('/common/express.save', {id,express}).then(response => {
                     this.showDialog = false;
                     this.resetData();
                     this.fetchList();

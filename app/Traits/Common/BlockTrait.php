@@ -14,17 +14,17 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Block;
+use App\Models\CommonBlock;
 use Illuminate\Http\Request;
 
 trait BlockTrait
 {
     /**
-     * @return Block|\Illuminate\Database\Eloquent\Builder
+     * @return CommonBlock|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Block::query();
+        return CommonBlock::query();
     }
 
     /**

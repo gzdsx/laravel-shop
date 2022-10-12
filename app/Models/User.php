@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Traits\HasDates;
 use App\Models\Traits\UserHasOrders;
 use App\Models\Traits\UserHasPosts;
-use App\Models\Traits\UserHasTalent;
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -37,8 +36,6 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\AdminUser|null $admin
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TalentJob[] $appliedJobs
- * @property-read int|null $applied_jobs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
  * @property-read int|null $boughts_count
  * @property-read \App\Models\UserCertify|null $certify
@@ -47,8 +44,6 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserCommissionLog[] $commissionLogs
  * @property-read int|null $commission_logs_count
  * @property-read User|null $commonlyTransferUsers
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TalentCompany[] $companies
- * @property-read int|null $companies_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserConnect[] $connects
  * @property-read int|null $connects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEducation[] $educations
@@ -60,12 +55,10 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $follows
  * @property-read int|null $follows_count
  * @property-read array|string|null $state_des
- * @property-read \App\Models\UserGroup $group
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserJobIntention[] $jobIntentions
- * @property-read int|null $job_intentions_count
+ * @property-read \App\Models\UserGroup|null $group
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Material[] $materials
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonMaterial[] $materials
  * @property-read int|null $materials_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\App\Models\Notification[] $notifications
  * @property-read int|null $notifications_count
@@ -74,12 +67,9 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
  * @property-read \App\Models\UserProfile|null $profile
- * @property-read \App\Models\TalentResume|null $resume
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $solds
  * @property-read int|null $solds_count
  * @property-read \App\Models\UserStats|null $stats
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TalentJob[] $subscribedJobs
- * @property-read int|null $subscribed_jobs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $subscribedPosts
  * @property-read int|null $subscribed_posts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
@@ -122,7 +112,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use Notifiable, Filterable, HasApiTokens, HasDates;
-    use UserHasPosts, UserHasOrders, UserHasTalent;
+    use UserHasPosts, UserHasOrders;
 
     protected $table = 'user';
     protected $primaryKey = 'uid';
@@ -296,7 +286,7 @@ class User extends Authenticatable
      */
     public function materials()
     {
-        return $this->hasMany(Material::class, 'uid', 'uid');
+        return $this->hasMany(CommonMaterial::class, 'uid', 'uid');
     }
 
     /**

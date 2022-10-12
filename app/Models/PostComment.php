@@ -23,8 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $state 审核状态
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\PostItem $post
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\PostItem|null $post
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment query()

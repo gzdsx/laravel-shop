@@ -143,7 +143,7 @@
         methods: {
             fetchData() {
                 let {block_id} = this.$route.params;
-                this.$get('/block/block.getInfo', {id: block_id}).then(response => {
+                this.$get('/common/block.getInfo', {id: block_id}).then(response => {
                     this.block = response.result;
                 }).catch(reason => {
                     this.$showToast(reason.errMsg);
@@ -160,7 +160,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/block/item.batchDelete', {ids}).then(response => {
+                    this.$post('/common/block.item.batchDelete', {ids}).then(response => {
                         this.fetchData();
                     });
                 });
@@ -177,7 +177,7 @@
                 }
 
                 let {id} = this.item;
-                this.$post('/block/item.save', {id, item}).then(() => {
+                this.$post('/common/block.item.save', {id, item}).then(() => {
                     this.resetData();
                     this.fetchData();
                     this.showDialog = false;

@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $isremote
  * @property string|null $description
  * @property int $displayorder
- * @property-read \App\Models\PostItem $post
+ * @property-read \App\Models\PostItem|null $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage query()

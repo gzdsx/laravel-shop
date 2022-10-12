@@ -94,7 +94,7 @@
             return {
                 block: {},
                 showDialog: false,
-                listApi: '/block/block.getList'
+                listApi: '/common/block.getList'
             }
         },
         methods: {
@@ -108,7 +108,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/block/block.batchDelete', {ids}).then(response => {
+                    this.$post('/common/block.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -121,7 +121,7 @@
                     return false;
                 }
 
-                this.$post('/block/block.save', {id, block}).then(response => {
+                this.$post('/common/block.save', {id, block}).then(response => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;

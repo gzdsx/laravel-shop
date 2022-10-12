@@ -178,7 +178,7 @@
             fetchList() {
                 let {parent_id} = this;
                 this.loading = true;
-                this.$get('/district/district.getList', {parent_id}).then(response => {
+                this.$get('/common/district.getList', {parent_id}).then(response => {
                     this.dataList = response.result.items;
                     this.loading = false;
                 });
@@ -186,7 +186,7 @@
             fetchData() {
                 let {parent_id} = this;
                 if (parent_id) {
-                    this.$get('/district/district.getInfo', {id: parent_id}).then(response => {
+                    this.$get('/common/district.getInfo', {id: parent_id}).then(response => {
                         this.current = response.result;
                     });
                 }
@@ -220,7 +220,7 @@
                 }
 
                 let {id} = district;
-                this.$post('/district/district.save', {id, district}).then(() => {
+                this.$post('/common/district.save', {id, district}).then(() => {
                     this.fetchList();
                     this.district = {};
                     this.showDialog = false;
@@ -233,7 +233,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/district/district.batchDelete', {ids}).then(() => {
+                    this.$post('/common/district.batchDelete', {ids}).then(() => {
                         this.fetchList();
                     });
                 });

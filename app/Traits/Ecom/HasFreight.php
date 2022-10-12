@@ -14,7 +14,7 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductTemplate;
+use App\Models\EcomProductTemplate;
 
 trait HasFreight
 {
@@ -28,7 +28,7 @@ trait HasFreight
     protected function computeFreight($template_id, $quantity, $amount)
     {
         $freight = 0;
-        $template = ProductTemplate::find($template_id);
+        $template = EcomProductTemplate::find($template_id);
         if ($template) {
             if ($quantity >= $template->free_quantity || $amount >= $template->free_amount){
                 return $freight;

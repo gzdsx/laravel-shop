@@ -118,7 +118,7 @@
                 this.loading = true;
                 let {page, pageSize} = this;
                 let offset = (page - 1) * pageSize;
-                this.$get('/material/material.getList', {
+                this.$get('/common/material.getList', {
                     type: 'image',
                     offset,
                     count: pageSize
@@ -181,7 +181,7 @@
                 this.headers['Authorization'] = 'Bearer ' + localStorage.getItem('accessToken');
             }
 
-            this.api = this.$getApi('/material/material.upload?type=image');
+            this.api = this.$getApi('/common/material.upload?type=image');
         },
     }
 </script>

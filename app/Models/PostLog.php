@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $content 内容
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\PostItem $post
+ * @property-read \App\Models\PostItem|null $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostLog query()

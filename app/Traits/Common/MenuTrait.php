@@ -14,18 +14,18 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Menu;
+use App\Models\CommonMenu;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
 trait MenuTrait
 {
     /**
-     * @return Menu|\Illuminate\Database\Eloquent\Builder
+     * @return CommonMenu|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Menu::query();
+        return CommonMenu::query();
     }
 
     /**

@@ -30,10 +30,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
  * @property-read int|null $items_count
- * @property-read \App\Models\Order $order
- * @property-read Refund $refund
+ * @property-read \App\Models\Order|null $order
+ * @property-read Refund|null $refund
  * @property-read \App\Models\RefundShipping|null $shipping
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund query()

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Ecom;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Models\ProductAttr;
+use App\Models\EcomProductAttr;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -12,12 +12,12 @@ class ProductAttrController extends BaseController
     use HasEcomShopSession;
 
     /**
-     * @return ProductAttr|Builder
+     * @return EcomProductAttr|Builder
      */
     protected function repository()
     {
         $shop = $this->shop();
-        return ProductAttr::withGlobalScope('owner', function (Builder $builder) use ($shop) {
+        return EcomProductAttr::withGlobalScope('owner', function (Builder $builder) use ($shop) {
             return $builder->where('shop_id', $shop->shop_id);
         });
     }

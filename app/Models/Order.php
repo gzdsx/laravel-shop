@@ -48,10 +48,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $refund_at 退款时间
  * @property int $buyer_deleted 买家已删除
  * @property int $seller_deleted 卖家已删除
- * @property int|null $transaction_id 关联交易记录
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\User $buyer
+ * @property-read \App\Models\User|null $buyer
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderDiscount[] $discounts
  * @property-read int|null $discounts_count
  * @property-read mixed|null $buyer_state_des
@@ -65,9 +64,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $logs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Refund[] $refunds
  * @property-read int|null $refunds_count
- * @property-read \App\Models\User $seller
+ * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\OrderShipping|null $shipping
- * @property-read \App\Models\Shop $shop
+ * @property-read \App\Models\EcomShop|null $shop
  * @property-read \App\Models\UserTransaction|null $transaction
  * @method static Builder|Order filter(array $input = [], $filter = null)
  * @method static Builder|Order newModelQuery()
@@ -116,7 +115,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Order whereShopName($value)
  * @method static Builder|Order whereTotalCount($value)
  * @method static Builder|Order whereTotalFee($value)
- * @method static Builder|Order whereTransactionId($value)
  * @method static Builder|Order whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -225,7 +223,7 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|OrderShipping
      */
     public function shipping()
     {
@@ -233,7 +231,7 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|OrderItem
      */
     public function items()
     {
@@ -241,7 +239,7 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|User
      */
     public function buyer()
     {
@@ -249,7 +247,7 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|User
      */
     public function seller()
     {
@@ -257,19 +255,19 @@ class Order extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|EcomShop
      */
     public function shop()
     {
-        return $this->belongsTo(Shop::class, 'shop_id', 'shop_id');
+        return $this->belongsTo(EcomShop::class, 'shop_id', 'shop_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|UserTransaction
      */
     public function transaction()
     {
-        return $this->belongsTo(UserTransaction::class, 'transaction_id', 'id');
+        return $this->hasOne(UserTransaction::class, 'out_trade_no', 'order_no');
     }
 
     /**
@@ -282,7 +280,7 @@ class Order extends Model
 
     /**
      * @param $order_no
-     * @return Builder|Model|object|null
+     * @return Builder|Model|Order|object|null
      */
     public static function findByOrderNo($order_no)
     {

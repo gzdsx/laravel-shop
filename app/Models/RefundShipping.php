@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read string $formatted_address
- * @property-read \App\Models\Refund $refund
+ * @property-read \App\Models\Refund|null $refund
  * @method static \Illuminate\Database\Eloquent\Builder|RefundShipping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundShipping newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundShipping query()

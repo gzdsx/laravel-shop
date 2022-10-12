@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $position_name 职位名称
  * @property string|null $geo_location_name 工作地点
  * @property string|null $industry_name 行业名称
- * @property \datetime|null $start_at 入职时间
- * @property \datetime|null $end_at 离职时间
+ * @property \Illuminate\Support\Carbon|null $start_at 入职时间
+ * @property \Illuminate\Support\Carbon|null $end_at 离职时间
  * @property string|null $description 描述
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read mixed $years
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserPosition query()

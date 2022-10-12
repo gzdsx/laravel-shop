@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $likes 获赞数
  * @property int $posts 文章数
  * @property int $videos 视频数
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserStats newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserStats newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserStats query()

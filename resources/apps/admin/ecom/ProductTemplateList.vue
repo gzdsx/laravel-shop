@@ -24,7 +24,7 @@
                             <p>{{scope.row.free_quantity}}件以上包邮或者金额满{{scope.row.free_amount}}包邮</p>
                         </template>
                     </el-table-column>
-                    <el-table-column width="90" label="操作选项">
+                    <el-table-column width="90" label="操作选项" align="right">
                         <template slot-scope="scope">
                             <router-link :to="'/product/template/edit?template_id='+scope.row.template_id">编辑
                             </router-link>
@@ -47,7 +47,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/ecom/product.template.list').then(response => {
+                this.$get('/ecom/product.template.getList').then(response => {
                     this.dataList = response.result.items;
                 });
             },

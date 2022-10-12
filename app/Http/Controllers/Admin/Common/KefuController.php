@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin\Common;
 
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Controller;
-use App\Models\Kefu;
+use App\Models\CommonKefu;
 use Illuminate\Http\Request;
 
 class KefuController extends BaseController
 {
     protected function repository()
     {
-        return Kefu::query();
+        return CommonKefu::query();
     }
 
     /**

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $work_place 工作地点
  * @property int $job_type 求职类型
  * @property-read mixed $job_type_name
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserJobIntention newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserJobIntention newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserJobIntention query()

@@ -14,17 +14,17 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Ad;
+use App\Models\CommonAd;
 use Illuminate\Http\Request;
 
 trait AdTrait
 {
     /**
-     * @return Ad|\Illuminate\Database\Eloquent\Builder
+     * @return CommonAd|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return Ad::query();
+        return CommonAd::query();
     }
 
     /**

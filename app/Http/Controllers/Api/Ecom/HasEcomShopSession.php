@@ -14,17 +14,17 @@
 namespace App\Http\Controllers\Api\Ecom;
 
 
-use App\Models\ShopSession;
+use App\Models\EcomShopSession;
 use Illuminate\Support\Facades\Auth;
 
 trait HasEcomShopSession
 {
     /**
-     * @return \App\Models\Shop|\Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed
+     * @return \App\Models\EcomShop|\Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed
      */
     protected function shop()
     {
-        $session = ShopSession::whereUid(Auth::id())->firstOrFail();
+        $session = EcomShopSession::whereUid(Auth::id())->firstOrFail();
         return $session->shop;
     }
 }

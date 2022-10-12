@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $postalcode 邮编
  * @property int $isdefault 是否默认地址
  * @property-read string $formatted_address
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static Builder|UserAddress newModelQuery()
  * @method static Builder|UserAddress newQuery()
  * @method static Builder|UserAddress query()

@@ -78,7 +78,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/menu/menu.getList').then(response => {
+                this.$get('/common/menu.getList').then(response => {
                     this.dataList = response.result.items;
                 });
             },
@@ -92,7 +92,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/menu/menu.batchDelete', {ids}).then(response => {
+                    this.$post('/common/menu.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -105,7 +105,7 @@
                     return false;
                 }
 
-                this.$post('/menu/menu.save', {id, menu}).then(response => {
+                this.$post('/common/menu.save', {id, menu}).then(response => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;

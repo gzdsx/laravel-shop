@@ -422,7 +422,7 @@
             },
             fetchAttrList() {
                 let {shop_id} = this;
-                this.$get('/ecom/product.attr.list', {shop_id}).then(response => {
+                this.$get('/ecom/product.attr.getList', {shop_id}).then(response => {
                     this.originalAttrList = response.result.items;
                     //this.renderTable();
                 });

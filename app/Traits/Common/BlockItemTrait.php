@@ -14,18 +14,18 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Block;
-use App\Models\BlockItem;
+use App\Models\CommonBlock;
+use App\Models\CommonBlockItem;
 use Illuminate\Http\Request;
 
 trait BlockItemTrait
 {
     /**
-     * @return BlockItem|\Illuminate\Database\Eloquent\Builder
+     * @return CommonBlockItem|\Illuminate\Database\Eloquent\Builder
      */
     protected function repository()
     {
-        return BlockItem::query();
+        return CommonBlockItem::query();
     }
 
     /**
@@ -45,7 +45,7 @@ trait BlockItemTrait
     public function getList(Request $request)
     {
 
-        $block = Block::findOrFail($request->input('block_id'));
+        $block = CommonBlock::findOrFail($request->input('block_id'));
 
         return jsonSuccess([
             'block'=>$block,

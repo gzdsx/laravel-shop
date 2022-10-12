@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $id_card_hand 手持身份证
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserCertify newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserCertify newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserCertify query()

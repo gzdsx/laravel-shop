@@ -14,7 +14,7 @@
 namespace App\Repositories\Eloquent;
 
 
-use App\Models\Material;
+use App\Models\CommonMaterial;
 use App\Repositories\Contracts\MaterialRepositoryInterface;
 
 class MaterialRepository extends BaseRepository implements MaterialRepositoryInterface
@@ -25,12 +25,12 @@ class MaterialRepository extends BaseRepository implements MaterialRepositoryInt
     public function model()
     {
         // TODO: Implement getModel() method.
-        return Material::class;
+        return CommonMaterial::class;
     }
 
     public function query()
     {
         // TODO: Implement query() method.
-        return Material::query();
+        return CommonMaterial::query();
     }
 }

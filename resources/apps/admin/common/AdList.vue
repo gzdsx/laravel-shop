@@ -156,7 +156,7 @@
                 ad: {},
                 showDialog: false,
                 showPicker: false,
-                listApi: '/ad/ad.getList'
+                listApi: '/common/ad.getList'
             }
         },
         methods: {
@@ -174,7 +174,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/ad/ad.batchDelete', {ids}).then(() => {
+                    this.$post('/common/ad.batchDelete', {ids}).then(() => {
                         this.fetchList();
                     });
                 });
@@ -188,7 +188,7 @@
                     return false;
                 }
 
-                this.$post('/ad/ad.save', {id, ad}).then(() => {
+                this.$post('/common/ad.save', {id, ad}).then(() => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;
@@ -210,7 +210,7 @@
             },
             onBatchUpdate(data) {
                 let ids = this.selectionIds.map((d) => d.id);
-                this.$post('/ad/ad.batchUpdate', {ids, data}).then(() => {
+                this.$post('/common/ad.batchUpdate', {ids, data}).then(() => {
                     this.fetchList();
                 });
             },

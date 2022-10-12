@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\H5;
 
 
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

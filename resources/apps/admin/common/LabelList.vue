@@ -103,7 +103,7 @@
             return {
                 label: {},
                 showDialog: false,
-                listApi: '/label/label.getList'
+                listApi: '/common/label.getList'
             }
         },
         methods: {
@@ -117,7 +117,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/label/label.batchDelete', {ids}).then(response => {
+                    this.$post('/common/label.batchDelete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -134,7 +134,7 @@
                     return false;
                 }
 
-                this.$post('/label/label.save', {id, label}).then(() => {
+                this.$post('/common/label.save', {id, label}).then(() => {
                     this.showDialog = false;
                     this.resetData();
                     this.fetchList();
@@ -154,7 +154,7 @@
             },
             onBatchUpdate(data) {
                 let ids = this.selectionIds.map((d) => d.id);
-                this.$post('/label/label.batchUpdate', {ids, data}).then(response => {
+                this.$post('/common/label.batchUpdate', {ids, data}).then(response => {
                     this.fetchList();
                 });
             }

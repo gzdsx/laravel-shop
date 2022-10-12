@@ -61,7 +61,7 @@
         methods: {
             fetchList() {
                 let {attr_cate_id} = this.$route.query;
-                this.$get('/ecom/product.attrvalue.list', {attr_cate_id}).then(response => {
+                this.$get('/ecom/product.attrvalue.getList', {attr_cate_id}).then(response => {
                     this.attr = response.result;
                 });
             },

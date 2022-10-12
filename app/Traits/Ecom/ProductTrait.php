@@ -14,7 +14,7 @@
 namespace App\Traits\Ecom;
 
 
-use App\Models\ProductItem;
+use App\Models\EcomProductItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,11 +23,11 @@ use Illuminate\Support\Facades\DB;
 trait ProductTrait
 {
     /**
-     * @return Builder|ProductItem
+     * @return Builder|EcomProductItem
      */
     protected function repository()
     {
-        return ProductItem::withGlobalScope('available', function (Builder $builder) {
+        return EcomProductItem::withGlobalScope('available', function (Builder $builder) {
             return $builder->where('state', 1);
         });
     }
@@ -40,7 +40,7 @@ trait ProductTrait
     {
         $model = $this->repository()->findOrFail($request->input('itemid'));
         $model->increment('views');
-        $model->load(['skus', 'content']);
+        $model->load(['skus']);
         return jsonSuccess($model);
     }
 
@@ -68,7 +68,7 @@ trait ProductTrait
     {
         return DB::transaction(function () use ($request) {
             $model = $this->repository()->findOrNew($request->input('itemid'));
-            $model->fill($request->input('product', []));
+            $model->fill($request->input('item', []));
             if (!$model->seller_id) {
                 $model->seller()->associate(Auth::id());
             }

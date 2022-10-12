@@ -14,15 +14,15 @@
 namespace App\Traits\Common;
 
 
-use App\Models\Menu;
-use App\Models\MenuItem;
+use App\Models\CommonMenu;
+use App\Models\CommonMenuItem;
 use Illuminate\Http\Request;
 
 trait MenuItemTrait
 {
     protected function repository()
     {
-        return MenuItem::query();
+        return CommonMenuItem::query();
     }
 
     /**
@@ -41,7 +41,7 @@ trait MenuItemTrait
      */
     public function getList(Request $request)
     {
-        $menu = Menu::findOrFail($request->input('menu_id'));
+        $menu = CommonMenu::findOrFail($request->input('menu_id'));
         $items = $menu->items()->with(['children'])->where('parent_id', 0)->get();
 
         return jsonSuccess(['items' => $items, 'menu' => $menu]);

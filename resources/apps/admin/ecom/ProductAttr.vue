@@ -17,7 +17,7 @@
                 </header>
                 <el-table :data="dataList">
                     <el-table-column label="分类名称" prop="attr_title"/>
-                    <el-table-column label="选项" width="170">
+                    <el-table-column label="选项" width="170" align="right">
                         <template slot-scope="scope">
                             <a @click="onShowEdit(scope.row)">编辑</a>
                             <span>|</span>
@@ -63,7 +63,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/ecom/product.attr.list').then(response => {
+                this.$get('/ecom/product.attr.getList').then(response => {
                     this.dataList = response.result.items;
                 });
             },

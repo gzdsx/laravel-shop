@@ -76,7 +76,7 @@
             fetchData() {
                 let {template_id} = this.$route.query;
                 if (!template_id) return;
-                this.$get('/ecom/product.template.info', {template_id}).then(response => {
+                this.$get('/ecom/product.template.getInfo', {template_id}).then(response => {
                     this.template = response.result;
                 });
             },
