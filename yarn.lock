@@ -2224,6 +2224,11 @@ acorn@^8.8.0:
   resolved "https://registry.npmmirror.com/acorn/-/acorn-8.8.0.tgz#88c0187620435c7f6015803f5539dae05a9dbea8"
   integrity sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==
 
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmmirror.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==
+
 agent-base@6, agent-base@^6.0.0, agent-base@^6.0.2:
   version "6.0.2"
   resolved "https://registry.npmjs.org/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"
@@ -6976,7 +6981,7 @@ react-native-fast-image@^8.6.1:
   resolved "https://registry.npmmirror.com/react-native-fast-image/-/react-native-fast-image-8.6.1.tgz#6a3a11b8ebc7629919265d33a420a04d13c897e0"
   integrity sha512-ILuP7EuakqHNzTr8ZbumhuxG4tE/wGQ66z4nEEuzc0FlqY6rYaPsnq/UD2ahoyFj6QP1WvA2RIK3odib+VcqWg==
 
-react-native-gesture-handler@^2.5.0:
+react-native-gesture-handler@^2.7.0:
   version "2.7.0"
   resolved "https://registry.npmmirror.com/react-native-gesture-handler/-/react-native-gesture-handler-2.7.0.tgz#53ad828add926c8e025f68ea581758c0f8893054"
   integrity sha512-0jr3FNm2R3gv/v6XTtENgjv0fewD6LEct8EWmXw/oHw36M3YiIIpxnW57thL+0YiKwyLBXN0QHL4JZbs/heW2Q==
@@ -6997,14 +7002,9 @@ react-native-gzdsx-amap@^1.4.5:
   resolved "https://registry.npmjs.org/react-native-gzdsx-amap/-/react-native-gzdsx-amap-1.4.5.tgz#5a540c9f46b36d1b6f4bc973fe7c731e0b11d0a6"
   integrity sha512-mFP1youkutrs5cbULe/eqtRxQqJGc72Uysq0I94ZdhKOVTwlKMqsbFNZkOjOtoZgl+2wjzh2CqvH7MoCgzS0vg==
 
-react-native-gzdsx-cache-image@^1.1.0:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/react-native-gzdsx-cache-image/-/react-native-gzdsx-cache-image-1.1.2.tgz#a49c7985495817b796445b845eda446f187aa62c"
-  integrity sha512-KMpAaXDU2B5yKgVl0o7PPHedLeyEDtK/JTNw5lOJohhpwC+FxmCtuhqUrKXClT7GHhCNJFILzQldat2wtIzsqg==
-
 "react-native-gzdsx-elements@git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git":
-  version "1.2.4"
-  resolved "git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git#1edd389eda6b73146b08035ff18a2d4b9547df96"
+  version "1.3.3"
+  resolved "git+https://gitee.com/gzdsx/react-native-gzdsx-elements.git#5528674ac51efe77ffe68948099f62bf94a74c58"
 
 react-native-image-crop-picker@^0.38.0:
   version "0.38.0"
@@ -7045,6 +7045,11 @@ react-native-linear-gradient@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmmirror.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz#56598a76832724b2afa7889747635b5c80948f38"
   integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
+
+react-native-modalize@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmmirror.com/react-native-modalize/-/react-native-modalize-2.1.1.tgz#dcb67d208f4c5bdc76f45075e727be43fd008561"
+  integrity sha512-4/7EZWsrUqAAkkAVEnOsSdpAPQaEBewX7TvwFuzgvGDzxKpq3O58I9SnSeU8QtG/r91XYHJNaU5dAuDrcLjUaQ==
 
 react-native-nodemediaclient@^0.2.17:
   version "0.2.17"
@@ -8888,6 +8893,11 @@ yargs@^17.3.1:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.0.0"
+
+yarn@^1.22.19:
+  version "1.22.19"
+  resolved "https://registry.npmmirror.com/yarn/-/yarn-1.22.19.tgz#4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  integrity sha512-/0V5q0WbslqnwP91tirOvldvYISzaqhClxzyUKXYxs07yUILIs5jx/k6CFe8bvKSkds5w+eiOqta39Wk3WxdcQ==
 
 yazl@^2.5.1:
   version "2.5.1"

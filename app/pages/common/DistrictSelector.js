@@ -1,86 +1,100 @@
 import React from 'react';
-import {FlatList, Text, View, TouchableHighlight, DeviceEventEmitter} from 'react-native';
-import {LoadingView} from 'react-native-gzdsx-elements';
-import {Utils, ApiClient} from "../../utils";
-import {defaultNavigationConfigure} from "../../base/navconfig";
+import {FlatList, View, DeviceEventEmitter, SafeAreaView} from 'react-native';
+import {LoadingView, Toast} from 'react-native-gzdsx-elements';
+import {ListItem} from 'react-native-elements';
+import {ApiClient} from '../../utils';
+import {defaultNavigationConfigure} from '../../base/navconfig';
 
 export default class DistrictSelector extends React.Component {
-
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '选择区域',
-    });
 
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
-            items: [],
+            loading: true,
+            dataList: [],
         };
         this.district = {
             province: null,
             city: null,
-            district: null
+            district: null,
         };
+        this.level = 1;
     }
 
 
     render() {
-        if (this.state.isLoading) return <LoadingView/>;
+        if (this.state.loading) {
+            return <LoadingView/>;
+        }
         return (
-            <FlatList
-                style={{flex: 1, backgroundColor: '#fff'}}
-                data={this.state.items}
-                renderItem={({item}) => {
-                    return (
-                        <TouchableHighlight onPress={() => this.onPickedDistrict(item)} underlayColor={"#f0f0f0"}
-                                            style={{backgroundColor: '#fff'}}>
-                            <Text style={{fontSize: 16, padding: 15}}>{item.name}</Text>
-                        </TouchableHighlight>
-                    );
-                }}
-                keyExtractor={(item) => item.id.toString()}
-                ItemSeparatorComponent={() => <View style={{height: 0.5, backgroundColor: '#e5e5e5'}}/>}
-            />
+            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <FlatList
+                    style={{flex: 1, backgroundColor: '#fff'}}
+                    data={this.state.dataList}
+                    renderItem={({item}) => {
+                        return (
+                            <ListItem
+                                bottomDivider
+                                containerStyle={{
+                                    borderBottomWidth: 0.5,
+                                    borderBottomColor: '#f9f9f9',
+                                    paddingVertical: 18
+                                }}
+                                onPress={() => this.onPickedDistrict(item)}
+                            >
+                                <ListItem.Content>
+                                    <ListItem.Title>{item.name}</ListItem.Title>
+                                </ListItem.Content>
+                                <ListItem.Chevron/>
+                            </ListItem>
+                        );
+                    }}
+                    keyExtractor={(item) => item.id.toString()}
+                    ItemSeparatorComponent={() => <View style={{height: 0.5, backgroundColor: '#e5e5e5'}}/>}
+                />
+            </SafeAreaView>
         );
     }
 
 
     componentDidMount() {
         this.fetchDatasource(0);
-        //this.listener = this.props.navigation.addListener('willFocus', () => Utils.setStatusBarStyle());
+        const {navigation} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            title: '选择区域',
+        });
     }
 
-
-    componentWillUnmount() {
-        //this.listener.remove();
-    }
-
-
-    fetchDatasource = (fid) => {
-        ApiClient.get('/district/batchget', {fid})
-            .then(response => {
-                this.setState({
-                    isLoading: false,
-                    items: response.result.items
-                });
+    fetchDatasource = (parent_id) => {
+        ApiClient.get('/district/list', {parent_id}).then(response => {
+            this.setState({
+                loading: false,
+                dataList: response.result.items,
             });
+        }).catch(reason => {
+            Toast.fail(reason.errMsg);
+        });
     };
 
     onPickedDistrict = (item) => {
-        if (item.level === 1) {
+        if (this.level === 1) {
             this.district.province = item.name;
             this.fetchDatasource(item.id);
+            this.level = 2;
+            return;
         }
 
-        if (item.level === 2) {
+        if (this.level === 2) {
             this.district.city = item.name;
             this.fetchDatasource(item.id);
+            this.level = 3;
+            return;
         }
 
-        if (item.level === 3) {
+        if (this.level === 3) {
             this.district.district = item.name;
-            DeviceEventEmitter.emit('onPickedDistrict', this.district);
+            DeviceEventEmitter.emit('onChooseDistrict', this.district);
             this.props.navigation.goBack();
         }
     }

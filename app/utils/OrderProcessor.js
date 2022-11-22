@@ -5,7 +5,7 @@ import Alipay from "react-native-gzdsx-alipay";
 export default {
     cancel(order_id, reason) {
         return new Promise((resolve, reject) => {
-            ApiClient.post('/bought/close', {order_id, reason}).then(response => {
+            ApiClient.post('/trade/bought.cancel', {order_id, reason}).then(response => {
                 resolve(response);
             }).catch(reason1 => {
                 reject(reason1);
@@ -18,7 +18,7 @@ export default {
                 {
                     text: '确定',
                     onPress: () => {
-                        ApiClient.post('/bought/delete', {order_id}).then(response => {
+                        ApiClient.post('/trade/bought.delete', {order_id}).then(response => {
                             resolve(response);
                         }).catch(reason => {
                             reject(reason);
@@ -36,7 +36,7 @@ export default {
     },
     notice(order_id) {
         return new Promise((resolve, reject) => {
-            ApiClient.post('/bought/notice', {order_id}).then(response => {
+            ApiClient.post('/trade/bought.notice', {order_id}).then(response => {
                 resolve(response);
             }).catch(reason => {
                 reject(reason);
@@ -49,7 +49,7 @@ export default {
                 {
                     text: '确定',
                     onPress: () => {
-                        ApiClient.post('/bought/confirm', {order_id}).then(response => {
+                        ApiClient.post('/trade/bought.confirm', {order_id}).then(response => {
                             resolve(response);
                         }).catch(reason => {
                             reject(reason);
@@ -68,7 +68,8 @@ export default {
     pay(order_id, type = 1) {
         if (type === 1) {
             return new Promise((resolve, reject) => {
-                ApiClient.get('/alipay/sign', {order_id}).then(response => {
+                ApiClient.post('/trade/order.pay', {order_id, type: 'alipay'}).then(response => {
+                    console.log(response.result);
                     Alipay.pay(response.result.payStr).then((data) => {
                         //console.log(data);
                         resolve(data);

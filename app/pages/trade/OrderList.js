@@ -5,42 +5,35 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
+    SafeAreaView,
 } from 'react-native';
 import {LoadingView, Toast} from "react-native-gzdsx-elements";
-import {CacheImage} from 'react-native-gzdsx-cache-image';
-import {ApiClient, Utils} from "../../utils";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import OrderActionBar from "./OrderActionBar";
-import {StatusBarStyles} from "../../styles";
+import {Size, StatusBarStyles} from "../../styles";
+import ListComponent from "../../components/ListComponent";
+import {ListItem} from 'react-native-elements';
+import ImageIcon from "../../components/ImageIcon";
+import FastImage from "react-native-fast-image";
+import OrderTabs from "./OrderTabs";
 
-class OrderList extends React.Component {
+class OrderList extends ListComponent {
+
+    listApi = '/trade/bought.getList';
 
     constructor(props) {
         super(props);
-        this.state = {
-            isLoading: true,
-            isRefreshing: false,
-            isLoadMore: false,
-            orders: [],
-            order_state: 0,
-            tab: 'all',
-            reasons: []
-        };
-        this.offset = 0;
-        this.loadMoreAble = false;
+        this.state.reasons = [];
+        this.state.params.tab = 'all';
         this.obj = null;
         this.index = 0;
     }
 
-    render() {
-        const {reasons} = this.state;
-        return (
-            <View style={{flex: 1}}>
-                {this.renderTabs()}
-                {this.renderContent()}
-                <Toast ref={'toast'}/>
-            </View>
-        );
+    fetchReasons = () => {
+        ApiClient.get('/ecom/order.close.reasons').then(response => {
+            this.setState({reasons: response.result.items});
+        });
     }
 
     componentDidMount() {
@@ -54,164 +47,85 @@ class OrderList extends React.Component {
         });
 
         const tab = route.params?.tab || 'all'
-        this.setState({tab}, this.fetchData);
-        ApiClient.get('/order/closereason/getall').then(response => {
-            this.setState({reasons: response.result.items});
-        });
+        this.setState({tab}, this.fetchList);
+        this.fetchReasons();
     }
 
     componentWillUnmount() {
         this.unsubscribe();
     }
 
-    fetchData = () => {
-        const {tab} = this.state;
-        ApiClient.get('/trade/bought.getList', {
-            offset: this.offset,
-            count: 10,
-            tab
-        }).then(response => {
-            //console.log(response.result);
-            let orders = this.state.orders;
-            if (this.state.isLoadMore) {
-                orders = orders.concat(response.result.items);
-            } else {
-                orders = response.result.items;
-            }
-            this.setState({
-                orders,
-                isLoadMore: false,
-                isLoading: false,
-                isRefreshing: false
-            });
-            this.loadMoreAble = response.result.items.length >= 10;
-        });
-    };
-
-    reLoad = () => {
-        this.offset = 0;
-        this.setState({
-            isLoading: true
-        }, this.fetchData);
+    render() {
+        const {reasons} = this.state;
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: '#f2f2f2'}}>
+                {this.renderTabs()}
+                {this.renderContent()}
+            </SafeAreaView>
+        );
     }
 
-    onRefresh = () => {
-        if (this.state.isLoading || this.state.isRefreshing || this.state.isLoadMore) {
-            return false;
-        }
-        this.offset = 0;
-        this.setState({isRefreshing: true});
-        setTimeout(this.fetchData, 500);
-    };
-
-    onEndReached = () => {
-
-        if (this.state.isLoading || this.state.isRefreshing
-            || this.state.isLoadMore || !this.loadMoreAble) {
-            return false;
-        }
-
-        this.offset += 10;
-        this.setState({isLoadMore: true});
-        setTimeout(this.fetchData, 500);
-    };
-
     renderTabs = () => {
-        const styles = StyleSheet.create({
-            container: {
-                flexDirection: 'row',
-                backgroundColor: '#fff',
-                borderBottomWidth: 0.5,
-                borderBottomColor: '#e5e5e5'
-            },
-            tabItem: {
-                flex: 1,
-                flexDirection: 'column',
-                alignItems: 'center',
-                paddingVertical: 15
-            },
-            tabText: {
-                textAlign: 'center',
-                fontSize: 14
-            },
-            tabActive: {
-                fontWeight: '500',
-                color: '#f00'
-            }
-        });
-
-        const {order_state, tab} = this.state;
-
+        const {params} = this.state;
         return (
-            <View style={styles.container}>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    activeOpacity={1}
-                    onPress={() => this.setState({tab: 'all'}, this.reLoad)}
-                >
-                    <Text style={[styles.tabText, tab === 'all' && styles.tabActive]}>全部</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    activeOpacity={1}
-                    onPress={() => this.setState({tab: 'waitPay'}, this.reLoad)}
-                >
-                    <Text style={[styles.tabText, tab === 'waitPay' && styles.tabActive]}>待付款</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    activeOpacity={1}
-                    onPress={() => this.setState({tab: 'waitSend'}, this.reLoad)}
-                >
-                    <Text style={[styles.tabText, tab === 'waitSend' && styles.tabActive]}>待发货</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    activeOpacity={1}
-                    onPress={() => this.setState({tab: 'waitConfirm'}, this.reLoad)}
-                >
-                    <Text style={[styles.tabText, tab === 'waitConfirm' && styles.tabActive]}>待收货</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    activeOpacity={1}
-                    onPress={() => this.setState({tab: 'waitRate'}, this.reLoad)}
-                >
-                    <Text style={[styles.tabText, tab === 'waitRate' && styles.tabActive]}>待评价</Text>
-                </TouchableOpacity>
+            <View style={styles.tabContainer}>
+                {
+                    OrderTabs.map((ot, index) => (
+                        <TouchableOpacity
+                            key={index.toString()}
+                            style={styles.tabItem}
+                            activeOpacity={1}
+                            onPress={() => {
+                                params.tab = ot.value;
+                                this.setState({
+                                    params,
+                                    dataList: [],
+                                    loading: true
+                                }, () => {
+                                    this.offset = 0;
+                                    this.fetchList();
+                                });
+                            }}
+                        >
+                            <Text style={[styles.tabText, params.tab === ot.value && styles.tabActive]}>{ot.name}</Text>
+                        </TouchableOpacity>
+                    ))
+                }
             </View>
         );
     }
 
     renderContent = () => {
-        if (this.state.isLoading) return <LoadingView/>;
+        let {loading, dataList, refreshing, loadingMore} = this.state;
+        if (loading) return <LoadingView/>;
         return (
             <FlatList
-                data={this.state.orders}
+                data={dataList}
                 renderItem={({item, index}) => this.renderItem(item, index)}
+                keyExtractor={(item, index) => index.toString()}
                 ItemSeparatorComponent={() => <View style={{height: 10}}/>}
-                refreshing={this.state.isRefreshing}
+                refreshing={refreshing}
                 onRefresh={this.onRefresh}
                 onEndReached={this.onEndReached}
-                onEndReachedThreshold={1}
-                keyExtractor={(item, index) => index.toString()}
-                ListHeaderComponent={() => {
-                    if (this.state.orders.length === 0) {
-                        return (
-                            <Text style={{
-                                textAlign: 'center',
-                                color: '#666',
-                                padding: 30
-                            }}>
-                                没有此类订单
-                            </Text>
-                        );
-                    } else {
-                        return null;
-                    }
-                }}
-                ListFooterComponent={<LoadingView text="正在加载更多" show={this.state.isLoadMore}
-                                                  style={{paddingTop: 10, paddingBottom: 10}}/>}
+                onEndReachedThreshold={0.2}
+                ListEmptyComponent={() => (
+                    <View style={{
+                        height: Size.screenHeight * 0.5,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{
+                            color: '#666',
+                            padding: 30,
+                            fontSize: 16
+                        }}>没有此类订单</Text>
+                    </View>
+                )}
+                ListFooterComponent={
+                    <LoadingView
+                        text="正在加载更多"
+                        show={loadingMore}
+                        style={{paddingTop: 10, paddingBottom: 10}}/>}
                 style={{flex: 1}}
             />
         )
@@ -221,13 +135,51 @@ class OrderList extends React.Component {
         let {order_id, items} = order;
         let totalCount = items.reduce((a, b) => a + b.quantity, 0);
         return (
-            <View style={css.order}>
-                <View style={css.orderMeta}>
-                    <Text style={css.orderNo}>单号:{order.order_no}</Text>
-                    <Text style={css.orderState}>{order.buyer_state_des}</Text>
-                </View>
+            <View style={styles.order}>
+                <ListItem containerStyle={styles.shopContainer}>
+                    <ListItem.Content style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                        <ImageIcon
+                            source={require('../../images/icon/shop.png')}
+                            size={20} color={"#555"}
+                            style={{marginRight: 3}}
+                        />
+                        <ListItem.Title style={styles.shopName}>{order.shop_name}</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Subtitle style={styles.orderState}>{order.state_des}</ListItem.Subtitle>
+                </ListItem>
                 <View>
-                    {this.renderOrderItems(order.items)}
+                    {
+                        order.items.map((item, idx) => (
+                            <ListItem
+                                activeOpacity={1}
+                                key={idx.toString()}
+                                containerStyle={styles.orderItem}
+                                onPress={() => {
+                                    this.props.navigation.navigate('trade-order-detail', {order_id: item.order_id});
+                                }}
+                            >
+                                <FastImage source={{uri: item.thumb}} style={css.itemImage}/>
+                                <View style={css.itemContent}>
+                                    <Text numberOfLines={2} style={css.itemTitle}>{item.title}</Text>
+                                    {
+                                        item.sku_title ?
+                                            <View style={{flexDirection: 'row', marginTop: 5}}>
+                                                <TouchableOpacity style={styles.skuTouch}>
+                                                    <Text style={styles.skuTitle}>{item.sku_title}</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                            : null
+                                    }
+                                    <View style={{flex: 1}}/>
+                                </View>
+                                <View style={css.itemData}>
+                                    <Text style={css.itemPrice}>￥{item.price}</Text>
+                                    <Text style={css.itemQuantity}>x{item.quantity}</Text>
+                                    <View style={{flex: 1}}/>
+                                </View>
+                            </ListItem>
+                        ))
+                    }
                 </View>
                 <View style={css.simpleTotal}>
                     <Text style={css.simpleTotalText}>
@@ -256,56 +208,33 @@ class OrderList extends React.Component {
             </View>
         );
     };
-
-    renderOrderItems = (items) => {
-        return items.map((item) => {
-            return (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    key={item.itemid.toString()}
-                    style={css.item}
-                    onPress={() => {
-                        this.props.navigation.navigate('OrderDetail', {order_id: item.order_id});
-                    }}
-                >
-                    <CacheImage source={{uri: item.thumb}} style={css.itemImage}/>
-                    <View style={css.itemContent}>
-                        <Text numberOfLines={2} style={css.itemTitle}>{item.title}</Text>
-                        {
-                            item.sku_id ?
-                                <View style={{flexDirection: 'row', marginTop: 5}}>
-                                    <TouchableOpacity style={{
-                                        backgroundColor: '#f2f2f2',
-                                        paddingHorizontal: 5,
-                                        paddingVertical: 3,
-                                        borderRadius: 5
-                                    }}>
-                                        <Text style={{fontSize: 12, color: '#555'}}>{item.sku_title}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                : null
-                        }
-                    </View>
-                    <View style={css.itemData}>
-                        <Text style={css.itemPrice}>￥{item.price}</Text>
-                        <Text style={css.itemQuantity}>x{item.quantity}</Text>
-                    </View>
-                </TouchableOpacity>
-            );
-        });
-    };
 }
 
-const css = {
+export default OrderList;
+
+const styles = StyleSheet.create({
+    tabContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#e5e5e5'
+    },
+    tabItem: {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingVertical: 15
+    },
+    tabText: {
+        textAlign: 'center',
+        fontSize: 16
+    },
+    tabActive: {
+        fontWeight: '800',
+        color: '#f00',
+    },
     order: {
         backgroundColor: '#fff'
-    },
-    orderMeta: {
-        flexDirection: 'row',
-        paddingVertical: 12,
-        paddingHorizontal: 5,
-        borderBottomColor: '#e5e5e5',
-        borderBottomWidth: 0.5,
     },
     orderNo: {
         fontSize: 14,
@@ -320,7 +249,16 @@ const css = {
         color: '#FC461E',
         lineHeight: 16,
     },
-    item: {
+    shopContainer: {
+        paddingHorizontal: 10,
+        borderBottomColor: '#f2f2f2',
+        borderBottomWidth: 0.5
+    },
+    shopName: {
+        fontSize: 16,
+        color: '#333'
+    },
+    orderItem: {
         padding: 10,
         flexDirection: 'row',
     },
@@ -363,6 +301,63 @@ const css = {
         fontSize: 12,
         color: '#333'
     },
-};
+    skuTouch: {
+        backgroundColor: '#f2f2f2',
+        paddingHorizontal: 5,
+        paddingVertical: 3,
+        borderRadius: 5
+    },
+    skuTitle: {
+        fontSize: 12, color: '#555'
+    }
+});
 
-export default OrderList;
+const css = {
+
+    item: {
+        padding: 10,
+        flexDirection: 'row',
+    },
+    itemImage: {
+        width: 80,
+        height: 80,
+        borderRadius: 5,
+        resizeMode: 'cover'
+    },
+    itemContent: {
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start'
+    },
+    itemTitle: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: '#333'
+    },
+    itemData: {
+        marginLeft: 30
+    },
+    itemPrice: {
+        paddingTop: 2,
+        fontSize: 14,
+        color: '#333',
+        textAlign: 'right'
+    },
+    itemQuantity: {
+        paddingTop: 5,
+        fontSize: 14,
+        color: '#777',
+        textAlign: 'right'
+    },
+    simpleTotal: {
+        padding: 10,
+        borderBottomColor: '#e5e5e5',
+        borderBottomWidth: 0.5,
+    },
+    simpleTotalText: {
+        flex: 1,
+        textAlign: 'right',
+        fontSize: 12,
+        color: '#333'
+    },
+};

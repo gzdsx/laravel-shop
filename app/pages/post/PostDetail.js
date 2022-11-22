@@ -1,82 +1,66 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import {connect} from "react-redux";
 import {WebView} from 'react-native-webview';
-import {Ticon, Toast} from "react-native-gzdsx-elements";
-import {Styles} from '../../styles';
-import {ShareView, BarItemSeparate} from '../../components';
+import {StatusBarStyles} from '../../styles';
+import {ShareView} from '../../components';
 import {ApiClient} from '../../utils';
 import {defaultNavigationConfigure} from "../../base/navconfig";
+import Icon from "react-native-vector-icons/AntDesign";
+import {Toast} from "react-native-gzdsx-elements";
 
 
 class PostDetail extends React.Component {
 
     setNavigationOptions() {
-        const {navigation, route, auth} = this.props;
+        const {navigation} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
             title: '正文',
+            headerRight: () => null
+        })
+    }
+
+    setNavigationRight = () => {
+        let {subscribe} = this.state;
+        let {navigation} = this.props;
+        navigation.setOptions({
             headerRight: () => (
-                <View style={Styles.headerRight}>
-                    <TouchableOpacity
+                <View style={{flexDirection: 'row'}}>
+                    <Icon
+                        name={subscribe ? 'star' : 'staro'}
+                        size={25}
+                        color={"#333"}
+                        suppressHighlighting={true}
+                        onPress={this.addSubscribe}
+                    />
+                    <View style={{width: 10}}/>
+                    <Icon
+                        name={'sharealt'}
+                        size={25}
+                        color={"#333"}
+                        suppressHighlighting={true}
                         onPress={() => {
-                            this.setState({showShare: true});
+                            this.share.show();
                         }}
-                        activeOpacity={1}
-                    >
-                        <Ticon name={"share-squar-light"} size={28} color={"#fff"}/>
-                    </TouchableOpacity>
-                    <BarItemSeparate/>
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (auth.isSignined) {
-                                const aid = route.params?.aid;
-                                ApiClient.post('/post/collect/create', {aid}).then(response => {
-                                    this.refs.toast.show('已成功加入收藏夹');
-                                });
-                            } else {
-                                navigation.navigate('Signin');
-                            }
-                        }}
-                        activeOpacity={1}
-                    >
-                        <Ticon name={"favor-light"} color={"#fff"} size={28}/>
-                    </TouchableOpacity>
+                    />
                 </View>
             )
-        })
+        });
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            showShare: false,
-            shareMessage: {},
-            post: {}
+            post: {},
+            subscribe: false
         }
     }
 
-    render() {
-        return (
-            <View style={{flex: 1}}>
-                <WebView
-                    source={{uri: this.state.post.m_url}}
-                    renderError={() => <View/>}
-                    //renderLoading={() => <LoadingView/>}
-                    onMessage={this.handlerMessage}
-                    decelerationRate={"normal"}
-                />
-                <ShareView show={this.state.showShare} shareMessage={this.state.shareMessage}/>
-                <Toast ref={"toast"}/>
-            </View>
-        );
-    }
-
-    componentDidMount() {
-        this.setNavigationOptions();
+    fetchData = () => {
         const aid = this.props.route.params?.aid;
-        ApiClient.get('/post/get', {aid}).then(response => {
-            const {post} = response.result;
+        ApiClient.get('/post/item.getInfo', {aid}).then(response => {
+            const post = response.result;
             this.setState({
                 post,
                 shareMessage: {
@@ -87,25 +71,80 @@ class PostDetail extends React.Component {
                     webpageUrl: post.m_url
                 }
             });
+        }).catch(reason => {
+            console.log(reason);
         })
+    }
+
+    querySubscribe = () => {
+        const aid = this.props.route.params?.aid;
+        ApiClient.post('/post/subscribe.query', {aid}).then(response => {
+            let {subscribe} = response.result;
+            this.setState({subscribe}, this.setNavigationRight);
+        });
+    }
+
+    componentDidMount() {
+        this.setNavigationOptions();
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
+        });
+        this.fetchData();
+        this.querySubscribe();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    render() {
+        let {post} = this.state;
+        return (
+            <SafeAreaView style={{flex: 1}}>
+                <WebView
+                    source={{uri: post.m_url}}
+                    renderError={() => <View/>}
+                    renderLoading={() => <LoadingView/>}
+                    onMessage={this.handlerMessage}
+                    decelerationRate={"normal"}
+                />
+                <ShareView show={this.state.showShare} ref={o => this.share = o}/>
+            </SafeAreaView>
+        );
     }
 
     handlerMessage = (event: any) => {
         const res = JSON.parse(event.nativeEvent.data);
-        if (res.event === 'shareTo') {
+        if (res.event === 'onShare') {
             //console.log(event.nativeEvent);
-            this.setState({showShare: true});
+            this.share.show();
         }
 
         if (res.event === 'onPressItem') {
             //console.log(event.nativeEvent);
-            this.props.navigation.push('PostDetail', {aid: res.aid});
+            this.props.navigation.push('post-detail', {aid: res.aid});
         }
+    }
+
+    addSubscribe = () => {
+        let {aid} = this.state.post;
+        ApiClient.post('/post/subscribe.toggle', {aid}).then(response => {
+            //console.log(response);
+            if (response.result.attached.length) {
+                Toast.success('添加收藏成功');
+                this.setState({subscribe: true}, this.setNavigationRight);
+            } else {
+                Toast.success('取消收藏成功');
+                this.setState({subscribe: false}, this.setNavigationRight);
+            }
+        }).catch(reason => {
+            Toast.fail(reason.errMsg);
+        });
     }
 }
 
-const mapStateToProps = (store) => {
-    return {auth: store.auth};
+const mapStateToProps = state => {
+    return state;
 };
 
 export default connect(mapStateToProps)(PostDetail);

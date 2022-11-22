@@ -1,15 +1,19 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Linking, Platform} from 'react-native';
+import {View, Text, TouchableOpacity, Linking, Platform, SafeAreaView} from 'react-native';
 import {MapView} from 'react-native-gzdsx-amap';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Size} from "../../styles";
 import {Toast} from '../../utils';
 
 export default class AMapView extends React.Component {
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '地图导航'
-    });
+
+    componentDidMount() {
+        let {navigation} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            title: '地图导航'
+        })
+    }
 
     render(): React.ReactNode {
         const coordinate = {
@@ -17,7 +21,7 @@ export default class AMapView extends React.Component {
             longitude: 104.500054,
         };
         return (
-            <View style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <View style={{flex: 1}}>
                     <MapView
                         style={{flex: 1}}
@@ -65,7 +69,7 @@ export default class AMapView extends React.Component {
                 >
                     <Text style={{color: '#00A7F7', fontSize: 16}}>导航去这里</Text>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         )
     }
 }

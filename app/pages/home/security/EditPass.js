@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {Button} from "react-native-elements";
 import {TextField, Toast} from "react-native-gzdsx-elements";
 import Validate from "gzdsx-validate";
 import {ApiClient} from "../../../utils";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
-import {ButtonStyles} from "../../../styles/ButtonStyles";
+import {ButtonStyles} from "../../../styles";
 
 export default class EditPass extends React.Component {
 
@@ -14,7 +14,8 @@ export default class EditPass extends React.Component {
         this.state = {
             oldpassword: null,
             newpassword: null,
-            saveing: false
+            saveing: false,
+            disabled: false
         };
     }
 
@@ -22,72 +23,76 @@ export default class EditPass extends React.Component {
         const {navigation, route} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
-            headerTitle: '修改密码',
+            title: '修改密码',
         });
     }
 
     render() {
         return (
-            <View style={{padding: 20}}>
-                <TextField
-                    placeholder={"请输入当前密码"}
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({oldpassword: text})}
-                    style={css.textField}
-                />
-                <TextField
-                    placeholder={"请输入新密码"}
-                    underlineColorAndroid={"transparent"}
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({newpassword: text})}
-                    style={css.textField}
-                />
-                <View style={{marginTop: 20}}>
-                    <Button title={"提交"} onPress={this.submit} buttonStyle={ButtonStyles.primary}/>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{paddingHorizontal: 20, backgroundColor: '#fff'}}>
+                    <TextField
+                        placeholder={"请输入当前密码"}
+                        underlineColorAndroid={"transparent"}
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({oldpassword: text})}
+                        style={css.textField}
+                    />
+                    <TextField
+                        placeholder={"请输入新密码"}
+                        underlineColorAndroid={"transparent"}
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({newpassword: text})}
+                        style={css.textField}
+                    />
                 </View>
-                <Toast ref={"toast"}/>
-            </View>
+                <View style={{marginTop: 20, paddingHorizontal: 20}}>
+                    <Button
+                        title={"提交"}
+                        disabled={this.state.disabled}
+                        onPress={this.submit}
+                        buttonStyle={ButtonStyles.primary}
+                    />
+                </View>
+            </SafeAreaView>
         );
     }
 
     submit = () => {
-        const {oldpassword, newpassword} = this.state;
+        const {oldpassword, newpassword, disabled} = this.state;
 
         if (this.state.saveing) return false;
         if (!oldpassword) {
-            this.refs.toast.show('请输入当前密码');
+            Toast.fail('请输入当前密码');
             return false;
         }
 
         if (!Validate.isPassword(oldpassword)) {
-            this.refs.toast.show('当前密码输入错误，至少6位');
+            Toast.fail('当前密码输入错误，至少6位');
             return false;
         }
 
         if (!newpassword) {
-            this.refs.toast.show('请输入新密码');
+            Toast.fail('请输入新密码');
             return false;
         }
 
         if (!Validate.isPassword(newpassword)) {
-            this.refs.toast.show('新密码输入错误，至少6位');
+            Toast.fail('新密码输入错误，至少6位');
             return false;
         }
 
-        this.setState({saveing: true});
-        ApiClient.post('/security/update_password', {
+        this.setState({disabled: true});
+        ApiClient.post('/user/password.reset', {
             oldpassword,
             newpassword
-        }).then(response => {
-            this.setState({saveing: false});
-            this.refs.toast.show('密码修改成功', {
-                onHide: () => this.props.navigation.goBack()
+        }).then(() => {
+            Toast.success('密码修改成功', {
+                onHidden: () => this.props.navigation.goBack()
             });
-        }).catch(error => {
-            this.setState({saveing: false});
-            if (error.data.errmsg) {
-                this.refs.toast.show(error.data.errmsg);
-            }
+        }).catch(reason => {
+            this.setState({disabled: false});
+            Toast.fail(reason.errMsg);
         });
     }
 }

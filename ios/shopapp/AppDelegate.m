@@ -34,7 +34,7 @@ static void InitializeFlipper(UIApplication *application) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #if DEBUG
-  InitializeFlipper(application);
+  //InitializeFlipper(application);
 #endif
   // JPush初始化配置
   [JPUSHService setupWithOption:launchOptions appKey:@"3a6bc7e415e21e3de84356ba" channel:@"default" apsForProduction:YES];

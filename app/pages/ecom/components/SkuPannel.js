@@ -1,13 +1,15 @@
 import React from 'react';
 import {Modal, View, Text, TouchableOpacity, Animated, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import PropTypes from 'prop-types';
-import {Ticon} from "react-native-gzdsx-elements";
 import {Button, Image} from 'react-native-elements';
 import {Toast} from "react-native-gzdsx-elements";
+import Icon from "react-native-vector-icons/AntDesign";
+import FastImage from "react-native-fast-image";
 import {NumberControl} from "./NumberControl";
-import {Colors, Size} from "../../../styles";
+import {ButtonStyles, Colors, Size} from "../../../styles";
+import {SafeFooter} from "../../../components/SafeView";
 
-const H = Size.screenHeight * 0.70;
+const H = Size.screenHeight * 0.60;
 
 export default class SkuPannel extends React.Component {
 
@@ -36,11 +38,11 @@ export default class SkuPannel extends React.Component {
     }
 
     render() {
-        const sku = this.state.sku;
-        const {data} = this.props;
+        let {sku, visible} = this.state;
+        let {data} = this.props;
         return (
             <Modal
-                visible={this.state.visible}
+                visible={visible}
                 onShow={this.show}
                 transparent={true}
             >
@@ -59,7 +61,7 @@ export default class SkuPannel extends React.Component {
                             height: H,
                         }}>
                             <View style={{flexDirection: 'row', padding: 15}}>
-                                <Image
+                                <FastImage
                                     source={{uri: data.thumb}}
                                     style={{
                                         width: 90,
@@ -67,6 +69,7 @@ export default class SkuPannel extends React.Component {
                                         borderRadius: 3,
                                         marginRight: 10,
                                     }}
+                                    resizeMode={FastImage.resizeMode.cover}
                                 />
                                 <View style={{flex: 1, flexDirection: 'column'}}>
                                     <Text style={{
@@ -85,23 +88,24 @@ export default class SkuPannel extends React.Component {
                                             : null
                                     }
                                 </View>
-                                <TouchableOpacity
-                                    activeOpacity={1}
+                                <Icon
+                                    name={"close"}
+                                    size={25}
+                                    color={"#666"}
                                     onPress={this.hide}
-                                >
-                                    <Ticon name={"close-light"} size={25} color={"#666"}/>
-                                </TouchableOpacity>
+                                    suppressHighlighting={true}
+                                />
                             </View>
                             <ScrollView style={{
                                 flex: 1,
                                 borderTopWidth: 0.5,
-                                borderTopColor: '#e5e5e5'
+                                borderTopColor: '#f0f0f0'
                             }}>
                                 {this.renderAttrs()}
                                 <View style={{
                                     flexDirection: 'row',
                                     padding: 15,
-                                    borderBottomColor: '#e5e5e5',
+                                    borderBottomColor: '#f0f0f0',
                                     borderBottomWidth: 0.5,
                                 }}>
                                     <Text style={{
@@ -115,12 +119,11 @@ export default class SkuPannel extends React.Component {
                                     }}/>
                                 </View>
                             </ScrollView>
-                            <View style={{paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20}}>
+                            <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
                                 <Button
                                     title={"确定"}
-                                    buttonStyle={{height: 45, backgroundColor: Colors.primary}}
+                                    buttonStyle={ButtonStyles.primary}
                                     onPress={() => {
-                                        const sku = this.state.sku;
                                         const quantity = this.quatity;
                                         if (this.props.data.skus.length > 0) {
                                             if (sku.sku_id === undefined) {
@@ -130,12 +133,13 @@ export default class SkuPannel extends React.Component {
                                         }
 
                                         if (this.props.onSubmit) {
-                                            this.props.onSubmit(sku, quantity);
+                                            this.props.onSubmit({sku, quantity});
                                         }
                                     }}
                                     disabled={this.state.disabled}
                                     activeOpacity={0.8}
                                 />
+                                <SafeFooter/>
                             </View>
                         </Animated.View>
                     </TouchableWithoutFeedback>
@@ -241,7 +245,7 @@ export default class SkuPannel extends React.Component {
     hide = () => {
         Animated.timing(this.state.bottom, {
             toValue: -H,
-            duration: 200,
+            duration: 100,
             useNativeDriver: false
         }).start(({finished}) => {
             if (finished) {

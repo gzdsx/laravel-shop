@@ -4,14 +4,17 @@ import {Button} from 'react-native-elements';
 import {Toast} from 'react-native-gzdsx-elements';
 import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
-import {Colors} from "../../styles";
+import {ButtonStyles, StatusBarStyles} from "../../styles";
 
 export default class FeedBack extends React.Component {
 
-    static navigationOptions = ({navigation}) => ({
-        ...defaultNavigationConfigure(navigation),
-        headerTitle: '意见反馈',
-    });
+    setNavigationOptions = () => {
+        let {navigation} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            title: '意见反馈',
+        });
+    };
 
     constructor(props) {
         super(props);
@@ -21,6 +24,16 @@ export default class FeedBack extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setNavigationOptions();
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
 
     render() {
         return (
@@ -49,10 +62,10 @@ export default class FeedBack extends React.Component {
                 </View>
                 <View style={css.row}>
                     <Button
-                        buttonStyle={{backgroundColor: Colors.primary, height: 45}}
                         title="提交"
                         onPress={this.submit}
                         activeOpacity={0.8}
+                        buttonStyle={ButtonStyles.primary}
                     />
                 </View>
                 <Toast ref={"toast"}/>
@@ -61,18 +74,19 @@ export default class FeedBack extends React.Component {
     }
 
     submit = () => {
-        if (!this.state.title) {
-            this.refs.toast.show('请输入你要反馈的问题');
+        let {title, message} = this.state;
+        if (!title) {
+            Toast.fail('请输入你要反馈的问题');
             return false;
         }
 
-        if (!this.state.message) {
-            this.refs.toast.show('请描述一下你的问题，不少于10个字');
+        if (!message) {
+            Toast.fail('请描述一下你的问题，不少于10个字');
             return false;
         }
 
-        ApiClient.post('/feedback/save', this.state).then(response => {
-            this.refs.toast.show('你的问题已提交', {
+        ApiClient.post('/common/feedback.create', {title, message}).then(response => {
+            Toast.success('你的问题已提交', {
                 onHide: () => this.props.navigation.goBack()
             });
         });

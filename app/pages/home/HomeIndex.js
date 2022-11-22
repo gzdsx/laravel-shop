@@ -1,11 +1,29 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Animated, View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
+import {Animated, View, Text, TouchableOpacity, ScrollView, StyleSheet, Image} from 'react-native';
 import {Colors, StatusBarStyles} from "../../styles";
 import {SafeHeader} from "../../components/SafeView";
 import FastImage from "react-native-fast-image";
 import {ListItem} from "react-native-elements";
 import ImageIcon from "../../components/ImageIcon";
+
+const TradeActionButton = ({source, onPress, title}) => (
+    <TouchableOpacity
+        activeOpacity={1}
+        style={styles.button}
+        onPress={onPress}
+    >
+        <Image
+            source={source}
+            style={{
+                width: 30,
+                height: 30,
+                tintColor: Colors.primary
+            }}
+        />
+        <Text style={styles.buttonText}>{title}</Text>
+    </TouchableOpacity>
+)
 
 class HomeIndex extends React.Component {
     constructor() {
@@ -78,40 +96,40 @@ class HomeIndex extends React.Component {
                 >
                     <SafeHeader/>
                     {this.renderHeader()}
-                    {this.renderOrderMenus()}
+                    {this.renderOrderNavs()}
                     <View style={{height: 10}}/>
                     <View style={styles.navContainer}>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('security')}>
                             <ListItem.Content>
                                 <ListItem.Title>账号安全</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron/>
                         </ListItem>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('address-admin')}>
                             <ListItem.Content>
                                 <ListItem.Title>收货地址</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron/>
                         </ListItem>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('favorite')}>
                             <ListItem.Content>
                                 <ListItem.Title>我的收藏</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron/>
                         </ListItem>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('notice-set')}>
                             <ListItem.Content>
                                 <ListItem.Title>消息及提醒</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron/>
                         </ListItem>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('page-detail', {id: 33})}>
                             <ListItem.Content>
                                 <ListItem.Title>关于我们</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron/>
                         </ListItem>
-                        <ListItem containerStyle={styles.navRow}>
+                        <ListItem containerStyle={styles.navRow} onPress={() => this.showView('feed-back')}>
                             <ListItem.Content>
                                 <ListItem.Title>问题反馈</ListItem.Title>
                             </ListItem.Content>
@@ -142,7 +160,7 @@ class HomeIndex extends React.Component {
                 <TouchableOpacity
                     activeOpacity={1}
                     style={{flexDirection: 'row'}}
-                    onPress={() => this.showView('MyProfile')}
+                    onPress={() => this.showView('user-profile')}
                 >
                     <FastImage
                         source={avatar}
@@ -171,7 +189,7 @@ class HomeIndex extends React.Component {
         );
     };
 
-    renderOrderMenus = () => {
+    renderOrderNavs = () => {
         const {navigate} = this.props.navigation;
         return (
             <View style={{backgroundColor: '#fff'}}>
@@ -183,70 +201,31 @@ class HomeIndex extends React.Component {
                     <ListItem.Chevron/>
                 </ListItem>
                 <View style={{flexDirection: 'row', paddingTop: 15, paddingBottom: 15}}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.button}
+                    <TradeActionButton
+                        title={"待付款"}
+                        source={require('../../images/trade/wait-pay.png')}
                         onPress={() => this.showOrderView('waitPay')}
-                    >
-                        <ImageIcon
-                            source={require('../../images/trade/wait-pay.png')}
-                            size={30}
-                            color={Colors.primary}
-                        />
-                        <Text style={styles.buttonText}>待付款</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.button}
+                    />
+                    <TradeActionButton
+                        title={"待发货"}
+                        source={require('../../images/trade/wait-send.png')}
                         onPress={() => this.showOrderView('waitSend')}
-                    >
-                        <ImageIcon
-                            source={require('../../images/trade/wait-send.png')}
-                            size={30}
-                            color={Colors.primary}
-                        />
-                        <Text style={styles.buttonText}>待发货</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.button}
+                    />
+                    <TradeActionButton
+                        title={"待收货"}
+                        source={require('../../images/trade/wait-delivery.png')}
                         onPress={() => this.showOrderView('waitConfirm')}
-                    >
-                        <ImageIcon
-                            source={require('../../images/trade/wait-delivery.png')}
-                            size={30}
-                            color={Colors.primary}
-                        />
-                        <Text style={styles.buttonText}>待收货</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.button}
+                    />
+                    <TradeActionButton
+                        title={"待评价"}
+                        source={require('../../images/trade/wait-rate.png')}
                         onPress={() => this.showOrderView('waitRate')}
-                    >
-                        <ImageIcon
-                            source={require('../../images/trade/wait-rate.png')}
-                            size={30}
-                            color={Colors.primary}
-                        />
-                        <Text style={styles.buttonText}>待评价</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.button}
-                        onPress={() => this.showView('RefundList')}
-                    >
-                        <ImageIcon
-                            source={require('../../images/trade/refund.png')}
-                            size={30}
-                            color={Colors.primary}
-                        />
-                        <Text style={styles.buttonText}>退款/售后</Text>
-                    </TouchableOpacity>
+                    />
+                    <TradeActionButton
+                        title={"退款/售后"}
+                        source={require('../../images/trade/refund.png')}
+                        onPress={() => this.showView('refund-list')}
+                    />
                 </View>
             </View>
         );
@@ -255,7 +234,7 @@ class HomeIndex extends React.Component {
     showOrderView = (tab) => {
         const {oauth, navigation} = this.props;
         if (oauth.isAuthenticated) {
-            navigation.navigate('order-list', {tab});
+            navigation.navigate('trade-order-list', {tab});
         } else {
             navigation.navigate('signin');
         }

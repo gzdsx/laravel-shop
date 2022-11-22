@@ -2,29 +2,34 @@ import React from 'react';
 import {View} from 'react-native';
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-view";
-import {Colors} from "../../styles";
-import PostCollect from "./collect/PostCollect";
-import VideoCollect from "./collect/VideoCollect";
+import {Colors, StatusBarStyles} from "../../styles";
+import ProductSubscribe from "./subscribe/ProductSubscribe";
+import ShopSubscribe from "./subscribe/ShopSubscribe";
+import PostSubscribe from "./subscribe/PostSubscribe";
 
 export default class Favorite extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            isLoading: true,
-            items: []
-        };
     }
 
     componentDidMount() {
-        const {navigation,route} = this.props;
+        const {navigation, route} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
-            headerTitle: '我的收藏'
+            title: '我的收藏'
+        });
+        this.unsubsctibe = navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
         });
     }
 
+    componentWillUnmount() {
+        this.unsubsctibe();
+    }
+
     render(): React.ReactNode {
+        let {navigation} = this.props;
         return (
             <ScrollableTabView
                 renderTabBar={() => <ScrollableTabBar
@@ -54,13 +59,9 @@ export default class Favorite extends React.Component {
                     backgroundColor: '#f2f2f2'
                 }}
             >
-                <PostCollect tabLabel={"文章"} onPressItem={(item) => {
-                    this.props.navigation.navigate('PostDetail', {aid: item.aid});
-                }}/>
-                <VideoCollect tabLabel={"视频"} onPressItem={(item) => {
-                    this.props.navigation.navigate('VideoDetail', {id: item.id});
-                }}/>
-                <View tabLabel={"动态"}/>
+                <ProductSubscribe tabLabel={'商品'} navigation={navigation}/>
+                <ShopSubscribe tabLabel={'店铺'} navigation={navigation}/>
+                <PostSubscribe tabLabel={'文章'} navigation={navigation}/>
             </ScrollableTabView>
         )
     }

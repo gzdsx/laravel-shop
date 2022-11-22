@@ -1,16 +1,13 @@
 import React from 'react';
-import {View, TouchableOpacity, Image, Text, StyleSheet, SafeAreaView, FlatList} from 'react-native';
+import {View, TouchableOpacity, Image, Text, StyleSheet, SafeAreaView, FlatList, RefreshControl} from 'react-native';
 import {connect} from "react-redux";
 import Swiper from 'react-native-swiper';
-import {CacheImage} from 'react-native-gzdsx-cache-image';
 import {Ticon} from "react-native-gzdsx-elements";
 import NetInfo from "@react-native-community/netinfo";
-import {Header} from 'react-native-elements';
+import {Header, SearchBar} from 'react-native-elements';
 import {Colors, Size, StatusBarStyles} from '../../styles';
 import {ApiClient} from "../../utils";
 import Menus from '../../base/menus';
-import {SearchBar} from "../../components";
-import ProductGridView from "../shop/components/ProductGridView";
 import FastImage from "react-native-fast-image";
 import ProductListItem from "./components/ProductListItem";
 
@@ -24,52 +21,34 @@ class EcomIndex extends React.Component {
                     centerComponent={() => (
                         <SearchBar
                             placeholderTextColor={"#666"}
-                            placeholder={"猕猴桃,果酒,羊肉粉"}
+                            placeholder={"输入关键字搜索"}
                             containerStyle={{
                                 flex: 1,
                                 padding: 0,
-                                borderRadius: 10,
+                                borderRadius: 20,
                                 borderTopWidth: 0,
                                 borderBottomWidth: 0,
-                                paddingBottom: 0
+                                paddingBottom: 0,
                             }}
                             inputContainerStyle={{
                                 backgroundColor: '#fefefe',
                                 height: 34,
+                                borderRadius: 20
                             }}
 
                             inputStyle={{
-                                fontSize: 12,
+                                fontSize: 14,
                             }}
                             round={true}
                             lightTheme={true}
-                            onSearch={(q) => {
-                                navigation.navigate('ProductList', {q});
+                            editable={false}
+                            onPressIn={() => {
+                                navigation.navigate('ecom-search');
                             }}
                         />
                     )}
                     centerContainerStyle={{flexDirection: "row", paddingHorizontal: 10}}
-                    leftComponent={() => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => {
-                                navigation.navigate('QRScanner');
-                            }}
-                        >
-                            <Ticon name={'scan-light'} color={"#fff"}/>
-                        </TouchableOpacity>
-                    )}
                     leftContainerStyle={{flex: 0}}
-                    rightComponent={() => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => {
-                                navigation.navigate('ProductIndex');
-                            }}
-                        >
-                            <Ticon name={'more-light'} color={"#fff"}/>
-                        </TouchableOpacity>
-                    )}
                     rightContainerStyle={{flex: 0}}
                     containerStyle={{
                         borderBottomColor: Colors.primary,
@@ -110,26 +89,30 @@ class EcomIndex extends React.Component {
     }
 
     fetchData = async () => {
-        let response = await ApiClient.get('/block/item.getList', {block_id: 1});
+        let response = await ApiClient.get('/common/block.getInfo', {id: 1});
         const images = response.result.items;
 
-        response = await ApiClient.get('/ecom/product.getList', {cate_id: 2, count: 6});
-        const posts = response.result.items;
-
-        response = await ApiClient.get('/ecom/product.getList', {count: 20});
+        response = await ApiClient.get('/ecom/product.getList', {count: 20, sort: 'time-desc'});
         const items = response.result.items;
 
         this.setState({
             images,
-            posts,
             items,
             loading: false,
             refreshing: false,
         });
     };
 
+    onRefresh = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            setTimeout(this.fetchData, 500);
+        })
+    }
+
     render(): React.ReactNode {
-        let {items} = this.state;
+        let {items, refreshing} = this.state;
         return (
             <SafeAreaView style={{flex: 1}}>
                 <FlatList
@@ -143,6 +126,8 @@ class EcomIndex extends React.Component {
                     columnWrapperStyle={{
                         padding: 5
                     }}
+                    refreshing={refreshing}
+                    onRefresh={this.onRefresh}
                 />
             </SafeAreaView>
         );

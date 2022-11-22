@@ -3,210 +3,195 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
+    TouchableOpacity, FlatList, SafeAreaView,
 } from "react-native";
-import {Ticon} from "react-native-gzdsx-elements";
-import {Header} from "react-native-elements";
-import {Utils, ApiClient} from "../../utils";
-import ProductListView from "./components/ProductListView";
-import {Colors, Size} from "../../styles";
-import {SearchBar} from "../../components";
+import {LoadingView, Ticon} from "react-native-gzdsx-elements";
+import {Header, ListItem, SearchBar} from "react-native-elements";
+import {Colors} from "../../styles";
+import ListComponent from "../../components/ListComponent";
+import FastImage from "react-native-fast-image";
+import {useNavigation} from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Entypo";
 
 const TabItem = ({text, active = false, onPress = () => null}) => {
     return (
         <TouchableOpacity
-            style={[css.tabItem, {borderBottomWidth: active ? 2 : 0}]}
+            style={[styles.tabItem, {borderBottomWidth: active ? 2 : 0}]}
             activeOpacity={1}
             onPress={onPress}
         >
-            <Text style={[css.tabText, {color: active ? '#f00' : '#333'}]}>{text}</Text>
+            <Text style={[styles.tabText, {color: active ? '#f00' : '#333'}]}>{text}</Text>
         </TouchableOpacity>
     );
 };
 
-class ProductList extends React.Component {
+const SearchHeader = (props) => {
+    let [keywords, setKeywords] = React.useState(props.defaultValue);
+    let navigation = useNavigation();
+    return (
+        <Header
+            backgroundColor={'#f2f2f2'}
+            centerComponent={() => (
+                <SearchBar
+                    placeholderTextColor={"#666"}
+                    placeholder={"输入关键字搜索"}
+                    containerStyle={{
+                        flex: 1,
+                        padding: 0,
+                        borderRadius: 20,
+                        borderTopWidth: 0,
+                        borderBottomWidth: 0,
+                        paddingBottom: 0
+                    }}
+                    inputContainerStyle={{
+                        backgroundColor: '#fff',
+                        height: 34,
+                        borderRadius: 20
+                    }}
+
+                    inputStyle={{
+                        fontSize: 14,
+                    }}
+                    lightTheme={true}
+                    returnKeyType={'search'}
+                    returnKeyLabel={'搜索'}
+                    value={keywords}
+                    onChangeText={text => {
+                        setKeywords(text);
+                    }}
+                    onSubmitEditing={props.onSubmit}
+                    clearButtonMode={"while-editing"}
+                    clearTextOnFocus={true}
+                />
+            )}
+            centerContainerStyle={{flexDirection: "row", paddingHorizontal: 10}}
+            leftContainerStyle={{flex: 0}}
+            rightContainerStyle={{flex: 0}}
+            containerStyle={{
+                borderBottomColor: Colors.primary,
+                borderBottomWidth: 0,
+            }}
+            leftComponent={
+                <View style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 5,
+                    flex: 1
+                }}>
+                    <Icon
+                        name={'chevron-thin-left'}
+                        color={'#666'}
+                        size={22}
+                        suppressHighlighting={true}
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                    />
+                </View>
+            }
+        >
+        </Header>
+    )
+}
+
+class ProductList extends ListComponent {
 
     setNavigationOptions() {
         const {navigation, route} = this.props;
         const value = route.params?.q;
         navigation.setOptions({
             header: () => (
-                <Header
-                    backgroundColor={Colors.primary}
-                    leftComponent={() => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => navigation.goBack()}
-                        >
-                            <Ticon name={"back-light"} size={28} color={"#fff"}/>
-                        </TouchableOpacity>
-                    )}
-                    leftContainerStyle={{flex: 0}}
-                    centerComponent={() => (
-                        <SearchBar
-                            placeholderTextColor={"#666"}
-                            placeholder={"输入关键词搜素"}
-                            containerStyle={{
-                                backgroundColor: "transparent",
-                                flex: 1,
-                                padding: 0,
-                                borderRadius: 10,
-                                borderTopWidth: 0,
-                                borderBottomWidth: 0,
-                            }}
-                            inputContainerStyle={{
-                                backgroundColor: '#fefefe',
-                                height: 34
-                            }}
-
-                            inputStyle={{
-                                fontSize: 12,
-                            }}
-                            round={true}
-                            lightTheme={true}
-                            value={value}
-                            onSearch={(q) => {
-                                this.searchFileds.q = q;
-                                this.fetchData();
-                            }}
-                        />
-                    )}
-                    centerContainerStyle={{
-                        flexDirection: "row",
-                        marginLeft: 10,
-                        marginRight: 10
+                <SearchHeader
+                    defaultValue={value}
+                    onSubmit={event => {
+                        let {params} = this.state;
+                        params.q = event.nativeEvent.text;
+                        this.setState({params}, this.fetchList);
                     }}
-                    rightComponent={() => (
-                        <TouchableOpacity
-                            activeOpacity={1}
-                            onPress={() => {
-
-                            }}
-                        >
-                            <Ticon name={"more-light"} size={28} color={"#fff"}/>
-                        </TouchableOpacity>
-                    )}
-                    rightContainerStyle={{flex: 0}}
-                    containerStyle={{
-                        borderBottomColor: Colors.primary,
-                        borderBottomWidth: 0,
-                    }}
-                >
-                </Header>
+                />
             )
         })
     }
 
+    listApi = '/ecom/product.getList';
+
     constructor(props) {
         super(props);
-        this.state = {
-            items: [],
-            loading: true,
-            refreshing: false,
-            loadMore: false,
-            sort: 'sold-desc'
-        };
-        this.offset = 0;
-        this.loadMoreAble = false;
-        this.searchFileds = {};
-    }
-
-    render() {
-        const {sort} = this.state;
-        return (
-            <View style={{flex: 1}}>
-                <View style={css.tabs}>
-                    <TabItem text={"热销"} active={sort === 'sold-desc'} onPress={() => {
-                        this.setState({sort: 'sold-desc', isRefreshing: true}, this.fetchData);
-                    }}/>
-                    <TabItem text={"新品"} active={sort === 'time-desc'} onPress={() => {
-                        this.setState({sort: 'time-desc', isRefreshing: true}, this.fetchData);
-                    }}/>
-                    <TabItem text={"好评"} active={sort === 'rate-desc'} onPress={() => {
-                        this.setState({sort: 'rate-desc', isRefreshing: true}, this.fetchData);
-                    }}/>
-                </View>
-                <ProductListView
-                    data={this.state.items}
-                    loading={this.state.loading}
-                    refreshing={this.state.refreshing}
-                    loadMore={this.state.loadMore}
-                    onRefresh={this.onRefresh}
-                    onEndReached={this.onEndReached}
-                    onPressItem={(item) => {
-                        this.props.navigation.navigate('ProductDetail', {itemid: item.itemid});
-                    }}
-                />
-            </View>
-        );
+        this.state.params.sort = 'sold-desc';
     }
 
     componentDidMount() {
         this.setNavigationOptions();
-        this.searchFileds = {...this.props.route.params};
-        this.fetchData();
+        let q = this.props.route.params?.q || '';
+        let {params} = this.state;
+
+        params.q = q;
+        this.setState({params}, this.fetchList);
     }
 
-    fetchData = () => {
-        let sort = this.state.sort;
-        ApiClient.get('/ecom/product/list', {
-            ...this.searchFileds,
-            offset: this.offset,
-            count: 20,
-            sort,
-        }).then(response => {
-            let items;
-            if (this.state.loadMore) {
-                items = this.state.items.concat(response.result.items);
-            } else {
-                items = response.result.items;
-            }
-            setTimeout(() => {
-                this.setState({
-                    items,
-                    loading: false,
-                    refreshing: false,
-                    loadMore: false,
-                });
-                this.loadMoreAble = response.result.items.length >= 20;
-            }, 300);
-        });
-    };
-
-    onRefresh = () => {
-        if (this.state.loading || this.state.refreshing || this.state.loadMore) {
-            return false;
-        }
-
-        this.setState({
-            refreshing: true
-        }, () => {
-
-        });
-        setTimeout(() => {
-            this.offset = 0;
-            this.fetchData();
-        }, 1000)
-    };
-
-    onEndReached = () => {
-        if (this.state.loading || this.state.refreshing || this.state.loadMore || !this.loadMoreAble) {
-            return false;
-        }
-
-        this.setState({
-            loadMore: true
-        }, () => {
-
-        });
-        setTimeout(() => {
-            this.offset += 20;
-            this.fetchData();
-        }, 500);
+    render() {
+        const {params, dataList, refreshing} = this.state;
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <View style={styles.tabs}>
+                    <TabItem text={"热销"} active={params.sort === 'sold-desc'} onPress={() => {
+                        params.sort = 'sold-desc';
+                        this.setState({params}, this.fetchList);
+                    }}/>
+                    <TabItem text={"新品"} active={params.sort === 'time-desc'} onPress={() => {
+                        params.sort = 'time-desc';
+                        this.setState({params}, this.fetchList);
+                    }}/>
+                    <TabItem text={"好评"} active={params.sort === 'rate-desc'} onPress={() => {
+                        params.sort = 'rate-desc';
+                        this.setState({params}, this.fetchList);
+                    }}/>
+                </View>
+                <FlatList
+                    data={dataList}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    refreshing={refreshing}
+                    onRefresh={this.onRefresh}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={0.2}
+                    style={{
+                        paddingTop: 5,
+                        backgroundColor: '#fff'
+                    }}
+                />
+            </SafeAreaView>
+        );
     }
+
+    renderItem = ({item, index}) => {
+        return (
+            <ListItem containerStyle={styles.item} onPress={() => {
+                this.props.navigation.navigate('product-detail', {itemid: item.itemid});
+            }}>
+                <FastImage source={{uri: item.thumb}} style={styles.image}/>
+                <ListItem.Content>
+                    <View style={styles.meta}>
+                        <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+                        {
+                            item.shop ?
+                                <Text style={styles.shopName}>{item.shop.shop_name}</Text>
+                                : null
+                        }
+                        <View style={{flex: 1}}/>
+                        <View style={styles.prop}>
+                            <Text style={styles.yuan}>￥</Text>
+                            <Text style={styles.price}>{item.price}</Text>
+                            <Text style={styles.sold}>已售{item.sold}件</Text>
+                        </View>
+                    </View>
+                </ListItem.Content>
+            </ListItem>
+        );
+    };
 }
 
-const css = StyleSheet.create({
+const styles = StyleSheet.create({
     tabs: {
         backgroundColor: '#fff',
         height: 48,
@@ -225,7 +210,54 @@ const css = StyleSheet.create({
         color: '#333',
         textAlign: 'center',
         textAlignVertical: 'center'
-    }
+    },
+    item: {
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#e5e5e5'
+    },
+    image: {
+        width: 120,
+        height: 120,
+        borderRadius: 10
+    },
+    meta: {
+        flex: 1,
+        paddingTop: 5
+    },
+    title: {
+        fontSize: 16,
+        color: '#000',
+    },
+    prop: {
+        flexDirection: 'row',
+    },
+    yuan: {
+        fontSize: 12,
+        color: '#f40',
+        fontWeight: '400',
+        paddingTop: 4
+    },
+    price: {
+        fontSize: 16,
+        color: '#f40',
+        marginRight: 10,
+        fontWeight: '600',
+        flex: 1
+    },
+    sold: {
+        fontSize: 12,
+        color: '#777',
+        paddingTop: 4
+    },
+    shopName: {
+        fontSize: 14,
+        color: '#838383',
+        marginTop: 8
+    },
+    location: {
+        fontSize: 12,
+        color: '#888',
+    },
 });
 
 export default ProductList;

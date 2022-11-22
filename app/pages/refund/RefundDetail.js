@@ -1,10 +1,9 @@
 import React from 'react';
 import {Alert, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {LoadingView, TableCell, TableView} from "react-native-gzdsx-elements";
-import {CacheImage} from "react-native-gzdsx-cache-image";
+import FastImage from "react-native-fast-image";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {ApiClient} from "../../utils";
-import OrderActionButton from "../order/OrderActionButton";
 
 export default class RefundDetail extends React.Component {
 
@@ -88,7 +87,7 @@ export default class RefundDetail extends React.Component {
         const contents = items.map((item, index) => {
             return (
                 <TableCell key={index.toString()} touchAble={false}>
-                    <CacheImage source={{uri: item.thumb}} style={{
+                    <FastImage source={{uri: item.thumb}} style={{
                         width: 80,
                         height: 80,
                         borderRadius: 3,

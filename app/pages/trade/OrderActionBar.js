@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
-import ActionSheet from "react-native-actionsheet";
 import {Toast} from "react-native-gzdsx-elements";
 import OrderProcessor from "../../utils/OrderProcessor";
+import PickerView from "../../components/PickerView";
 
 const ActionButton = ({title, show = true, onPress = () => null}) => {
     return (
@@ -49,9 +49,19 @@ class OrderActionBar extends React.Component {
                 {children}
                 <ActionButton
                     title={"取消订单"}
-                    show={order.order_state === 1}
+                    show={order.order_state === 0}
                     onPress={() => {
-                        this.refs.as.show();
+                        PickerView.init({
+                            pickerData: reasons,
+                            onPickerConfirm: data => {
+                                OrderProcessor.cancel(order_id, data[0]).then(() => {
+                                    this.props.onCancel && this.props.onCancel();
+                                }).catch(reason => {
+                                    Toast.fail(reason.errMsg);
+                                });
+                            }
+                        });
+                        PickerView.show();
                     }}
                 />
                 <ActionButton
@@ -61,21 +71,22 @@ class OrderActionBar extends React.Component {
                 />
                 <ActionButton
                     title={"支付"}
-                    show={order.order_state === 1}
+                    show={order.order_state === 0}
                     onPress={() => {
                         OrderProcessor.pay(order_id, 1).then(() => {
-                            this.props.onPay(order);
+                            this.props.onPaySucceed && this.props.onPaySucceed(order);
                         }).catch(reason => {
                             console.log(reason);
+                            this.props.onPayFailed && this.props.onPayFailed(reason);
                         });
                     }}
                 />
                 <ActionButton
                     title={"提醒卖家发货"}
-                    show={order.order_state === 2}
+                    show={order.order_state === 1}
                     onPress={() => {
                         OrderProcessor.notice(order_id).then(() => {
-                            this.refs.toast.show('已成功提醒卖家发货');
+                            Toast.success('已成功提醒卖家发货');
                             this.props.onNotice(order);
                         }).catch(reason => {
 
@@ -84,7 +95,7 @@ class OrderActionBar extends React.Component {
                 />
                 <ActionButton
                     title={"确认收货"}
-                    show={order.order_state === 3}
+                    show={order.order_state === 2}
                     onPress={() => {
                         OrderProcessor.confirm(order_id).then(response => {
                             this.props.onConfirm(order)
@@ -100,7 +111,7 @@ class OrderActionBar extends React.Component {
                 />
                 <ActionButton
                     title={"删除订单"}
-                    show={order.closed}
+                    show={order.cancel_state}
                     onPress={() => {
                         OrderProcessor.delete(order_id).then(() => {
                             this.props.onDelete(order);
@@ -109,22 +120,6 @@ class OrderActionBar extends React.Component {
                         });
                     }}
                 />
-                <ActionSheet
-                    ref={'as'}
-                    options={reasons.concat(['取消'])}
-                    cancelButtonIndex={reasons.length}
-                    onPress={(index) => {
-                        if (index < (reasons.length)) {
-                            const reason = reasons[index];
-                            OrderProcessor.cancel(order_id, reason).then((response) => {
-                                this.props.onCancel(order);
-                            }).catch(reason1 => {
-
-                            });
-                        }
-                    }}
-                />
-                <Toast ref={'toast'}/>
             </View>
         );
     }

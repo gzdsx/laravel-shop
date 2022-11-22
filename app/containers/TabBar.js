@@ -3,7 +3,7 @@ import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Colors} from "../styles";
 import EcomIndex from '../pages/ecom/EcomIndex';
-import Cart from "../pages/cart/Cart";
+import Cart from "../pages/ecom/Cart";
 import PostIndex from "../pages/post/PostIndex";
 import HomeIndex from "../pages/home/HomeIndex";
 import NotificationIndex from "../pages/notification/NotificationIndex";
@@ -90,7 +90,7 @@ class TabBar extends React.Component {
                         tabBarLabel: '我的',
                         tabBarIcon: ({focused, color, size}) => (
                             <Image
-                                source={focused ? require('../images/tabbar/my-fill.png') : require('../images/tabbar/my.png')}
+                                source={focused ? require('../images/tabbar/mine-fill.png') : require('../images/tabbar/mine.png')}
                                 style={iconStyle(color)}
                             />
                         ),

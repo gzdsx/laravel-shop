@@ -1,45 +1,53 @@
 import React from 'react';
 import {View, FlatList, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import {CacheImage} from "react-native-gzdsx-cache-image";
 import {LoadingView} from "react-native-gzdsx-elements";
+import FastImage from "react-native-fast-image";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {ApiClient} from "../../utils";
-import OrderActionButton from "../order/OrderActionButton";
+import OrderActionButton from "../trade/OrderActionButton";
+import ListComponent from "../../components/ListComponent";
+import {StatusBarStyles} from "../../styles";
 
-export default class RefundList extends React.Component {
+export default class RefundList extends ListComponent {
 
     setNavigationOptions() {
         const {navigation, route} = this.props;
         navigation.setOptions({
             ...defaultNavigationConfigure(navigation),
-            headerTitle: '退款/售后',
+            title: '退款/售后',
         });
     }
 
+    listApi = '/trade/refund.getList';
+
     constructor(props) {
         super(props);
-        this.state = {
-            items: [],
-            loading: true,
-            refreshing: false,
-            loadMore: false
-        };
-        this.offset = 0;
-        this.loadMoreAble = false;
     }
 
+    componentDidMount(): void {
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
+        })
+        this.setNavigationOptions();
+        this.fetchList();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
 
     render(): React.ReactNode {
-        if (this.state.loading) return <LoadingView/>;
+        let {dataList, loading, refreshing} = this.state;
+        if (loading) return <LoadingView/>;
         return (
             <FlatList
-                data={this.state.items}
-                renderItem={({item, index}) => this.renderItem(item, index)}
-                keyExtractor={((item, index) => item.refund_id.toString())}
-                refreshing={this.state.refreshing}
+                data={dataList}
+                renderItem={this.renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                refreshing={refreshing}
                 onRefresh={this.onRefresh}
                 onEndReached={this.onEndReached}
-                onEndReachedThreshold={0}
+                onEndReachedThreshold={0.2}
                 ListHeaderComponent={() => {
                     if (this.state.items.length === 0) {
                         return (
@@ -62,54 +70,10 @@ export default class RefundList extends React.Component {
         );
     }
 
-    componentDidMount(): void {
-        this.setNavigationOptions();
-        this.fetchData();
-    }
-
-    fetchData = () => {
-        ApiClient.get('/refund/batchget').then(response => {
-            //console.log(response.result);
-            const {items} = response.result;
-            this.setState({
-                items,
-                loading: false,
-                refreshing: false,
-                loadMore: false
-            });
-            this.loadMoreAble = items.length >= 10;
-        })
-    }
-
-    reLoad = () => {
-        this.offset = 0;
-        this.setState({
-            loading: true
-        }, this.fetchData);
-    }
-
-    onRefresh = () => {
-        if (this.state.loading || this.state.refreshing || this.state.loadMore) {
-            return false;
-        }
-        this.offset = 0;
-        this.setState({refreshing: true});
-        setTimeout(this.fetchData, 500);
-    };
-
-    onEndReached = () => {
-
-        if (this.state.loading || this.state.refreshing || this.state.loadMore || !this.loadMoreAble) {
-            return false;
-        }
-
-        this.offset += 10;
-        this.setState({loadMore: true});
-        setTimeout(this.fetchData, 500);
-    };
-
-    renderItem = (refund, index) => {
+    renderItem = ({item, index}) => {
+        let refund = item;
         let {refund_id, order_id, items, refund_state} = refund;
+        if (!refund) return null;
         return (
             <View style={styles.refund}>
                 <View style={styles.content}>
@@ -169,7 +133,7 @@ export default class RefundList extends React.Component {
                         this.props.navigation.navigate('RefundDetail', {refund_id: refund.refund_id});
                     }}
                 >
-                    <CacheImage source={{uri: item.thumb}} style={styles.thumb}/>
+                    <FastImage source={{uri: item.thumb}} style={styles.thumb}/>
                     <View style={{flex: 1, flexDirection: 'column'}}>
                         <Text style={{fontSize: 14, color: '#333'}}>{item.title}</Text>
                         <View style={{flex: 1}}>

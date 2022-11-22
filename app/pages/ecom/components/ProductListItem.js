@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {CacheImage} from "react-native-gzdsx-cache-image";
 import {useNavigation} from '@react-navigation/native';
+import FastImage from "react-native-fast-image";
 import React from "react";
 import {Size} from "../../../styles";
 
@@ -15,7 +15,7 @@ export default function ({product = {}, style = {}}) {
             }}
         >
             <View style={styles.content}>
-                <CacheImage source={{uri: product.thumb}} style={styles.image}/>
+                <FastImage source={{uri: product.thumb}} style={styles.image}/>
                 <Text style={styles.title} numberOfLines={2}>{product.title}</Text>
                 <View style={styles.meta}>
                     <Text style={styles.price}>￥{product.price}</Text>

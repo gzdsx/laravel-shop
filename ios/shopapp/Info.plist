@@ -37,6 +37,7 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>iosamap</string>
 		<string>weixin</string>
 		<string>weixinULAPI</string>
 	</array>

@@ -6,7 +6,7 @@ export default class QRScanner extends React.Component {
 
     static navigationOptions = ({navigation}) => ({
         ...defaultNavigationConfigure(navigation),
-        headerTitle: '扫一扫'
+        title: '扫一扫'
     });
 
     render() {

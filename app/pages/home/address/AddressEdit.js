@@ -1,218 +1,228 @@
 import React from 'react';
-import {ScrollView, View, Text, DeviceEventEmitter, TouchableOpacity} from 'react-native';
-import {Button} from 'react-native-elements';
-import {Toast, TextField, TableCell, CheckBox, LoadingView} from 'react-native-gzdsx-elements';
-import Validate from "gzdsx-validate";
+import {
+    DeviceEventEmitter,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity
+} from 'react-native';
+import {ListItem} from "react-native-elements";
+import {Toast} from "react-native-gzdsx-elements";
 import {defaultNavigationConfigure} from "../../../base/navconfig";
-import {ApiClient, Utils} from '../../../utils';
-import {ButtonStyles} from "../../../styles/ButtonStyles";
+import {ApiClient} from "../../../utils";
+import {StatusBarStyles} from "../../../styles";
 
 export default class AddressEdit extends React.Component {
+
+    setNavigation() {
+        const {navigation, route} = this.props;
+        navigation.setOptions({
+            ...defaultNavigationConfigure(navigation),
+            title: '编辑地址',
+            headerRight: () => (
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={this.submit}
+                >
+                    <Text style={{fontSize: 18, color: '#333'}}>完成</Text>
+                </TouchableOpacity>
+            )
+        });
+    }
 
     constructor(props) {
         super(props);
         this.state = {
-            address: {
-                name: '',
-                tel: '',
-                province: '',
-                city: '',
-                district: '',
-                street: '',
-                isdefault: 0
-            },
-            isLoading: true
+            address: {}
         };
-
-        this.submiting = false;
     }
 
-
-    render() {
-        let {address} = this.state;
-        let district;
-        if (address.province && address.city && address.district) {
-            district = address.province + '/' + address.city + '/' + address.district;
-        } else {
-            district = '选择所在区域';
-        }
-        if (this.state.isLoading) return <LoadingView/>;
-        return (
-            <ScrollView style={{paddingHorizontal: 15, backgroundColor: '#fff'}}>
-                <TextField
-                    label={"收货人"}
-                    placeholder={"真实姓名"}
-                    onChangeText={(text) => {
-                        address.name = text;
-                        this.setState({address});
-                    }}
-                    defaultValue={address.name}
-                />
-                <TextField
-                    label={"联系电话"}
-                    placeholder={"手机号码"}
-                    onChangeText={(text) => {
-                        address.tel = text;
-                        this.setState({address});
-                    }}
-                    keyboardType={"phone-pad"}
-                    defaultValue={address.tel}
-                />
-                <TextField
-                    label={"所在区域"}
-                    Component={false}
-                    rightComponent={
-                        <TouchableOpacity
-                            style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                                minHeight: 40,
-                                alignContent: 'center',
-                                justifyContent: 'center'
-                            }}
-                            activeOpacity={1}
-                            onPress={() => {
-                                this.props.navigation.navigate('DistrictSelector');
-                            }}
-                        >
-                            <View style={{flex: 1, justifyContent: 'center'}}>
-                                <Text style={{
-                                    color: '#333',
-                                    fontSize: 16,
-                                    textAlignVertical: 'center'
-                                }}>{district}</Text>
-                            </View>
-                            <TableCell.Accessory/>
-                        </TouchableOpacity>
-                    }
-                />
-                <TextField
-                    label={"街道地址"}
-                    placeholder={"社区,街道,门牌号"}
-                    onChangeText={(text) => {
-                        address.street = text;
-                        this.setState({address});
-                    }}
-                    defaultValue={address.street}
-                />
-                <TextField
-                    label={"设为默认"}
-                    labelContainerStyle={{flex: 1}}
-                    Component={null}
-                    rightComponent={
-                        <View style={{minHeight: 40, alignContent: 'center', justifyContent: 'center'}}>
-                            <CheckBox
-                                checked={address.isdefault === 1}
-                                size={24}
-                                onPress={() => {
-                                    address.isdefault = address.isdefault === 1 ? 0 : 1;
-                                    this.setState({address});
-                                }}
-                            />
-                        </View>
-                    }
-                />
-                <View style={{marginTop: 40}}>
-                    <Button
-                        title={"提交"}
-                        buttonStyle={ButtonStyles.primary}
-                        onPress={this.submit}
-                    />
-                </View>
-                <Toast ref={"toast"}/>
-            </ScrollView>
-        );
-    }
-
-
-    componentDidMount() {
-        const {navigation, route} = this.props;
-        navigation.setOptions({
-            ...defaultNavigationConfigure(navigation),
-            headerTitle: '编辑收货地址',
+    componentDidMount(): void {
+        this.setNavigation();
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
         });
 
-
-        DeviceEventEmitter.addListener('onPickedDistrict', (dist) => {
+        this.listener = DeviceEventEmitter.addListener('onChooseLocation', res => {
+            //console.log(res);
             let {address} = this.state;
-            let {province, city, district} = dist;
-            address = {
-                ...address,
-                province,
-                city,
-                district
-            }
-            this.setState({address});
+            let {province, city, district, street, longitude, latitude} = res;
+            this.setState({
+                address: {
+                    ...address,
+                    province,
+                    city,
+                    district,
+                    street,
+                    longitude,
+                    latitude
+                }
+            });
         });
 
-        const address_id = route.params?.address_id || 0;
-        if (address_id) {
-            ApiClient.get('/address/get', {address_id}).then(response => {
-                this.setState({
-                    address: response.result.address,
-                    isLoading: false
-                });
-            });
-        } else {
-            this.setState({
-                isLoading: false
+        let id = this.props.route.params?.id;
+        if (id) {
+            ApiClient.get('/user/address.getInfo', {id}).then(response => {
+                let address = response.result;
+                this.setState({address});
             });
         }
     }
 
     componentWillUnmount() {
-        DeviceEventEmitter.removeAllListeners('onPickedDistrict');
+        this.unsubscribe();
+        this.listener.remove();
+    }
+
+    render(): React.ReactNode {
+        let {navigation, route} = this.props;
+        let {address} = this.state;
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <ScrollView style={styles.scrollView}>
+                    <ListItem containerStyle={styles.section}>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.label}>收货人姓名</ListItem.Title>
+                            <ListItem.Input
+                                placeholder={"请输入"}
+                                inputStyle={styles.input}
+                                containerStyle={styles.inputContainer}
+                                renderErrorMessage={false}
+                                defaultValue={address.name}
+                                onChangeText={text => {
+                                    address.name = text;
+                                    this.setState({address});
+                                }}
+                            />
+                        </ListItem.Content>
+                    </ListItem>
+                    <ListItem containerStyle={styles.section}>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.label}>收货人联系电话</ListItem.Title>
+                            <ListItem.Input
+                                placeholder={"请输入"}
+                                inputStyle={styles.input}
+                                containerStyle={styles.inputContainer}
+                                renderErrorMessage={false}
+                                defaultValue={address.phone}
+                                keyboardType={'number-pad'}
+                                onChangeText={text => {
+                                    address.phone = text;
+                                    this.setState({address});
+                                }}
+                            />
+                        </ListItem.Content>
+                    </ListItem>
+                    <ListItem containerStyle={styles.section} onPress={() => {
+                        navigation.navigate('choose-location', {title: '选择收货地址'});
+                    }}>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.label}>省/市/区县</ListItem.Title>
+                            <ListItem.Input
+                                placeholder={"请选择"}
+                                inputStyle={styles.input}
+                                containerStyle={styles.inputContainer}
+                                renderErrorMessage={false}
+                                editable={false}
+                                defaultValue={[address.province, address.city, address.district].join('')}
+                                pointerEvents={'none'}
+                            />
+                        </ListItem.Content>
+                        <ListItem.Chevron/>
+                    </ListItem>
+                    <ListItem containerStyle={styles.section}>
+                        <ListItem.Content>
+                            <ListItem.Title style={styles.label}>详细地址</ListItem.Title>
+                            <ListItem.Input
+                                placeholder={"请输入"}
+                                inputStyle={styles.input}
+                                containerStyle={styles.inputContainer}
+                                renderErrorMessage={false}
+                                defaultValue={address.street}
+                                onChangeText={text => {
+                                    address.street = text;
+                                    this.setState({address});
+                                }}
+                            />
+                        </ListItem.Content>
+                    </ListItem>
+                </ScrollView>
+            </SafeAreaView>
+        );
     }
 
     submit = () => {
-        const {address} = this.state;
-        const {address_id} = address;
-        console.log(address);
-
-        if (this.submiting) {
+        let {address} = this.state;
+        if (!address.name) {
+            Toast.fail('请填写收货人姓名');
             return false;
         }
 
-        if (!address.name){
-            this.refs.toast.show('请填写收货人姓名');
+        if (!address.phone) {
+            Toast.fail('请填写联系电话');
             return false;
         }
 
-        if (!Validate.isChineseName(address.name)) {
-            this.refs.toast.show('收货人姓名填写不正确');
-            return false;
-        }
-
-        if (!address.tel){
-            this.refs.toast.show('请填写联系电话');
-            return false;
-        }
-
-        if (!Validate.isMobile(address.tel)) {
-            this.refs.toast.show('手机号码填写错误');
-            return false;
-        }
-
-        if (!address.province || !address.city) {
-            this.refs.toast.show('请选择所在区域');
+        if (!address.province) {
+            Toast.fail('请选择地区');
             return false;
         }
 
         if (!address.street) {
-            this.refs.toast.show('请填写街道地址');
+            Toast.fail('请填写详细地址');
             return false;
         }
 
-        this.submiting = true;
-        ApiClient.post('/address/save', {address, address_id}).then(response => {
-            //console.log(response.result);
-            this.refs.toast.show('地址保存成功', {
-                onHide: () => {
+        let {id} = address;
+        let api = id ? '/user/address.update' : '/user/address.create';
+        ApiClient.post(api, {id, address}).then(() => {
+            Toast.success('地址保存成功', {
+                onHidden: () => {
                     this.props.navigation.goBack();
                 }
             });
-        }).then(error => {
-            this.submiting = false;
+        }).catch(reason => {
+            console.log(reason);
         });
     }
 }
+
+const styles = StyleSheet.create({
+    footer: {
+        backgroundColor: '#fff',
+        borderTopColor: '#e2e2e2',
+        borderTopWidth: 0.5,
+        padding: 10
+    },
+    scrollView: {
+        padding: 15,
+        flex: 1,
+        backgroundColor: '#fff'
+    },
+    section: {
+        paddingHorizontal: 0,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#e2e2e2'
+    },
+    input: {
+        textAlign: 'left'
+    },
+    inputContainer: {
+        paddingHorizontal: 0,
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: '300',
+        color: '#838383',
+        marginBottom: 5
+    },
+    locationName: {
+        fontSize: 18
+    },
+    locationAddress: {
+        fontSize: 12,
+        color: '#939393',
+        marginTop: 5
+    }
+});

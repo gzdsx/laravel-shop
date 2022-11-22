@@ -14,5 +14,6 @@ LogBox.ignoreLogs([
     /(.+?)cycle(.+?)/g,
     /(.+?)cycle(.+?)/g,
     /(.+?)cycle(.+?)/g,
+    'You seem to update'
 ]);
 AppRegistry.registerComponent(appName, () => Root);

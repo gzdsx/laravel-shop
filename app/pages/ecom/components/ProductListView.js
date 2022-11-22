@@ -2,7 +2,7 @@ import React from "react";
 import {FlatList, View, Text, TouchableOpacity, StyleSheet, FlatListProps} from 'react-native';
 import PropTypes from 'prop-types';
 import {LoadingView} from "react-native-gzdsx-elements";
-import {CacheImage} from 'react-native-gzdsx-cache-image';
+import FastImage from "react-native-fast-image";
 
 class ProductListView extends React.Component<FlatListProps, void> {
     static propTypes = {
@@ -44,7 +44,7 @@ class ProductListView extends React.Component<FlatListProps, void> {
                 onPress={() => this.props.onPressItem(item)}
             >
                 <View style={css.item}>
-                    <CacheImage source={{uri: item.thumb}} style={css.image}/>
+                    <FastImage source={{uri: item.thumb}} style={css.image}/>
                     <View style={css.meta}>
                         <Text style={css.title} numberOfLines={2}>{item.title}</Text>
                         <View style={css.prop}>

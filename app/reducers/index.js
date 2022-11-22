@@ -8,5 +8,5 @@ import userInfo from './userInfo';
 module.exports = combineReducers({
     oauth,
     location,
-    userInfo
+    userInfo,
 });
