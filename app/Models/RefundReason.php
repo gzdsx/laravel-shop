@@ -7,16 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * App\Models\EcomRefundReason
+ * App\Models\RefundReason
  *
+ * @property int $id
+ * @property string|null $title
+ * @property int|null $sort_num
  * @method static Builder|RefundReason newModelQuery()
  * @method static Builder|RefundReason newQuery()
  * @method static Builder|RefundReason query()
+ * @method static Builder|RefundReason whereId($value)
+ * @method static Builder|RefundReason whereSortNum($value)
+ * @method static Builder|RefundReason whereTitle($value)
  * @mixin \Eloquent
  */
 class RefundReason extends Model
 {
-    protected $table = 'ecom_refund_reason';
+    protected $table = 'refund_reason';
     protected $primaryKey = 'id';
     protected $fillable = ['title', 'sort_num'];
 

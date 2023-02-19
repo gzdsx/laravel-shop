@@ -57,10 +57,10 @@
 
 @section('foot')
     <script type="text/javascript">
-        function viewShare(data) {
+        function viewShare(shareTo) {
             window.ReactNativeWebView.postMessage(JSON.stringify({
-                event: 'shareTo',
-                data: data
+                event: 'onShare',
+                shareTo: shareTo
             }));
         }
 

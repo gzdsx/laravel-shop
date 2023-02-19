@@ -15,6 +15,7 @@ namespace App\Traits\Trade;
 
 
 use App\Jobs\RefundMoneyJob;
+use App\Models\OrderItem;
 use App\Models\Refund;
 use App\Support\TradeUtil;
 use Illuminate\Http\Request;
@@ -34,63 +35,32 @@ trait RefundTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request)
+    public function getInfo(Request $request)
     {
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
-        $refund->load(['items', 'images', 'shipping', 'order', 'user']);
-        return jsonSuccess(['refund' => $refund]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchget(Request $request)
-    {
-        $query = $this->repository();
-        if (is_numeric($state = $request->input('refund_state'))) {
-            $query->where('refund_state', $state);
-        }
+        $refund->load(['images', 'shipping', 'user']);
+        $trade = $refund->trade;
+        $order = $trade->order;
         return jsonSuccess([
-            'total' => $query->count(),
-            'items' => $query->offset($request->input('offset', 0))
-                ->limit($request->input('count', 15))->orderByDesc('refund_id')->get()
+            'refund' => $refund,
+            'trade' => $trade,
+            'order' => $order
         ]);
     }
 
     /**
-     * 申请退货
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function apply(Request $request)
+    public function getList(Request $request)
     {
-        if ($refund_id = $request->input('refund_id')) {
-            $refund = Refund::find($refund_id);
-            $refund->load(['items', 'images', 'order']);
-        } else {
-            $refund = new Refund();
-            $order = Auth::user()->boughts()->find($request->input('order_id'));
-            $items = $order->items()->where('refund_state', 0)->whereKey($request->input('suborders', []))->get();
-            $refund_amount = 0;
-            $shipping_fee = 0;
-            foreach ($items as $item) {
-                $refund_amount = bcadd($refund_amount, $item->total_fee, 2);
-                $shipping_fee = bcadd($shipping_fee, $item->shipping_fee, 2);
-                $refund->items->push($item);
-            }
-
-            $refund->refund_id = 0;
-            $refund->refund_amount = $refund_amount;
-            $refund->shipping_fee = $shipping_fee;
-            $refund->refund_state = 1;
-            $refund->refund_type = $request->input('refund_type', 1);
-            $refund->receive_state = 1;
-            $refund->order()->associate($order);
-            $refund->load(['images']);
-        }
-
-        return jsonSuccess(['refund' => $refund]);
+        $query = $this->repository()->filter($request->all());
+        return jsonSuccess([
+            'total' => $query->count(),
+            'items' => $query->offset($request->input('offset', 0))
+                ->limit($request->input('count', 15))
+                ->orderByDesc('refund_id')->get()
+        ]);
     }
 
     /**
@@ -100,27 +70,53 @@ trait RefundTrait
      */
     public function create(Request $request)
     {
-        $order_id = $request->input('order_id');
-        $order = Auth::user()->boughts()->find($order_id);
-        $refund = $this->repository()->make($request->input('refund', []));
+        $trade = OrderItem::findOrFail($request->input('trade_id'));
+
+        $refund = new Refund();
+        $refund->refund_amount = $request->input('refund_amount');
+        $refund->refund_desc = $request->input('refund_desc');
+        $refund->refund_type = $request->input('refund_type');
+        $refund->refund_reason = $request->input('refund_reason');
+        $refund->goods_state = $request->input('goods_state');
         $refund->refund_no = TradeUtil::createReundNo();
-        $refund->refund_state = 1;
-        $refund->order()->associate($order);
+        $refund->refund_state = 0;
         $refund->user()->associate(Auth::user());
+        $refund->trade()->associate($trade->trade_id);
+        $refund->order()->associate($trade->order_id);
         $refund->save();
 
         foreach ($request->input('images', []) as $image) {
             $refund->images()->create($image);
         }
 
-        $items = $order->items()->whereKey($request->input('suborders', []))->where('refund_state', 0)->get();
-        foreach ($items as $item) {
-            $item->refund_id = $refund->refund_id;
-            $item->refund_state = $refund->refund_state;
-            $item->save();
+        $refund->refresh();
+
+        $trade->refund_state = 1;
+        $trade->save();
+
+        return jsonSuccess($refund);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $refund = $this->repository()->findOrFail($request->input('refund_id'));
+        $refund->refund_amount = $request->input('refund_amount');
+        $refund->refund_desc = $request->input('refund_desc');
+        $refund->refund_reason = $request->input('refund_reason');
+        $refund->goods_state = $request->input('goods_state');
+        $refund->refund_state = 0;
+        $refund->save();
+
+        $refund->images()->delete();
+        foreach ($request->input('images', []) as $image) {
+            $refund->images()->create($image);
         }
 
-        return jsonSuccess(['refund' => $refund]);
+        return jsonSuccess($refund);
     }
 
     /**
@@ -132,10 +128,15 @@ trait RefundTrait
     public function revoke(Request $request)
     {
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
-        $refund->refund_state = 6;
+        $refund->refund_state = 20;
         $refund->save();
 
-        return jsonSuccess(['refund' => $refund]);
+        if ($trade = $refund->trade) {
+            $trade->refund_state = 0;
+            $trade->save();
+        }
+
+        return jsonSuccess();
     }
 
     /**
@@ -145,31 +146,20 @@ trait RefundTrait
      */
     public function delete(Request $request)
     {
-        $refunds = $this->repository()->whereKey($request->input('items', []))->get();
-        foreach ($refunds as $refund) {
+        if ($refund = $this->repository()->find($request->input('refund_id'))) {
             $refund->delete();
         }
         return jsonSuccess();
     }
 
     /**
-     * 更新退款
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function save(Request $request)
+    public function batchDelete(Request $request)
     {
-        $refund = $this->repository()->findOrFail($request->input('refund_id'));
-        $refund->fill($request->input('refund', []));
-        $refund->refund_state = 1;
-        $refund->save();
-
-        $refund->images()->delete();
-        foreach ($request->input('images', []) as $image) {
-            $refund->images()->create($image);
-        }
-
-        return jsonSuccess(['refund' => $refund]);
+        $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
+        return jsonSuccess();
     }
 
     /**
@@ -179,13 +169,21 @@ trait RefundTrait
     public function send(Request $request)
     {
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
-        $refund->refund_state = 4;
+        $refund->refund_state = 3;
+        $refund->shipping_state = 1;
+        $refund->shipping_at = now();
         $refund->save();
 
         $shipping = $refund->shipping()->firstOrNew([]);
-        $shipping->fill($request->input('shipping', []))->save();
+        $shipping->express_name = $request->input('express_name');
+        $shipping->express_code = $request->input('express_code');
+        $shipping->express_no = $request->input('express_no');
 
-        return jsonSuccess(['refund' => $refund]);
+        $address = $request->input('address', []);
+        $shipping->fill($address);
+        $shipping->save();
+
+        return jsonSuccess();
     }
 
     /**
@@ -197,32 +195,28 @@ trait RefundTrait
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
         //仅退款
         if ($refund->refund_type == 1) {
-            $refund->refund_state = 5;
+            $refund->refund_state = 4;
             $refund->save();
 
-            $refund->items()->update(['refund_state' => 2]);
-
-            dispatch_now(new RefundMoneyJob($refund));
+            dispatch(new RefundMoneyJob($refund));
         }
 
         //退款退货
         if ($refund->refund_type == 2) {
-            if ($refund->refund_state == 1) {
-                $refund->refund_state = 3;
+            if ($refund->refund_state == 0) {
+                $refund->refund_state = 2;
                 $refund->save();
             }
 
-            if ($refund->refund_state == 4) {
-                $refund->refund_state = 5;
+            if ($refund->refund_state == 3) {
+                $refund->refund_state = 4;
                 $refund->save();
 
-                $refund->items()->update(['refund_state' => 2]);
-
-                dispatch_now(new RefundMoneyJob($refund));
+                dispatch(new RefundMoneyJob($refund));
             }
         }
 
-        return jsonSuccess(['refund' => $refund]);
+        return jsonSuccess();
     }
 
     /**
@@ -232,10 +226,10 @@ trait RefundTrait
     public function reject(Request $request)
     {
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
-        $refund->refund_state = 2;
+        $refund->refund_state = 1;
         $refund->save();
 
-        return jsonSuccess(['refund' => $refund]);
+        return jsonSuccess($refund);
     }
 
     /**
@@ -248,6 +242,6 @@ trait RefundTrait
         $shipping = $refund->shipping()->firstOrNew([]);
         $shipping->fill($request->input('shipping', []))->save();
 
-        return jsonSuccess(['shipping' => $shipping]);
+        return jsonSuccess();
     }
 }

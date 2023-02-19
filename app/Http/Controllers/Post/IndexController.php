@@ -26,13 +26,13 @@ class IndexController extends BaseController
      * @param $catid
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showPosts(Request $request, $catid)
+    public function showPosts(Request $request, $cate_id)
     {
-        $images = CommonBlockItem::where('block_id', 5)->get();
+        $images = CommonBlockItem::whereBlockId(1)->get();
         $categories = PostCategory::allFromCache();
-        $category = PostCategory::find($catid);
+        $category = PostCategory::find($cate_id);
 
-        $items = $this->repository()->filter(['catid' => $catid])->orderByDesc('aid')->paginate();
-        return $this->view('post.index', compact('images', 'categories', 'items', 'catid', 'category'));
+        $items = $this->repository()->filter(['cate_id' => $cate_id])->orderByDesc('aid')->paginate();
+        return $this->view('post.index', compact('images', 'categories', 'items', 'cate_id', 'category'));
     }
 }

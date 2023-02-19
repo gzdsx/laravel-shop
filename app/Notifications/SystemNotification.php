@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SystemNotification extends Notification
+class SystemNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -18,7 +18,7 @@ class SystemNotification extends Notification
      *
      * @return void
      */
-    public function __construct(SystemMessage $message)
+    public function __construct($message)
     {
         $this->message = $message;
     }
@@ -57,9 +57,9 @@ class SystemNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title' => $this->message->title,
-            'message' => $this->message->message,
-            'from' => $this->message->from
+            'from' => '服务通知',
+            'message' => $this->message,
+            'image' => asset('images/common/logo.png')
         ];
     }
 }

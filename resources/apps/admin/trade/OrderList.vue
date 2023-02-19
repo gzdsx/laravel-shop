@@ -91,7 +91,7 @@
                                     <tr v-for="(item,idx) in order.items">
                                         <td>
                                             <div class="order-item">
-                                                <img :src="item.thumb" class="thumb" alt="">
+                                                <img :src="item.image" class="thumb" alt="">
                                                 <div class="flex">
                                                     <div class="title">{{item.title}}</div>
                                                     <div class="sku">{{item.sku_title}}</div>
@@ -180,7 +180,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/trade/order.batchdelete', {ids: this.selectionIds}).then(() => {
+                    this.$post('/trade/order.batchDelete', {ids: this.selectionIds}).then(() => {
                         this.fetchList();
                     });
                 });
@@ -191,7 +191,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/trade/order.batchdelete', {ids: [order_id]}).then(() => {
+                    this.$post('/trade/order.batchDelete', {ids: [order_id]}).then(() => {
                         this.fetchList();
                     });
                 });

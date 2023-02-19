@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\CommonFeedback
  *
- * @property int $id
- * @property int $uid
- * @property string|null $username
- * @property string|null $title
- * @property string|null $message
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int $uid 管理用户
+ * @property string|null $title 标题
+ * @property string|null $message 内容
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback query()
@@ -24,12 +23,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUsername($value)
  * @mixin \Eloquent
  */
 class CommonFeedback extends Model
 {
     protected $table = 'common_feedback';
     protected $primaryKey = 'id';
-    protected $fillable = ['uid', 'username', 'title', 'message'];
+    protected $fillable = ['uid', 'title', 'message'];
 }

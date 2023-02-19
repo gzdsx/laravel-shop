@@ -8,15 +8,10 @@ use Illuminate\Http\Request;
 
 class PageController extends BaseController
 {
-    public function index(Request $request)
+    public function detail($id)
     {
-
-    }
-
-    public function detail(Request $request, $id)
-    {
-
         $page = Page::findOrFail($id);
+
         return $this->view('h5.page.detail', compact('page'));
     }
 }

@@ -128,4 +128,29 @@ trait BoughtTrait
 
         return jsonSuccess();
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTradeDetail(Request $request)
+    {
+        $trade = OrderItem::find($request->input('trade_id'));
+
+        return jsonSuccess($trade);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTradeList(Request $request)
+    {
+        $order = $this->repository()->findOrFail($request->input('order_id'));
+
+        return jsonSuccess([
+            'total' => $order->items()->count(),
+            'items' => $order->items
+        ]);
+    }
 }

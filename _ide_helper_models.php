@@ -209,13 +209,12 @@ namespace App\Models{
 /**
  * App\Models\CommonFeedback
  *
- * @property int $id
- * @property int $uid
- * @property string|null $username
- * @property string|null $title
- * @property string|null $message
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id 主键
+ * @property int $uid 管理用户
+ * @property string|null $title 标题
+ * @property string|null $message 内容
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback query()
@@ -225,7 +224,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUsername($value)
  */
 	class CommonFeedback extends \Eloquent {}
 }
@@ -441,7 +439,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Settings
+ * App\Models\CommonSetting
  *
  * @property string $skey 标识
  * @property string|null $svalue 值
@@ -451,7 +449,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|CommonSetting whereSkey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonSetting whereSvalue($value)
  */
-	class CommonSettings extends \Eloquent {}
+	class CommonSetting extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -460,8 +458,8 @@ namespace App\Models{
  *
  * @property int $id 主键
  * @property int $uid 用户ID
- * @property int $itemid 产品ID
  * @property int $shop_id 店铺ID
+ * @property int $itemid 产品ID
  * @property string|null $title 产品标题
  * @property int $quantity 产品数量
  * @property string $price 商品价格
@@ -493,6 +491,35 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|EcomCart whereUpdatedAt($value)
  */
 	class EcomCart extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\EcomCartShop
+ *
+ * @property int $id 主键
+ * @property int $uid 管理用户
+ * @property int $shop_id 店铺ID
+ * @property string|null $shop_name 店铺名称
+ * @property \Illuminate\Support\Carbon|null $created_at 创建时间
+ * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartProducts
+ * @property-read int|null $cart_products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShop[] $shop
+ * @property-read int|null $shop_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $user
+ * @property-read int|null $user_count
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop query()
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereShopName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomCartShop whereUpdatedAt($value)
+ */
+	class EcomCartShop extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -703,9 +730,9 @@ namespace App\Models{
  * App\Models\EcomProductItem
  *
  * @property int $itemid 商品ID
+ * @property int $cate_id 分类ID
  * @property int $seller_id 用户ID
  * @property int $shop_id 门店ID
- * @property int $cate_id 分类ID
  * @property string|null $title 宝贝标题
  * @property string|null $subtitle 宝贝卖点
  * @property string|null $merchant_code 商品编号
@@ -756,6 +783,8 @@ namespace App\Models{
  * @property-read \App\Models\EcomShop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductSku[] $skus
  * @property-read int|null $skus_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
+ * @property-read int|null $subscribed_users_count
  * @property-read \App\Models\EcomProductTemplate|null $template
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem newModelQuery()
@@ -966,7 +995,6 @@ namespace App\Models{
  * @property float|null $latitude 纬度
  * @property float|null $longitude 经度
  * @property int $views 浏览次数
- * @property int $collect_count 收藏数量
  * @property int $subscribe_count 关注量
  * @property int $visitors 访客数
  * @property string $turnover 营业额
@@ -1001,6 +1029,8 @@ namespace App\Models{
  * @property-read int|null $products_count
  * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\EcomShopStats|null $stats
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
+ * @property-read int|null $subscribed_users_count
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop newQuery()
@@ -1013,7 +1043,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereBondState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereClosed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereCollectCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereCumulativeSales($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomShop whereDescription($value)
@@ -1332,36 +1361,34 @@ namespace App\Models{
 /**
  * App\Models\OrderItem
  *
- * @property int $sub_order_id 主键
+ * @property int $trade_id 主键
  * @property int $order_id 订单ID
  * @property int $itemid 商品ID
  * @property string|null $title 商品名称
  * @property string $price 商品价格
  * @property int $quantity 商品数量
- * @property string $thumb 缩略图
  * @property string $image 商品图片
  * @property int|null $sku_id 属性ID
  * @property string|null $sku_title 商品属性
- * @property string $total_fee 订单总价
- * @property int $refund_state 退款状态
- * @property string|null $refund_at 退款时间
+ * @property int $is_gift 是否赠品
+ * @property int $type 商品类型
+ * @property-read float|int $total_fee
  * @property-read \App\Models\Order|null $order
+ * @property-read \App\Models\Refund|null $refund
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereIsGift($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereItemid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereRefundAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereSkuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereSkuTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereSubOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereTotalFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereTradeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereType($value)
  */
 	class OrderItem extends \Eloquent {}
 }
@@ -1793,8 +1820,8 @@ namespace App\Models{
  * App\Models\Refund
  *
  * @property int $refund_id 主键
+ * @property int $trade_id 订单ID
  * @property int $uid 用户ID
- * @property int $order_id 订单ID
  * @property string|null $refund_no 退款单号
  * @property int $refund_type 退货类型,1=仅退款,2=退货退款
  * @property int $refund_state 处理状态
@@ -1803,10 +1830,10 @@ namespace App\Models{
  * @property string $refund_amount 退款金额
  * @property string|null $refund_remark 备注
  * @property string $shipping_fee 退货运费
- * @property int $receive_state 货物状态
+ * @property int $goods_state 货物状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $receive_state_des
+ * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $goods_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_type_des
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RefundImage[] $images
@@ -1817,12 +1844,17 @@ namespace App\Models{
  * @property-read Refund|null $refund
  * @property-read \App\Models\RefundShipping|null $shipping
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund simplePaginateFilter(?int $perPage = null, ?int $columns = [], ?int $pageName = 'page', ?int $page = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereBeginsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Refund whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Refund whereReceiveState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereEndsWith(string $column, string $value, string $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereGoodsState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereLike(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundId($value)
@@ -1832,6 +1864,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereShippingFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereTradeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereUpdatedAt($value)
  */
@@ -1871,11 +1904,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\EcomRefundReason
+ * App\Models\RefundReason
  *
+ * @property int $id
+ * @property string|null $title
+ * @property int|null $sort_num
  * @method static \Illuminate\Database\Eloquent\Builder|RefundReason newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundReason newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RefundReason query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RefundReason whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefundReason whereSortNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RefundReason whereTitle($value)
  */
 	class RefundReason extends \Eloquent {}
 }
@@ -1949,6 +1988,8 @@ namespace App\Models{
  * @property-read \App\Models\AdminUser|null $admin
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
  * @property-read int|null $boughts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartProducts
+ * @property-read int|null $cart_products_count
  * @property-read \App\Models\UserCertify|null $certify
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
@@ -1967,8 +2008,6 @@ namespace App\Models{
  * @property-read int|null $follows_count
  * @property-read array|string|null $state_des
  * @property-read \App\Models\UserGroup|null $group
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserJobIntention[] $jobIntentions
- * @property-read int|null $job_intentions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
  * @property-read int|null $logs_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonMaterial[] $materials
@@ -1979,12 +2018,19 @@ namespace App\Models{
  * @property-read int|null $positions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $products
+ * @property-read int|null $products_count
  * @property-read \App\Models\UserProfile|null $profile
+ * @property-read \App\Models\EcomShop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $solds
  * @property-read int|null $solds_count
  * @property-read \App\Models\UserStats|null $stats
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $subscribedPosts
  * @property-read int|null $subscribed_posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $subscribedProducts
+ * @property-read int|null $subscribed_products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShop[] $subscribedShops
+ * @property-read int|null $subscribed_shops_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserTransaction[] $transactions

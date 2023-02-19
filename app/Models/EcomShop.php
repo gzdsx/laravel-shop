@@ -27,7 +27,6 @@ use Illuminate\Support\Carbon;
  * @property float|null $latitude 纬度
  * @property float|null $longitude 经度
  * @property int $views 浏览次数
- * @property int $collect_count 收藏数量
  * @property int $subscribe_count 关注量
  * @property int $visitors 访客数
  * @property string $turnover 营业额
@@ -62,6 +61,8 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $products_count
  * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\EcomShopStats|null $stats
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
+ * @property-read int|null $subscribed_users_count
  * @method static Builder|EcomShop filter(array $input = [], $filter = null)
  * @method static Builder|EcomShop newModelQuery()
  * @method static Builder|EcomShop newQuery()
@@ -74,7 +75,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EcomShop whereBondState($value)
  * @method static Builder|EcomShop whereCity($value)
  * @method static Builder|EcomShop whereClosed($value)
- * @method static Builder|EcomShop whereCollectCount($value)
  * @method static Builder|EcomShop whereCreatedAt($value)
  * @method static Builder|EcomShop whereCumulativeSales($value)
  * @method static Builder|EcomShop whereDescription($value)
@@ -252,6 +252,21 @@ class EcomShop extends Model
     public function productAttrs()
     {
         return $this->hasMany(EcomProductAttr::class, 'shop_id', 'shop_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|User
+     */
+    public function subscribedUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'ecom_shop_subscribe',
+            'subscribed_shop_id',
+            'subscribed_uid',
+            'shop_id',
+            'uid'
+        )->withTimestamps();
     }
 
     public function markAsClosed()

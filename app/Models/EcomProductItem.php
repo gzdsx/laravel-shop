@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\EcomProductItem
  *
  * @property int $itemid 商品ID
+ * @property int $cate_id 分类ID
  * @property int $seller_id 用户ID
  * @property int $shop_id 门店ID
- * @property int $cate_id 分类ID
  * @property string|null $title 宝贝标题
  * @property string|null $subtitle 宝贝卖点
  * @property string|null $merchant_code 商品编号
@@ -68,6 +68,8 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\EcomShop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductSku[] $skus
  * @property-read int|null $skus_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
+ * @property-read int|null $subscribed_users_count
  * @property-read \App\Models\EcomProductTemplate|null $template
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem newModelQuery()
@@ -314,6 +316,21 @@ class EcomProductItem extends Model
             'product_cate_id',
             'itemid',
             'cate_id'
+        );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|User
+     */
+    public function subscribedUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'ecom_product_subscribe',
+            'subscribed_itemid',
+            'subscribed_uid',
+            'itemid',
+            'uid'
         );
     }
 }

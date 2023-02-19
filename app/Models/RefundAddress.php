@@ -8,20 +8,40 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * App\Models\EcomRefundAddress
+ * App\Models\RefundAddress
  *
+ * @property int $id 主键
+ * @property int $uid 用户ID
+ * @property string|null $name 姓名
+ * @property string|null $phone 电话
+ * @property string|null $province 省
+ * @property string|null $city 市
+ * @property string|null $district 区县
+ * @property string|null $street 街道
+ * @property string|null $postalcode 邮编
+ * @property int $isdefault 是否默认
  * @property-read string $formatted_address
  * @method static Builder|RefundAddress newModelQuery()
  * @method static Builder|RefundAddress newQuery()
  * @method static Builder|RefundAddress query()
+ * @method static Builder|RefundAddress whereCity($value)
+ * @method static Builder|RefundAddress whereDistrict($value)
+ * @method static Builder|RefundAddress whereId($value)
+ * @method static Builder|RefundAddress whereIsdefault($value)
+ * @method static Builder|RefundAddress whereName($value)
+ * @method static Builder|RefundAddress wherePhone($value)
+ * @method static Builder|RefundAddress wherePostalcode($value)
+ * @method static Builder|RefundAddress whereProvince($value)
+ * @method static Builder|RefundAddress whereStreet($value)
+ * @method static Builder|RefundAddress whereUid($value)
  * @mixin \Eloquent
  */
 class RefundAddress extends Model
 {
-    protected $table = 'ecom_refund_address';
+    protected $table = 'refund_address';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'tel', 'province', 'city', 'district', 'street', 'postalcode', 'isdefault'
+        'name', 'phone', 'province', 'city', 'district', 'street', 'postalcode', 'isdefault'
     ];
     protected $appends = ['formatted_address'];
 

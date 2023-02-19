@@ -75,21 +75,4 @@ class UserController extends BaseController
 
         return jsonSuccess();
     }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function completeRegister(Request $request)
-    {
-        $username = $request->input('username');
-        $password = $request->input('password');
-
-        $user = Auth::user();
-        $user->username = $username;
-        $user->password = bcrypt($password);
-        $user->save();
-
-        return jsonSuccess();
-    }
 }

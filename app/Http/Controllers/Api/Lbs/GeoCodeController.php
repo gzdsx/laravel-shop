@@ -11,7 +11,16 @@ class GeoCodeController extends BaseController
 {
     public function geo(Request $request)
     {
+        $client = new Client();
+        $response = $client->get('https://restapi.amap.com/v3/geocode/geo?parameters', [
+            'query' => [
+                'key' => env('AMAP_KEY'),
+                'address' => $request->input('address')
+            ]
+        ]);
 
+        $result = json_decode($response->getBody()->getContents(), true);
+        return jsonSuccess($result['geocodes'] ?? []);
     }
 
     /**

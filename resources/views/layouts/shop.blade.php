@@ -14,8 +14,8 @@
     <link href="{{asset('lib/iconfont/iconfont.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('dist/shop/index.css?v='.config('app.version'))}}" rel="stylesheet" type="text/css">
 @yield('styles')
-    <script src="{{asset('js/lib/jquery.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/lib/common.js')}}" type="text/javascript"></script>
+    <script src="{{asset('lib/jquery.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('lib/common.js')}}" type="text/javascript"></script>
 @yield('scripts')
 </head>
 <body>

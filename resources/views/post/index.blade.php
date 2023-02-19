@@ -36,10 +36,10 @@
         <div class="flex-row">
             <div class="home-main">
                 <ul class="categories">
-                    <li><a href="{{url('post')}}" class="{{$catid ? '' : 'active'}}">推荐</a></li>
+                    <li><a href="{{url('post')}}" class="{{$cate_id ? '' : 'active'}}">推荐</a></li>
                     @foreach ($categories as $category)
                         <li><a href="{{$category->url}}"
-                               class="{{$catid==$category->catid ? 'active' : ''}}">{{$category->name}}</a></li>
+                               class="{{$cate_id==$category->cate_id ? 'active' : ''}}">{{$category->cate_name}}</a></li>
                     @endforeach
                 </ul>
                 <div class="post-list">

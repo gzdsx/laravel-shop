@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasDates;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -10,36 +11,42 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Refund
  *
  * @property int $refund_id 主键
- * @property int $uid 用户ID
  * @property int $order_id 订单ID
+ * @property int $trade_id 子订单ID
+ * @property int $uid 用户ID
  * @property string|null $refund_no 退款单号
  * @property int $refund_type 退货类型,1=仅退款,2=退货退款
- * @property int $refund_state 处理状态
+ * @property string $refund_amount 退款金额
  * @property string|null $refund_reason 退货原因
  * @property string|null $refund_desc 退款说明
- * @property string $refund_amount 退款金额
  * @property string|null $refund_remark 备注
- * @property string $shipping_fee 退货运费
- * @property int $receive_state 货物状态
+ * @property int $refund_state 处理状态
+ * @property int $goods_state 货物状态
+ * @property int|null $shipping_state 退货状态
+ * @property \Illuminate\Support\Carbon|null $shipping_at 退货时间
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $receive_state_des
+ * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $goods_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_type_des
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RefundImage[] $images
  * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
- * @property-read int|null $items_count
  * @property-read \App\Models\Order|null $order
- * @property-read Refund|null $refund
  * @property-read \App\Models\RefundShipping|null $shipping
+ * @property-read \App\Models\OrderItem|null $trade
  * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund simplePaginateFilter(?int $perPage = null, ?int $columns = [], ?int $pageName = 'page', ?int $page = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereBeginsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereEndsWith(string $column, string $value, string $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereGoodsState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereLike(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereOrderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Refund whereReceiveState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundId($value)
@@ -48,21 +55,26 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundRemark($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereRefundType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Refund whereShippingFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereShippingAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereShippingState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Refund whereTradeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Refund whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Refund extends Model
 {
-    use HasDates;
+    use HasDates, Filterable;
+
     protected $table = 'refund';
     protected $primaryKey = 'refund_id';
     protected $fillable = [
-        'uid', 'order_id', 'refund_no', 'refund_type', 'refund_state', 'refund_remark',
-        'refund_reason', 'refund_desc', 'refund_amount', 'shipping_fee', 'receive_state'
+        'uid', 'trade_id', 'refund_no', 'refund_type', 'refund_state', 'refund_remark',
+        'refund_reason', 'refund_desc', 'refund_amount', 'shipping_fee', 'goods_state', 'shipping_state'
     ];
-    protected $appends = ['refund_type_des', 'refund_state_des', 'receive_state_des'];
+    protected $appends = ['refund_type_des', 'refund_state_des', 'goods_state_des'];
+    protected $with = ['images', 'trade'];
+    protected $dates = ['shipping_at'];
 
     public static function boot()
     {
@@ -70,7 +82,7 @@ class Refund extends Model
         static::deleting(function (Refund $refund) {
             $refund->images()->delete();
             $refund->shipping()->delete();
-            $refund->items()->update(['refund_state' => 0, 'refund_id' => 0]);
+            $refund->trade->update(['refund_state' => 0, 'refund_id' => 0]);
         });
     }
 
@@ -93,9 +105,25 @@ class Refund extends Model
     /**
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null
      */
-    public function getReceiveStateDesAttribute()
+    public function getGoodsStateDesAttribute()
     {
-        return trans('trade.receive_states.' . $this->receive_state);
+        return trans('trade.goods_states.' . $this->goods_state);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function trade()
+    {
+        return $this->belongsTo(OrderItem::class, 'trade_id', 'trade_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
 
     /**
@@ -106,13 +134,6 @@ class Refund extends Model
         return $this->belongsTo(User::class, 'uid', 'uid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function order()
-    {
-        return $this->belongsTo(Order::class, 'order_id', 'order_id');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -128,22 +149,6 @@ class Refund extends Model
     public function shipping()
     {
         return $this->hasOne(RefundShipping::class, 'refund_id', 'refund_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class, 'refund_id', 'refund_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function refund()
-    {
-        return $this->belongsTo(Refund::class, 'refund_id', 'refund_id');
     }
 
     /**

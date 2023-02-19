@@ -157,6 +157,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Overtrue\LaravelWeChat\ServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         EloquentFilter\ServiceProvider::class,
         /*
          * Application Service Providers...

@@ -66,6 +66,18 @@ trait PostSubscribeTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+    public function query(Request $request)
+    {
+        $aid = $request->input('aid');
+        $subscribe = Auth::user()->subscribedPosts()->find($aid);
+
+        return jsonSuccess(compact('subscribe'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getList(Request $request)
     {
         $query = $this->repository();

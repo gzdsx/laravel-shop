@@ -15,6 +15,7 @@ namespace App\Models\Traits;
 
 
 use App\Models\PostItem;
+use App\Models\PostSubscribe;
 
 trait UserHasPosts
 {
@@ -38,6 +39,6 @@ trait UserHasPosts
             'subscribed_aid',
             'uid',
             'aid'
-        )->withTimestamps();
+        )->as('subscribe')->withTimestamps();
     }
 }

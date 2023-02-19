@@ -38,4 +38,6 @@ use Illuminate\Notifications\DatabaseNotification;
 class Notification extends DatabaseNotification
 {
     use HasDates;
+
+    protected $hidden = ['notifiable_type', 'type'];
 }

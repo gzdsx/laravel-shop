@@ -1,14 +1,13 @@
 {
-    "/dist/admin/app.js": "/dist/admin/app.js?id=e7d248e84b4c61e7b5b2",
-    "/dist/h5/index.js": "/dist/h5/index.js?id=cdd771aae162c0baa0c1",
-    "/lib/vue/vue-chunk.js": "/lib/vue/vue-chunk.js?id=0f7b116b9a7e970a9d67",
-    "/dist/admin/index.css": "/dist/admin/index.css?id=ed1004d3fd3db53d15bc",
-    "/dist/h5/index.css": "/dist/h5/index.css?id=9842ac276ec1fc3458b9",
-    "/dist/errors/index.css": "/dist/errors/index.css?id=8b3760f93f783d277a8f",
-    "/dist/auth/index.css": "/dist/auth/index.css?id=a8bb52a23599d774c071",
-    "/dist/post/index.css": "/dist/post/index.css?id=e92a484f5725896609bc",
-    "/dist/shop/index.css": "/dist/shop/index.css?id=8ac1c600b8498075d55d",
-    "/dist/live/index.css": "/dist/live/index.css?id=f7fa2a76ac15f6235150",
-    "/dist/video/index.css": "/dist/video/index.css?id=98df12b5455821f80f49",
-    "/dist/user/index.css": "/dist/user/index.css?id=9f4eab560002183919a8"
+    "/dist/admin/app.js": "/dist/admin/app.js",
+    "/dist/h5/index.js": "/dist/h5/index.js",
+    "/dist/admin/index.css": "/dist/admin/index.css",
+    "/dist/h5/index.css": "/dist/h5/index.css",
+    "/dist/errors/index.css": "/dist/errors/index.css",
+    "/dist/auth/index.css": "/dist/auth/index.css",
+    "/dist/post/index.css": "/dist/post/index.css",
+    "/dist/shop/index.css": "/dist/shop/index.css",
+    "/dist/live/index.css": "/dist/live/index.css",
+    "/dist/video/index.css": "/dist/video/index.css",
+    "/dist/user/index.css": "/dist/user/index.css"
 }

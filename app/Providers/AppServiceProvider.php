@@ -16,10 +16,10 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     protected $validators = [
-        'account' => AccountValidator::class,
         'pwd' => PasswordValidator::class,
         'phone' => PhoneValidaotr::class,
-        'nickname' => NickNameValidator::class
+        'nickname' => NickNameValidator::class,
+        'account' => AccountValidator::class
     ];
 
     /**

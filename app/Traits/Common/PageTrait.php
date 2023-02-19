@@ -34,7 +34,7 @@ trait PageTrait
      */
     public function getInfo(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
+        $model = $this->repository()->findOrNew($request->input('id'), ['id', 'title', 'alias']);
         return jsonSuccess($model);
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends BaseController
 {
@@ -15,12 +16,13 @@ class PasswordController extends BaseController
      */
     public function reset(Request $request)
     {
-        $this->validate($request, [
-            'password' => 'bail|required|string|pwd'
-        ]);
-
+        $oldpassword = $request->input('oldpassword');
+        $newpassword = $request->input('newpassword');
         $user = Auth::user();
-        $user->password = bcrypt($request->input('password'));
+        if (!Hash::check($oldpassword, $user->getAuthPassword())) {
+            return jsonError(600, trans('user.old password input incorrect'));
+        }
+        $user->password = bcrypt($newpassword);
         $user->save();
 
         return jsonSuccess();

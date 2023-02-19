@@ -47,11 +47,12 @@
     43 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
     44 => 'Overtrue\\LaravelWeChat\\ServiceProvider',
     45 => 'Barryvdh\\Snappy\\ServiceProvider',
-    46 => 'EloquentFilter\\ServiceProvider',
-    47 => 'App\\Providers\\AppServiceProvider',
-    48 => 'App\\Providers\\AuthServiceProvider',
-    49 => 'App\\Providers\\EventServiceProvider',
-    50 => 'App\\Providers\\RouteServiceProvider',
+    46 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
+    47 => 'EloquentFilter\\ServiceProvider',
+    48 => 'App\\Providers\\AppServiceProvider',
+    49 => 'App\\Providers\\AuthServiceProvider',
+    50 => 'App\\Providers\\EventServiceProvider',
+    51 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (

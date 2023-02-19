@@ -18,14 +18,7 @@ require __DIR__ . '/ecom.php';
 require __DIR__ . '/live.php';
 require __DIR__ . '/video.php';
 //首页
-Route::get('/','Admin\IndexController@index');
-Route::group(['namespace' => 'Home'], function () {
-    //Route::get('/', 'IndexController@index');
-    Route::get('app', 'IndexController@app');
-    Route::get('upgrade', 'UpgradeController@index');
-    Route::any('test', 'TestController@index');
-    Route::any('table', 'TestController@table');
-});
+Route::get('/','Ecom\IndexController@index');
 
 //页面
 Route::group(['namespace' => 'Page', 'prefix' => 'page'], function () {

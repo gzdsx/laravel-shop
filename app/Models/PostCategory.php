@@ -70,6 +70,6 @@ class PostCategory extends CategoryModel
      */
     public function getUrlAttribute()
     {
-        return url('post/category/' . $this->catid);
+        return url('post/category/' . $this->cate_id);
     }
 }

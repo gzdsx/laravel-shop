@@ -220,7 +220,7 @@
 @stop
 
 @section('scripts')
-    <script src="{{asset('js/lib/jquery.zoombox.js')}}" type="text/javascript"></script>
+    <script src="{{asset('lib/jquery.zoombox.js')}}" type="text/javascript"></script>
     <script type="text/javascript">
         window.item =@json($product,JSON_UNESCAPED_UNICODE);
         function collectProduct(itemid) {

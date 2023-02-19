@@ -50,20 +50,20 @@
         <div class="area">
             <div class="item-list-div">
                 <ul>
-                    @foreach ($items as $item)
+                    @foreach ($products as $product)
                         <li>
                             <div class="thumb">
-                                <a href="{{$item->url}}" target="_blank">
-                                    <div class="bg bg-cover" style="background-image: url({{$item->thumb}})"></div>
+                                <a href="{{$product->url}}" target="_blank">
+                                    <div class="bg bg-cover" style="background-image: url({{$product->thumb}})"></div>
                                 </a>
                             </div>
                             <div class="title">
-                                <a href="{{$item->url}}"
-                                                  target="_blank">{{mbsubstr($item->title, 24)}}</a>
+                                <a href="{{$product->url}}"
+                                                  target="_blank">{{mbsubstr($product->title, 24)}}</a>
                             </div>
                             <div class="more-info">
-                                <div class="price flex">￥{{$item->price}}</div>
-                                <div class="sold">已抢{{format_count($item->sold)}}件</div>
+                                <div class="price flex">￥{{$product->price}}</div>
+                                <div class="sold">已抢{{format_count($product->sold)}}件</div>
                             </div>
                         </li>
                     @endforeach

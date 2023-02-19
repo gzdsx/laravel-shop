@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="image">
-        <img src="{{asset('images/common/404.png')}}">
+        <img src="{{asset('images/common/404.png')}}" alt="">
     </div>
     <h2>{{$exception->getMessage() ?: '咦，你要找的页面不见了！'}}</h2>
     <div class="links">

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasDates;
+use App\Models\Traits\UserHasEcom;
 use App\Models\Traits\UserHasOrders;
 use App\Models\Traits\UserHasPosts;
 use EloquentFilter\Filterable;
@@ -38,6 +39,8 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \App\Models\AdminUser|null $admin
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
  * @property-read int|null $boughts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartProducts
+ * @property-read int|null $cart_products_count
  * @property-read \App\Models\UserCertify|null $certify
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
@@ -66,12 +69,19 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $positions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
  * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $products
+ * @property-read int|null $products_count
  * @property-read \App\Models\UserProfile|null $profile
+ * @property-read \App\Models\EcomShop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $solds
  * @property-read int|null $solds_count
  * @property-read \App\Models\UserStats|null $stats
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $subscribedPosts
  * @property-read int|null $subscribed_posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $subscribedProducts
+ * @property-read int|null $subscribed_products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShop[] $subscribedShops
+ * @property-read int|null $subscribed_shops_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserTransaction[] $transactions
@@ -112,7 +122,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use Notifiable, Filterable, HasApiTokens, HasDates;
-    use UserHasPosts, UserHasOrders;
+    use UserHasOrders, UserHasPosts, UserHasEcom;
 
     protected $table = 'user';
     protected $primaryKey = 'uid';
