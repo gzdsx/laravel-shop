@@ -9,7 +9,7 @@ export const OAuthClientID = 2;
 export const OAuthClientSecret = 'RIBklHvmIpQAje6RYw9Pd7r8HkAPnj5jkPWswCiK';
 export const AppUrl = Platform.select({
     ios: 'https://apps.apple.com/cn/app/id1544829486?l=zh&ls=1',
-    android: 'https://shop.gzdsx.cn/apk/shopapp.apk'
+    android: 'http://apps.gzdsx.cn/apk/shopapp.apk'
 });
 
 export const AccessToken = 'AccessToken';

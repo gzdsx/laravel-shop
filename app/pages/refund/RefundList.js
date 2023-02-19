@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, FlatList, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {View, FlatList, Text, StyleSheet, TouchableOpacity, Alert, SafeAreaView} from 'react-native';
 import {LoadingView} from "react-native-gzdsx-elements";
 import FastImage from "react-native-fast-image";
 import {defaultNavigationConfigure} from "../../base/navconfig";
@@ -36,37 +36,43 @@ export default class RefundList extends ListComponent {
         this.unsubscribe();
     }
 
+    onLoaded = res => {
+        console.log(res);
+    }
+
     render(): React.ReactNode {
-        let {dataList, loading, refreshing} = this.state;
+        let {dataList, loading, refreshing, loadingMore} = this.state;
         if (loading) return <LoadingView/>;
         return (
-            <FlatList
-                data={dataList}
-                renderItem={this.renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                refreshing={refreshing}
-                onRefresh={this.onRefresh}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={0.2}
-                ListHeaderComponent={() => {
-                    if (this.state.items.length === 0) {
-                        return (
-                            <Text style={{
-                                textAlign: 'center',
-                                color: '#666',
-                                padding: 30
-                            }}>
-                                没有此类订单
-                            </Text>
-                        );
-                    } else {
-                        return null;
-                    }
-                }}
-                ListFooterComponent={<LoadingView text="正在加载更多" show={this.state.loadMore}
-                                                  style={{paddingTop: 10, paddingBottom: 10}}/>}
-                style={{flex: 1}}
-            />
+            <SafeAreaView style={{flex: 1}}>
+                <FlatList
+                    data={dataList}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    refreshing={refreshing}
+                    onRefresh={this.onRefresh}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={0.2}
+                    ListHeaderComponent={() => {
+                        if (dataList.length === 0) {
+                            return (
+                                <Text style={{
+                                    textAlign: 'center',
+                                    color: '#666',
+                                    padding: 30
+                                }}>
+                                    没有售后订单
+                                </Text>
+                            );
+                        } else {
+                            return null;
+                        }
+                    }}
+                    ListFooterComponent={<LoadingView text="正在加载更多" show={loadingMore}
+                                                      style={{paddingTop: 10, paddingBottom: 10}}/>}
+                    style={{flex: 1}}
+                />
+            </SafeAreaView>
         );
     }
 
@@ -85,11 +91,24 @@ export default class RefundList extends ListComponent {
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
                         <OrderActionButton
                             title={'删除记录'}
-                            show={refund_state > 4}
+                            show={refund_state === 20}
                             onPress={() => {
-                                ApiClient.post('/refund/delete', {items: [refund_id]}).then(response => {
-                                    this.fetchData();
-                                });
+                                Alert.alert(null, '确定要删除此售后记录吗?', [
+                                    {
+                                        text: '确定',
+                                        onPress: () => {
+                                            ApiClient.post('/trade/refund.delete', {refund_id}).then(() => {
+                                                let {dataList} = this.state;
+                                                dataList.splice(index, 1);
+                                                this.setState({dataList});
+                                            });
+                                        }
+                                    },
+                                    {
+                                        text: '取消',
+                                        onPress: () => null
+                                    }
+                                ])
                             }}
                         />
                         <OrderActionButton
@@ -99,8 +118,8 @@ export default class RefundList extends ListComponent {
                                     {
                                         text: '确定',
                                         onPress: () => {
-                                            ApiClient.post('/refund/revoke', {refund_id}).then(response => {
-                                                this.fetchData();
+                                            ApiClient.post('/trade/refund.revoke', {refund_id}).then(response => {
+                                                this.fetchList();
                                             });
                                         }
                                     },
@@ -113,7 +132,7 @@ export default class RefundList extends ListComponent {
                             show={refund_state < 5}
                         />
                         <OrderActionButton title={'查看详情'} onPress={() => {
-                            this.props.navigation.navigate('RefundDetail', {refund_id});
+                            this.props.navigation.navigate('refund-detail', {refund_id});
                         }}/>
                     </View>
                 </View>
@@ -122,37 +141,33 @@ export default class RefundList extends ListComponent {
     };
 
     renderRefundItems = (refund) => {
-        let contents = refund.items.map((item, index) => {
-            const {order_id} = item;
-            return (
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.item}
-                    key={index.toString()}
-                    onPress={() => {
-                        this.props.navigation.navigate('RefundDetail', {refund_id: refund.refund_id});
-                    }}
-                >
-                    <FastImage source={{uri: item.thumb}} style={styles.thumb}/>
-                    <View style={{flex: 1, flexDirection: 'column'}}>
-                        <Text style={{fontSize: 14, color: '#333'}}>{item.title}</Text>
-                        <View style={{flex: 1}}>
-                            <Text style={{fontSize: 12, color: '#777'}}>{item.sku_title}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 14, color: '#333', flex: 1}}>￥{item.price}</Text>
-                            <Text style={{fontSize: 14, color: '#333'}}>x{item.quantity}</Text>
-                        </View>
+        let {trade} = refund;
+        return (
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.item}
+                onPress={() => {
+                    this.props.navigation.navigate('refund-detail', {refund_id: refund.refund_id});
+                }}
+            >
+                <FastImage source={{uri: trade.image}} style={styles.thumb}/>
+                <View style={{flex: 1, flexDirection: 'column'}}>
+                    <Text style={{fontSize: 14, color: '#333'}}>{trade.title}</Text>
+                    <View style={{flex: 1}}>
+                        <Text style={{fontSize: 12, color: '#777'}}>{trade.sku_title}</Text>
                     </View>
-                </TouchableOpacity>
-            );
-        });
-        return <View>{contents}</View>;
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontSize: 14, color: '#333', flex: 1}}>￥{trade.price}</Text>
+                        <Text style={{fontSize: 14, color: '#333'}}>x{trade.quantity}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
     };
 
     renderRefundState = (refund) => {
         const {refund_id, refund_state, refund_state_des, refund_amount} = refund;
-        if (refund_state === 5) {
+        if (refund_state === 4) {
             return (
                 <View style={styles.stateDes}>
                     <Text style={styles.stateDesText}>退款成功</Text>
@@ -161,11 +176,11 @@ export default class RefundList extends ListComponent {
             );
         }
 
-        if (refund_state === 6) {
+        if (refund_state === 20) {
             return (
                 <View style={styles.stateDes}>
                     <Text style={styles.stateDesText}>退款关闭</Text>
-                    <Text style={{fontSize: 14, color: '#333'}}>退款关闭</Text>
+                    <Text style={{fontSize: 14, color: '#333'}}>退款已取消</Text>
                 </View>
             );
         }

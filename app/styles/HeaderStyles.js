@@ -6,16 +6,17 @@ const HeaderStyles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     headerTitleStyle: {
-        fontSize: 18,
+        fontSize: 18
     },
     headerLeft: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
+        marginLeft: -8
     },
     headerRight: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginRight: 15,
+        marginRight: 10,
     },
 });
 

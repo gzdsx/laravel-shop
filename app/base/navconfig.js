@@ -1,7 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {Colors, HeaderStyles} from '../styles';
-import Icon from "react-native-vector-icons/Entypo";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const defaultNavigationConfigure = (navigation) => {
     return {
@@ -14,15 +14,18 @@ const defaultNavigationConfigure = (navigation) => {
             <View style={HeaderStyles.headerLeft}>
                 {
                     navigation.canGoBack() ?
-                        <Icon
-                            name={'chevron-thin-left'}
-                            color={Colors.headerTintColor}
-                            size={22}
-                            suppressHighlighting={true}
+                        (<TouchableOpacity
                             onPress={() => {
                                 navigation.goBack();
                             }}
-                        />
+                            activeOpacity={1}
+                        >
+                            <Icon
+                                name={'arrow-back-ios'}
+                                color={Colors.headerTintColor}
+                                size={24}
+                            />
+                        </TouchableOpacity>)
                         : null
                 }
             </View>
@@ -48,7 +51,7 @@ const lightNavigationConfigure = (navigation) => {
                 {
                     navigation.canGoBack() ?
                         <Icon
-                            name={'chevron-thin-left'}
+                            name={'arrow-back-ios'}
                             color={'#fff'}
                             size={22}
                             suppressHighlighting={true}

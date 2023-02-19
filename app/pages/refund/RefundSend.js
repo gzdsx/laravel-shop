@@ -1,12 +1,12 @@
 import React from 'react';
-import {KeyboardAvoidingView, ScrollView, Text, View} from 'react-native';
-import {LoadingView, Spinner, TableCell, TableView, TextField, Toast} from "react-native-gzdsx-elements";
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {LoadingView, Toast} from "react-native-gzdsx-elements";
 import ActionSheet from "react-native-actionsheet";
-import {Button} from "react-native-elements";
+import {Button, ListItem} from "react-native-elements";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {ApiClient} from "../../utils";
-import {ButtonStyles} from "../../styles/ButtonStyles";
-import {isAndroid} from "../../base/constants";
+import {ButtonStyles} from "../../styles";
+import {SafeFooter} from "../../components/SafeView";
 
 export default class RefundSend extends React.Component {
 
@@ -21,59 +21,37 @@ export default class RefundSend extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            refund: {},
-            shipping: {},
             expresses: [],
+            address: {},
+            express_name: '',
+            express_code: '',
+            express_no: '',
             loading: true
         };
     }
 
     componentDidMount(): void {
         this.setNavigationOptions();
-        ApiClient.get('/express/getall').then(response => {
+        ApiClient.get('/common/express.getList').then(response => {
             let expresses = response.result.items;
             this.setState({expresses});
         });
 
-        let {refund_id} = this.props.route.params;
-        ApiClient.get('/refund/get', {refund_id}).then(response => {
-            //console.log(response.result);
-            let {refund} = response.result;
-            let {shipping} = refund;
-            this.setState({
-                refund,
-                shipping: {...shipping},
-                loading: false
-            });
+        ApiClient.get('/trade/refund.getAddress').then(response => {
+            let address = response.result;
+            this.setState({address, loading: false});
         });
     }
 
     render(): React.ReactNode {
-        let {refund, shipping, expresses, loading} = this.state;
+        let {expresses, loading} = this.state;
         let expressOptions = expresses.map((express) => express.name).concat(['取消']);
         if (loading) return <LoadingView/>;
         return (
-            <KeyboardAvoidingView style={{flex: 1}} behavior={isAndroid ? "height" : "padding"}>
+            <View style={{flex: 1}}>
                 <ScrollView style={{flex: 1}}>
-                    <TableView>
-                        <TableCell touchAble={false}>
-                            <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>退货地址</Text>
-                        </TableCell>
-                        <TableCell touchAble={false}>
-                            <TableCell.Title title={"收货人"} titleStyle={{fontSize: 14}}/>
-                            <TableCell.Detail text={shipping.name}/>
-                        </TableCell>
-                        <TableCell touchAble={false}>
-                            <TableCell.Title title={"联系电话"} titleStyle={{fontSize: 14}}/>
-                            <TableCell.Detail text={shipping.tel}/>
-                        </TableCell>
-                        <TableCell touchAble={false}>
-                            <TableCell.Title title={"收货地址"} style={{minWidth: 80}} titleStyle={{fontSize: 14}}/>
-                            <TableCell.Detail text={shipping.full_address} textStyle={{width: 280}}/>
-                            <View/>
-                        </TableCell>
-                    </TableView>
-                    {this.renderShipping()}
+                    {this.renderAddress()}
+                    {this.renderWuliu()}
                 </ScrollView>
                 <View style={{backgroundColor: '#fff', paddingHorizontal: 15, paddingVertical: 7}}>
                     <Button
@@ -81,6 +59,7 @@ export default class RefundSend extends React.Component {
                         buttonStyle={[ButtonStyles.primary, {borderRadius: 20}]}
                         onPress={this.submit}
                     />
+                    <SafeFooter/>
                 </View>
                 <ActionSheet
                     ref={'as'}
@@ -89,76 +68,129 @@ export default class RefundSend extends React.Component {
                     onPress={(index) => {
                         if (index < expresses.length) {
                             let express = expresses[index];
-                            shipping.express_name = express.name;
-                            shipping.express_code = express.code;
-                            this.setState({shipping});
+                            let express_name = express.name;
+                            let express_code = express.code;
+                            this.setState({
+                                express_name,
+                                express_code
+                            });
                         }
                     }}
                 />
-                <Toast ref={'toast'}/>
-                <Spinner ref={'spinner'}/>
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 
-    renderShipping = () => {
-        let {shipping} = this.state;
+    renderAddress = () => {
+        let {address} = this.state;
         return (
-            <TableView>
-                <TableCell touchAble={false}>
-                    <Text style={{fontSize: 16, fontWeight: '700', color: '#000'}}>退货物流</Text>
-                </TableCell>
-                <TableCell onPress={() => {
-                    this.refs.as.show();
-                }}>
-                    <TableCell.Title title={"快递名称"} titleStyle={{fontSize: 14}}/>
-                    <TableCell.Detail text={shipping.express_name ? shipping.express_name : "请选择"}/>
-                    <TableCell.Accessory/>
-                </TableCell>
-                <TextField
-                    defaultValue={shipping.express_no}
-                    containerStyle={{
-                        borderBottomWidth: 0,
-                        paddingHorizontal: 15,
+            <View style={{backgroundColor: '#fff'}}>
+                <ListItem>
+                    <ListItem.Content>
+                        <ListItem.Title style={styles.sectionTitle}>退货地址</ListItem.Title>
+                    </ListItem.Content>
+                </ListItem>
+                <ListItem>
+                    <ListItem.Content>
+                        <ListItem.Title style={styles.title}>收货人</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Subtitle style={styles.subTitle}>{address.name}</ListItem.Subtitle>
+                </ListItem>
+                <ListItem>
+                    <ListItem.Content>
+                        <ListItem.Title style={styles.title}>联系电话</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Subtitle style={styles.subTitle}>{address.phone}</ListItem.Subtitle>
+                </ListItem>
+                <ListItem>
+                    <ListItem.Content>
+                        <ListItem.Subtitle style={styles.subTitle}>{address.formatted_address}</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>
+            </View>
+        )
+    }
+
+    renderWuliu = () => {
+        let {express_name} = this.state;
+        return (
+            <View style={{marginTop: 10, backgroundColor: '#fff'}}>
+                <ListItem>
+                    <ListItem.Content>
+                        <ListItem.Title style={styles.sectionTitle}>退货物流</ListItem.Title>
+                    </ListItem.Content>
+                </ListItem>
+                <ListItem
+                    onPress={() => {
+                        this.refs.as.show();
                     }}
-                    inputStyle={{
-                        fontSize: 14,
-                        textAlign: 'right',
-                    }}
-                    inputContainerStyle={{height: 40, width: 100, flex: 0}}
-                    keyboardType={'numeric'}
-                    onChangeText={text => {
-                        shipping.express_no = text;
-                        this.setState({shipping});
-                    }}
-                    numberOfLines={1}
-                    label={"快递单号"}
-                    labelStyle={{fontSize: 14}}
-                    labelContainerStyle={{flex:1}}
-                    placeholder={"请填写快递单号"}
-                />
-            </TableView>
+                >
+                    <ListItem.Content>
+                        <ListItem.Title style={styles.title}>快递名称</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Subtitle
+                        style={styles.title}>{express_name ? express_name : "请选择"}</ListItem.Subtitle>
+                    <ListItem.Chevron/>
+                </ListItem>
+                <ListItem>
+                    <ListItem.Title style={styles.title}>快递单号</ListItem.Title>
+                    <ListItem.Content>
+                        <ListItem.Input
+                            placeholder={"请填写快递单号"}
+                            onChangeText={text => {
+                                let express_no = text;
+                                this.setState({express_no});
+                            }}
+                            inputStyle={{
+                                fontSize: 16,
+                            }}
+                        />
+                    </ListItem.Content>
+                </ListItem>
+            </View>
         )
     }
 
     submit = async () => {
-        let {refund, shipping} = this.state;
-        let {refund_id} = refund;
-        let {express_name, express_no} = shipping;
+        let {refund_id} = this.props.route.params;
+        let {express_name, express_code, express_no, address} = this.state;
         if (!express_name) {
-            this.refs.toast.show('请选择快递公司');
+            Toast.fail('请选择快递公司');
             return false;
         }
 
         if (!express_no) {
-            this.refs.toast.show('请填写快递单号');
+            Toast.show('请填写快递单号');
             return false;
         }
 
-        ApiClient.post('/refund/send', {refund_id, shipping}).then(response => {
+        ApiClient.post('/trade/refund.send', {
+            refund_id,
+            express_name,
+            express_code,
+            express_no,
+            address
+        }).then(() => {
             //console.log(response);
-            this.props.navigation.replace('RefundDetail', {refund_id});
+            this.props.navigation.replace('refund-detail', {refund_id});
         }).catch(reason => {
+            console.log(reason);
         });
     }
 }
+
+
+const styles = StyleSheet.create({
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '600'
+    },
+    title: {
+        fontSize: 16,
+        color: '#333'
+    },
+    subTitle: {
+        fontSize: 14,
+        color: '#666'
+    }
+})

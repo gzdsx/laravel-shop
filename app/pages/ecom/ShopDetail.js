@@ -25,11 +25,12 @@ export default class ShopDetail extends ListComponent {
         const {subscribe} = this.state;
 
         let name = subscribe ? 'heart' : 'hearto';
+        let color = subscribe ? '#FF4101' : '#333';
         navigation.setOptions({
             headerRight: () => (
                 <View style={{flexDirection: 'row'}}>
                     <Icon
-                        size={25}
+                        size={24}
                         name={name}
                         color={'#333'}
                         suppressHighlighting={true}

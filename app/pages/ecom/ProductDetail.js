@@ -39,7 +39,7 @@ class ProductDetail extends React.Component {
                     <Icon
                         size={25}
                         name={'shoppingcart'}
-                        color={'#666'}
+                        color={'#333'}
                         suppressHighlighting={true}
                         onPress={() => {
                             navigation.navigate('cart');
@@ -49,14 +49,15 @@ class ProductDetail extends React.Component {
                     <Icon
                         name={'sharealt'}
                         size={25}
-                        color={"#666"}
+                        color={"#333"}
                         suppressHighlighting={true}
                         onPress={() => {
                             this.share.show();
                         }}
                     />
                 </View>
-            )
+            ),
+            hideWhenScrolling: true
         });
     }
 
@@ -144,6 +145,7 @@ class ProductDetail extends React.Component {
                 </ScrollView>
                 <GoodsActionBar
                     product={product}
+                    navigation={this.props.navigation}
                     onPressAddCart={() => {
                         if (oauth.isAuthenticated) {
                             this.actionType = 1;

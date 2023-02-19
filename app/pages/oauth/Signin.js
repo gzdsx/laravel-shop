@@ -183,7 +183,9 @@ class Signin extends React.Component {
         AsyncStorage.setItem('account', account);
         AsyncStorage.setItem('password', password);
 
+        console.log(account+':'+password);
         ApiClient.login(account, password).then((res) => {
+            //console.log(res);
             DeviceEventEmitter.emit(UserDidSigninedNotification);
             if (navigation.canGoBack()) {
                 navigation.goBack();

@@ -86,12 +86,16 @@ const login = (username, password, data = {}) => {
             'scope': '*',
             ...data,
         }).then(response => {
-            const {access_token} = response.data;
-            AsyncStorage.setItem(AccessToken, access_token, () => {
-                resolve(response.data);
-            });
+            const {access_token, errCode} = response.data;
+            if (errCode) {
+                reject(response.data);
+            } else {
+                AsyncStorage.setItem(AccessToken, access_token, () => {
+                    resolve(response.data);
+                });
+            }
         }).catch(reason => {
-            reject(reason.response.data);
+            reject(reason);
         });
     });
 };

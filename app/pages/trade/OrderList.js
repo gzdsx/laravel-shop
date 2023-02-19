@@ -158,7 +158,7 @@ class OrderList extends ListComponent {
                                     this.props.navigation.navigate('trade-order-detail', {order_id: item.order_id});
                                 }}
                             >
-                                <FastImage source={{uri: item.thumb}} style={css.itemImage}/>
+                                <FastImage source={{uri: item.image}} style={css.itemImage}/>
                                 <View style={css.itemContent}>
                                     <Text numberOfLines={2} style={css.itemTitle}>{item.title}</Text>
                                     {

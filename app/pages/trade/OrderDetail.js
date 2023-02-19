@@ -4,7 +4,7 @@ import {LoadingView, Spinner} from "react-native-gzdsx-elements";
 import {Toast} from 'react-native-gzdsx-elements';
 import Icon from "react-native-vector-icons/AntDesign";
 import FastImage from "react-native-fast-image";
-import {ApiClient, Utils} from "../../utils";
+import {ApiClient} from "../../utils";
 import {defaultNavigationConfigure} from "../../base/navconfig";
 import {Colors, StatusBarStyles} from "../../styles";
 import OrderActionBar from "./OrderActionBar";
@@ -221,6 +221,7 @@ export default class OrderDetail extends React.Component {
     renderContent = () => {
         const {order} = this.state;
         const {order_id, items} = order;
+        const {navigation} = this.props;
 
         return (
             <View style={{backgroundColor: '#fff'}}>
@@ -240,7 +241,7 @@ export default class OrderDetail extends React.Component {
                             <View key={index.toString()}>
                                 <TouchableOpacity activeOpacity={1}>
                                     <View style={styles.itemBox}>
-                                        <FastImage source={{uri: item.thumb}} style={styles.itemImage}/>
+                                        <FastImage source={{uri: item.image}} style={styles.itemImage}/>
                                         <View style={styles.itemTitleView}>
                                             <Text style={styles.itemTitle}>{item.title}</Text>
                                             {
@@ -268,23 +269,23 @@ export default class OrderDetail extends React.Component {
                                     }}/>
                                     <OrderActionButton
                                         title={order.receive_state ? "申请售后" : "申请退款"}
-                                        show={order.pay_state && item.refund_id === 0}
+                                        show={order.pay_state && item.refund_state === 0}
                                         onPress={() => {
-                                            this.props.navigation.navigate('RefundRouter', {order_id, items: [item]});
+                                            navigation.navigate('refund-router', {trade_id: item.trade_id});
                                         }}
                                     />
                                     <OrderActionButton
                                         title={"退款中"}
                                         show={item.refund_state === 1}
                                         onPress={() => {
-                                            this.props.navigation.navigate('RefundDetail', {refund_id: item.refund_id});
+                                            navigation.navigate('RefundDetail', {refund_id: item.refund_id});
                                         }}
                                     />
                                     <OrderActionButton
                                         title={"退款完成"}
                                         show={item.refund_state === 2}
                                         onPress={() => {
-                                            this.props.navigation.navigate('RefundDetail', {refund_id: item.refund_id});
+                                            navigation.navigate('RefundDetail', {refund_id: item.refund_id});
                                         }}
                                     />
                                 </View>

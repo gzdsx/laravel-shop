@@ -20,7 +20,12 @@ export default class ShopMap extends React.Component {
         super(props);
         this.state = {
             shop: {},
-            loading: true
+            coordinate: {
+                latitude: 0,
+                longitude: 0
+            },
+            loading: true,
+            active: false
         };
     }
 
@@ -28,8 +33,10 @@ export default class ShopMap extends React.Component {
         let shop_id = this.props.route.params?.shop_id;
         ApiClient.get('/ecom/shop.getInfo', {shop_id}).then(response => {
             let shop = response.result;
+            let {latitude, longitude} = shop;
             this.setState({
                 shop,
+                coordinate: {latitude, longitude},
                 loading: false
             });
         }).catch(reason => {
@@ -43,32 +50,22 @@ export default class ShopMap extends React.Component {
     }
 
     render(): React.ReactNode {
-        let {shop, loading} = this.state;
-        let {longitude, latitude} = shop;
-        //if (this.state.loading) return <LoadingView/>
+        let {shop, coordinate, active, loading} = this.state;
+        if (this.state.loading) return <LoadingView/>
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <View style={{flex: 1}}>
                     <MapView
                         style={{flex: 1}}
-                        center={{
-                            latitude,
-                            longitude
-                        }}
+                        center={coordinate}
                         zoomLevel={15}
                     >
-                        {
-                            loading ? null
-                                :
-                                <MapView.Marker
-                                    coordinate={{
-                                        latitude,
-                                        longitude
-                                    }}
-                                    title={shop.shop_name}
-                                    active={true}
-                                />
-                        }
+                        <MapView.Marker
+                            coordinate={coordinate}
+                            title={shop.shop_name}
+                            description={shop.formatted_address}
+                            active={active}
+                        />
                     </MapView>
                 </View>
                 <TouchableOpacity

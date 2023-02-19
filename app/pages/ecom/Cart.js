@@ -45,7 +45,7 @@ class Cart extends React.Component {
     fetchData = () => {
         if (this.props.oauth.isAuthenticated) {
             ApiClient.get('/ecom/cart.getInfo').then(response => {
-                console.log(response);
+                //console.log(response);
                 let cartList = response.result;
                 this.setState({
                     cartList,

@@ -2,7 +2,6 @@ import React from 'react';
 import {View, TouchableOpacity, Image, Text, StyleSheet, SafeAreaView, FlatList, RefreshControl} from 'react-native';
 import {connect} from "react-redux";
 import Swiper from 'react-native-swiper';
-import {Ticon} from "react-native-gzdsx-elements";
 import NetInfo from "@react-native-community/netinfo";
 import {Header, SearchBar} from 'react-native-elements';
 import {Colors, Size, StatusBarStyles} from '../../styles';
