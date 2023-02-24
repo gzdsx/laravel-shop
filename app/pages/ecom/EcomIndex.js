@@ -9,6 +9,7 @@ import {ApiClient} from "../../utils";
 import Menus from '../../base/menus';
 import FastImage from "react-native-fast-image";
 import ProductListItem from "./components/ProductListItem";
+import {LoadingView} from "react-native-gzdsx-elements";
 
 class EcomIndex extends React.Component {
     setNavigation() {
@@ -66,7 +67,8 @@ class EcomIndex extends React.Component {
             refreshing: false,
             images: [],
             posts: [],
-            items: []
+            items: [],
+            categoryList: []
         };
     }
 
@@ -94,9 +96,13 @@ class EcomIndex extends React.Component {
         response = await ApiClient.get('/ecom/product.getList', {count: 20, sort: 'time-desc'});
         const items = response.result.items;
 
+        response = await ApiClient.get('/ecom/product.category.getList');
+        let categoryList = response.result.items;
+
         this.setState({
             images,
             items,
+            categoryList,
             loading: false,
             refreshing: false,
         });
@@ -111,7 +117,8 @@ class EcomIndex extends React.Component {
     }
 
     render(): React.ReactNode {
-        let {items, refreshing} = this.state;
+        let {items, loading, refreshing} = this.state;
+        //if (loading) return <LoadingView/>;
         return (
             <SafeAreaView style={{flex: 1}}>
                 <FlatList
@@ -170,7 +177,9 @@ class EcomIndex extends React.Component {
     };
 
     renderMenus = () => {
-        let contents = Menus.map((menu, index) => {
+        let {categoryList} = this.state;
+        let {navigation} = this.props;
+        let contents = categoryList.map((menu, index) => {
             return (
                 <TouchableOpacity
                     activeOpacity={1}
@@ -182,12 +191,12 @@ class EcomIndex extends React.Component {
                         marginBottom: 8
                     }}
                     onPress={() => {
-                        this.props.navigation.navigate(menu.url, menu.params);
+                        navigation.navigate('product-list', {cate_id: menu.cate_id});
                     }}
                     key={'key2' + index.toString()}
                 >
-                    <Image
-                        source={menu.icon}
+                    <FastImage
+                        source={{uri: menu.image}}
                         style={{
                             width: 50,
                             height: 50
@@ -198,7 +207,7 @@ class EcomIndex extends React.Component {
                         color: '#333',
                         textAlign: 'center',
                         marginTop: 5
-                    }}>{menu.title}</Text>
+                    }}>{menu.cate_name}</Text>
                 </TouchableOpacity>
             );
         });

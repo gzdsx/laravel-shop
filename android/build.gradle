@@ -4,8 +4,9 @@ buildscript {
     ext {
         buildToolsVersion = "30.0.2"
         minSdkVersion = 21
-        compileSdkVersion = 30
-        targetSdkVersion = 30
+        compileSdkVersion = 31
+        targetSdkVersion = 31
+        ndkVersion = "21.4.7075529"
     }
     repositories {
         maven{ url 'https://maven.aliyun.com/repository/public' }
@@ -13,7 +14,7 @@ buildscript {
         maven{ url 'https://maven.aliyun.com/repository/central'}
         maven{ url 'https://maven.aliyun.com/repository/google'}
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.2")
@@ -41,7 +42,7 @@ allprojects {
         maven{ url 'https://maven.aliyun.com/repository/google'}
 
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://www.jitpack.io' }
     }
 }

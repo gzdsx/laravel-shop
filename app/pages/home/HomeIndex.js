@@ -143,13 +143,15 @@ class HomeIndex extends React.Component {
 
     renderHeader = () => {
         const {oauth, userInfo, navigation} = this.props;
-        let avatar, nickname;
+        let avatar, nickname, subTitle;
         if (oauth.isAuthenticated) {
             avatar = {uri: userInfo.avatar};
             nickname = userInfo.nickname;
+            subTitle = 'UID:' + userInfo.uid;
         } else {
             avatar = require('../../images/common/qiuzhenxiang.png');
             nickname = "登录/注册";
+            subTitle = '点击登录体验更多服务';
         }
         return (
             <View style={{
@@ -174,15 +176,19 @@ class HomeIndex extends React.Component {
                         }}
                     />
                     <View style={{
-                        alignContent: 'flex-start',
-                        alignSelf: 'center',
+                        flex: 1,
+                        justifyContent: 'center'
                     }}>
                         <Text style={{
                             color: '#fff',
                             fontSize: 20,
-                            textAlignVertical: 'center',
                             fontWeight: '600'
                         }}>{nickname}</Text>
+                        <Text style={{
+                            color: '#fff',
+                            fontSize: 14,
+                            marginTop: 5
+                        }}>{subTitle}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -3,11 +3,12 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity, FlatList, SafeAreaView,
+    TouchableOpacity,
+    FlatList,
+    SafeAreaView,
 } from "react-native";
-import {LoadingView, Ticon} from "react-native-gzdsx-elements";
 import {Header, ListItem, SearchBar} from "react-native-elements";
-import {Colors} from "../../styles";
+import {Colors, StatusBarStyles} from "../../styles";
 import ListComponent from "../../components/ListComponent";
 import FastImage from "react-native-fast-image";
 import {useNavigation} from "@react-navigation/native";
@@ -122,11 +123,17 @@ class ProductList extends ListComponent {
 
     componentDidMount() {
         this.setNavigationOptions();
-        let q = this.props.route.params?.q || '';
+        this.unsubscribe = this.props.navigation.addListener('focus', () => {
+            StatusBarStyles.setToDarkStyle();
+        });
         let {params} = this.state;
-
-        params.q = q;
+        params.q = this.props.route.params?.q || '';
+        params.cate_id = this.props.route.params?.cate_id || '';
         this.setState({params}, this.fetchList);
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {
@@ -159,6 +166,11 @@ class ProductList extends ListComponent {
                         paddingTop: 5,
                         backgroundColor: '#fff'
                     }}
+                    ListEmptyComponent={
+                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 50}}>
+                            <Text style={{fontSize: 16, color: '#737373'}}>暂无此类商品</Text>
+                        </View>
+                    }
                 />
             </SafeAreaView>
         );
