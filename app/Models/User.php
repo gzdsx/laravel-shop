@@ -24,13 +24,12 @@ use Laravel\Passport\HasApiTokens;
  * @property int $credits 积分
  * @property string|null $password 密码
  * @property string|null $remember_token
- * @property int $email_state 邮箱验证状态
- * @property int $avatar_state 头像验证状态
- * @property int $auth_state 实名认证状态
  * @property int $freeze 冻结
  * @property float $latitude 纬度
  * @property float $longitude 经度
- * @property int $state 状态
+ * @property int $status 状态
+ * @property int $email_status 邮箱验证状态
+ * @property int $name_status 实名认证状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\UserAccount|null $account
@@ -39,11 +38,17 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \App\Models\AdminUser|null $admin
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
  * @property-read int|null $boughts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartItems
+ * @property-read int|null $cart_items_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartProducts
  * @property-read int|null $cart_products_count
  * @property-read \App\Models\UserCertify|null $certify
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $collectedPosts
+ * @property-read int|null $collected_posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $collectedProducts
+ * @property-read int|null $collected_products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserCommissionLog[] $commissionLogs
  * @property-read int|null $commission_logs_count
  * @property-read User|null $commonlyTransferUsers
@@ -57,7 +62,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $fields_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $follows
  * @property-read int|null $follows_count
- * @property-read array|string|null $state_des
+ * @property-read array|string|null $status_des
  * @property-read \App\Models\UserGroup|null $group
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
  * @property-read int|null $logs_count
@@ -76,10 +81,6 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $solds
  * @property-read int|null $solds_count
  * @property-read \App\Models\UserStats|null $stats
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $subscribedPosts
- * @property-read int|null $subscribed_posts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $subscribedProducts
- * @property-read int|null $subscribed_products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShop[] $subscribedShops
  * @property-read int|null $subscribed_shops_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
@@ -96,25 +97,24 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User simplePaginateFilter(?int $perPage = null, ?int $columns = [], ?int $pageName = 'page', ?int $page = null)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAuthState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatarState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBeginsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCredits($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEndsWith(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|User whereFreeze($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLatitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLike(string $column, string $value, string $boolean = 'and')
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereNameStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereNickname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -128,11 +128,11 @@ class User extends Authenticatable
     protected $primaryKey = 'uid';
     protected $fillable = [
         'uid', 'gid', 'nickname', 'phone', 'email', 'password', 'remember_token',
-        'avatar', 'state', 'email_state', 'avatar_state', 'auth_state', 'freeze', 'credits'
+        'avatar', 'status', 'email_status', 'name_status', 'freeze', 'credits'
     ];
-    protected $hidden = ['password', 'remember_token', 'parent_id'];
+    protected $hidden = ['password', 'remember_token'];
     protected $appends = [
-        'state_des'
+        'status_des'
     ];
 
     public static function boot()
@@ -178,9 +178,9 @@ class User extends Authenticatable
     /**
      * @return array|string|null
      */
-    public function getStateDesAttribute()
+    public function getStatusDesAttribute()
     {
-        return is_null($this->state) ? null : trans('user.user_states.' . $this->state);
+        return is_null($this->status) ? null : trans('user.status_options.' . $this->status);
     }
 
     /**

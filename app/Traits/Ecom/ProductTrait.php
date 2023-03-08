@@ -66,9 +66,10 @@ trait ProductTrait
      */
     public function save(Request $request)
     {
-        return DB::transaction(function () use ($request) {
-            $model = $this->repository()->findOrNew($request->input('itemid'));
-            $model->fill($request->input('item', []));
+        $product = DB::transaction(function () use ($request) {
+            $newProduct = collect($request->input('product', []));
+            $model = $this->repository()->findOrNew($newProduct->get('itemid'));
+            $model->fill($newProduct->toArray());
             if (!$model->seller_id) {
                 $model->seller()->associate(Auth::id());
             }
@@ -78,14 +79,14 @@ trait ProductTrait
             }
             $model->save();
 
-            if ($request->has('content')) {
+            if ($newProduct->has('content')) {
                 $content = $model->content()->firstOrNew();
-                $content->content = $request->input('content');
+                $content->fill($newProduct->get('content', []));
                 $content->save();
             }
 
-            if ($request->has('images')) {
-                $images = collect($request->input('images', []));
+            if ($newProduct->has('images')) {
+                $images = collect($newProduct->get('images', []));
                 $model->images()->whereNotIn('id', $images->pluck('id'))->delete();
 
                 foreach ($images as $k => $v) {
@@ -94,15 +95,14 @@ trait ProductTrait
                 }
 
                 if ($first = $images->first()) {
-                    $model->thumb = $first['thumb'] ?? null;
                     $model->image = $first['image'] ?? null;
                     $model->save();
                 }
             }
 
             if ($model->has_sku_attr) {
-                if ($request->has('skus')) {
-                    $skus = $request->input('skus', []);
+                if ($newProduct->has('skus')) {
+                    $skus = $newProduct->get('skus', []);
                     $model->skus()->whereNotIn('sku_id', collect($skus)->pluck('sku_id'))->delete();
                     foreach ($skus as $sku) {
                         $sku['pin_price'] = $sku['pin_price'] ?? 0;
@@ -113,8 +113,11 @@ trait ProductTrait
                 $model->skus()->delete();
             }
 
-            return jsonSuccess($model);
+            $model->refresh();
+            return $model;
         });
+
+        return jsonSuccess($product);
     }
 
     /**

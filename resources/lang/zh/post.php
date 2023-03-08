@@ -12,13 +12,13 @@
  */
 
 return [
-    'post_types' => array(
+    'type_options' => array(
         'article' => '文章',
         'image' => '图片',
         'video' => '视频',
         'voice' => '声音'
     ),
-    'post_states' => array(
+    'state_options' => array(
         '0' => '等待审核',
         '1' => '可供阅读',
         '-1' => '审核不过'

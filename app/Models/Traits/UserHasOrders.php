@@ -27,7 +27,7 @@ trait UserHasOrders
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Order
      */
     public function solds()
     {

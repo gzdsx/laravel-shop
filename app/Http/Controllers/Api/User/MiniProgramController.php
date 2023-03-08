@@ -9,6 +9,7 @@ use App\Models\WechatLogin;
 use App\Models\WechatSession;
 use App\Services\WechatService;
 use App\Traits\WeChat\WechatDefaultConfig;
+use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -31,9 +32,11 @@ class MiniProgramController extends BaseController
             $wsession->fill($session)->save();
 
             $result = $wsession->only('openid', 'unionid');
-            $connect = UserConnect::whereHas('user')->where('openid', $wsession->openid)->first();
-            if ($connect) {
+            $connect = UserConnect::where('openid', $wsession->openid)->first();
+            if ($connect->user) {
                 $result['access_token'] = $connect->user->createToken('weapp', ['*'])->accessToken;
+            } else {
+                $connect->delete();
             }
 
             return jsonSuccess($result);
@@ -50,22 +53,36 @@ class MiniProgramController extends BaseController
     public function login(Request $request)
     {
         $iv = $request->input('iv');
-        $encryptedData = $request->input('encryptedData');
         $openid = $request->input('openid');
+        $encryptedData = $request->input('encryptedData');
 
         $appid = $request->input('appid', 'default');
         if ($session = WechatSession::whereOpenid($openid)->first()) {
             $app = $this->miniProgram($appid);
-            $decrypt = $app->encryptor->decryptData($session->session_key, $iv, $encryptedData);
-            $phoneNumber = $decrypt['phoneNumber'] ?? '';
-            if ($user = User::wherePhone($phoneNumber)->first()) {
-                return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
-            } else {
-                return jsonSuccess(compact('phoneNumber'));
+            try {
+                $decrypt = $app->encryptor->decryptData($session->session_key, $iv, $encryptedData);
+                $phoneNumber = $decrypt['phoneNumber'] ?? '';
+                if ($user = User::wherePhone($phoneNumber)->first()) {
+                    return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
+                } else {
+                    $user = new User();
+                    $user->nickname = $phoneNumber;
+                    $user->phone = $phoneNumber;
+                    $user->save();
+
+                    $connect = new UserConnect();
+                    $connect->openid = $openid;
+                    $connect->user()->associate($user);
+                    $connect->save();
+
+                    return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
+                }
+            } catch (DecryptException $exception) {
+                return jsonError(500, $exception->getMessage());
             }
         }
 
-        return jsonError(403, 'openid invalid');
+        return jsonError(500, 'openid invalid');
     }
 
     /**
@@ -136,29 +153,6 @@ class MiniProgramController extends BaseController
         $session = WechatSession::whereOpenid($openid)->first();
         $result = $this->miniProgram()->encryptor->decryptData($session->session_key, $iv, $encryptedData);
         return jsonSuccess($result);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \EasyWeChat\Kernel\Exceptions\DecryptException
-     */
-    protected function registerWithPhone(Request $request)
-    {
-        $openid = $request->input('openid');
-        $encryptedData = $request->input('encryptedData');
-        $iv = $request->input('iv');
-
-        $session = WechatSession::whereOpenid($openid)->first();
-        $res = $this->miniProgram()->encryptor->decryptData($session->session_key, $iv, $encryptedData);
-        if ($user = User::whereMobile($res['phoneNumber'])->first()) {
-            $connect = UserConnect::firstOrNew(['openid' => $openid]);
-            $connect->user()->associate($user);
-            $connect->save();
-
-            return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
-        }
-        return jsonSuccess($res);
     }
 
     /**

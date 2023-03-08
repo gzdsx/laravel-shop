@@ -15,7 +15,6 @@ namespace App\Models\Traits;
 
 
 use App\Models\PostItem;
-use App\Models\PostSubscribe;
 
 trait UserHasPosts
 {
@@ -30,15 +29,15 @@ trait UserHasPosts
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|PostItem
      */
-    public function subscribedPosts()
+    public function collectedPosts()
     {
         return $this->belongsToMany(
             PostItem::class,
-            'post_subscribe',
-            'subscribed_uid',
-            'subscribed_aid',
+            'post_collect_user',
+            'collect_uid',
+            'collect_aid',
             'uid',
             'aid'
-        )->as('subscribe')->withTimestamps();
+        )->as('subscribe')->withTimestamps()->orderBy('post_collect_user.created_at', 'desc');
     }
 }

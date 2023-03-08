@@ -18,14 +18,14 @@ class UserFilter extends ModelFilter
         return $this->where('uid', '=', $uid);
     }
 
-    public function username($username)
+    public function nickname($name)
     {
-        return $this->where('username', 'like', "%$username%");
+        return $this->where('nickname', 'like', "%$name%");
     }
 
-    public function mobile($mobile)
+    public function phone($phone)
     {
-        return $this->where('mobile', '=', $mobile);
+        return $this->where('phone', '=', $phone);
     }
 
     public function email($email)
@@ -48,10 +48,10 @@ class UserFilter extends ModelFilter
         return $this->whereDate('created_at', '<=', Date::make($time));
     }
 
-    public function state($state)
+    public function status($status)
     {
-        if (is_numeric($state)) {
-            return $this->where('state', $state);
+        if (is_numeric($status)) {
+            return $this->where('status', $status);
         }
 
         return $this;

@@ -30,7 +30,7 @@ return [
         'number' => '数字',
         'calendar' => '日历'
     ],
-    'states' => [
+    'state_options' => [
         '0' => '已下架',
         '1' => '出售中'
     ]

@@ -261,7 +261,7 @@ class EcomShop extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'ecom_shop_subscribe',
+            'ecom_shop_subscribe_user',
             'subscribed_shop_id',
             'subscribed_uid',
             'shop_id',

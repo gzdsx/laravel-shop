@@ -91,6 +91,7 @@ class OrderController extends BaseController
             $buyer = Auth::user();
             $order = new Order();
             $order->order_no = TradeUtil::createOrderNo();
+            $order->out_trade_no = TradeUtil::createOutTradeNo();
             $order->order_state = 0;
             $order->order_type = $order_type;
             $order->pay_type = $pay_type;

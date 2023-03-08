@@ -20,9 +20,14 @@ class TradeUtil
      * 生成订单号
      * @return string
      */
-    public static function createOrderNo()
+    public static function createOrderNo($prefix = '')
     {
-        return date('YmdHis') . rand(100, 999) . rand(100, 999);
+        return $prefix . date('YmdHis') . rand(100, 999) . rand(100, 999);
+    }
+
+    public static function createOutTradeNo($prefix = '')
+    {
+        return $prefix . date('YmdHis') . rand(100, 999) . rand(100, 999);
     }
 
     /**

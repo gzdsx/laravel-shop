@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Notify\Wechat;
 
 use App\Events\Order\OrderPaid;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Refund;
+use App\Models\UserPrepay;
 use App\Models\UserTransaction;
-use App\Models\UserAccount;
-use App\Models\UserCoinLog;
 use App\Traits\WeChat\WechatDefaultConfig;
 use App\WeChat\Notify\PaidNotify;
 use App\WeChat\Notify\RefundNotify;
@@ -26,26 +26,29 @@ class OrderController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \EasyWeChat\Kernel\Exceptions\Exception
      */
-    public function paid(Request $request)
+    public function paid(Request $request, $appName)
     {
-        return $this->payment()->handlePaidNotify(function ($message, $fail) {
+        return $this->payment($appName)->handlePaidNotify(function ($message, $fail) {
             $notify = new PaidNotify($message);
             if ($notify->tradeSuccess()) {
-                $transaction = UserTransaction::findByOutTradeNo($notify->outTradeNo());
-                if ($transaction) {
-                    if ($transaction->isUnPaid()) {
-                        $transaction->forceFill([
-                            'pay_type' => 'wechatpay',
-                            'data' => $message
-                        ])->markAsPaid();
-
-                        if ($order = $transaction->order) {
-                            $order->markAsPaid();
-
-                            event(new OrderPaid($order));
-                        }
-                    }
+                $order = Order::whereOutTradeNo($notify->outTradeNo())->first();
+                if ($order->isUnPaid()) {
+                    $order->markAsPaid();
+                    event(new OrderPaid($order));
                 }
+
+                $prepay = UserPrepay::whereOutTradeNo($notify->outTradeNo())->first();
+                $transaction = new UserTransaction();
+                $transaction->out_trade_no = $notify->outTradeNo();
+                $transaction->type = 2;
+                $transaction->account_type = 1;
+                $transaction->pay_type = 'wechatpay';
+                $transaction->amount = $notify->totalFee();
+                $transaction->detail = $prepay->data['body'] ?? '';
+                $transaction->user()->associate($prepay->uid);
+                $transaction->data = $notify->all();
+                $transaction->markAsPaid();
+
                 return true;
             }
             return $fail(static::FAIL);

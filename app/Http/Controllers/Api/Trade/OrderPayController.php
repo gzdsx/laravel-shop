@@ -40,7 +40,8 @@ class OrderPayController extends BaseController
         }
 
         if ($type == 'wechatpay') {
-            return $this->wechatPay($order, $request->input('openid'));
+            $appName = $request->input('appid', 'default');
+            return $this->wechatPay($order, $request->input('openid'), $appName);
         }
 
         if ($type == 'alipay') {
@@ -96,31 +97,30 @@ class OrderPayController extends BaseController
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function wechatPay(Order $order, $openid)
+    public function wechatPay(Order $order, $openid, $appName)
     {
 
-        $payment = $this->payment();
         if (!$openid) {
             abort(500, 'missing openid value');
         }
 
-        $transaction = $order->transaction;
+        $payment = $this->payment($appName);
+        $product = $order->items()->firstOrFail();
         $unifiedOrder = new UnifiedOrder();
-        $unifiedOrder->setBody($transaction->detail)
-            ->setOutTradeNo($transaction->out_trade_no)
-            ->setTotalFee($transaction->amount * 100)
-            ->setTotalFee(1)
+        $unifiedOrder->setBody($product->title)
+            ->setOutTradeNo($order->out_trade_no)
+            ->setTotalFee($order->order_fee * 100)
             ->setOpenid($openid)
             ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
-            ->setNotifyUrl('/notify/wechat/order/paid');
+            ->setNotifyUrl('/notify/wechat/order/paid/'.$appName);
         //return jsonSuccess($unifiedOrder->all());
         $res = new UnifiedOrderResponse($payment->order->unify($unifiedOrder->getBizContent()));
         //解决订单号重复问题
         if ($res->errCode() === 'INVALID_REQUEST') {
-            $transaction->out_trade_no = TradeUtil::createTransactionNo();
-            $transaction->save();
+            $order->out_trade_no = TradeUtil::createOutTradeNo();
+            $order->save();
 
-            $unifiedOrder->setOutTradeNo($transaction->out_trade_no);
+            $unifiedOrder->setOutTradeNo($order->out_trade_no);
             $res = new UnifiedOrderResponse($payment->order->unify($unifiedOrder->getBizContent()));
         }
 
@@ -132,7 +132,8 @@ class OrderPayController extends BaseController
             $prepay->data = $unifiedOrder->all();
             $prepay->save();
 
-            return jsonSuccess(['config' => $payment->jssdk->bridgeConfig($res->prepayId(), false)]);
+            $config = $payment->jssdk->bridgeConfig($res->prepayId(), false);
+            return jsonSuccess($config);
         } else {
             return jsonError(500, $res->errCodeDes() ?: $res->retrunMsg(), ['extra' => $res->all()]);
         }
@@ -144,11 +145,11 @@ class OrderPayController extends BaseController
      */
     public function aliPay(Order $order)
     {
-        $transaction = $order->transaction;
+        $trade = $order->items()->firstOrFail();
         $params = AliPay::appPay(config('alipay.default'))->sendRequest([
-            'subject' => $transaction->subject,
-            'out_trade_no' => $transaction->out_trade_no,
-            'total_amount' => $transaction->amount,
+            'subject' => $trade->title,
+            'out_trade_no' => $order->out_trade_no,
+            'total_amount' => $order->order_fee,
         ]);
 
         return jsonSuccess(['payStr' => http_build_query($params)]);

@@ -18,14 +18,14 @@ use App\Models\PostItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-trait PostSubscribeTrait
+trait PostCollectTrait
 {
     /**
      * @return PostItem|\Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     protected function repository()
     {
-        return Auth::user()->subscribedPosts();
+        return Auth::user()->collectedPosts();
     }
 
     /**
@@ -69,9 +69,9 @@ trait PostSubscribeTrait
     public function query(Request $request)
     {
         $aid = $request->input('aid');
-        $subscribe = Auth::user()->subscribedPosts()->find($aid);
+        $collect = $this->repository()->find($aid);
 
-        return jsonSuccess(compact('subscribe'));
+        return jsonSuccess(compact('collect'));
     }
 
     /**
@@ -84,8 +84,7 @@ trait PostSubscribeTrait
         return jsonSuccess([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
-                ->limit($request->input('count', 15))
-                ->orderByDesc('post_subscribe.id')->get()
+                ->limit($request->input('count', 15))->get()
         ]);
     }
 }

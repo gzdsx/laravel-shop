@@ -16,13 +16,13 @@
                     <div class="form-item">
                         <div class="form-item-label">用户名</div>
                         <div class="form-item-input">
-                            <el-input size="medium" class="w200" clearable v-model="params.username"></el-input>
+                            <el-input size="medium" class="w200" clearable v-model="params.nickname"></el-input>
                         </div>
                     </div>
                     <div class="form-item">
                         <div class="form-item-label">手机号</div>
                         <div class="form-item-input">
-                            <el-input size="medium" class="w200" clearable v-model="params.mobile"></el-input>
+                            <el-input size="medium" class="w200" clearable v-model="params.phone"></el-input>
                         </div>
                     </div>
                     <div class="form-item">
@@ -113,10 +113,10 @@
             return {
                 params: {
                     uid: '',
-                    username: '',
-                    state: '',
+                    nickname: '',
+                    status: '',
                     email: '',
-                    mobile: ''
+                    phone: ''
                 },
                 amount: 10000,
                 showDialog: false,
@@ -138,7 +138,7 @@
                 });
             },
             onClickTab(tab) {
-                this.params.state = tab.name;
+                this.params.status = tab.name;
                 this.onSearch();
             },
             onBatchUpdate(data) {

@@ -27,6 +27,7 @@
     "jpush/jpush": "^3.6",
     "laravel/framework": "^8.0",
     "laravel/passport": "^10.0",
+    "laravel/scout": "^9.8",
     "laravel/tinker": "^2.0",
     "lcobucci/jwt": "3.3.3",
     "maatwebsite/excel": "^3.0",

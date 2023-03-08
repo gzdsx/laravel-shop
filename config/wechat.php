@@ -142,7 +142,7 @@ return [
         ],
         //小程序
         '2' => [
-            'app_id' => 'wxe5a3fef54e3d2ad7',
+            'app_id' => 'wx03d632680294f15b',
             'mch_id' => env('WECHAT_PAYMENT_MCH_ID', ''),
             'key' => env('WECHAT_PAYMENT_KEY', ''),
             'cert_path' => base_path(env('WECHAT_PAYMENT_CERT_PATH', '')),    // XXX: 绝对路径！！！！

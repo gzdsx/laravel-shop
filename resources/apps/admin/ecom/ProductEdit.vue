@@ -12,7 +12,7 @@
                     <tbody>
                     <tr>
                         <td class="cell-label w80">商品图片</td>
-                        <td>第一张为宝贝主图，主图不能超过3MB,仅支持上传JPG格式的图片,拖拽图片可跟换顺序。</td>
+                        <td>第一张为宝贝主图，建议尺寸：800*800像素，拖拽图片可以调整顺序，最多上传5张。</td>
                     </tr>
                     <tr>
                         <td class="cell-label"></td>
@@ -38,13 +38,13 @@
                     <tr>
                         <td class="cell-label">商品名称</td>
                         <td>
-                            <el-input type="text" size="medium" class="w500" v-model="item.title"/>
+                            <el-input type="text" size="medium" class="w500" v-model="product.title"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="cell-label">商品卖点</td>
                         <td>
-                            <el-input type="textarea" class="w500" v-model="item.subtitle"></el-input>
+                            <el-input type="textarea" class="w500" v-model="product.subtitle"></el-input>
                         </td>
                     </tr>
                     <tr>
@@ -63,7 +63,7 @@
                     <tr>
                         <td class="cell-label">关联门店</td>
                         <td>
-                            <el-select class="w500" size="medium" v-model="item.shop_id" placeholder="请选择">
+                            <el-select class="w500" size="medium" v-model="product.shop_id" placeholder="请选择">
                                 <el-option
                                         v-for="(shop,index) in shopList"
                                         :key="index"
@@ -100,14 +100,14 @@
                         <tr>
                             <td class="cell-label w80">商品型号</td>
                             <td>
-                                <el-radio-group v-model="item.has_sku_attr">
+                                <el-radio-group v-model="product.has_sku_attr">
                                     <el-radio :label="0">统一型号</el-radio>
                                     <el-radio :label="1">多级型号</el-radio>
                                 </el-radio-group>
                             </td>
                         </tr>
                         </tbody>
-                        <tbody v-if="item.has_sku_attr">
+                        <tbody v-if="product.has_sku_attr">
                         <tr>
                             <td></td>
                             <td>
@@ -123,22 +123,21 @@
                         <tr>
                             <td class="cell-label w80"><i class="star">*</i>产品价格</td>
                             <td>
-                                <el-input type="text" class="w200" v-model="item.price" :min="0"
+                                <el-input type="text" class="w200" v-model="product.price" :min="0"
                                           :max="99999999"></el-input>
                             </td>
                         </tr>
                         <!--                        <tr>-->
                         <!--                            <td class="cell-label w80"><i class="star">*</i>拼团价格</td>-->
                         <!--                            <td>-->
-                        <!--                                <el-input type="text" class="w200" v-model="item.pin_price" :min="0"-->
+                        <!--                                <el-input type="text" class="w200" v-model="product.pin_price" :min="0"-->
                         <!--                                          :max="99999999"></el-input>-->
                         <!--                            </td>-->
                         <!--                        </tr>-->
                         <tr>
                             <td class="cell-label"><i class="star">*</i>产品库存</td>
                             <td>
-                                <el-input type="number" class="w200" v-model="item.stock" :min="0"
-                                          :max="99999999"></el-input>
+                                <el-input type="number" class="w200" v-model="product.stock" :min="0" :max="9999999"/>
                             </td>
                         </tr>
                         </tbody>
@@ -149,9 +148,9 @@
                                 <el-input
                                         type="text"
                                         class="w200"
-                                        v-model="item.original_price"
+                                        v-model="product.original_price"
                                         :min="0"
-                                        :max="99999999"></el-input>
+                                        :max="9999999"/>
                             </td>
                         </tr>
                         </tbody>
@@ -165,13 +164,13 @@
                     <tr>
                         <td class="cell-label w80">宝贝详情</td>
                         <td>
-                            <vue-editor v-model="content" ref="keditor"/>
+                            <vue-editor v-model="content.content" ref="keditor"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="cell-label">运费模板</td>
                         <td>
-                            <el-select size="medium" v-model="item.template_id" placeholder="请选择">
+                            <el-select size="medium" v-model="product.template_id" placeholder="请选择">
                                 <el-option
                                         v-for="(tpl,index) in templateList"
                                         :label="tpl.template_name"
@@ -184,7 +183,7 @@
                     <tr>
                         <td class="cell-label w80">初始销量</td>
                         <td>
-                            <el-input type="text" class="w200" v-model="item.sold" :min="0" :max="99999999"/>
+                            <el-input type="text" class="w200" v-model="product.sold" :min="0" :max="99999999"/>
                         </td>
                     </tr>
                     </tbody>
@@ -211,7 +210,7 @@
         data() {
             let self = this;
             return {
-                item: {
+                product: {
                     template_id: '',
                     has_sku_attr: 0,
                     is_pin: 0,
@@ -222,7 +221,7 @@
                 },
                 skus: [],
                 images: [],
-                content: '',
+                content: {},
                 templateList: [],
                 shopList: [],
                 showMultiplePicker: false,
@@ -239,11 +238,11 @@
                 if (!itemid) return false;
                 this.$get('/ecom/product.getInfo', {itemid}).then(response => {
                     //console.log(response.result);
-                    const item = response.result;
-                    const {images, skus, attrs} = item;
+                    const product = response.result;
+                    const {images, skus, attrs} = product;
 
-                    this.item = item;
-                    this.cates = item.cate_id;
+                    this.product = product;
+                    this.cates = product.cate_id;
                     if (skus) this.skus = skus;
                     if (images) this.images = images;
 
@@ -263,8 +262,7 @@
                 });
 
                 this.$get('/ecom/product.content.getInfo', {itemid}).then(response => {
-                    let {content} = response.result;
-                    this.content = content;
+                    this.content = response.result;
                 });
             },
             fetchCategoryList() {
@@ -299,13 +297,13 @@
             },
             onSkuChange(data) {
                 this.skus = data.skus;
-                this.item.skus = data.skus;
-                this.item.attrs = data.attrs;
+                this.product.skus = data.skus;
+                this.product.attrs = data.attrs;
             },
             onSubmit(type) {
                 //console.log(this.product);
-                let {item, images, content, skus, cates} = this;
-                let {title, price, stock, cate_id} = item;
+                let {product, images, content, skus, cates} = this;
+                let {title, price, stock, cate_id} = product;
 
                 if (images.length === 0) {
                     this.$showToast('请至少上传一张图片');
@@ -323,8 +321,8 @@
                 }
 
                 if (skus.length > 0) {
-                    var prices = [];
-                    var stocks = [];
+                    let prices = [];
+                    let stocks = [];
                     for (var i = 0; i < skus.length; i++) {
                         if (skus[i].price === '' || skus[i].price == null) {
                             this.$showToast('产品价格不能为空');
@@ -349,8 +347,8 @@
                         stocks.push(parseInt(skus[i].stock));
                     }
 
-                    item.price = _.min(prices);
-                    item.stock = _.sum(stocks);
+                    product.price = _.min(prices);
+                    product.stock = _.sum(stocks);
                 } else {
                     if (!price) {
                         this.$showToast('请填写产品价格');
@@ -373,11 +371,13 @@
                     }
                 }
 
-                let {itemid} = item;
-                item.state = type;
-                this.$post('/ecom/product.save', {itemid, item, content, images, skus}).then(() => {
+                product.state = type;
+                product.skus = skus;
+                product.images = images;
+                product.content = content;
+                this.$post('/ecom/product.save', {product}).then(() => {
                     let message = type === 1 ? '商品上架成功' : '商品下架成功';
-                    this.$showToast(message, this.$router.go(0));
+                    //this.$showToast(message, this.$router.go(0));
                 }).catch(reason => {
                     this.$showToast(reason.errMsg);
                 });
@@ -399,7 +399,7 @@
                 return t(arr);
             },
             onCascaderChange(val) {
-                if (val) this.item.cate_id = val[val.length - 1];
+                if (val) this.product.cate_id = val[val.length - 1];
             }
         },
         mounted() {

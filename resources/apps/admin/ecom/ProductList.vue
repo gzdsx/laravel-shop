@@ -59,7 +59,7 @@
                     <el-table-column label="产品名称">
                         <template slot-scope="scope">
                             <div><a :href="scope.row.url" target="_blank">{{scope.row.title}}</a></div>
-                            <p>
+                            <p v-if="scope.row.shop">
                                 <a :href="scope.row.shop.url" target="_blank" style="font-size: 12px;color: #838383;">
                                     {{scope.row.shop.shop_name}}</a>
                             </p>

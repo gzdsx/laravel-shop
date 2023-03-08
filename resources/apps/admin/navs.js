@@ -84,7 +84,7 @@ export default [
             },
             {
                 name: '商品型号',
-                path: '/product/attr',
+                path: '/ecom/product-model',
                 isLink: false
             },
             {
@@ -95,6 +95,11 @@ export default [
             {
                 name: '运费模板',
                 path: '/product/template/list',
+                isLink: false
+            },
+            {
+                name: '优惠券管理',
+                path: '/ecom/coupon',
                 isLink: false
             },
         ]

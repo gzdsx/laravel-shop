@@ -1,4 +1,4 @@
-#Laravel Shop
+# Laravel Shop
 
 <p>一款基于Laravel8.5的小型电商系统，包含APP、微信小程序、PC三端应用，
 全套源码售价500元。</p>
@@ -10,6 +10,7 @@ Android版下载地址:[https://shop.gzdsx.cn/apk/shopapp.apk](https://shop.gzds
 
 IOS版请在appStore搜索“大师兄的小店”
 
+微信小程序
 ![微信小程序](https://shop.gzdsx.cn/storage/thumb/2023/02/9Ojvxl64KrkARgm58NmM3YuFJeumuCNtZbnCj80b.jpg)
 
 

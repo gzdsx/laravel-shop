@@ -52,9 +52,7 @@ class EcomProductItemFilter extends ModelFilter
      */
     public function sellerName($name)
     {
-        return $this->whereHas('seller', function (Builder $builder) use ($name) {
-            return $builder->where('username', 'LIKE', "%$name%");
-        });
+        return $this->related('seller', 'nickname', 'like', "%$name%");
     }
 
     /**
@@ -111,22 +109,6 @@ class EcomProductItemFilter extends ModelFilter
     public function itemid($itemid)
     {
         return $this->where('itemid', $itemid);
-    }
-
-    /**
-     * @param $catid
-     * @return $this|EcomProductItemFilter
-     */
-    public function catid($catid)
-    {
-//        return $this->whereHas('cates', function (Builder $builder) use ($catid) {
-//            return $builder->where('catid', $catid);
-//        });
-        if ($catid) {
-            return $this->where('catid', $catid);
-        }
-
-        return $this;
     }
 
     /**

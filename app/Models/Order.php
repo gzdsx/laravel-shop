@@ -48,6 +48,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $refund_at 退款时间
  * @property int $buyer_deleted 买家已删除
  * @property int $seller_deleted 卖家已删除
+ * @property string|null $out_trade_no 第三方支付订单号
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\User|null $buyer
@@ -94,6 +95,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Order whereOrderNo($value)
  * @method static Builder|Order whereOrderState($value)
  * @method static Builder|Order whereOrderType($value)
+ * @method static Builder|Order whereOutTradeNo($value)
  * @method static Builder|Order wherePayAt($value)
  * @method static Builder|Order wherePayState($value)
  * @method static Builder|Order wherePayType($value)
@@ -130,7 +132,8 @@ class Order extends Model
         'discount_fee', 'order_fee', 'total_count', 'pay_type', 'pay_state', 'pay_at',
         'shipping_state', 'shipping_at', 'receive_state', 'receive_at',
         'buyer_rate', 'seller_rate', 'cancel_state', 'cancel_at', 'cancel_reason', 'accept_state',
-        'accept_at', 'refund_state', 'refund_at', 'buyer_deleted', 'seller_deleted', 'transaction_id', 'is_hot'
+        'accept_at', 'refund_state', 'refund_at', 'buyer_deleted', 'seller_deleted', 'transaction_id',
+        'is_hot', 'out_trade_no'
     ];
 
     protected $dates = [

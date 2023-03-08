@@ -39,7 +39,7 @@ return [
     'info update success' => '资料修改成',
     'auth info submit success' => '你的资料已提交，请等待管理员审核',
     'star' => '星座',
-    'star_items' => array(
+    'star_options' => array(
         1 => '白羊座',
         2 => '金牛座',
         3 => '双子座',
@@ -54,13 +54,13 @@ return [
         12 => '双鱼座'
     ),
     'sex' => '性别',
-    'sex_items' => array(
+    'sex_options' => array(
         1 => '男',
         2 => '女',
         3 => '其他'
     ),
     'blood' => '血型',
-    'blood_items' => array(
+    'blood_options' => array(
         1 => 'A型',
         2 => 'B型',
         3 => 'O型',
@@ -71,7 +71,7 @@ return [
         'user' => '用户组',
         'system' => '管理组',
     ),
-    'user_states' => [
+    'status_options' => [
         '0' => '等待审核',
         '1' => '审核通过',
         '-1' => '禁止登录'

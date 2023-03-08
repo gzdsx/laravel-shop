@@ -151,6 +151,7 @@ class CartController extends BaseController
                 $seller = $shop->seller;
                 $order = new Order();
                 $order->order_no = TradeUtil::createOrderNo();
+                $order->out_trade_no = TradeUtil::createOutTradeNo();
                 $order->order_type = 1;
                 $order->order_state = 0;
                 $order->buyer_id = $buyer->uid;
@@ -175,7 +176,6 @@ class CartController extends BaseController
                     $item = $order->items()->make();
                     $item->itemid = $product->itemid;
                     $item->title = $product->title;
-                    $item->thumb = $product->thumb;
                     $item->image = $product->image;
                     if ($sku) {
                         $item->price = $sku->price;
@@ -185,7 +185,6 @@ class CartController extends BaseController
                         $item->price = $product->price;
                     }
                     $item->quantity = $cart->quantity;
-                    $item->total_fee = $item->price * $item->quantity;
                     $item->save();
 
                     $total_fee += $item->total_fee;
@@ -211,6 +210,8 @@ class CartController extends BaseController
             }
 
             EcomCart::whereIn('itemid', $ids)->delete();
+
+            return jsonSuccess();
         });
     }
 }

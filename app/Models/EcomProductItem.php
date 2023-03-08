@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Traits\HasDates;
 use App\Models\Traits\HasImageAttribute;
-use App\Models\Traits\HasThumbAttribute;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,13 +20,11 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $title 宝贝标题
  * @property string|null $subtitle 宝贝卖点
  * @property string|null $merchant_code 商品编号
- * @property string $thumb 商品缩略图
  * @property string $image 商品图片
- * @property string|null $price 商品售价
- * @property int $purchase_limit 限购数量
+ * @property string|null $price 一口价
  * @property string|null $original_price 商品原价
  * @property string|null $promotion_price 促销价
- * @property string|null $redpack_amount 红包金额
+ * @property int $purchase_limit 限购数量
  * @property int $is_pin 是否拼团产品
  * @property int $pin_num 拼团人数
  * @property string $pin_price 拼团价格
@@ -37,6 +34,8 @@ use Illuminate\Support\Facades\Auth;
  * @property int $collect_count 收藏数量
  * @property int $review_count 评论数
  * @property array|null $attrs 商品属性
+ * @property int $is_new 是否新品
+ * @property bool $is_hot 是否热销
  * @property int $is_recommend 仓储推荐
  * @property int $is_promotion 是否促销
  * @property int $is_top 是否置顶
@@ -44,16 +43,19 @@ use Illuminate\Support\Facades\Auth;
  * @property int $template_id 运费模板
  * @property int $is_weight_template 是否按重量计价
  * @property int $has_sku_attr 是否有多级型号
- * @property int $is_raffle 是否可抽奖
+ * @property int $brand_id 品牌
  * @property int $state 商品状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductCategory[] $bgCates
  * @property-read int|null $bg_cates_count
  * @property-read \App\Models\EcomProductCategory|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $collectedUsers
+ * @property-read int|null $collected_users_count
  * @property-read \App\Models\EcomProductContent|null $content
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $m_url
- * @property-read array|string|null $state_des
+ * @property-read array|string|null $status_des
+ * @property-read mixed $thumb
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read string|null $we_url
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductGroup[] $groups
@@ -68,8 +70,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\EcomShop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductSku[] $skus
  * @property-read int|null $skus_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
- * @property-read int|null $subscribed_users_count
  * @property-read \App\Models\EcomProductTemplate|null $template
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem newModelQuery()
@@ -79,6 +79,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem simplePaginateFilter(?int $perPage = null, ?int $columns = [], ?int $pageName = 'page', ?int $page = null)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereAttrs($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereBeginsWith(string $column, string $value, string $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereBrandId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereCateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereCollectCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereCreatedAt($value)
@@ -86,9 +87,10 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereFreeDelivery($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereHasSkuAttr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsHot($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsNew($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsPin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsPromotion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsRaffle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsRecommend($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsTop($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereIsWeightTemplate($value)
@@ -101,16 +103,14 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem wherePromotionPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem wherePurchaseLimit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereRedpackAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereReviewCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSold($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereStock($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSubtitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereTemplateId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereThumb($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereViews($value)
@@ -118,18 +118,19 @@ use Illuminate\Support\Facades\Auth;
  */
 class EcomProductItem extends Model
 {
-    use HasDates, HasThumbAttribute, HasImageAttribute, Filterable;
+    use HasDates, HasImageAttribute, Filterable;
 
     protected $table = 'ecom_product_item';
     protected $primaryKey = 'itemid';
     protected $fillable = [
-        'shop_id', 'cate_id', 'title', 'subtitle', 'merchant_code', 'thumb', 'image', 'price',
-        'purchase_limit', 'original_price', 'promotion_price', 'redpack_amount', 'is_pin', 'pin_num',
+        'shop_id', 'cate_id', 'title', 'subtitle', 'merchant_code', 'image', 'price',
+        'purchase_limit', 'original_price', 'promotion_price', 'is_pin', 'pin_num',
         'pin_price', 'sold', 'stock', 'views', 'collect_count', 'review_count', 'attrs', 'is_recommend',
-        'is_promotion', 'is_top', 'free_delivery', 'template_id', 'is_weight_template', 'has_sku_attr', 'state', 'is_hot'
+        'is_promotion', 'is_top', 'free_delivery', 'template_id', 'is_weight_template', 'has_sku_attr',
+        'is_hot', 'is_new', 'brand_id', 'state'
     ];
     protected $hidden = ['seller_id'];
-    protected $appends = ['url', 'm_url', 'we_url', 'state_des'];
+    protected $appends = ['url', 'm_url', 'we_url', 'state_des', 'thumb'];
     protected $casts = [
         'attrs' => 'array',
         'is_hot' => 'boolean'
@@ -181,7 +182,7 @@ class EcomProductItem extends Model
      */
     public function getStateDesAttribute()
     {
-        return is_null($this->state) ? null : trans('product.states.' . $this->state);
+        return is_null($this->state) ? null : trans('product.state_options.' . $this->state);
     }
 
     /**
@@ -322,15 +323,22 @@ class EcomProductItem extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|User
      */
-    public function subscribedUsers()
+    public function collectedUsers()
     {
         return $this->belongsToMany(
             User::class,
-            'ecom_product_subscribe',
-            'subscribed_itemid',
-            'subscribed_uid',
+            'ecom_product_collect_user',
+            'collect_itemid',
+            'collect_uid',
             'itemid',
             'uid'
-        );
+        )->as('collect')
+            ->withTimestamps()
+            ->orderBy('ecom_product_collect_user.created_at', 'desc');
+    }
+
+    public function getThumbAttribute()
+    {
+        return $this->image;
     }
 }

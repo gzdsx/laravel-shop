@@ -15,12 +15,10 @@ namespace App\Models\Traits;
 
 
 use App\Models\EcomCart;
-use App\Models\EcomCartShop;
 use App\Models\EcomProductItem;
 use App\Models\EcomShop;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait UserHasEcom
@@ -36,16 +34,16 @@ trait UserHasEcom
     /**
      * @return BelongsToMany|EcomProductItem
      */
-    public function subscribedProducts()
+    public function collectedProducts()
     {
         return $this->belongsToMany(
             EcomProductItem::class,
-            'ecom_product_subscribe',
-            'subscribed_uid',
-            'subscribed_itemid',
+            'ecom_product_collect_user',
+            'collect_uid',
+            'collect_itemid',
             'uid',
             'itemid'
-        )->as('subscribe')->withTimestamps();
+        )->as('collect')->withTimestamps()->orderBy('ecom_product_collect_user.created_at', 'desc');
     }
 
     /**
@@ -63,7 +61,7 @@ trait UserHasEcom
     {
         return $this->belongsToMany(
             EcomShop::class,
-            'ecom_shop_subscribe',
+            'ecom_shop_subscribe_user',
             'subscribed_uid',
             'subscribed_shop_id',
             'uid',
@@ -75,6 +73,14 @@ trait UserHasEcom
      * @return HasMany|EcomCart
      */
     public function cartProducts()
+    {
+        return $this->hasMany(EcomCart::class, 'uid', 'uid');
+    }
+
+    /**
+     * @return HasMany|EcomCart
+     */
+    public function cartItems()
     {
         return $this->hasMany(EcomCart::class, 'uid', 'uid');
     }

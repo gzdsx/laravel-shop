@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $trade_id 主键
  * @property int $order_id 订单ID
  * @property int $itemid 商品ID
+ * @property int $type 商品类型
  * @property string|null $title 商品名称
  * @property string $price 商品价格
  * @property int $quantity 商品数量
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $sku_id 属性ID
  * @property string|null $sku_title 商品属性
  * @property int $is_gift 是否赠品
- * @property int $type 商品类型
+ * @property int $refund_state 退款状态
  * @property-read float|int $total_fee
  * @property-read \App\Models\Order|null $order
  * @property-read \App\Models\Refund|null $refund
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereRefundState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereSkuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereSkuTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereTitle($value)

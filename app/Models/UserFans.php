@@ -9,21 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\UserFans
  *
- * @property int $id 主键
- * @property int $uid 用户ID
- * @property int $fans_id 粉丝ID
- * @property \Illuminate\Support\Carbon|null $created_at 关注时间
- * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
  * @property-read \App\Models\User|null $fans
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserFans query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserFans whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserFans whereFansId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserFans whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserFans whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserFans whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class UserFans extends Model

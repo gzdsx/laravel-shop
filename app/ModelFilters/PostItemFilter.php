@@ -23,11 +23,9 @@ class PostItemFilter extends ModelFilter
      * @param $username
      * @return PostItemFilter|Builder
      */
-    public function username($username)
+    public function nickname($name)
     {
-        return $this->whereHas('user', function (Builder $builder) use ($username) {
-            return $builder->where('username', 'LIKE', "%$username%");
-        });
+        return $this->related('user', 'nickname', 'LIKE', "%$name%");
     }
 
     /**

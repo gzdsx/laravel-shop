@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
  * @property string|null $tag 标签
  * @property string|null $name 姓名
  * @property string|null $phone 电话
- * @property int $gender 性别
  * @property string|null $province 省
  * @property string|null $city 市
  * @property string|null $district 区县
@@ -31,7 +30,6 @@ use Illuminate\Support\Facades\Auth;
  * @method static Builder|UserAddress query()
  * @method static Builder|UserAddress whereCity($value)
  * @method static Builder|UserAddress whereDistrict($value)
- * @method static Builder|UserAddress whereGender($value)
  * @method static Builder|UserAddress whereId($value)
  * @method static Builder|UserAddress whereIsdefault($value)
  * @method static Builder|UserAddress whereLatitude($value)

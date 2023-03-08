@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\Auth;
  * @property int $comment_count 评论数
  * @property int $like_count 点赞数
  * @property int $views 浏览数
- * @property int $state 0：待审,1:已审核,-1:审核不过
  * @property string|null $from 来源
  * @property string|null $fromurl 来源地址
  * @property int $contents 内容数
@@ -40,9 +39,12 @@ use Illuminate\Support\Facades\Auth;
  * @property int $click5
  * @property int $click6
  * @property int $click7
+ * @property int $state 0：待审,1:已审核,-1:审核不过
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\PostCategory|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $collectedUsers
+ * @property-read int|null $collected_users_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostComment[] $comments
  * @property-read int|null $comments_count
  * @property-read \App\Models\PostContent|null $content
@@ -55,8 +57,6 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostLog[] $logs
  * @property-read int|null $logs_count
  * @property-read \App\Models\PostMedia|null $media
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
- * @property-read int|null $subscribed_users_count
  * @property-read \App\Models\User|null $user
  * @method static Builder|PostItem filter(array $input = [], $filter = null)
  * @method static Builder|PostItem newModelQuery()
@@ -147,7 +147,7 @@ class PostItem extends Model
      */
     public function getTypeDesAttribute()
     {
-        return $this->type ? trans('post.post_types.' . $this->type) : null;
+        return $this->type ? trans('post.type_options.' . $this->type) : null;
     }
 
     /**
@@ -155,7 +155,7 @@ class PostItem extends Model
      */
     public function getStateDesAttribute()
     {
-        return is_numeric($this->state) ? trans('post.post_states.' . $this->state) : null;
+        return is_numeric($this->state) ? trans('post.state_options.' . $this->state) : null;
     }
 
     /**
@@ -230,15 +230,18 @@ class PostItem extends Model
         return $this->hasMany(PostLog::class, 'aid', 'aid');
     }
 
-    public function subscribedUsers()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|User
+     */
+    public function collectedUsers()
     {
         return $this->belongsToMany(
             User::class,
-            'post_subscribe',
-            'subscribed_aid',
-            'subscribed_uid',
+            'post_collect_user',
+            'collect_aid',
+            'collect_uid',
             'aid',
             'uid'
-        )->withTimestamps();
+        )->as('subscribe')->withTimestamps()->orderBy('post_collect_user.created_at', 'desc');;
     }
 }

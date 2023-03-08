@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\Post;
 
 
 use App\Http\Controllers\Api\BaseController;
-use App\Traits\Post\PostSubscribeTrait;
+use App\Traits\Post\PostCollectTrait;
 
 class SubscribeController extends BaseController
 {
-    use PostSubscribeTrait;
+    use PostCollectTrait;
 }
