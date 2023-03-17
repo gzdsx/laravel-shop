@@ -1316,11 +1316,16 @@
         },
         {
             "name": "knplabs/knp-snappy",
-            "version": "v1.4.1",
+            "version": "v1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/snappy.git",
+                "reference": "b66f79334421c26d9c244427963fa2d92980b5d3"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://mirrors.tencent.com/repository/composer/knplabs/knp-snappy/v1.4.1/knplabs-knp-snappy-v1.4.1.zip",
-                "reference": "5126fb5b335ec929a226314d40cd8dad497c3d67",
+                "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/b66f79334421c26d9c244427963fa2d92980b5d3",
+                "reference": "b66f79334421c26d9c244427963fa2d92980b5d3",
                 "shasum": ""
             },
             "require": {
@@ -1353,6 +1358,7 @@
                     "Knp\\Snappy\\": "src/Knp/Snappy"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1376,7 +1382,11 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2022-01-07T13:03:38+00:00"
+            "support": {
+                "issues": "https://github.com/KnpLabs/snappy/issues",
+                "source": "https://github.com/KnpLabs/snappy/tree/v1.4.2"
+            },
+            "time": "2023-03-17T14:47:54+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3707,9 +3717,14 @@
         {
             "name": "psr/log",
             "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://mirrors.cloud.tencent.com/repository/composer/psr/log/1.1.4/psr-log-1.1.4.zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
                 "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
                 "shasum": ""
             },
@@ -3727,6 +3742,7 @@
                     "Psr\\Log\\": "Psr/Log/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3743,6 +3759,9 @@
                 "psr",
                 "psr-3"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
+            },
             "time": "2021-05-03T11:20:27+00:00"
         },
         {
@@ -5308,11 +5327,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php80.git",
+                "reference": "7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://mirrors.tencent.com/repository/composer/symfony/polyfill-php80/v1.26.0/symfony-polyfill-php80-v1.26.0.zip",
-                "reference": "cfa0ae98841b9e461207c13ab093d76b0fa7bace",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936",
+                "reference": "7a6ff3f1959bb01aefccb463a0f2cd3d3d2fd936",
                 "shasum": ""
             },
             "require": {
@@ -5321,7 +5345,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -5339,6 +5363,7 @@
                     "Resources/stubs"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5364,7 +5389,24 @@
                 "portable",
                 "shim"
             ],
-            "time": "2022-05-10T07:21:04+00:00"
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.27.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-11-03T14:55:06+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
@@ -5424,11 +5466,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.11",
+            "version": "v5.4.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "d4ce417ebcb0b7d090b4c178ed6d3accc518e8bd"
+            },
             "dist": {
                 "type": "zip",
-                "url": "https://mirrors.tencent.com/repository/composer/symfony/process/v5.4.11/symfony-process-v5.4.11.zip",
-                "reference": "6e75fe6874cbc7e4773d049616ab450eff537bf1",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d4ce417ebcb0b7d090b4c178ed6d3accc518e8bd",
+                "reference": "d4ce417ebcb0b7d090b4c178ed6d3accc518e8bd",
                 "shasum": ""
             },
             "require": {
@@ -5444,6 +5491,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5459,7 +5507,24 @@
             ],
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
-            "time": "2022-06-27T16:58:25+00:00"
+            "support": {
+                "source": "https://github.com/symfony/process/tree/v5.4.21"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-02-21T19:46:44+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -8625,5 +8690,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
