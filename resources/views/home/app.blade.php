@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="_token" content="{{ csrf_token() }}">
     <link href="{{asset('images/common/favicon.png')}}" rel="icon">
-    <script src="{{asset('js/lib/jquery.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('lib/jquery.min.js')}}" type="text/javascript"></script>
     <style type="text/css">
         html,body{
             background-color: #1690C9;
