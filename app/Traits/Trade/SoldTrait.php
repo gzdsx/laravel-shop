@@ -37,22 +37,22 @@ trait SoldTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function order(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('order_id'));
         $model->load(['items', 'shipping', 'transaction', 'discounts']);
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function orders(Request $request)
     {
         $query = $this->repository()->filter($request->all());
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->with(['items', 'shipping'])
                 ->offset($request->input('offset', 0))
@@ -81,7 +81,7 @@ trait SoldTrait
             }
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -103,7 +103,7 @@ trait SoldTrait
             event(new OrderSend($order));
         }
 
-        return jsonSuccess($order);
+        return json_success($order);
     }
 
     /**
@@ -115,7 +115,7 @@ trait SoldTrait
     {
         $order = $this->repository()->findOrFail($request->input('order_id'));
         $order->forceDelete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -127,7 +127,7 @@ trait SoldTrait
         $order = $this->repository()->findOrFail($request->input('order_id'));
         $order->seller_deleted = 1;
         $order->save();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -141,7 +141,7 @@ trait SoldTrait
             $order->markAsAccepted();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -155,6 +155,6 @@ trait SoldTrait
 
         event(new OrderCancelled($order));
 
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -1,0 +1,29 @@
+.form-inline{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    flex-wrap: wrap;
+
+    .el-form-item {
+        margin: 0 10px 0 0;
+        padding: 0;
+
+        &__content {
+            line-height: 1;
+        }
+    }
+
+    .form-item{
+        display: flex;
+        align-items: center;
+
+        &-label{
+            margin-right: 5px;
+        }
+
+        &-input{
+            display: flex;
+            align-items: center;
+        }
+    }
+}

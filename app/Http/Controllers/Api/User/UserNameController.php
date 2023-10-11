@@ -25,6 +25,6 @@ class UserNameController extends BaseController
         $user->username = $username;
         $user->save();
 
-        return jsonSuccess(['username' => $username]);
+        return json_success(['username' => $username]);
     }
 }

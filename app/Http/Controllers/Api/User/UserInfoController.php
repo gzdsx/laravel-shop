@@ -16,7 +16,7 @@ class UserInfoController extends BaseController
     {
         $user = Auth::user();
         $profile = $user->profile;
-        return jsonSuccess([
+        return json_success([
             'uid' => $user->uid,
             'nickname' => $user->nickname,
             'avatar' => $user->avatar,
@@ -42,7 +42,7 @@ class UserInfoController extends BaseController
         $model->avatar = $request->input('avatar');
         $model->save();
 
-        return jsonSuccess($model->avatar);
+        return json_success($model->avatar);
     }
 
     /**
@@ -59,6 +59,6 @@ class UserInfoController extends BaseController
             $model->save();
         }
 
-        return jsonSuccess($name);
+        return json_success($name);
     }
 }

@@ -24,7 +24,7 @@ class ProductClassifyController extends Controller
     public function getList()
     {
         $items = $this->shop()->classifies;
-        return jsonSuccess([
+        return json_success([
             'items' => $items,
             'total' => $items->count()
         ]);
@@ -44,7 +44,7 @@ class ProductClassifyController extends Controller
             $classify->save();
         }
 
-        return jsonSuccess(['classify' => $classify]);
+        return json_success(['classify' => $classify]);
     }
 
     /**
@@ -54,6 +54,6 @@ class ProductClassifyController extends Controller
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('cate_id'))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

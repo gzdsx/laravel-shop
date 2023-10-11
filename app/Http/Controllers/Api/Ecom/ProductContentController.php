@@ -17,6 +17,6 @@ class ProductContentController extends BaseController
     {
         $model = EcomProductContent::whereItemid($request->input('itemid'))->firstOrFail();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 }

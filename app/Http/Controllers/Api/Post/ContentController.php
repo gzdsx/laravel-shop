@@ -17,6 +17,6 @@ class ContentController extends BaseController
     {
         $contents = PostContent::whereAid($request->input('aid'))->get();
 
-        return jsonSuccess($contents);
+        return json_success($contents);
     }
 }

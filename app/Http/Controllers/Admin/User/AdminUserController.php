@@ -27,7 +27,7 @@ class AdminUserController extends BaseController
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 15);
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->with(['user', 'group'])->whereHas('user')
                 ->offset($offset)->limit($count)->orderBy('id')->get()
@@ -49,7 +49,7 @@ class AdminUserController extends BaseController
         $model->gid = $request->input('gid');
         $model->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -60,6 +60,6 @@ class AdminUserController extends BaseController
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

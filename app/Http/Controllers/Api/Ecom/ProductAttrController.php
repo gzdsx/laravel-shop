@@ -29,7 +29,7 @@ class ProductAttrController extends BaseController
     public function getInfo(Request $request)
     {
         $attr = $this->repository()->findOrFail($request->input('attr_cate_id'));
-        return jsonSuccess(['attr' => $attr]);
+        return json_success(['attr' => $attr]);
     }
 
     /**
@@ -39,7 +39,7 @@ class ProductAttrController extends BaseController
     public function getList(Request $request)
     {
         $items = $this->repository()->get();
-        return jsonSuccess([
+        return json_success([
             'total' => $items->count(),
             'items' => $items
         ]);
@@ -55,7 +55,7 @@ class ProductAttrController extends BaseController
         $attr->shop()->associate($this->shop());
         $attr->save();
 
-        return jsonSuccess(['attr' => $attr]);
+        return json_success(['attr' => $attr]);
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductAttrController extends BaseController
         $attr = $this->repository()->findOrFail($request->input('attr_cate_id'));
         $attr->fill($request->input('attr', []))->save();
 
-        return jsonSuccess(['attr' => $attr]);
+        return json_success(['attr' => $attr]);
     }
 
     /**
@@ -79,7 +79,7 @@ class ProductAttrController extends BaseController
         $attr = $this->repository()->findOrFail($request->input('attr_cate_id'));
         $attr->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -94,6 +94,6 @@ class ProductAttrController extends BaseController
         $attr = $this->repository()->firstOrCreate(['attr_title' => $attr_title]);
         $value = $attr->attrValues()->firstOrCreate(['attr_value' => $attr_value]);
 
-        return jsonSuccess(['attr_value' => $value]);
+        return json_success(['attr_value' => $value]);
     }
 }

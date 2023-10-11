@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $anony 匿名评论
  * @property \Illuminate\Support\Carbon|null $created_at 评论时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductReviewImage[] $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductReviewImage> $images
  * @property-read int|null $images_count
  * @property-read \App\Models\Order|null $order
  * @property-read \App\Models\EcomProductItem|null $product

@@ -20,7 +20,7 @@ class AccountController extends BaseController
     public function getAccount()
     {
         $account = Auth::user()->account()->firstOrCreate();
-        return jsonSuccess(['account' => $account]);
+        return json_success(['account' => $account]);
     }
 
     /**
@@ -38,7 +38,7 @@ class AccountController extends BaseController
         $account->password = bcrypt($request->input('password'));
         $account->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -104,7 +104,7 @@ class AccountController extends BaseController
                 'payee_id' => $toUser->uid
             ]);
 
-            return jsonSuccess();
+            return json_success();
         });
     }
 }

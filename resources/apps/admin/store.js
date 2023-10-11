@@ -2,23 +2,17 @@ import Vuex from 'vuex';
 
 const store = new Vuex.Store({
     state: {
-        auth: {
-            isSignined: false,
-            userinfo: {}
-        }
+        isSignined: false,
+        userInfo: {}
     },
     mutations: {
-        signin(state, userinfo) {
-            state.auth = {
-                userinfo,
-                isSignined: true
-            };
+        signin(state, userInfo) {
+            state.userInfo = userInfo;
+            state.isSignined = true;
         },
         signout(state) {
-            state.auth = {
-                isSignined: false,
-                userinfo: {}
-            }
+            state.userInfo = {};
+            state.isSignined = true;
         }
     }
 });

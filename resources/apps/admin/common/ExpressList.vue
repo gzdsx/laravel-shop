@@ -1,36 +1,27 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">快递管理</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>快递列表</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowAdd">添加快递</el-button>
-                        </div>
-                    </div>
-                </header>
-                <el-table :data="dataList" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column prop="name" width="200" label="快递名称"/>
-                    <el-table-column prop="code" width="200" label="公司代码"/>
-                    <el-table-column prop="regular" label="单号规则"/>
-                    <el-table-column width="50" label="选项">
-                        <template slot-scope="scope">
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
-                        批量删除
-                    </el-button>
-                </div>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">快递管理</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowAdd">添加快递</el-button>
+            </div>
+        </div>
+        <div class="page-section">
+            <el-table :data="dataList" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column prop="name" width="200" label="快递名称"/>
+                <el-table-column prop="code" width="200" label="公司代码"/>
+                <el-table-column prop="regular" label="单号规则"/>
+                <el-table-column width="50" label="选项">
+                    <template slot-scope="scope">
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="table-edit-footer">
+                <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
+                    批量删除
+                </el-button>
             </div>
         </div>
         <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
@@ -75,75 +66,75 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>
-    export default {
-        name: "ExpressList",
-        data() {
-            return {
-                dataList: [],
-                express: {},
-                showDialog: false,
-                selectionIds: []
-            }
+export default {
+    name: "ExpressList",
+    data() {
+        return {
+            dataList: [],
+            express: {},
+            showDialog: false,
+            selectionIds: []
+        }
+    },
+    methods: {
+        fetchList() {
+            this.$get('/expresses').then(response => {
+                this.dataList = response.result.items;
+            });
         },
-        methods: {
-            fetchList() {
-                this.$get('/common/express.getList').then(response => {
-                    this.dataList = response.result.items;
-                });
-            },
-            onDelete() {
-                let ids = this.selectionIds.map((d) => d.id);
-                this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$post('/common/express.batchDelete', {ids}).then(response => {
-                        this.fetchList();
-                    });
-                });
-            },
-            onSubmit() {
-                let {express} = this;
-                let {id} = express;
-                if (!express.name) {
-                    this.$showToast('请填写快递名称');
-                    return false;
-                }
-                if (!express.code) {
-                    this.$showToast('请快递公司代码');
-                    return false;
-                }
-
-                this.$post('/common/express.save', {id,express}).then(response => {
-                    this.showDialog = false;
-                    this.resetData();
+        onDelete() {
+            let ids = this.selectionIds.map((d) => d.id);
+            this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$post('/express/delete', {ids}).then(response => {
                     this.fetchList();
                 });
-            },
-            onShowAdd() {
+            });
+        },
+        onSubmit() {
+            let {express} = this;
+            if (!express.name) {
+                this.$showToast('请填写快递名称');
+                return false;
+            }
+            if (!express.code) {
+                this.$showToast('请快递公司代码');
+                return false;
+            }
+
+            this.$post('/express', {express}).then(() => {
+                this.showDialog = false;
+                this.$message.success('信息已保存');
                 this.resetData();
-                this.showDialog = true;
-            },
-            onShowEdit(d) {
-                this.express = d;
-                this.showDialog = true;
-            },
-            onSelectionChange(val) {
-                this.selectionIds = val;
-            },
-            resetData() {
-                this.express = {};
-            },
+                this.fetchList();
+            });
         },
-        mounted() {
-            this.fetchList();
+        onShowAdd() {
+            this.resetData();
+            this.showDialog = true;
         },
-    }
+        onShowEdit(d) {
+            this.express = d;
+            this.showDialog = true;
+        },
+        onSelectionChange(val) {
+            this.selectionIds = val;
+        },
+        resetData() {
+            this.express = {};
+        },
+    },
+    mounted() {
+        this.fetchList();
+    },
+}
 </script>
 
 <style scoped>

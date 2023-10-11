@@ -1,39 +1,30 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">菜单管理</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>菜单列表</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowEdit">新建菜单</el-button>
-                        </div>
-                    </div>
-                </header>
-                <el-table :data="dataList" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column prop="id" width="50" label="ID"/>
-                    <el-table-column prop="name" label="菜单名称"/>
-                    <el-table-column width="140" label="选项">
-                        <template slot-scope="scope">
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                            <span>|</span>
-                            <router-link :to="'/menu/item/'+scope.row.id">管理菜单项</router-link>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
-                        批量删除
-                    </el-button>
-                </div>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">菜单管理</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowEdit">新建菜单</el-button>
             </div>
         </div>
+        <section class="page-section">
+            <el-table :data="dataList" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column prop="id" width="50" label="ID"/>
+                <el-table-column prop="name" label="菜单名称"/>
+                <el-table-column width="140" label="选项" align="right">
+                    <template slot-scope="scope">
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                        <span>|</span>
+                        <router-link :to="'/menu/item/'+scope.row.id">管理菜单项</router-link>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="table-edit-footer">
+                <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
+                    批量删除
+                </el-button>
+            </div>
+        </section>
         <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <table class="dsxui-formtable">
@@ -62,7 +53,7 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>
@@ -78,7 +69,7 @@
         },
         methods: {
             fetchList() {
-                this.$get('/common/menu.getList').then(response => {
+                this.$get('/menus').then(response => {
                     this.dataList = response.result.items;
                 });
             },
@@ -92,23 +83,23 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/common/menu.batchDelete', {ids}).then(response => {
+                    this.$post('/menu/delete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
             },
             onSubmit() {
                 let {menu} = this;
-                let {id} = menu;
                 if (!menu.name) {
-                    this.$showToast('请填写菜单名称');
+                    this.$message.error('请填写菜单名称');
                     return false;
                 }
 
-                this.$post('/common/menu.save', {id, menu}).then(response => {
+                this.$post('/menu', {menu}).then(() => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;
+                    this.$message.success('菜单已保存');
                 });
             },
             onShowAdd() {

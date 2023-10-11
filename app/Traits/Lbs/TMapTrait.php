@@ -40,7 +40,7 @@ trait TMapTrait
 
         $result = json_decode($response->getBody()->getContents(), true);
         if (isset($result['result'])) {
-            return jsonSuccess($result['result']);
+            return json_success($result['result']);
         } else {
             return jsonError(500, $result['message']);
         }

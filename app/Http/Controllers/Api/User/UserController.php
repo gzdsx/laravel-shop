@@ -22,7 +22,7 @@ class UserController extends BaseController
     {
         $user = Auth::user();
         $profile = $user->profile;
-        return jsonSuccess([
+        return json_success([
             'uid' => $user->uid,
             'nickname' => $user->nickname,
             'avatar' => $user->avatar,
@@ -55,7 +55,7 @@ class UserController extends BaseController
             'fans_id' => Auth::id()
         ]);
 
-        return jsonSuccess(['fans' => $fans]);
+        return json_success(['fans' => $fans]);
     }
 
     /**
@@ -73,6 +73,6 @@ class UserController extends BaseController
             $fans->delete();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

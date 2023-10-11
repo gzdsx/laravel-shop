@@ -1,47 +1,39 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">客服管理</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>客服列表</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowAdd">添加客服</el-button>
-                        </div>
-                    </div>
-                </header>
-                <el-table :data="dataList" :loading="loading" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column prop="title" label="客服名称"/>
-                    <el-table-column prop="phone" width="200" label="电话"/>
-                    <el-table-column width="50" label="选项">
-                        <template slot-scope="scope">
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">客服管理</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowAdd">添加客服</el-button>
+            </div>
+        </div>
+        <section class="page-section">
+            <el-table :data="dataList" :loading="loading" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column prop="title" label="客服名称"/>
+                <el-table-column prop="phone" width="200" label="电话"/>
+                <el-table-column width="50" label="选项">
+                    <template slot-scope="scope">
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="tablenav-bottom">
+                <div class="table-actions">
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
                         批量删除
                     </el-button>
-                    <div class="flex"></div>
-                    <el-pagination
-                            background
-                            layout="prev, pager, next, total"
-                            :total="total"
-                            :page-size="pageSize"
-                            :current-page="page"
-                            @current-change="onPageChange"
-                    >
-                    </el-pagination>
                 </div>
+                <el-pagination
+                    background
+                    layout="prev, pager, next, total"
+                    :total="total"
+                    :page-size="pageSize"
+                    :current-page="page"
+                    @current-change="onPageChange"
+                >
+                </el-pagination>
             </div>
-        </div>
+        </section>
         <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <table class="dsxui-formtable">
@@ -77,7 +69,7 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>
@@ -90,7 +82,7 @@
             return {
                 kefu: {},
                 showDialog: false,
-                listApi: '/common/kefu.getList'
+                listApi: '/kefus'
             }
         },
         methods: {
@@ -104,7 +96,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/common/kefu.batchDelete', {ids}).then(response => {
+                    this.$post('/kefu/delete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
@@ -112,19 +104,19 @@
             onSubmit() {
                 let {kefu} = this;
                 if (!kefu.title) {
-                    this.$showToast('请填写客服名称');
+                    this.$message.error('请填写客服名称');
                     return false;
                 }
                 if (!kefu.phone) {
-                    this.$showToast('请填写客服电话');
+                    this.$message.error('请填写客服电话');
                     return false;
                 }
 
-                let {id} = kefu;
-                this.$post('/common/kefu.save', {id, kefu}).then(response => {
+                this.$post('/kefu', {kefu}).then(response => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;
+                    this.$message.success('信息已保存');
                 });
             },
             onShowAdd() {

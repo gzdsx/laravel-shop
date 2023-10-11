@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $target 目标
  * @property int $hide 是否隐藏
  * @property int $sort_num 显示序号
- * @property-read \Illuminate\Database\Eloquent\Collection|CommonMenuItem[] $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CommonMenuItem> $children
  * @property-read int|null $children_count
  * @property-read \App\Models\CommonMenu|null $menu
  * @property-read CommonMenuItem|null $parent

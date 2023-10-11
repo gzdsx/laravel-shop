@@ -22,9 +22,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $citycode 区号
  * @property string|null $zipcode 邮编
  * @property int $sort_num 排序
- * @property-read \Illuminate\Database\Eloquent\Collection|CommonDistrict[] $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CommonDistrict> $children
  * @property-read int|null $children_count
- * @property-read \Illuminate\Database\Eloquent\Collection|CommonDistrict[] $childs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CommonDistrict> $childs
  * @property-read int|null $childs_count
  * @property-read CommonDistrict|null $parent
  * @method static Builder|CommonDistrict newModelQuery()

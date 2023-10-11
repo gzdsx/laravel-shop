@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $credits 积分下限
  * @property string|null $memo 备注
  * @property array|null $privileges 权限
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static Builder|UserGroup newModelQuery()
  * @method static Builder|UserGroup newQuery()

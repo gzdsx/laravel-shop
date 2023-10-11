@@ -1,36 +1,29 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">商品型号</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>型号分类</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowAdd">添加分类</el-button>
-                        </div>
-                    </div>
-                </header>
-                <el-table :data="dataList">
-                    <el-table-column label="型号分类" prop="attr_title" width="200"/>
-                    <el-table-column label="型号" prop="values"/>
-                    <el-table-column label="选项" width="170" align="right">
-                        <template slot-scope="scope">
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                            <span>|</span>
-                            <a @click="onDelete(scope.row.attr_cate_id)">删除</a>
-                            <span>|</span>
-                            <router-link :to="'/ecom/product-attrvalue?attr_cate_id='+scope.row.attr_cate_id">型号管理
-                            </router-link>
-                        </template>
-                    </el-table-column>
-                </el-table>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">商品型号</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowAdd">添加分类</el-button>
             </div>
         </div>
+
+        <section class="page-section">
+            <el-table :data="dataList">
+                <el-table-column label="型号分类" prop="attr_title" width="200"/>
+                <el-table-column label="型号" prop="values"/>
+                <el-table-column label="选项" width="170" align="right">
+                    <template slot-scope="scope">
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                        <span>|</span>
+                        <a @click="onDelete(scope.row.attr_cate_id)">删除</a>
+                        <span>|</span>
+                        <router-link :to="'/ecom/product-attrvalue?attr_cate_id='+scope.row.attr_cate_id">型号管理
+                        </router-link>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </section>
+
         <el-dialog
                 title="提示"
                 :visible.sync="showDialog"
@@ -49,7 +42,7 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>

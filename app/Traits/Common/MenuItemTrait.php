@@ -29,22 +29,22 @@ trait MenuItemTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function item(Request $request)
     {
         $model = $this->repository()->find($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function items(Request $request)
     {
         $menu = CommonMenu::findOrFail($request->input('menu_id'));
         $items = $menu->items()->with(['children'])->where('parent_id', 0)->get();
 
-        return jsonSuccess(['items' => $items, 'menu' => $menu]);
+        return json_success(['items' => $items, 'menu' => $menu]);
     }
 
     /**
@@ -59,7 +59,7 @@ trait MenuItemTrait
             $model->sort_num = $model->id;
             $model->save();
         }
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -68,21 +68,8 @@ trait MenuItemTrait
      */
     public function delete(Request $request)
     {
-        if ($model = $this->repository()->find($request->input('id'))) {
-            $model->delete();
-        }
-
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -95,6 +82,6 @@ trait MenuItemTrait
         $model->hide = $model->hide === 0 ? 1 : 0;
         $model->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

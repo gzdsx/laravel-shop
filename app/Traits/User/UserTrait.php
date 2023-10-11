@@ -33,7 +33,7 @@ trait UserTrait
      */
     public function get(Request $request)
     {
-        return jsonSuccess(['user' => $this->repository()->with('group')->find($request->input('uid'))]);
+        return json_success(['user' => $this->repository()->with('group')->find($request->input('uid'))]);
     }
 
     /**
@@ -44,7 +44,7 @@ trait UserTrait
     {
 
         $query = $this->repository()->filter($request->all())->with('group');
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))->limit(15)->get()
         ]);

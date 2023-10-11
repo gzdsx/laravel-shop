@@ -22,7 +22,7 @@ class RefundReasonController extends BaseController
      */
     public function getList(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->get()]);
+        return json_success(['items' => $this->repository()->get()]);
     }
 
     /**
@@ -34,7 +34,7 @@ class RefundReasonController extends BaseController
         $reason = $this->repository()->findOrNew($request->input('id'));
         $reason->fill($request->input('reason', []))->save();
 
-        return jsonSuccess(compact('reason'));
+        return json_success(compact('reason'));
     }
 
     /**
@@ -44,6 +44,6 @@ class RefundReasonController extends BaseController
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('items', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

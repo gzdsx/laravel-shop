@@ -43,7 +43,7 @@ class OrderController extends BaseController
         $product_fee = bcmul($is_pin ? $sku->pin_price : $sku->price, $quantity, 2);
         $shipping_fee = $this->computeFreight($product->template_id, $quantity, $product_fee);
         $discount_fee = '0.00';
-        return jsonSuccess([
+        return json_success([
             'sku' => $sku,
             'product' => $product,
             'quantity' => $quantity,
@@ -165,7 +165,7 @@ class OrderController extends BaseController
             }
 
             event(new OrderCreated($order));
-            return jsonSuccess($order);
+            return json_success($order);
         });
     }
 }

@@ -27,7 +27,7 @@ class ProductAttrValueController extends BaseController
         $attr = EcomProductAttr::findOrFail($request->input('attr_cate_id'));
         $attr->load(['attrValues']);
 
-        return jsonSuccess(['attr' => $attr]);
+        return json_success(['attr' => $attr]);
     }
 
     /**
@@ -38,7 +38,7 @@ class ProductAttrValueController extends BaseController
     {
         $attr_value = $this->repository()->create($request->input('attr_value', []));
 
-        return jsonSuccess(['attr_value' => $attr_value]);
+        return json_success(['attr_value' => $attr_value]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductAttrValueController extends BaseController
         $attr_value = $this->repository()->findOrFail($request->input('attr_id'));
         $attr_value->fill($request->input('attr_value', []))->save();
 
-        return jsonSuccess(['attr_value' => $attr_value]);
+        return json_success(['attr_value' => $attr_value]);
     }
 
     /**
@@ -62,6 +62,6 @@ class ProductAttrValueController extends BaseController
         $attr_value = $this->repository()->findOrFail($request->input('attr_id'));
         $attr_value->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

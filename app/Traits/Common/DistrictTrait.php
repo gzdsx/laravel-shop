@@ -16,7 +16,7 @@ namespace App\Traits\Common;
 
 use App\Models\CommonDistrict;
 use Illuminate\Http\Request;
-use Overtrue\Pinyin\Pinyin;
+use Overtrue\LaravelPinyin\Facades\Pinyin;
 
 trait DistrictTrait
 {
@@ -33,10 +33,10 @@ trait DistrictTrait
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function getInfo(Request $request)
+    public function district(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -44,10 +44,10 @@ trait DistrictTrait
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function getList(Request $request)
+    public function districts(Request $request)
     {
         $parent_id = $request->input('parent_id', 0);
-        return jsonSuccess(['items' => $this->repository()->where('parent_id', $parent_id)->get()]);
+        return json_success(['items' => $this->repository()->where('parent_id', $parent_id)->get()]);
     }
 
     /**
@@ -56,12 +56,12 @@ trait DistrictTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('district', []));
+        $newDistrict = $request->input('district', []);
+        $model = $this->repository()->findOrNew($newDistrict['id'] ?? 0);
+        $model->fill($newDistrict);
 
-        $pinyin = new Pinyin();
         if (!$model->pinyin) {
-            $model->pinyin = $pinyin->permalink($model->name, '');
+            $model->pinyin = Pinyin::permalink($model->name, '');
         }
 
         if (!$model->letter) {
@@ -70,7 +70,7 @@ trait DistrictTrait
 
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -79,20 +79,7 @@ trait DistrictTrait
      */
     public function delete(Request $request)
     {
-        if ($model = $this->repository()->find($request->input('id'))) {
-            $model->delete();
-        }
-
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

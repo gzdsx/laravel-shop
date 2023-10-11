@@ -12,16 +12,16 @@
  */
 
 return [
-    'type_options' => array(
+    'formats' => array(
         'article' => '文章',
         'image' => '图片',
         'video' => '视频',
         'voice' => '声音'
     ),
-    'state_options' => array(
-        '0' => '等待审核',
-        '1' => '可供阅读',
-        '-1' => '审核不过'
+    'statuses' => array(
+        'publish' => '已发布',
+        'draft' => '草稿',
+        'inherit' => '继承'
     ),
     'post title required' => '文章标题不能为空',
     'post title must a string' => '文章标题必须是一个字符串',

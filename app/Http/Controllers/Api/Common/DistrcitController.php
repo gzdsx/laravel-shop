@@ -19,7 +19,7 @@ class DistrcitController extends BaseController
     {
         $keyword = $request->input('keyword');
         $model = $this->repository()->where('name', 'like', "%$keyword%")->firstOrFail();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -37,6 +37,6 @@ class DistrcitController extends BaseController
         });
         ksort($cities);
 
-        return jsonSuccess(compact('indexs', 'cities'));
+        return json_success(compact('indexs', 'cities'));
     }
 }

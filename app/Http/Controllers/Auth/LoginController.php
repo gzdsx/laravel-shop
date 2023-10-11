@@ -74,11 +74,11 @@ class LoginController extends Controller
                 if ($login->uid) {
                     Auth::loginUsingId($login->uid);
                     $login->delete();
-                    return jsonSuccess(['user' => Auth::user()]);
+                    return json_success(['user' => Auth::user()]);
                 }
             }
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

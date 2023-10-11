@@ -8,8 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('images/common/favicon.png')}}" rel="icon">
-    <link href="{{asset('lib/iconfont/iconfont.css')}}" rel="stylesheet">
-    <link href="{{asset('lib/element/element-ui.css')}}" rel="stylesheet">
+    <link href="{{asset('lib/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{asset('lib/element/element-ui.css?v=2.15.4')}}" rel="stylesheet">
     <link href="{{asset('dist/admin/index.css?v='.appversion())}}" rel="stylesheet">
     <script src="{{asset('lib/wangEditor.min.js?v='.appversion())}}" type="text/javascript"></script>
     <script src="{{asset('lib/echarts.min.js?v='.appversion())}}" type="text/javascript"></script>
@@ -17,8 +17,7 @@
     <script src="{{asset('lib/vue/vue-router.min.js?v='.appversion())}}" type="text/javascript"></script>
     <script src="{{asset('lib/element/element-ui.js?v='.appversion())}}" type="text/javascript"></script>
     <script src="https://map.qq.com/api/gljs?v=1.exp&key={{env('TMAP_KEY')}}" charset="utf-8"></script>
-    <script src="https://apis.map.qq.com/tools/geolocation/min?key={{env('TMAP_KEY')}}&referer={{env('APP_NAME')}}"
-            charset="utf-8"></script>
+    <script src="https://apis.map.qq.com/tools/geolocation/min?key={{env('TMAP_KEY')}}&referer={{env('APP_NAME')}}" charset="utf-8"></script>
 </head>
 <body>
 <div id="app"></div>

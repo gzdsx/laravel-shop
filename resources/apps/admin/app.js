@@ -1,65 +1,38 @@
 import vuedraggable from 'vuedraggable';
-import ImagePicker from "../lib/ImagePicker";
 import LocationPicker from "../lib/LocationPicker";
 // import KindEditor from "../lib/KindEditor";
 import VueEditor from "../lib/VueEditor";
-import Main from './common/Main';
+import Main from './layout/Main';
+import MainLayout from "./layout/MainLayout";
+import FixedBottom from "./layout/FixedBottom";
+import MediaDialog from "./components/MediaDialog";
+import VueClipboard from 'vue-clipboard2';
+import ApiService from "./utils/ApiService";
+
+Vue.use(VueClipboard);
 
 Vue.component('vuedraggable', vuedraggable);
-Vue.component('image-picker', ImagePicker);
 Vue.component('location-picker', LocationPicker);
 //Vue.component('kind-editor', KindEditor);
 Vue.component('vue-editor', VueEditor);
+Vue.component('media-dialog', MediaDialog);
+Vue.component('main-layout', MainLayout);
+Vue.component('fixed-bottom', FixedBottom);
 
-let API_URL = '/admin';
-let getApi = (path) => {
-    return API_URL + path;
+Vue.prototype.$get = (url, params, config = {}) => {
+    config.params = {
+        ...config.params,
+        ...params
+    }
+    return ApiService.get(url, config);
+};
+Vue.prototype.$post = (url, data, config = {}) => {
+    return ApiService.post(url, data, config);
+};
+
+Vue.prototype.$request = (config = {}) => {
+    return ApiService.request(config);
 }
-
-let httpGet = (path, params = {}, config = {}) => {
-    return new Promise((resolve, reject) => {
-        if (params) config.params = params;
-        axios.get(API_URL + path, config).then(response => {
-            if (response.data.errCode) {
-                if (response.data.errCode === 401) {
-                    window.location.reload();
-                }
-                reject(response.data);
-            } else {
-                resolve(response.data);
-            }
-        }).catch(reason => {
-            if (reason.statusCode === 401){
-                window.location.reload();
-            }
-            reject(reason);
-        });
-    });
-};
-
-let httpPost = (path, data = {}, config = {}) => {
-    return new Promise((resolve, reject) => {
-        axios.post(API_URL + path, data, config).then(response => {
-            if (response.data.errCode) {
-                if (response.data.errCode === 401) {
-                    window.location.reload();
-                }
-                reject(response.data);
-            } else {
-                resolve(response.data);
-            }
-        }).catch(reason => {
-            if (reason.statusCode === 401){
-                window.location.reload();
-            }
-            reject(reason);
-        });
-    });
-};
-
-Vue.prototype.$get = httpGet;
-Vue.prototype.$post = httpPost;
-Vue.prototype.$getApi = getApi;
 
 window._ = require('lodash');
 

@@ -32,23 +32,23 @@ trait MenuTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function menu(Request $request)
     {
         $menu = $this->repository()->findOrFail($request->input('id'));
         $items = $menu->visibleItems()->with(['children' => function (HasMany $hasMany) {
             return $hasMany->where('hide', 0);
         }])->where('parent_id', 0)->get();
 
-        return jsonSuccess(['menu' => $menu, 'items' => $items]);
+        return json_success(['menu' => $menu, 'items' => $items]);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function menus(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->get()]);
+        return json_success(['items' => $this->repository()->get()]);
     }
 
     /**
@@ -57,9 +57,10 @@ trait MenuTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('menu', []))->save();
-        return jsonSuccess($model);
+        $newMenu = $request->input('menu', []);
+        $model = $this->repository()->findOrNew($newMenu['id'] ?? 0);
+        $model->fill($newMenu)->save();
+        return json_success($model);
     }
 
     /**
@@ -68,20 +69,7 @@ trait MenuTrait
      */
     public function delete(Request $request)
     {
-        if ($model = $this->repository()->find($request->input('id'))) {
-            $model->delete();
-        }
-
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

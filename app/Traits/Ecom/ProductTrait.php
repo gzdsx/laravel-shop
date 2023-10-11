@@ -41,7 +41,7 @@ trait ProductTrait
         $model = $this->repository()->findOrFail($request->input('itemid'));
         $model->increment('views');
         $model->load(['skus']);
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -54,7 +54,7 @@ trait ProductTrait
         $count = $request->input('count', 10);
         $query = $this->repository()->filter($request->all());
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($offset)->take($count)->get()
         ]);
@@ -117,7 +117,7 @@ trait ProductTrait
             return $model;
         });
 
-        return jsonSuccess($product);
+        return json_success($product);
     }
 
     /**
@@ -132,7 +132,7 @@ trait ProductTrait
             $model->delete();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -142,7 +142,7 @@ trait ProductTrait
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -157,7 +157,7 @@ trait ProductTrait
             $product->fill($data)->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     public function toggle(Request $request)
@@ -166,7 +166,7 @@ trait ProductTrait
         $product->state = $product->state == 1 ? 0 : 1;
         $product->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -184,7 +184,7 @@ trait ProductTrait
             $query->whereNotIn('uid', [Auth::id()]);
         }
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->orderByDesc('order_id')->get()
         ]);

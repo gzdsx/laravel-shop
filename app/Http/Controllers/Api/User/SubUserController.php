@@ -25,7 +25,7 @@ class SubUserController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->with(['member'])
                 ->offset($request->input('offset', 0))

@@ -19,7 +19,7 @@ class SettingsController extends Controller
             $svalue = json_decode($setting->svalue, true);
             $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
         }
-        return jsonSuccess($settings);
+        return json_success($settings);
     }
 
     /**
@@ -35,7 +35,7 @@ class SettingsController extends Controller
         }
 
         $this->updateCache();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**

@@ -39,7 +39,7 @@ class MiniProgramController extends BaseController
                 $connect->delete();
             }
 
-            return jsonSuccess($result);
+            return json_success($result);
         }
 
         return jsonError($session['errcode'], $session['errmsg']);
@@ -63,7 +63,7 @@ class MiniProgramController extends BaseController
                 $decrypt = $app->encryptor->decryptData($session->session_key, $iv, $encryptedData);
                 $phoneNumber = $decrypt['phoneNumber'] ?? '';
                 if ($user = User::wherePhone($phoneNumber)->first()) {
-                    return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
+                    return json_success(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
                 } else {
                     $user = new User();
                     $user->nickname = $phoneNumber;
@@ -75,7 +75,7 @@ class MiniProgramController extends BaseController
                     $connect->user()->associate($user);
                     $connect->save();
 
-                    return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
+                    return json_success(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
                 }
             } catch (DecryptException $exception) {
                 return jsonError(500, $exception->getMessage());
@@ -116,7 +116,7 @@ class MiniProgramController extends BaseController
             $connect->user()->associate($user);
             $connect->save();
 
-            return jsonSuccess(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
+            return json_success(['access_token' => $user->createToken('weapp', ['*'])->accessToken]);
         }
 
         return jsonError(403, 'openid invalid');
@@ -135,7 +135,7 @@ class MiniProgramController extends BaseController
 
         $session = WechatSession::whereOpenid($openid)->first();
         $result = $this->miniProgram()->encryptor->decryptData($session->session_key, $iv, $encryptedData);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -152,7 +152,7 @@ class MiniProgramController extends BaseController
 
         $session = WechatSession::whereOpenid($openid)->first();
         $result = $this->miniProgram()->encryptor->decryptData($session->session_key, $iv, $encryptedData);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -180,7 +180,7 @@ class MiniProgramController extends BaseController
             'nickname' => $userInfo['nickName'] ?? '',
             'appid' => $app->config->get('app_id')
         ]);
-        return jsonSuccess(['access_token' => $user->createToken($user->uid)->accessToken]);
+        return json_success(['access_token' => $user->createToken($user->uid)->accessToken]);
     }
 
     /**
@@ -196,6 +196,6 @@ class MiniProgramController extends BaseController
             $login->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

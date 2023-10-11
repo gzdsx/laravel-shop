@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin\Common;
 
 use App\Http\Controllers\Admin\BaseController;
+use App\Http\Controllers\Controller;
 use App\Models\CommonSetting;
 use Illuminate\Http\Request;
 
 class SettingController extends BaseController
 {
-
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -20,7 +20,7 @@ class SettingController extends BaseController
             $svalue = json_decode($setting->svalue, true);
             $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
         }
-        return jsonSuccess($settings);
+        return json_success($settings);
     }
 
     /**
@@ -32,11 +32,11 @@ class SettingController extends BaseController
     {
         foreach ($request->input('settings', []) as $skey => $svalue) {
             if (is_array($svalue)) $svalue = json_encode($svalue);
-            CommonSetting::updateOrInsert(['skey'=>$skey], ['svalue' => $svalue]);
+            CommonSetting::updateOrCreate(['skey'=>$skey], ['svalue' => $svalue]);
         }
 
         $this->updateCache();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -44,7 +44,6 @@ class SettingController extends BaseController
      */
     protected function updateCache()
     {
-        // TODO: Implement updateCache() method.
         $settings = [];
         foreach (CommonSetting::all() as $setting) {
             $svalue = json_decode($setting->svalue, true);

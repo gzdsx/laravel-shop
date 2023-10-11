@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $appid 小程序appid
  * @property string|null $pagepath 小程序页面路径
  * @property int $sort_num 排序
- * @property-read \Illuminate\Database\Eloquent\Collection|WechatMenu[] $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, WechatMenu> $children
  * @property-read int|null $children_count
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $type_des
  * @method static Builder|WechatMenu newModelQuery()

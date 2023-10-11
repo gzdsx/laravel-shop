@@ -22,7 +22,7 @@ class EducationController extends BaseController
     {
         $model = $this->repository()->findOrFail($request->input('id'));
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -32,7 +32,7 @@ class EducationController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->orderByDesc('start_at')->get()
         ]);
@@ -47,7 +47,7 @@ class EducationController extends BaseController
         $model = $this->repository()->make($request->input('education', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -60,7 +60,7 @@ class EducationController extends BaseController
         $model->fill($request->input('education', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -71,6 +71,6 @@ class EducationController extends BaseController
     {
         $this->repository()->whereKey($request->input('id'))->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

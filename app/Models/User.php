@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasDates;
+use App\Models\Traits\HasMetas;
 use App\Models\Traits\UserHasEcom;
 use App\Models\Traits\UserHasOrders;
 use App\Models\Traits\UserHasPosts;
@@ -27,70 +28,53 @@ use Laravel\Passport\HasApiTokens;
  * @property int $freeze 冻结
  * @property float $latitude 纬度
  * @property float $longitude 经度
- * @property int $status 状态
  * @property int $email_status 邮箱验证状态
  * @property int $name_status 实名认证状态
+ * @property int $status 状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\UserAccount|null $account
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAddress> $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\AdminUser|null $admin
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $boughts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $boughts
  * @property-read int|null $boughts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartItems
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomCart> $cartItems
  * @property-read int|null $cart_items_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomCart[] $cartProducts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomCart> $cartProducts
  * @property-read int|null $cart_products_count
  * @property-read \App\Models\UserCertify|null $certify
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Client> $clients
  * @property-read int|null $clients_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $collectedPosts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PostItem> $collectedPosts
  * @property-read int|null $collected_posts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $collectedProducts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductItem> $collectedProducts
  * @property-read int|null $collected_products_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserCommissionLog[] $commissionLogs
- * @property-read int|null $commission_logs_count
- * @property-read User|null $commonlyTransferUsers
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserConnect[] $connects
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserConnect> $connects
  * @property-read int|null $connects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEducation[] $educations
- * @property-read int|null $educations_count
- * @property-read \Illuminate\Database\Eloquent\Collection|User[] $fans
- * @property-read int|null $fans_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserField[] $fields
- * @property-read int|null $fields_count
- * @property-read \Illuminate\Database\Eloquent\Collection|User[] $follows
- * @property-read int|null $follows_count
  * @property-read array|string|null $status_des
  * @property-read \App\Models\UserGroup|null $group
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserLog[] $logs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserLog> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonMaterial[] $materials
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommonMaterial> $materials
  * @property-read int|null $materials_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\App\Models\Notification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserMeta> $metas
+ * @property-read int|null $metas_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \App\Models\Notification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPosition[] $positions
- * @property-read int|null $positions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PostItem[] $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PostItem> $posts
  * @property-read int|null $posts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductItem> $products
  * @property-read int|null $products_count
- * @property-read \App\Models\UserProfile|null $profile
  * @property-read \App\Models\EcomShop|null $shop
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $solds
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $solds
  * @property-read int|null $solds_count
- * @property-read \App\Models\UserStats|null $stats
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShop[] $subscribedShops
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomShop> $subscribedShops
  * @property-read int|null $subscribed_shops_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Token> $tokens
  * @property-read int|null $tokens_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserTransaction[] $transactions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserTransaction> $transactions
  * @property-read int|null $transactions_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserTransferCommonly[] $transferCommonly
- * @property-read int|null $transfer_commonly_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserWithrawalLog[] $withdrawalLogs
- * @property-read int|null $withdrawal_logs_count
  * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $input = [], $filter = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -121,14 +105,14 @@ use Laravel\Passport\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use Notifiable, Filterable, HasApiTokens, HasDates;
+    use Notifiable, Filterable, HasApiTokens, HasDates, HasMetas;
     use UserHasOrders, UserHasPosts, UserHasEcom;
 
     protected $table = 'user';
     protected $primaryKey = 'uid';
     protected $fillable = [
         'uid', 'gid', 'nickname', 'phone', 'email', 'password', 'remember_token',
-        'avatar', 'status', 'email_status', 'name_status', 'freeze', 'credits'
+        'avatar', 'email_status', 'name_status', 'freeze', 'credits', 'status'
     ];
     protected $hidden = ['password', 'remember_token'];
     protected $appends = [
@@ -147,18 +131,12 @@ class User extends Authenticatable
         });
 
         static::created(function (User $user) {
-            $user->profile()->create();
-            $user->certify()->create();
             $user->account()->create();
-            $user->stats()->create();
         });
 
         static::deleting(function (User $user) {
-            $user->profile()->delete();
-            $user->stats()->delete();
             $user->certify()->delete();
             $user->account()->delete();
-            $user->fields()->delete();
             $user->connects()->delete();
             $user->logs()->delete();
             $user->addresses()->delete();
@@ -195,12 +173,7 @@ class User extends Authenticatable
             return $user;
         }
 
-        $user = $this->where('email', $username)->first();
-        if ($user) {
-            return $user;
-        }
-
-        return $this->where('username', $username)->first();
+        return $this->where('email', $username)->first();
     }
 
     /**
@@ -208,39 +181,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        if ($this->isFounder()) {
-            return true;
-        }
-        return !is_null($this->admin);
-    }
-
-    public function isFounder()
-    {
-        return $this->uid == 1000000;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function admin()
-    {
-        return $this->hasOne(AdminUser::class, 'uid', 'uid');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function connects()
-    {
-        return $this->hasMany(UserConnect::class, 'uid', 'uid');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function fields()
-    {
-        return $this->hasMany(UserField::class, 'uid', 'uid');
+        return $this->getRole() == 'administrator';
     }
 
     /**
@@ -252,11 +193,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function profile()
+    public function connects()
     {
-        return $this->hasOne(UserProfile::class, 'uid', 'uid');
+        return $this->hasMany(UserConnect::class, 'user_id', 'uid');
     }
 
     /**
@@ -264,7 +205,7 @@ class User extends Authenticatable
      */
     public function certify()
     {
-        return $this->hasOne(UserCertify::class, 'uid', 'uid');
+        return $this->hasOne(UserCertify::class, 'user_id', 'uid');
     }
 
     /**
@@ -272,15 +213,7 @@ class User extends Authenticatable
      */
     public function logs()
     {
-        return $this->hasMany(UserLog::class, 'uid', 'uid');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function stats()
-    {
-        return $this->hasOne(UserStats::class, 'uid', 'uid');
+        return $this->hasMany(UserLog::class, 'user_id', 'uid');
     }
 
     /**
@@ -288,7 +221,7 @@ class User extends Authenticatable
      */
     public function account()
     {
-        return $this->hasOne(UserAccount::class, 'uid', 'uid');
+        return $this->hasOne(UserAccount::class, 'user_id', 'uid');
     }
 
     /**
@@ -296,7 +229,7 @@ class User extends Authenticatable
      */
     public function materials()
     {
-        return $this->hasMany(CommonMaterial::class, 'uid', 'uid');
+        return $this->hasMany(CommonMaterial::class, 'user_id', 'uid');
     }
 
     /**
@@ -304,45 +237,16 @@ class User extends Authenticatable
      */
     public function addresses()
     {
-        return $this->hasMany(UserAddress::class, 'uid', 'uid');
+        return $this->hasMany(UserAddress::class, 'user_id', 'uid');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
-     */
-    public function fans()
-    {
-        return $this->hasManyThrough(
-            User::class,
-            UserFans::class,
-            'uid',
-            'uid',
-            'uid',
-            'fans_id'
-        );
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
-     */
-    public function follows()
-    {
-        return $this->hasManyThrough(
-            User::class,
-            UserFans::class,
-            'fans_id',
-            'uid',
-            'uid',
-            'uid'
-        );
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|UserTransaction
      */
     public function transactions()
     {
-        return $this->hasMany(UserTransaction::class, 'uid', 'uid');
+        return $this->hasMany(UserTransaction::class, 'user_id', 'uid');
     }
 
     /**
@@ -354,58 +258,29 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|UserMeta
      */
-    public function commissionLogs()
+    public function metas()
     {
-        return $this->hasMany(UserCommissionLog::class, 'uid', 'uid');
+        return $this->hasMany(UserMeta::class, 'user_id', 'uid');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @param $associative
+     * @return mixed
      */
-    public function withdrawalLogs()
+    public function getRoles($associative = null)
     {
-        return $this->hasMany(UserWithrawalLog::class, 'uid', 'uid');
+        return json_decode($this->getMeta('capabilities'), $associative);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function transferCommonly()
+    public function updateRole($role)
     {
-        return $this->hasMany(UserTransferCommonly::class, 'uid', 'uid');
+        $this->updateMeta('capability', $role);
     }
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough|User
-     */
-    public function commonlyTransferUsers()
+    public function getRole()
     {
-        return $this->hasOneThrough(
-            User::class,
-            UserTransferCommonly::class,
-            'uid',
-            'uid',
-            'uid',
-            'payee_id'
-        );
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|UserEducation
-     */
-    public function educations()
-    {
-        return $this->hasMany(UserEducation::class, 'uid', 'uid');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|UserPosition
-     */
-    public function positions()
-    {
-        return $this->hasMany(UserPosition::class, 'uid', 'uid');
+        return $this->getMeta('capability');
     }
 }

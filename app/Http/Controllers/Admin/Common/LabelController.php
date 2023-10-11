@@ -21,19 +21,19 @@ class LabelController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function label(Request $request)
     {
         $model = $this->repository()->find($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function labels(Request $request)
     {
-        return jsonSuccess([
+        return json_success([
             'total' => $this->repository()->count(),
             'items' => $this->repository()->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))->orderByDesc('id')->get()
@@ -45,11 +45,11 @@ class LabelController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
         CommonLabel::updateCache();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -58,10 +58,11 @@ class LabelController extends BaseController
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('label', []))->save();
+        $newLabel = $request->input('label', []);
+        $model = $this->repository()->findOrNew($newLabel['id'] ?? 0);
+        $model->fill($newLabel)->save();
         CommonLabel::updateCache();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -72,6 +73,6 @@ class LabelController extends BaseController
     {
         $this->repository()->whereKey($request->input('ids', []))->update($request->input('data', []));
         CommonLabel::updateCache();
-        return jsonSuccess();
+        return json_success();
     }
 }

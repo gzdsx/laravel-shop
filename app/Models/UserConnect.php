@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserConnect
  *
  * @property int $id 主键
- * @property int $uid 用户ID
+ * @property int $user_id 用户ID
  * @property string|null $appid APPID
  * @property string|null $platform 平台
  * @property string|null $unionid UnionID
@@ -39,9 +39,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|UserConnect whereOpenid($value)
  * @method static Builder|UserConnect wherePlatform($value)
  * @method static Builder|UserConnect whereProvince($value)
- * @method static Builder|UserConnect whereUid($value)
  * @method static Builder|UserConnect whereUnionid($value)
  * @method static Builder|UserConnect whereUpdatedAt($value)
+ * @method static Builder|UserConnect whereUserId($value)
  * @mixin \Eloquent
  */
 class UserConnect extends Model
@@ -51,7 +51,7 @@ class UserConnect extends Model
     protected $table = 'user_connect';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'uid', 'appid', 'platform', 'unionid', 'openid', 'nickname', 'gender', 'city', 'province', 'country', 'avatar'
+        'user_id', 'appid', 'platform', 'unionid', 'openid', 'nickname', 'gender', 'city', 'province', 'country', 'avatar'
     ];
 
     /**
@@ -77,6 +77,6 @@ class UserConnect extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 }

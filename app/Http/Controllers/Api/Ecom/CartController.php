@@ -55,7 +55,7 @@ class CartController extends BaseController
             $cartProduct->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -67,7 +67,7 @@ class CartController extends BaseController
         $itemid = $request->input('itemid');
         Auth::user()->cartProducts()->where('itemid', $itemid)->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -82,7 +82,7 @@ class CartController extends BaseController
         $model->quantity = $quantity;
         $model->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -106,7 +106,7 @@ class CartController extends BaseController
             ];
         }
 
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     public function confirm(Request $request)
@@ -127,7 +127,7 @@ class CartController extends BaseController
             ];
         }
 
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -211,7 +211,7 @@ class CartController extends BaseController
 
             EcomCart::whereIn('itemid', $ids)->delete();
 
-            return jsonSuccess();
+            return json_success();
         });
     }
 }

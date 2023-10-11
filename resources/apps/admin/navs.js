@@ -1,29 +1,18 @@
 export default [
     {
-        name: '首页',
-        fullName: '首页',
-        icon: 'icon-home',
-        path: '/',
-        group: 'home',
+        name: '仪表板',
+        icon: 'speedometer',
         children: [
             {
                 name: '后台首页',
                 path: '/',
                 isLink: false
-            },
-            {
-                name: '网站首页',
-                path: '/',
-                isLink: true
-            },
+            }
         ]
     },
     {
         name: '设置',
-        fullName: '系统设置',
-        icon: 'icon-setting',
-        path: '/settings',
-        group: 'settings',
+        icon: 'gear-wide',
         children: [
             {
                 name: '参数设置',
@@ -34,11 +23,14 @@ export default [
     },
     {
         name: '用户',
-        fullName: '用户管理',
-        icon: 'icon-people',
-        path: '/user/list',
-        group: 'user',
+        icon: 'people',
         children: [
+            {
+                name: '新增用户',
+                path: '/user/edit',
+                isLink: false,
+                visible: true
+            },
             {
                 name: '用户列表',
                 path: '/user/list',
@@ -50,27 +42,12 @@ export default [
                 path: '/user/group',
                 isLink: false,
                 visible: true
-            },
-            {
-                name: '管理员管理',
-                path: '/admin/user',
-                isLink: false,
-                visible: true
-            },
-            {
-                name: '管理员分组',
-                path: '/admin/group',
-                isLink: false,
-                visible: true
-            },
+            }
         ]
     },
     {
         name: '电商',
-        fullName: '商品管理',
-        icon: 'icon-goodsnew',
-        path: '/product/list',
-        group: 'ecom',
+        icon: 'bag',
         children: [
             {
                 name: '商品管理',
@@ -106,10 +83,7 @@ export default [
     },
     {
         name: '交易',
-        fullName: '交易管理',
-        icon: 'icon-recharge',
-        path: '/order/list',
-        group: 'trade',
+        icon: 'r-circle',
         children: [
             {
                 name: '订单管理',
@@ -130,11 +104,13 @@ export default [
     },
     {
         name: '文章',
-        fullName: '文章管理',
-        icon: 'icon-form',
-        path: '/post/list',
-        group: 'post',
+        icon: 'pencil-square',
         children: [
+            {
+                name: '添加文章',
+                path: '/post/edit',
+                isLink: false
+            },
             {
                 name: '文章管理',
                 path: '/post/list',
@@ -149,29 +125,23 @@ export default [
     },
     {
         name: '页面',
-        fullName: '页面管理',
-        icon: 'icon-info',
-        path: '/page/list',
-        group: 'page',
+        icon: 'box',
         children: [
             {
-                name: '页面列表',
-                path: '/page/list',
+                name: '新建页面',
+                path: '/page/edit',
                 isLink: false
             },
             {
-                name: '页面分类',
-                path: '/page/category',
+                name: '页面管理',
+                path: '/page/list',
                 isLink: false
             }
         ]
     },
     {
-        name: '微信',
-        fullName: '微信公众号',
-        icon: 'icon-wechat-fill',
-        path: '/wechat/menu',
-        group: 'wechat',
+        name: '微信公众号',
+        icon: 'wechat',
         children: [
             {
                 name: '菜单管理',
@@ -187,10 +157,7 @@ export default [
     },
     {
         name: '其他',
-        fullName: '其他',
-        icon: 'icon-skin',
-        path: '/material/list',
-        group: 'common',
+        icon: 'compass',
         children: [
             {
                 name: '素材管理',
@@ -208,7 +175,7 @@ export default [
                 isLink: false
             },
             {
-                name: '内容模块',
+                name: '图文模块',
                 path: '/block/list',
                 isLink: false
             },

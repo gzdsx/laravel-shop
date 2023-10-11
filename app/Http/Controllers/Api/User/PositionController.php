@@ -25,7 +25,7 @@ class PositionController extends BaseController
     {
         $model = $this->repository()->findOrFail($request->input('id'));
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -35,7 +35,7 @@ class PositionController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->orderByDesc('start_at')->get()
         ]);
@@ -50,7 +50,7 @@ class PositionController extends BaseController
         $model = $this->repository()->make($request->input('position', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -63,7 +63,7 @@ class PositionController extends BaseController
         $model->fill($request->input('position', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -74,6 +74,6 @@ class PositionController extends BaseController
     {
         $this->repository()->whereKey($request->input('id'))->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

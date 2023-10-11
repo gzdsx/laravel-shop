@@ -17,7 +17,7 @@ class ShopCertifyController extends BaseController
     public function certify(Request $request)
     {
         $certify = $this->shop()->certify()->firstOrCreate();
-        return jsonSuccess(['certify' => $certify]);
+        return json_success(['certify' => $certify]);
     }
 
     /**
@@ -30,6 +30,6 @@ class ShopCertifyController extends BaseController
         $certify->fill($request->input('certify', []));
         $certify->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -19,7 +19,7 @@ class ShopManageController extends BaseController
     public function getInfo(Request $request)
     {
         $shop = $this->shop();
-        return jsonSuccess(['shop' => $shop]);
+        return json_success(['shop' => $shop]);
     }
 
     /**
@@ -29,7 +29,7 @@ class ShopManageController extends BaseController
     public function getList(Request $request)
     {
         $items = EcomShop::with(['certify'])->whereSellerId(Auth::id())->get();
-        return jsonSuccess([
+        return json_success([
             'items' => $items,
             'total' => $items->count()
         ]);
@@ -41,7 +41,7 @@ class ShopManageController extends BaseController
     public function stats()
     {
         $stats = $this->shop()->stats()->firstOrCreate();
-        return jsonSuccess([
+        return json_success([
             'stat' => $stats,
             'stats' => $stats
         ]);
@@ -55,7 +55,7 @@ class ShopManageController extends BaseController
     {
         $session = EcomShopSession::firstOrCreate(['uid' => Auth::id()]);
         $session->shop()->associate($request->input('shop_id'))->save();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -69,6 +69,6 @@ class ShopManageController extends BaseController
             $shop->refresh();
         }
 
-        return jsonSuccess(['shop' => $shop]);
+        return json_success(['shop' => $shop]);
     }
 }

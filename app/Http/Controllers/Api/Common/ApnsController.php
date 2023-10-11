@@ -9,6 +9,6 @@ class ApnsController extends BaseController
 {
     public function jpush(Request $request){
 
-        return jsonSuccess();
+        return json_success();
     }
 }

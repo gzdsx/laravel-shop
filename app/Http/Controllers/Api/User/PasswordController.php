@@ -25,6 +25,6 @@ class PasswordController extends BaseController
         $user->password = bcrypt($newpassword);
         $user->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -33,7 +33,7 @@ class SmsController extends BaseController
                 'code' => $code
             ]);
 
-            return jsonSuccess();
+            return json_success();
         } catch (TencentCloudSDKException $exception) {
             return jsonError($exception->getCode(), $exception->getMessage());
         }
@@ -72,6 +72,6 @@ class SmsController extends BaseController
         } else {
             $verify->delete();
         }
-        return jsonSuccess();
+        return json_success();
     }
 }

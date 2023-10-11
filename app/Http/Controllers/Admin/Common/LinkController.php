@@ -21,23 +21,23 @@ class LinkController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function link(Request $request)
     {
         $model = $this->repository()->find($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function links(Request $request)
     {
         $query = $this->repository()->onlyLink();
         if ($cate_id = $request->input('cate_id')) {
             $query->where('cate_id', $cate_id);
         }
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->get()
         ]);
@@ -47,9 +47,9 @@ class LinkController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCategoryList(Request $request)
+    public function categories(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->onlyCategory()->get()]);
+        return json_success(['items' => $this->repository()->onlyCategory()->get()]);
     }
 
     /**
@@ -58,18 +58,19 @@ class LinkController extends BaseController
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('link', []))->save();
-        return jsonSuccess($model);
+        $newLink = $request->input('link', []);
+        $model = $this->repository()->findOrNew($newLink['id'] ?? 0);
+        $model->fill($newLink)->save();
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

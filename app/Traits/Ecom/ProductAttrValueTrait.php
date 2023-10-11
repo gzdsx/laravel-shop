@@ -37,7 +37,7 @@ trait ProductAttrValueTrait
         $model = EcomProductAttr::findOrFail($request->input('attr_cate_id'));
         $model->load(['attrValues']);
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -49,7 +49,7 @@ trait ProductAttrValueTrait
         $model = $this->repository()->findOrNew($request->input('attr_id'));
         $model->fill($request->input('attr_value', []))->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -61,6 +61,6 @@ trait ProductAttrValueTrait
         $model = $this->repository()->findOrFail($request->input('attr_id'));
         $model->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

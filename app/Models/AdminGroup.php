@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $gid 主键
  * @property string|null $name 名称
  * @property int $sort_num 序号
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AdminUser[] $admins
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AdminUser> $admins
  * @property-read int|null $admins_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|AdminGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AdminGroup newQuery()

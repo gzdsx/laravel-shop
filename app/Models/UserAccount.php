@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * App\Models\Account
  *
- * @property int $uid 会员ID
+ * @property int $user_id 会员ID
  * @property string|null $password 支付密码
  * @property string $balance 账户余额
  * @property string $freeze 冻结金额
@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereReward($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereTotalCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereTotalIncome($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereUid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserAccount whereWithdrawalCommission($value)
  * @mixin \Eloquent
  */
@@ -67,7 +67,7 @@ class UserAccount extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 
     /**

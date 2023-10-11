@@ -31,19 +31,19 @@ trait ExpressTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function express(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function expresses(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->get()]);
+        return json_success(['items' => $this->repository()->get()]);
     }
 
     /**
@@ -52,15 +52,16 @@ trait ExpressTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('express', []))->save();
-        return jsonSuccess($model);
+        $newExpress = $request->input('express', []);
+        $model = $this->repository()->findOrNew($newExpress['id'] ?? 0);
+        $model->fill($newExpress)->save();
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
     }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserTransaction
  *
  * @property int $id 主键
- * @property int $uid 用户ID
+ * @property int $user_id 用户ID
  * @property int $type 交易类型:1=收入,2=支出
  * @property int $account_type 财务类型
  * @property string|null $out_trade_no 交易流水
@@ -54,8 +54,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction wherePayState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction wherePayType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserTransaction whereUserId($value)
  * @mixin \Eloquent
  */
 class UserTransaction extends Model
@@ -70,7 +70,7 @@ class UserTransaction extends Model
         'type_des'
     ];
     protected $fillable = [
-        'uid', 'type', 'account_type', 'out_trade_no', 'pay_type', 'pay_state', 'pay_at',
+        'user_id', 'type', 'account_type', 'out_trade_no', 'pay_type', 'pay_state', 'pay_at',
         'detail', 'amount', 'memo', 'data', 'other_account_id', 'other_account_name'
     ];
     protected $dates = ['pay_at'];
@@ -116,7 +116,7 @@ class UserTransaction extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 
     /**

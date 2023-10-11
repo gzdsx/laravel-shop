@@ -25,7 +25,7 @@ class ProductSubscribeController extends BaseController
     {
         $itemid = $request->input('itemid');
         $result = $this->repository()->syncWithoutDetaching([$itemid]);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductSubscribeController extends BaseController
     {
         $itemid = $request->input('itemid');
         $result = $this->repository()->detach([$itemid]);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductSubscribeController extends BaseController
         $itemid = $request->input('itemid');
         $result = $this->repository()->toggle([$itemid]);
 
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductSubscribeController extends BaseController
         $itemid = $request->input('itemid');
         $subscribe = $this->repository()->whereKey($itemid)->exists();
 
-        return jsonSuccess(compact('subscribe'));
+        return json_success(compact('subscribe'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ProductSubscribeController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))

@@ -38,7 +38,7 @@ trait UserAddressTrait
             $this->repository()->update(['isdefault' => 0]);
         }
         $model->save();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -53,7 +53,7 @@ trait UserAddressTrait
             $model->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -63,7 +63,7 @@ trait UserAddressTrait
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('id', 0))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -78,7 +78,7 @@ trait UserAddressTrait
             $model = $this->repository()->orderByDesc('isdefault')->firstOrFail();
         }
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -87,7 +87,7 @@ trait UserAddressTrait
     public function getList(Request $request)
     {
         $items = $this->repository()->orderByDesc('isdefault')->get();
-        return jsonSuccess(['items' => $items]);
+        return json_success(['items' => $items]);
     }
 
     /**
@@ -102,7 +102,7 @@ trait UserAddressTrait
         }
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -117,6 +117,6 @@ trait UserAddressTrait
             $this->repository()->update(['isdefault' => 0]);
         }
         $model->save();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 }

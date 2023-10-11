@@ -21,20 +21,20 @@ class TransactionController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function transaction(Request $request)
     {
         $model = $this->repository()->find($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function transactions(Request $request)
     {
         $query = $this->repository()->filter($request->all());
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))->orderByDesc('id')->get()
@@ -45,9 +45,9 @@ class TransactionController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -24,7 +24,7 @@ class CouponController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count('id'),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))
@@ -43,7 +43,7 @@ class CouponController extends BaseController
         $model->fill($coupon);
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -54,7 +54,7 @@ class CouponController extends BaseController
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -64,6 +64,6 @@ class CouponController extends BaseController
     public function batchUpdate(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->update($request->input('data', []));
-        return jsonSuccess();
+        return json_success();
     }
 }

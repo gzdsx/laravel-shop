@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $attr_cate_id 属性分类ID
  * @property string|null $attr_title 属性名称
  * @property int $shop_id 门店ID
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductAttrValue[] $attrValues
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductAttrValue> $attrValues
  * @property-read int|null $attr_values_count
  * @property-read \App\Models\EcomShop|null $shop
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductAttr newModelQuery()

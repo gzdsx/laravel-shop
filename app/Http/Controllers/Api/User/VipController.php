@@ -21,7 +21,7 @@ class VipController extends BaseController
      */
     public function getVip()
     {
-        return jsonSuccess(['vip' => Auth::user()->vip]);
+        return json_success(['vip' => Auth::user()->vip]);
     }
 
     /**
@@ -50,7 +50,7 @@ class VipController extends BaseController
             $prepay->data = $unifiedOrder->all();
             $prepay->save();
 
-            return jsonSuccess(['config' => $this->payment()->jssdk->bridgeConfig($res->prepayId(), false)]);
+            return json_success(['config' => $this->payment()->jssdk->bridgeConfig($res->prepayId(), false)]);
         }
 
         return jsonError(500, $res->errCodeDes() ?: $res->retrunMsg(), ['extra' => $res->all()]);

@@ -30,7 +30,7 @@ class RefundController extends BaseController
     public function getReasonList()
     {
         $items = RefundReason::get();
-        return jsonSuccess([
+        return json_success([
             'items' => $items,
             'total' => $items->count()
         ]);
@@ -46,7 +46,7 @@ class RefundController extends BaseController
         $trade = OrderItem::findOrFail($trade_id);
         $order = Order::findOrFail($trade->order_id);
 
-        return jsonSuccess([
+        return json_success([
             'trade' => $trade,
             'order' => $order
         ]);
@@ -59,6 +59,6 @@ class RefundController extends BaseController
     public function getAddress(Request $request)
     {
         $address = RefundAddress::query()->orderByDesc('isdefault')->firstOrFail();
-        return jsonSuccess($address);
+        return json_success($address);
     }
 }

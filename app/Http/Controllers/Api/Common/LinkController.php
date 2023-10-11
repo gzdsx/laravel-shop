@@ -24,7 +24,7 @@ class LinkController extends BaseController
     public function getInfo(Request $request)
     {
         $link = $this->repository()->find($request->input('id'));
-        return jsonSuccess($link);
+        return json_success($link);
     }
 
     /**
@@ -33,7 +33,7 @@ class LinkController extends BaseController
      */
     public function getList(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->onlyLink()->get()]);
+        return json_success(['items' => $this->repository()->onlyLink()->get()]);
     }
 
     /**
@@ -44,7 +44,7 @@ class LinkController extends BaseController
     {
         $link = $this->repository()->findOrNew($request->input('id'));
         $link->fill($request->input('link', []))->save();
-        return jsonSuccess($link);
+        return json_success($link);
     }
 
     /**
@@ -54,7 +54,7 @@ class LinkController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('items', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -62,6 +62,6 @@ class LinkController extends BaseController
      */
     public function getCategoryList()
     {
-        return jsonSuccess(['items' => $this->repository()->onlyCategory()->get()]);
+        return json_success(['items' => $this->repository()->onlyCategory()->get()]);
     }
 }

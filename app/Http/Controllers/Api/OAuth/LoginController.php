@@ -23,7 +23,7 @@ class LoginController extends BaseController
                     $user->save();
                 }
 
-                return jsonSuccess([
+                return json_success([
                     'access_token' => $user->createToken('weapp', ['*'])->accessToken,
                     'user' => $user
                 ]);

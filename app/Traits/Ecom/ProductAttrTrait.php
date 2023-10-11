@@ -34,7 +34,7 @@ trait ProductAttrTrait
     public function getInfo(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('attr_cate_id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -44,7 +44,7 @@ trait ProductAttrTrait
     public function getList(Request $request)
     {
         $items = $this->repository()->get();
-        return jsonSuccess([
+        return json_success([
             'total' => $items->count(),
             'items' => $items
         ]);
@@ -59,7 +59,7 @@ trait ProductAttrTrait
         $model = $this->repository()->findOrNew($request->input('attr_cate_id'));
         $model->fill($request->input('attr', []))->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -71,7 +71,7 @@ trait ProductAttrTrait
         $model = $this->repository()->findOrFail($request->input('attr_cate_id'));
         $model->delete();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -86,6 +86,6 @@ trait ProductAttrTrait
         $attr = $this->repository()->firstOrCreate(['attr_title' => $attr_title]);
         $value = $attr->attrValues()->firstOrCreate(['attr_value' => $attr_value]);
 
-        return jsonSuccess($value);
+        return json_success($value);
     }
 }

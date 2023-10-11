@@ -8,23 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\PostContent
  *
- * @property int $aid
+ * @property int $post_id
  * @property string|null $content
- * @property int $sort_num
  * @property-read \App\Models\PostItem|null $post
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent query()
- * @method static \Illuminate\Database\Eloquent\Builder|PostContent whereAid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostContent whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PostContent whereSortNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostContent wherePostId($value)
  * @mixin \Eloquent
  */
 class PostContent extends Model
 {
     protected $table = 'post_content';
-    protected $primaryKey = 'aid';
-    protected $fillable = ['aid', 'content', 'sort_num'];
+    protected $primaryKey = 'post_id';
+    protected $fillable = ['post_id', 'content'];
 
     public $timestamps = false;
 
@@ -33,6 +31,6 @@ class PostContent extends Model
      */
     public function post()
     {
-        return $this->belongsTo(PostItem::class, 'aid', 'aid');
+        return $this->belongsTo(PostItem::class, 'post_id', 'id');
     }
 }

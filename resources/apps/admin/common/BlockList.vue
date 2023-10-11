@@ -1,51 +1,44 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">内容模块</div>
-        </header>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">内容模块</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowAdd">添加模块</el-button>
+            </div>
+        </div>
 
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>模块列表</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowAdd">添加模块</el-button>
-                        </div>
-                    </div>
-                </header>
-                <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column prop="id" width="50" label="ID"/>
-                    <el-table-column prop="name" width="200" label="模块名称"/>
-                    <el-table-column prop="description" label="备注说明"/>
-                    <el-table-column width="120" label="选项">
-                        <template slot-scope="scope">
-                            <router-link :to="'/block/item/'+scope.row.id">管理项目
-                            </router-link>
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
+        <div class="page-section">
+            <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column prop="id" width="50" label="ID"/>
+                <el-table-column prop="name" width="200" label="模块名称"/>
+                <el-table-column prop="description" label="备注说明"/>
+                <el-table-column width="120" label="选项">
+                    <template slot-scope="scope">
+                        <router-link :to="'/block/item/'+scope.row.id">管理项目
+                        </router-link>
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="tablenav-bottom">
+                <div class="table-actions">
                     <el-button size="small" type="primary" :disabled="selectionIds.length===0" @click="onDelete">
                         批量删除
                     </el-button>
-                    <div class="flex"></div>
-                    <el-pagination
-                            background
-                            layout="prev, pager, next, total"
-                            :total="total"
-                            :page-size="pageSize"
-                            :current-page="page"
-                            @current-change="onPageChange"
-                    >
-                    </el-pagination>
                 </div>
+                <el-pagination
+                    background
+                    layout="prev, pager, next, total"
+                    :total="total"
+                    :page-size="pageSize"
+                    :current-page="page"
+                    @current-change="onPageChange"
+                >
+                </el-pagination>
             </div>
         </div>
+
         <el-dialog title="编辑信息" closeable :visible.sync="showDialog" :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <table class="dsxui-formtable">
@@ -81,7 +74,7 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>
@@ -94,7 +87,7 @@
             return {
                 block: {},
                 showDialog: false,
-                listApi: '/common/block.getList'
+                listApi: '/blocks'
             }
         },
         methods: {
@@ -108,23 +101,23 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/common/block.batchDelete', {ids}).then(response => {
+                    this.$post('/block/delete', {ids}).then(response => {
                         this.fetchList();
                     });
                 });
             },
             onSubmit() {
                 let {block} = this;
-                let {id} = block;
                 if (!block.name) {
-                    this.$showToast('请填写模块名称');
+                    this.$message.error('请填写模块名称');
                     return false;
                 }
 
-                this.$post('/common/block.save', {id, block}).then(response => {
+                this.$post('/block', {block}).then(response => {
                     this.resetData();
                     this.fetchList();
                     this.showDialog = false;
+                    this.$message.success('信息已保存');
                 });
             },
             onShowAdd() {

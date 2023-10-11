@@ -1,0 +1,131 @@
+.post-thumbnail {
+    width: 60px;
+    height: 60px;
+    display: block;
+    object-fit: cover;
+    background-color: #fff2f2;
+}
+
+.post-column-title {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.post-column-actions {
+    font-size: 13px;
+    display: flex;
+    column-gap: 5px;
+    color: #8996B2;
+
+    a {
+        color: #8996B2;
+
+        &:hover {
+            text-decoration: underline !important;
+            color: #000000 !important;
+        }
+    }
+}
+
+.post-column-categories {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+}
+
+.post-body {
+    display: flex;
+    gap: 10px;
+
+    .post-body {
+        &-main {
+            flex: 1;
+            display: block;
+        }
+
+        &-box {
+            width: 278px;
+        }
+    }
+}
+
+.post-card {
+    border: 1px solid #ededed;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 2px;
+
+    .post-card {
+        &-header {
+            border-bottom: 1px solid #ebebeb;
+            display: flex;
+
+            h2 {
+                flex: 1;
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        &-body {
+            padding: 10px;
+        }
+
+        &-footer {
+            border-top: 1px solid #ebebeb;
+            display: flex;
+            padding: 10px;
+            justify-content: flex-end;
+            background-color: #FAFAFA;
+        }
+    }
+
+    .flex-space-around {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .feature-image-box {
+        background-color: #f3f4f5;
+        min-height: 100px;
+        display: block;
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
+    .form-label {
+        margin: 7px 0;
+    }
+
+    .category-box{
+        height: 200px;
+        overflow-y: auto;
+    }
+}
+
+.category-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding-left: 10px;
+    list-style-type: none;
+
+    li {
+        margin-bottom: 0;
+
+        label {
+            margin-bottom: 0 !important;
+        }
+    }
+
+    ul {
+        padding-left: 20px;
+        list-style-type: none;
+    }
+}

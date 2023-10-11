@@ -34,7 +34,7 @@ trait ProductTemplateTrait
     public function getInfo(Request $request)
     {
         $model = $this->repository()->find($request->input('template_id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -43,7 +43,7 @@ trait ProductTemplateTrait
      */
     public function getList(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->get()]);
+        return json_success(['items' => $this->repository()->get()]);
     }
 
     /**
@@ -53,7 +53,7 @@ trait ProductTemplateTrait
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('template_id'))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -64,6 +64,6 @@ trait ProductTemplateTrait
     {
         $model = $this->repository()->findOrNew($request->input('template_id'));
         $model->fill($request->input('template', []))->save();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 }

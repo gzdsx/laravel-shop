@@ -23,7 +23,7 @@ class AdminGroupController extends BaseController
     public function getList()
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->get()
         ]);
@@ -39,7 +39,7 @@ class AdminGroupController extends BaseController
         $model->fill($request->input('group', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -49,6 +49,6 @@ class AdminGroupController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

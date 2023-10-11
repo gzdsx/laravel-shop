@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $goods_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $refund_type_des
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RefundImage[] $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RefundImage> $images
  * @property-read int|null $images_count
  * @property-read \App\Models\Order|null $order
  * @property-read \App\Models\RefundShipping|null $shipping

@@ -15,7 +15,7 @@ class ProfileController extends BaseController
     public function profile()
     {
         $model = Auth::user()->profile()->firstOrCreate();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -26,6 +26,6 @@ class ProfileController extends BaseController
     {
         $model = Auth::user()->profile()->firstOrCreate();
         $model->fill($request->input('profile', []))->save();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 }

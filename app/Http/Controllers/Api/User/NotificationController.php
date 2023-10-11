@@ -23,7 +23,7 @@ class NotificationController extends BaseController
      */
     public function getInfo(Request $request)
     {
-        return jsonSuccess(['notification' => $this->repository()->find($request->input('id'))]);
+        return json_success(['notification' => $this->repository()->find($request->input('id'))]);
     }
 
     /**
@@ -33,7 +33,7 @@ class NotificationController extends BaseController
     public function notification(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 10))->orderByDesc('id')->get()
@@ -47,7 +47,7 @@ class NotificationController extends BaseController
     public function readNotifications(Request $request)
     {
         $query = Auth::user()->readNotifications();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 10))->orderByDesc('id')->get()
@@ -61,7 +61,7 @@ class NotificationController extends BaseController
     public function unreadNotification(Request $request)
     {
         $query = Auth::user()->unreadNotifications();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 10))->orderByDesc('id')->get()
@@ -75,6 +75,6 @@ class NotificationController extends BaseController
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('id'))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

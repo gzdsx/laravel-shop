@@ -28,6 +28,6 @@ class DealerPendingController extends BaseController
         $model->user()->associate(Auth::id());
         $model->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

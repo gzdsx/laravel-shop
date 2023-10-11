@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description 描述
  * @property int $sort_num 排序
  * @property-read CommonLink|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection|CommonLink[] $links
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CommonLink> $links
  * @property-read int|null $links_count
  * @method static Builder|CommonLink newModelQuery()
  * @method static Builder|CommonLink newQuery()

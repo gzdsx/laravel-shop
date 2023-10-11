@@ -1,0 +1,174 @@
+.media-dialog {
+    .el-dialog {
+        left: 40px;
+        top: 40px;
+        right: 40px;
+        width: auto;
+        position: absolute;
+        margin: 0 !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .el-dialog__body {
+        flex: 1;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .el-tabs__content {
+        height: 100%;
+    }
+
+    .el-tabs__header{
+        margin-bottom: 0;
+    }
+
+    .el-tabs__item{
+        padding: 0 10px;
+    }
+
+    .dialog-footer{
+        border-top: 1px solid #CCCCCC;
+        padding: 15px 0;
+        text-align: right;
+    }
+
+    .media {
+        &-uploader {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            text-align: center;
+
+            .el-upload-dragger {
+                border: 0;
+                height: auto;
+            }
+
+            .el-upload-list {
+                text-align: left;
+            }
+        }
+
+        &-flexbox{
+            display: flex;
+        }
+
+        &-container {
+            flex: 1;
+            display: block;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+            padding-top: 10px;
+        }
+
+        &-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            margin-left: -8px;
+            margin-right: -8px;
+
+            li {
+                display: inline-block;
+                min-width: 12.5%;
+                padding: 8px;
+
+                .thumbnail {
+                    background-color: #f0f0f1;
+                    border: 1px solid #CCCCCC;
+                    position: relative;
+
+                    &:before {
+                        content: " ";
+                        display: block;
+                        padding-top: 100%;
+                    }
+
+                    img {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .el-progress {
+                        position: absolute;
+                        left: 10px;
+                        right: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+
+                    .media-mask {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.3);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        .el-icon-success::before{
+                            font-size: 24px;
+                            background-color: #FFFFFF;
+                            border-radius: 50%;
+                            color: #409EFF;
+                        }
+                    }
+                }
+            }
+        }
+
+        &-loadmore{
+            padding: 10px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        &-loading{
+            position: static;
+            padding: 10px;
+            margin: 0;
+        }
+
+        &-editing{
+            width: 267px;
+            padding: 10px 16px;
+            z-index: 75;
+            border-left: 1px solid #dcdcde;
+            color: #646970;
+            font-size: 12px;
+
+            p{
+                margin-bottom: 3px;
+            }
+
+            h2{
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+
+            strong{
+                color: #333333;
+            }
+
+            .media{
+                &-preview{
+                    width: 140px;
+                    height: 140px;
+                    object-fit: cover;
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

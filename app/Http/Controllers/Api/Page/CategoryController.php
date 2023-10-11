@@ -16,7 +16,7 @@ class CategoryController extends BaseController
     public function getList(Request $request)
     {
         $query = PageCategory::query();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->get()
         ]);

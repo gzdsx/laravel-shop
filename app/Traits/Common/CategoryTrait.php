@@ -14,38 +14,43 @@
 namespace App\Traits\Common;
 
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Overtrue\Pinyin\Pinyin;
 
 trait CategoryTrait
 {
     /**
-     * @return Model
+     * @return Category|\Illuminate\Database\Eloquent\Builder
      */
-    abstract protected function repository();
-
-    protected function updateCache()
+    protected function repository()
     {
+        return Category::query();
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function category(Request $request)
     {
-        $category = $this->repository()->with('children')->findOrFail($request->input('cate_id'));
-        return jsonSuccess($category);
+        $model = $this->repository()->with('children')->findOrFail($request->input('cate_id'));
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function categories(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->with('children')->where('parent_id', 0)->get()]);
+        $query = $this->repository()
+            ->where('taxonomy', $request->input('taxonomy', 'category'))
+            ->where('parent_id', $request->input('parent_id', 0));
+        return json_success([
+            'total' => $query->count(),
+            'items' => $query->with('children')->get()
+        ]);
     }
 
     /**
@@ -55,7 +60,7 @@ trait CategoryTrait
     public function search(Request $request)
     {
         $parent_id = $request->input('parent_id', 0);
-        return jsonSuccess(['items' => $this->repository()->where('parent_id', $parent_id)->get()]);
+        return json_success(['items' => $this->repository()->where('parent_id', $parent_id)->get()]);
     }
 
     /**
@@ -64,21 +69,13 @@ trait CategoryTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('cate_id'));
-        $model->fill($request->input('category', []));
-
-        if ($model->parent) {
-            $model->level = $model->parent->level + 1;
-        } else {
-            $model->level = 1;
-        }
-
-        $pinyin = new Pinyin();
-        $model->identifier = $pinyin->permalink($model->cate_name, '');
-
+        $category = $request->input('category', []);
+        $model = $this->repository()->findOrNew($category['cate_id'] ?? 0);
+        $model->fill($category);
+        $model->slug = \Overtrue\LaravelPinyin\Facades\Pinyin::permalink($model->name);
         $model->save();
-        $this->updateCache();
-        return jsonSuccess($model);
+
+        return json_success($model);
     }
 
     /**
@@ -88,40 +85,21 @@ trait CategoryTrait
     public function increase(Request $request)
     {
         $model = $this->repository()->find($request->input('cate_id'));
-        $min = $this->repository()->where('sort_num', '>', $model->sort_num)->min('sort_num');
-        $model->sort_num = $min + 1;
+        $prev = $model->siblings()->where('sort_num', '<', $model->sort_num)->max('sort_num');
+        $model->sort_num = $prev > 0 ? $prev - 1 : 0;
         $model->save();
-        $this->updateCache();
-        return jsonSuccess();
+
+        return json_success();
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function decrease(Request $request)
     {
         $model = $this->repository()->find($request->input('cate_id'));
-        $max = $this->repository()->where('sort_num', '<', $model->sort_num)->max('sort_num');
-        $model->sort_num = $max > 0 ? $max - 1 : 0;
+        $next = $model->siblings()->where('sort_num', '>', $model->sort_num)->min('sort_num');
+        $model->sort_num = $next + 1;
         $model->save();
-        $this->updateCache();
-        return jsonSuccess();
-    }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function upgrade(Request $request)
-    {
-        $model = $this->repository()->find($request->input('cate_id'));
-        if ($model->parent) {
-            $model->parent_id = $model->parent->parent_id;
-            $model->save();
-            $this->updateCache();
-        }
-        return jsonSuccess($model);
+        return json_success();
     }
 
     /**
@@ -131,9 +109,10 @@ trait CategoryTrait
      */
     public function delete(Request $request)
     {
-        $this->deleteAll($request->input('cate_id'));
-        $this->updateCache();
-        return jsonSuccess();
+        foreach ($request->input('ids', []) as $cate_id) {
+            $this->deleteAll($cate_id);
+        }
+        return json_success();
     }
 
     /**

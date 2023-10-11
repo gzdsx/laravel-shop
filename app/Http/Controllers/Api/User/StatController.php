@@ -14,6 +14,6 @@ class StatController extends BaseController
     public function getStat()
     {
         $stat = Auth::user()->stat()->firstOrCreate();
-        return jsonSuccess(['stat' => $stat]);
+        return json_success(['stat' => $stat]);
     }
 }

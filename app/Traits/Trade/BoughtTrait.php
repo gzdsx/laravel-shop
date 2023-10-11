@@ -45,7 +45,7 @@ trait BoughtTrait
         $model = $this->repository()->findOrFail($request->input('order_id'));
         $model->load(['items', 'shipping', 'seller', 'transaction', 'discounts']);
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -60,7 +60,7 @@ trait BoughtTrait
         $items = $query->with(['items'])->offset($request->input('offset', 0))
             ->limit($request->input('count', 10))->orderByDesc('order_id')->get();
 
-        return jsonSuccess([
+        return json_success([
             'total' => $total,
             'items' => $items
         ]);
@@ -73,7 +73,7 @@ trait BoughtTrait
     public function getItemInfo(Request $request)
     {
         $model = OrderItem::findOrFail($request->input('sub_order_id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -86,7 +86,7 @@ trait BoughtTrait
         $order->fill(['cancel_reason' => $request->input('reason')])->markAsCancelled();
         event(new OrderCancelled($order));
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -98,7 +98,7 @@ trait BoughtTrait
     {
         $order = $this->repository()->findOrFail($request->input('order_id'));
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -113,7 +113,7 @@ trait BoughtTrait
         event(new OrderConfirmed($order));
         //}
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -126,7 +126,7 @@ trait BoughtTrait
         $order->buyer_deleted = 1;
         $order->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -137,7 +137,7 @@ trait BoughtTrait
     {
         $trade = OrderItem::find($request->input('trade_id'));
 
-        return jsonSuccess($trade);
+        return json_success($trade);
     }
 
     /**
@@ -148,7 +148,7 @@ trait BoughtTrait
     {
         $order = $this->repository()->findOrFail($request->input('order_id'));
 
-        return jsonSuccess([
+        return json_success([
             'total' => $order->items()->count(),
             'items' => $order->items
         ]);

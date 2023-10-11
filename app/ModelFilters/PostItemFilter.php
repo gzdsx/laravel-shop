@@ -29,28 +29,29 @@ class PostItemFilter extends ModelFilter
     }
 
     /**
-     * @param $catid
-     * @return $this|PostItemFilter
+     * @param $cate
+     * @return PostItemFilter
      */
-    public function cate($cate_id)
+    public function cate($cate)
     {
-        if ($cate_id > 0) {
-            return $this->where('cate_id', $cate_id);
-        }
-
-        return $this;
+        return $this->related('categories', 'cate_id', '=', $cate);
     }
 
     /**
-     * @param $state
+     * @param $status
      * @return $this|PostItemFilter
      */
-    public function state($state)
+    public function status($status)
     {
-        if (is_numeric($state)) {
-            return $this->where('state', $state);
+        if ($status !== 'all') {
+            return $this->where('status', $status);
         }
         return $this;
+    }
+
+    public function format($format)
+    {
+        return $this->where('format', $format);
     }
 
     /**
@@ -68,7 +69,7 @@ class PostItemFilter extends ModelFilter
      */
     public function timeBegin($time)
     {
-        return $this->whereDate('created_at', '>=', Date::make($time));
+        return $this->whereDate('created_at', '>=', now($time));
     }
 
     /**
@@ -77,7 +78,7 @@ class PostItemFilter extends ModelFilter
      */
     public function timeEnd($time)
     {
-        return $this->whereDate('created_at', '<=', Date::make($time));
+        return $this->whereDate('created_at', '<=', now($time));
     }
 
     /**
@@ -102,6 +103,11 @@ class PostItemFilter extends ModelFilter
         if ($sort == 'views-desc') {
             return $this->orderByDesc('views');
         }
-        return $this->orderByDesc('aid');
+
+        if ($sort == 'id-asc') {
+            return $this->orderBy('id');
+        }
+
+        return $this->orderByDesc('id');
     }
 }

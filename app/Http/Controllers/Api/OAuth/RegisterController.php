@@ -21,7 +21,7 @@ class RegisterController extends BaseController
     protected function registered(Request $request, User $user)
     {
         $access_token = $user->createToken('app')->accessToken;
-        return jsonSuccess([
+        return json_success([
             'access_token' => $access_token
         ]);
     }

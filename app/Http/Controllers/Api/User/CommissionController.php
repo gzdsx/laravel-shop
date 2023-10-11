@@ -32,7 +32,7 @@ class CommissionController extends BaseController
                 'state' => 0
             ]);
 
-            return jsonSuccess();
+            return json_success();
         });
     }
 }

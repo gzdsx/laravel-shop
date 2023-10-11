@@ -17,7 +17,7 @@ class TransferController extends BaseController
     public function commonly(Request $request)
     {
         $query = Auth::user()->commonlyTransferUsers();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 10))->orderByDesc('id')->get()
@@ -32,7 +32,7 @@ class TransferController extends BaseController
     {
         $name = $request->input('name');
         $user = User::where('username', $name)->orWhere('phone', $name)->firstOrFail();
-        return jsonSuccess(['user' => $user]);
+        return json_success(['user' => $user]);
     }
 
     /**
@@ -42,6 +42,6 @@ class TransferController extends BaseController
     public function find(Request $request)
     {
         $user = User::findOrFail($request->input('uid'));
-        return jsonSuccess(['user' => $user]);
+        return json_success(['user' => $user]);
     }
 }

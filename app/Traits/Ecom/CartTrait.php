@@ -72,7 +72,7 @@ trait CartTrait
      */
     protected function sendSavedCartResponse(Request $request, $cart)
     {
-        return jsonSuccess(compact('cart'));
+        return json_success(compact('cart'));
     }
 
     /**
@@ -92,7 +92,7 @@ trait CartTrait
      */
     protected function showUpdatedCartResponse(Request $request)
     {
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -112,7 +112,7 @@ trait CartTrait
      */
     protected function sendDeletedCartResponse(Request $request)
     {
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -141,7 +141,7 @@ trait CartTrait
             ])->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -161,7 +161,7 @@ trait CartTrait
      */
     protected function sendGetAllCartResponse(Request $request, $items)
     {
-        return jsonSuccess([
+        return json_success([
             'items' => $items,
             'total' => $items->count()
         ]);
@@ -174,6 +174,6 @@ trait CartTrait
     public function getItems(Request $request)
     {
         $items = $this->repository()->whereIn('itemid', explode(',', $request->input('items')))->get();
-        return jsonSuccess(['items' => $items]);
+        return json_success(['items' => $items]);
     }
 }

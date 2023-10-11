@@ -26,6 +26,6 @@ class OrderController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids',[]))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

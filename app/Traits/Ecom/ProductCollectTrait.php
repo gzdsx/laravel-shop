@@ -56,7 +56,7 @@ trait ProductCollectTrait
      */
     protected function sendSaveResponse(Request $request, $collect)
     {
-        return jsonSuccess(['collect' => $collect]);
+        return json_success(['collect' => $collect]);
     }
 
     /**
@@ -75,7 +75,7 @@ trait ProductCollectTrait
      */
     protected function sendDeletedResponse(Request $request)
     {
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -100,7 +100,7 @@ trait ProductCollectTrait
      */
     protected function showCollectedItemsView(Request $request, $items, $total)
     {
-        return jsonSuccess([
+        return json_success([
             'total' => $total,
             'items' => $items
         ]);

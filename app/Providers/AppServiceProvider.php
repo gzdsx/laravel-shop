@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(OrderServiceInterface::class, function () {
             return new OrderService();
         });
+
+        $this->app->bind('hooks', function () {
+            return [];
+        });
     }
 
     /**

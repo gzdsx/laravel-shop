@@ -1,119 +1,105 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title flex-fill">菜单详情</div>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">管理菜单项->{{menu.name}}</h2>
             <div>
-                <router-link to="/menu/list">
-                    <el-button type="primary" size="small">返回列表</el-button>
-                </router-link>
-            </div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <header class="table-edit-header">
-                    <div class="display-flex">
-                        <div class="font-16 font-bold flex">
-                            <span>{{menu.name}}</span>
-                        </div>
-                        <div class="button-item">
-                            <el-button type="primary" size="small" @click="onShowAdd(0)">添加菜单项</el-button>
-                        </div>
-                    </div>
-                </header>
-                <table class="dsxui-listtable">
-                    <colgroup>
-                        <col width="50"></col>
-                        <col width="150"></col>
-                        <col></col>
-                        <col width="100"></col>
-                        <col width="100"></col>
-                        <col width="200"></col>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>图标</th>
-                        <th>名称</th>
-                        <th>链接</th>
-                        <th>显示</th>
-                        <th>排序</th>
-                        <th class="align-right">选项</th>
-                    </tr>
-                    </thead>
-                </table>
-                <template v-if="dataList.length>0">
-                    <div v-for="(item,idx1) in dataList" :key="idx1">
-                        <table class="dsxui-listtable">
-                            <colgroup>
-                                <col width="50"></col>
-                                <col width="150"></col>
-                                <col></col>
-                                <col width="100"></col>
-                                <col width="100"></col>
-                                <col width="200"></col>
-                            </colgroup>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <img :src="item.image" class="img-30" v-if="item.image"/>
-                                    <div class="img-30 img-placeholder" v-else></div>
-                                </td>
-                                <td><span class="font-bold">{{item.title}}</span></td>
-                                <td><span class="font-bold">{{item.url}}</span></td>
-                                <td>
-                                    <div @click="onToggle(item)">
-                                        <i class="el-icon-close font-22" v-if="item.hide"></i>
-                                        <i class="el-icon-check font-22" v-else></i>
-                                    </div>
-                                </td>
-                                <td>{{item.sort_num}}</td>
-                                <td class="align-right">
-                                    <div class="action-links">
-                                        <a @click="onShowAdd(item.id)">添加子菜单</a>
-                                        <span>|</span>
-                                        <a @click="onShowEdit(item)">编辑</a>
-                                        <span>|</span>
-                                        <a @click="onDelete(item.id)">删除</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tbody v-if="item.children && item.children.length">
-                            <tr v-for="(child,idx2) in item.children" :key="idx2">
-                                <td>
-                                    <img :src="child.image" class="img-30" v-if="child.image"/>
-                                    <div class="img-placeholder img-30" v-else></div>
-                                </td>
-                                <td>
-                                    <div class="cell-flex">
-                                        <span class="child-item-icon"></span>
-                                        <span>{{child.title}}</span>
-                                    </div>
-                                </td>
-                                <td>{{child.url}}</td>
-                                <td>
-                                    <div @click="onToggle(child)">
-                                        <i class="el-icon-close font-22" v-if="child.hide"></i>
-                                        <i class="el-icon-check font-22" v-else></i>
-                                    </div>
-                                </td>
-                                <td>{{child.sort_num}}</td>
-                                <td class="align-right">
-                                    <div class="action-links">
-                                        <a @click="onShowEdit(child)">编辑</a>
-                                        <span>|</span>
-                                        <a @click="onDelete(child.id)">删除</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </template>
-                <div class="el-table__empty-block" v-else>
-                    <span class="el-table__empty-text">暂无数据</span>
-                </div>
+                <el-button type="primary" size="small" @click="onShowAdd(0)">添加菜单项</el-button>
             </div>
         </div>
+        <section class="page-section">
+            <table class="dsxui-listtable">
+                <colgroup>
+                    <col width="50"></col>
+                    <col width="150"></col>
+                    <col></col>
+                    <col width="100"></col>
+                    <col width="100"></col>
+                    <col width="200"></col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>图标</th>
+                    <th>名称</th>
+                    <th>链接</th>
+                    <th>显示</th>
+                    <th>排序</th>
+                    <th class="align-right">选项</th>
+                </tr>
+                </thead>
+            </table>
+            <template v-if="dataList.length>0">
+                <div v-for="(item,idx1) in dataList" :key="idx1">
+                    <table class="dsxui-listtable">
+                        <colgroup>
+                            <col width="50"></col>
+                            <col width="150"></col>
+                            <col></col>
+                            <col width="100"></col>
+                            <col width="100"></col>
+                            <col width="200"></col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <img :src="item.image" class="img-30" v-if="item.image"/>
+                                <div class="img-30 img-placeholder" v-else></div>
+                            </td>
+                            <td><span class="font-bold">{{item.title}}</span></td>
+                            <td><span class="font-bold">{{item.url}}</span></td>
+                            <td>
+                                <div @click="onToggle(item)">
+                                    <i class="el-icon-close font-22" v-if="item.hide"></i>
+                                    <i class="el-icon-check font-22" v-else></i>
+                                </div>
+                            </td>
+                            <td>{{item.sort_num}}</td>
+                            <td class="align-right">
+                                <div class="action-links">
+                                    <a @click="onShowAdd(item.id)">添加子菜单</a>
+                                    <span>|</span>
+                                    <a @click="onShowEdit(item)">编辑</a>
+                                    <span>|</span>
+                                    <a @click="onDelete(item.id)">删除</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-if="item.children && item.children.length">
+                        <tr v-for="(child,idx2) in item.children" :key="idx2">
+                            <td>
+                                <img :src="child.image" class="img-30" v-if="child.image"/>
+                                <div class="img-placeholder img-30" v-else></div>
+                            </td>
+                            <td>
+                                <div class="cell-flex">
+                                    <span class="child-item-icon"></span>
+                                    <span>{{child.title}}</span>
+                                </div>
+                            </td>
+                            <td>{{child.url}}</td>
+                            <td>
+                                <div @click="onToggle(child)">
+                                    <i class="el-icon-close font-22" v-if="child.hide"></i>
+                                    <i class="el-icon-check font-22" v-else></i>
+                                </div>
+                            </td>
+                            <td>{{child.sort_num}}</td>
+                            <td class="align-right">
+                                <div class="action-links">
+                                    <a @click="onShowEdit(child)">编辑</a>
+                                    <span>|</span>
+                                    <a @click="onDelete(child.id)">删除</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+            <div class="el-table__empty-block" v-else>
+                <span class="el-table__empty-text">暂无数据</span>
+            </div>
+        </section>
         <el-dialog title="编辑信息" closeable
                    :visible.sync="showDialog"
                    :close-on-click-modal="false"
@@ -205,8 +191,8 @@
                 </tfoot>
             </table>
         </el-dialog>
-        <image-picker v-model="showPicker" @confirm="onChooseImage"/>
-    </div>
+        <media-dialog v-model="showPicker" @confirm="onChooseImage"/>
+    </main-layout>
 </template>
 
 <script>
@@ -228,7 +214,7 @@
         methods: {
             fetchList() {
                 let {menu_id} = this.$route.params;
-                this.$get('/common/menu.item.getList', {menu_id}).then(response => {
+                this.$get('/menu/items', {menu_id}).then(response => {
                     let {menu, items} = response.result;
                     this.menu = menu;
                     this.dataList = items;
@@ -240,20 +226,20 @@
             },
             onSubmit() {
                 let {item} = this;
-                let {id} = item;
                 if (!item.title) {
-                    this.$showToast('请填写菜单名称');
+                    this.$message.error('请填写菜单名称');
                     return false;
                 }
                 if (!item.url) {
-                    this.$showToast('请填写菜单链接');
+                    this.$message.error('请填写菜单链接');
                     return false;
                 }
 
-                this.$post('/common/menu.item.save', {id, item}).then(() => {
-                    this.showDialog = false;
+                this.$post('/menu/item', {item}).then(() => {
                     this.resetData();
                     this.fetchList();
+                    this.showDialog = false;
+                    this.$message.success('菜单已保存');
                 });
             },
             onShowAdd(id) {
@@ -271,7 +257,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$post('/common/menu.item.batchDelete', {ids: [id]}).then(() => {
+                    this.$post('/menu/item/delete', {ids: [id]}).then(() => {
                         this.fetchList();
                     });
                 });
@@ -279,8 +265,8 @@
             onFidChange(val) {
                 this.$forceUpdate();
             },
-            onChooseImage(data) {
-                this.item.image = data.image;
+            onChooseImage(m) {
+                this.item.image = data.url;
             },
             onToggle(item) {
                 let {id} = item;

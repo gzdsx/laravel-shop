@@ -1,55 +1,51 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title flex-fill">优惠券管理</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <div class="table-edit-header">
-                    <div class="table-edit-title">模板列表</div>
-                    <div class="buttons-wrapper">
-                        <el-button type="primary" size="small" @click="onShowAdd">添加优惠券</el-button>
-                    </div>
-                </div>
-
-                <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column prop="title" label="模板名称" width="200"/>
-                    <el-table-column prop="value" label="面值" width="100"/>
-                    <el-table-column prop="description" label="描述"/>
-                    <el-table-column prop="validity_range" label="有效期"/>
-                    <el-table-column prop="per_limit" label="每人限领(张)" width="120" align="center"/>
-                    <el-table-column prop="used_count" label="已使用数量" width="120" align="center"/>
-                    <el-table-column prop="state_des" label="状态" width="120" align="center"/>
-                    <el-table-column width="80" label="操作选项" align="right">
-                        <template slot-scope="scope">
-                            <a @click="onShowEdit(scope.row)">编辑</a>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="onBatchDelete">
-                        批量删除
-                    </el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0"
-                               @click="onBatchUpdate({state:1})">批量启用
-                    </el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0"
-                               @click="onBatchUpdate({state:0})">批量停用
-                    </el-button>
-                    <div class="flex"></div>
-                    <el-pagination
-                            background
-                            layout="prev, pager, next,total"
-                            :total="total"
-                            :page-size="pageSize"
-                            :current-page="page"
-                            @current-change="onPageChange"
-                    >
-                    </el-pagination>
-                </div>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2 class="flex-grow-1">优惠券管理</h2>
+            <div>
+                <el-button type="primary" size="small" @click="onShowAdd">添加优惠券</el-button>
             </div>
         </div>
+
+        <section class="page-section">
+            <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column prop="title" label="模板名称" width="200"/>
+                <el-table-column prop="value" label="面值" width="100"/>
+                <el-table-column prop="description" label="描述"/>
+                <el-table-column prop="validity_range" label="有效期"/>
+                <el-table-column prop="per_limit" label="每人限领(张)" width="120" align="center"/>
+                <el-table-column prop="used_count" label="已使用数量" width="120" align="center"/>
+                <el-table-column prop="state_des" label="状态" width="120" align="center"/>
+                <el-table-column width="80" label="操作选项" align="right">
+                    <template slot-scope="scope">
+                        <a @click="onShowEdit(scope.row)">编辑</a>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="table-edit-footer">
+                <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="onBatchDelete">
+                    批量删除
+                </el-button>
+                <el-button size="small" :disabled="selectionIds.length === 0"
+                           @click="onBatchUpdate({state:1})">批量启用
+                </el-button>
+                <el-button size="small" :disabled="selectionIds.length === 0"
+                           @click="onBatchUpdate({state:0})">批量停用
+                </el-button>
+                <div class="flex"></div>
+                <el-pagination
+                        background
+                        layout="prev, pager, next,total"
+                        :total="total"
+                        :page-size="pageSize"
+                        :current-page="page"
+                        @current-change="onPageChange"
+                >
+                </el-pagination>
+            </div>
+        </section>
+
         <el-dialog title="编辑信息" closeable
                    :visible.sync="showDialog"
                    :close-on-click-modal="false"
@@ -149,73 +145,73 @@
                 </tfoot>
             </table>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>
-    import PaginationMixin from "../mixins/PaginationMixin";
+import PaginationMixin from "../mixins/PaginationMixin";
 
-    export default {
-        name: "Coupon",
-        data() {
-            return {
-                coupon: {},
-                showDialog: false,
-                listApi: '/ecom/coupon.getList'
-            }
+export default {
+    name: "Coupon",
+    data() {
+        return {
+            coupon: {},
+            showDialog: false,
+            listApi: '/ecom/coupon.getList'
+        }
+    },
+    mixins: [PaginationMixin],
+    methods: {
+        resetData() {
+            this.coupon = {id: 0, type: 1, min_amount: 200, per_limit: 1};
         },
-        mixins: [PaginationMixin],
-        methods: {
-            resetData() {
-                this.coupon = {id: 0, type: 1, min_amount: 200, per_limit: 1};
-            },
-            onSubmit() {
-                let {coupon} = this;
-                if (!coupon.title) {
-                    this.$showToast('请填写名称');
-                    return false;
-                }
-                if (!coupon.value) {
-                    this.$showToast('请填写面值');
-                    return false;
-                }
+        onSubmit() {
+            let {coupon} = this;
+            if (!coupon.title) {
+                this.$showToast('请填写名称');
+                return false;
+            }
+            if (!coupon.value) {
+                this.$showToast('请填写面值');
+                return false;
+            }
 
-                this.$post('/ecom/coupon.save', {coupon}).then(() => {
-                    this.showDialog = false;
+            this.$post('/ecom/coupon.save', {coupon}).then(() => {
+                this.showDialog = false;
+                this.fetchList();
+            });
+        },
+        onShowAdd() {
+            this.resetData();
+            this.showDialog = true;
+        },
+        onShowEdit(d) {
+            this.coupon = d;
+            this.showDialog = true;
+        },
+        onBatchDelete() {
+            let ids = this.selectionIds.map((d) => d.id);
+            this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$post('/ecom/coupon.batchDelete', {ids}).then(() => {
                     this.fetchList();
                 });
-            },
-            onShowAdd() {
-                this.resetData();
-                this.showDialog = true;
-            },
-            onShowEdit(d) {
-                this.coupon = d;
-                this.showDialog = true;
-            },
-            onBatchDelete() {
-                let ids = this.selectionIds.map((d) => d.id);
-                this.$confirm('此操作将永久删除所选信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$post('/ecom/coupon.batchDelete', {ids}).then(() => {
-                        this.fetchList();
-                    });
-                });
-            },
-            onBatchUpdate(data) {
-                let ids = this.selectionIds.map((d) => d.id);
-                this.$post('/ecom/coupon.batchUpdate', {ids, data}).then(() => {
-                    this.fetchList();
-                });
-            }
+            });
         },
-        mounted() {
-            this.fetchList();
-        },
-    }
+        onBatchUpdate(data) {
+            let ids = this.selectionIds.map((d) => d.id);
+            this.$post('/ecom/coupon.batchUpdate', {ids, data}).then(() => {
+                this.fetchList();
+            });
+        }
+    },
+    mounted() {
+        this.fetchList();
+    },
+}
 </script>
 
 <style scoped>

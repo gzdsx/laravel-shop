@@ -44,7 +44,7 @@ trait UserTransactionTrait
      */
     protected function showTransactionsView(Request $request, $items)
     {
-        return jsonSuccess(['items' => $items]);
+        return json_success(['items' => $items]);
     }
 
     /**
@@ -54,7 +54,7 @@ trait UserTransactionTrait
     public function getInfo(Request $request)
     {
         $transaction = $this->repository()->find($request->input('id'));
-        return jsonSuccess(compact('transaction'));
+        return json_success(compact('transaction'));
     }
 
     /**
@@ -64,7 +64,7 @@ trait UserTransactionTrait
     public function getList(Request $request)
     {
         $query = $this->repository()->filter($request->all());
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))->orderByDesc('id')->get()
@@ -78,6 +78,6 @@ trait UserTransactionTrait
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('items', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

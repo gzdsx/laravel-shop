@@ -84,7 +84,7 @@ class OrderController extends BaseController
 
             event(new OrderPaid($order));
 
-            return jsonSuccess();
+            return json_success();
         });
     }
 
@@ -112,7 +112,7 @@ class OrderController extends BaseController
             ->setOpenid($openid)
             ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
             ->setNotifyUrl('/notify/wechat/order.paid');
-        //return jsonSuccess($unifiedOrder->all());
+        //return json_success($unifiedOrder->all());
         $res = new UnifiedOrderResponse($payment->order->unify($unifiedOrder->getBizContent()));
         //解决订单号重复问题
         if ($res->errCode() === 'INVALID_REQUEST') {
@@ -132,7 +132,7 @@ class OrderController extends BaseController
             $prepay->save();
 
             $config = $payment->jssdk->bridgeConfig($res->prepayId(), false);
-            return jsonSuccess($config);
+            return json_success($config);
         } else {
             return jsonError(500, $res->errCodeDes() ?: $res->retrunMsg(), $res->all());
         }
@@ -155,7 +155,7 @@ class OrderController extends BaseController
             'total_amount' => $order->order_fee,
         ]);
 
-        //return jsonSuccess($params);
-        return jsonSuccess(['payStr' => http_build_query($params)]);
+        //return json_success($params);
+        return json_success(['payStr' => http_build_query($params)]);
     }
 }

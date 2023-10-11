@@ -9,5 +9,5 @@ use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
-    use PostCategoryTrait;
+
 }

@@ -25,7 +25,7 @@
     "intervention/image": "^2.4",
     "jenssegers/agent": "^2.6",
     "jpush/jpush": "^3.6",
-    "laravel/framework": "^8.0",
+    "laravel/framework": "^8.6",
     "laravel/passport": "^10.0",
     "laravel/scout": "^9.8",
     "laravel/tinker": "^2.0",

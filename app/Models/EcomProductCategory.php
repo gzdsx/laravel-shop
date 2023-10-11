@@ -22,15 +22,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $template_index 首页模板
  * @property string|null $template_list 列表页模板
  * @property string|null $template_detail 详细页模板
- * @property-read \Illuminate\Database\Eloquent\Collection|EcomProductCategory[] $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EcomProductCategory> $children
  * @property-read int|null $children_count
- * @property-read \Illuminate\Database\Eloquent\Collection|EcomProductCategory[] $childs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EcomProductCategory> $childs
  * @property-read int|null $childs_count
  * @property-read \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read EcomProductCategory|null $parent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductItem> $products
  * @property-read int|null $products_count
- * @property-read \Illuminate\Database\Eloquent\Collection|EcomProductCategory[] $siblings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EcomProductCategory> $siblings
  * @property-read int|null $siblings_count
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductCategory newQuery()

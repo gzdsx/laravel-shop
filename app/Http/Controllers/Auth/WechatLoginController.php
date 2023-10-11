@@ -26,7 +26,7 @@ class WechatLoginController extends Controller
                 Auth::loginUsingId($wxlogin->uid);
                 session(['openid'=>$wxlogin->openid]);
                 $wxlogin->delete();
-                return jsonSuccess();
+                return json_success();
             }
         }
 

@@ -31,24 +31,24 @@ trait AdTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function ad(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function ads(Request $request)
     {
-        $offset = $request->input('offset',0);
-        $count = $request->input('count',15);
+        $offset = $request->input('offset', 0);
+        $count = $request->input('count', 15);
         $query = $this->repository();
-        return jsonSuccess([
-            'total'=>$query->count(),
-            'items'=>$query->offset($offset)->limit($count)->get()
+        return json_success([
+            'total' => $query->count(),
+            'items' => $query->offset($offset)->limit($count)->get()
         ]);
     }
 
@@ -58,19 +58,20 @@ trait AdTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('ad', []))->save();
-        return jsonSuccess($model);
+        $newAd = $request->input('ad', []);
+        $model = $this->repository()->findOrNew($newAd['id'] ?? 0);
+        $model->fill($newAd)->save();
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -80,6 +81,6 @@ trait AdTrait
     public function batchUpdate(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->update($request->input('data', []));
-        return jsonSuccess();
+        return json_success();
     }
 }

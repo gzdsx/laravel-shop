@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\PostComment
  *
  * @property int $id
- * @property int $aid
- * @property int $uid
+ * @property int $post_id
+ * @property int $user_id
  * @property string|null $username
  * @property int $reply_uid
  * @property string|null $reply_name
@@ -28,19 +28,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment query()
- * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereAid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereCity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereLikes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostComment wherePostId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereProvince($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereReplyName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereReplyUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostComment whereUsername($value)
  * @mixin \Eloquent
  */
@@ -49,15 +49,15 @@ class PostComment extends Model
     use HasDates;
 
     protected $table = 'post_comment';
-    protected $primaryKey = 'cid';
-    protected $fillable = ['aid', 'uid', 'message', 'province', 'city', 'district', 'street', 'lng', 'lat', 'likes', 'state'];
+    protected $primaryKey = 'id';
+    protected $fillable = ['post_id', 'user_id', 'message', 'province', 'city', 'district', 'street', 'lng', 'lat', 'likes', 'state'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function post()
     {
-        return $this->belongsTo(PostItem::class, 'aid', 'aid');
+        return $this->belongsTo(PostItem::class, 'post_id', 'id');
     }
 
     /**
@@ -65,6 +65,6 @@ class PostComment extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 }

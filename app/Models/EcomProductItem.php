@@ -47,28 +47,28 @@ use Illuminate\Support\Facades\Auth;
  * @property int $state 商品状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductCategory[] $bgCates
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductCategory> $bgCates
  * @property-read int|null $bg_cates_count
  * @property-read \App\Models\EcomProductCategory|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $collectedUsers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $collectedUsers
  * @property-read int|null $collected_users_count
  * @property-read \App\Models\EcomProductContent|null $content
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $m_url
- * @property-read array|string|null $status_des
+ * @property-read array|string|null $state_des
  * @property-read mixed $thumb
  * @property-read \Illuminate\Contracts\Routing\UrlGenerator|string $url
  * @property-read string|null $we_url
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductGroup[] $groups
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductGroup> $groups
  * @property-read int|null $groups_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductImage[] $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductImage> $images
  * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductProps[] $props
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductProps> $props
  * @property-read int|null $props_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductReview[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductReview> $reviews
  * @property-read int|null $reviews_count
  * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\EcomShop|null $shop
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductSku[] $skus
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductSku> $skus
  * @property-read int|null $skus_count
  * @property-read \App\Models\EcomProductTemplate|null $template
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem filter(array $input = [], $filter = null)
@@ -107,7 +107,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSellerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSold($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereStock($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereSubtitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|EcomProductItem whereTemplateId($value)

@@ -35,13 +35,13 @@ trait RefundTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function refund(Request $request)
     {
         $refund = $this->repository()->findOrFail($request->input('refund_id'));
         $refund->load(['images', 'shipping', 'user']);
         $trade = $refund->trade;
         $order = $trade->order;
-        return jsonSuccess([
+        return json_success([
             'refund' => $refund,
             'trade' => $trade,
             'order' => $order
@@ -52,10 +52,10 @@ trait RefundTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function refunds(Request $request)
     {
         $query = $this->repository()->filter($request->all());
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))
@@ -94,7 +94,7 @@ trait RefundTrait
         $trade->refund_state = 1;
         $trade->save();
 
-        return jsonSuccess($refund);
+        return json_success($refund);
     }
 
     /**
@@ -116,7 +116,7 @@ trait RefundTrait
             $refund->images()->create($image);
         }
 
-        return jsonSuccess($refund);
+        return json_success($refund);
     }
 
     /**
@@ -136,7 +136,7 @@ trait RefundTrait
             $trade->save();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -149,7 +149,7 @@ trait RefundTrait
         if ($refund = $this->repository()->find($request->input('refund_id'))) {
             $refund->delete();
         }
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -159,7 +159,7 @@ trait RefundTrait
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -183,7 +183,7 @@ trait RefundTrait
         $shipping->fill($address);
         $shipping->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -216,7 +216,7 @@ trait RefundTrait
             }
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -229,7 +229,7 @@ trait RefundTrait
         $refund->refund_state = 1;
         $refund->save();
 
-        return jsonSuccess($refund);
+        return json_success($refund);
     }
 
     /**
@@ -242,6 +242,6 @@ trait RefundTrait
         $shipping = $refund->shipping()->firstOrNew([]);
         $shipping->fill($request->input('shipping', []))->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

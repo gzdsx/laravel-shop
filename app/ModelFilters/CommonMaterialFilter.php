@@ -13,16 +13,9 @@ class CommonMaterialFilter extends ModelFilter
      */
     public $relations = [];
 
-    public function uid($uid)
+    public function user($user_id)
     {
-        return $this->where('uid', '=', $uid);
-    }
-
-    public function username($username)
-    {
-        return $this->with(['user' => function ($query) use ($username) {
-            return $query->where('username', 'like', "%$username%");
-        }]);
+        return $this->where('user_id', '=', $user_id);
     }
 
     public function type($type)

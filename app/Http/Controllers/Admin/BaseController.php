@@ -23,7 +23,7 @@ class BaseController extends Controller
             }
 
             if (!Auth::user()->isAdmin()) {
-                abort(403, '你没有后台管理权限');
+                abort(403, '你没有此项权限');
             }
 
             return $next($req);

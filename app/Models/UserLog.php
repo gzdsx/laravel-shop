@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserLog
  *
  * @property int $id
- * @property int $uid
+ * @property int $user_id
  * @property string|null $ip
  * @property string|null $operate
  * @property string|null $address
@@ -27,8 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereIp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereOperate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereSrc($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserLog whereUserId($value)
  * @mixin \Eloquent
  */
 class UserLog extends Model
@@ -37,13 +37,13 @@ class UserLog extends Model
 
     protected $table = 'user_log';
     protected $primaryKey = 'id';
-    protected $fillable = ['uid', 'ip', 'operate', 'address', 'src'];
+    protected $fillable = ['user_id', 'ip', 'operate', 'address', 'src'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 }

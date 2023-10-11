@@ -25,6 +25,6 @@ class FeedbackController extends BaseController
         $model->uid = Auth::id();
         $model->save();
 
-        return jsonSuccess(['id' => $model->id]);
+        return json_success(['id' => $model->id]);
     }
 }

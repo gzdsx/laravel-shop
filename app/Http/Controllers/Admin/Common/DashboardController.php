@@ -8,7 +8,6 @@ use App\Models\CommonMaterial;
 use App\Models\Order;
 use App\Models\PostItem;
 use App\Models\User;
-use App\Models\Video;
 use Illuminate\Http\Request;
 
 class DashboardController extends BaseController
@@ -19,7 +18,7 @@ class DashboardController extends BaseController
      */
     public function posts(Request $request)
     {
-        return jsonSuccess(['items' => PostItem::limit(5)->orderByDesc('aid')->get()]);
+        return json_success(['items' => PostItem::limit(5)->orderByDesc('id')->get()]);
     }
 
     /**
@@ -28,12 +27,10 @@ class DashboardController extends BaseController
      */
     public function stats(Request $request)
     {
-        return jsonSuccess([
+        return json_success([
             'users' => User::count(),
             'posts' => PostItem::count(),
-            'products' => EcomProductItem::count(),
-            'materials' => CommonMaterial::count(),
-            'orders' => Order::count()
+            'materials' => CommonMaterial::count()
         ]);
     }
 
@@ -41,8 +38,8 @@ class DashboardController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function newusers(Request $request)
+    public function users(Request $request)
     {
-        return jsonSuccess(['items' => User::orderByDesc('uid')->limit(10)->get()]);
+        return json_success(['items' => User::orderByDesc('uid')->limit(10)->get()]);
     }
 }

@@ -9,6 +9,7 @@ use App\Models\UserTransaction;
 use App\Support\TradeUtil;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends BaseController
@@ -22,26 +23,38 @@ class UserController extends BaseController
         return User::query();
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getInfo(Request $request)
+    public function info(Request $request)
     {
-        $model = $this->repository()->with('group')->find($request->input('uid'));
-        return jsonSuccess($model);
+        $user = Auth::user();
+        return json_success([
+            'uid' => $user->uid,
+            'nickname' => $user->nickname,
+            'avatar' => $user->avatar,
+            'phone' => $user->phone,
+            'email' => $user->email
+        ]);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function user(Request $request)
+    {
+        $model = $this->repository()->with('group')->find($request->input('uid'));
+        return json_success($model);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function users(Request $request)
     {
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 15);
         $query = $this->repository()->filter($request->all());
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->with(['group', 'account'])->offset($offset)->limit($count)->get()
         ]);
@@ -53,12 +66,14 @@ class UserController extends BaseController
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('uid'));
+        $newUser = $request->input('user', []);
+        $model = $this->repository()->findOrNew($newUser['uid'] ?? 0);
+        $isNewUser = !$model->uid;
 
         $nickname = $request->input('nickname');
         if ($model->nickname != $nickname) {
             if ($this->repository()->where('nickname', $nickname)->exists()) {
-                return jsonError(422, trans('user.nickname has been taken'));
+                return json_fail(trans('user.nickname has been taken'));
             } else {
                 $model->nickname = $nickname;
             }
@@ -72,7 +87,7 @@ class UserController extends BaseController
         if ($phone = $request->input('phone')) {
             if ($model->phone != $phone) {
                 if ($this->repository()->where('phone', $phone)->exists()) {
-                    return jsonError(422, trans('user.mobile has been taken'));
+                    return json_fail(trans('user.mobile has been taken'));
                 } else {
                     $model->phone = $phone;
                 }
@@ -83,7 +98,7 @@ class UserController extends BaseController
         if ($email = $request->input('email')) {
             if ($model->email != $email) {
                 if ($this->repository()->where('email', $email)->exists()) {
-                    return jsonError(422, trans('user.email has been taken'));
+                    return json_fail(trans('user.email has been taken'));
                 } else {
                     $model->email = $email;
                 }
@@ -100,25 +115,25 @@ class UserController extends BaseController
 
         $model->save();
 
-        if (!$request->input('uid')) {
+        if ($isNewUser) {
             event(new Registered($model));
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->map(function (User $user) {
             if (!$user->isFounder()) {
                 $user->delete();
             }
         });
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -132,7 +147,7 @@ class UserController extends BaseController
                 $user->update($request->input('data', []));
             }
         });
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -163,6 +178,6 @@ class UserController extends BaseController
             });
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -25,7 +25,7 @@ class JobIntentionController extends BaseController
     {
         $query = $this->repository();
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->get()
         ]);
@@ -40,7 +40,7 @@ class JobIntentionController extends BaseController
         $model = $this->repository()->make($request->input('intention', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -53,7 +53,7 @@ class JobIntentionController extends BaseController
         $model->fill($request->input('intention', []));
         $model->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -67,6 +67,6 @@ class JobIntentionController extends BaseController
             $model->delete();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -44,7 +44,7 @@ trait RefundAddressTrait
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->get()
         ]);
@@ -62,7 +62,7 @@ trait RefundAddressTrait
             $this->repository()->update(['isdefault' => 0]);
         }
         $address->save();
-        return jsonSuccess(['address' => $address]);
+        return json_success(['address' => $address]);
     }
 
     /**
@@ -73,6 +73,6 @@ trait RefundAddressTrait
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('items', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -20,7 +20,7 @@ class GeoCodeController extends BaseController
         ]);
 
         $result = json_decode($response->getBody()->getContents(), true);
-        return jsonSuccess($result['geocodes'] ?? []);
+        return json_success($result['geocodes'] ?? []);
     }
 
     /**
@@ -43,6 +43,6 @@ class GeoCodeController extends BaseController
 
         $result = json_decode($response->getBody()->getContents(), true);
 
-        return jsonSuccess($result['regeocode'] ?? []);
+        return json_success($result['regeocode'] ?? []);
     }
 }

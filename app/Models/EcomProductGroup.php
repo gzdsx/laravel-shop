@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $state 状态
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 修改时间
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductGroupItem[] $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductGroupItem> $items
  * @property-read int|null $items_count
  * @property-read \App\Models\Order|null $order
  * @property-read \App\Models\EcomProductItem|null $product

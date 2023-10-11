@@ -54,7 +54,7 @@ class RechargeController extends BaseController
             $prePay->data = $unifiedOrder->all();
             $prePay->save();
 
-            return jsonSuccess(['config' => $payment->jssdk->bridgeConfig($res->prepayId(), false)]);
+            return json_success(['config' => $payment->jssdk->bridgeConfig($res->prepayId(), false)]);
         }
 
         return jsonError(500, $res->errCodeDes() ?: $res->retrunMsg());

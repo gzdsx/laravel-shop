@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id 主键
  * @property string|null $name 名称
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonMenuItem[] $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommonMenuItem> $items
  * @property-read int|null $items_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonMenuItem[] $visibleItems
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommonMenuItem> $visibleItems
  * @property-read int|null $visible_items_count
  * @method static Builder|CommonMenu newModelQuery()
  * @method static Builder|CommonMenu newQuery()

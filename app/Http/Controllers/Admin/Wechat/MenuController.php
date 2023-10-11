@@ -23,19 +23,19 @@ class MenuController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function menus(Request $request)
     {
         $items = $this->repository()->with('children')->where('parent_id', 0)->get();
-        return jsonSuccess(['items' => $items]);
+        return json_success(['items' => $items]);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getTypes(Request $request)
+    public function types(Request $request)
     {
-        return jsonSuccess(['items' => trans('wechat.menu.types')]);
+        return json_success(['items' => trans('wechat.menu.types')]);
     }
 
     /**
@@ -44,9 +44,10 @@ class MenuController extends BaseController
      */
     public function save(Request $request)
     {
-        $menu = $this->repository()->findOrNew($request->input('id', 0));
-        $menu->fill($request->input('menu', []))->save();
-        return jsonSuccess(['menu' => $menu]);
+        $newMenu = $request->input('menu', []);
+        $menu = $this->repository()->findOrNew($newMenu['id'] ?? 0);
+        $menu->fill($newMenu)->save();
+        return json_success($menu);
     }
 
     /**
@@ -57,7 +58,7 @@ class MenuController extends BaseController
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('id', 0))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -155,12 +156,12 @@ class MenuController extends BaseController
 
             try {
                 $res = $this->officialAccount()->menu->create($buttons);
-                return jsonSuccess($res);
+                return json_success($res);
             } catch (\GuzzleHttp\Exception\GuzzleException $exception) {
-                return jsonError($exception->getCode(), $exception->getMessage());
+                return json_fail($exception->getMessage());
             }
         } else {
-            return jsonError(404, 'not found');
+            return json_fail('not found', 404);
         }
     }
 }

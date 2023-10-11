@@ -39,7 +39,7 @@ trait ShopTrait
     {
         $model = $this->repository()->findOrFail($request->input('shop_id'));
         $model->load(['seller', 'images']);
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -50,7 +50,7 @@ trait ShopTrait
     {
         $query = $this->repository()->filter($request->all());
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 20))->get()
@@ -76,7 +76,7 @@ trait ShopTrait
      */
     protected function showDetailView(Request $request, $shop)
     {
-        return jsonSuccess(['shop' => $shop]);
+        return json_success(['shop' => $shop]);
     }
 
     /**
@@ -96,7 +96,7 @@ trait ShopTrait
      */
     protected function showShopsView(Request $request, $shops)
     {
-        return jsonSuccess(['shops' => $shops]);
+        return json_success(['shops' => $shops]);
     }
 
     /**
@@ -110,7 +110,7 @@ trait ShopTrait
         //$shop->seller()->associate(Auth::id());
         $shop->save();
 
-        return jsonSuccess(['shop' => $shop]);
+        return json_success(['shop' => $shop]);
     }
 
     /**
@@ -120,7 +120,7 @@ trait ShopTrait
     public function update(Request $request)
     {
         $this->repository()->whereKey($request->input('shop_id'))->update($request->input('data', []));
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -130,6 +130,6 @@ trait ShopTrait
     public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('items', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

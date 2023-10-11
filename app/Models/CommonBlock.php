@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string|null $name
  * @property string|null $description
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommonBlockItem[] $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommonBlockItem> $items
  * @property-read int|null $items_count
  * @method static \Illuminate\Database\Eloquent\Builder|CommonBlock newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CommonBlock newQuery()

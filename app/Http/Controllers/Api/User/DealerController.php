@@ -27,7 +27,7 @@ class DealerController extends BaseController
     public function check()
     {
         $check = UserDealer::where('uid', Auth::id())->exists();
-        return jsonSuccess($check);
+        return json_success($check);
     }
 
     /**
@@ -37,7 +37,7 @@ class DealerController extends BaseController
     public function getInfo(Request $request)
     {
         $model = $this->repository()->where('uid', $request->input('uid', Auth::id()))->firstOrFail();
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -52,7 +52,7 @@ class DealerController extends BaseController
             $dealer->save();
         }
 
-        return jsonSuccess($dealer->poster);
+        return json_success($dealer->poster);
     }
 
     /**

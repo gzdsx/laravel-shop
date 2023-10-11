@@ -13,13 +13,10 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Traits\Common\SysMessages;
 use Illuminate\Contracts\Support\Arrayable;
 
 trait HasData
 {
-    use SysMessages;
 
     protected $data = [];
 

@@ -43,6 +43,6 @@ class WithdrawalController extends BaseController
         $log->state = 0;
         $log->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

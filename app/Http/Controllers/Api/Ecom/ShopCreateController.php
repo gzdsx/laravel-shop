@@ -24,6 +24,6 @@ class ShopCreateController extends BaseController
         $session = EcomShopSession::firstOrCreate(['uid' => Auth::id()]);
         $session->shop()->associate($shop)->save();
 
-        return jsonSuccess(['shop' => $shop]);
+        return json_success(['shop' => $shop]);
     }
 }

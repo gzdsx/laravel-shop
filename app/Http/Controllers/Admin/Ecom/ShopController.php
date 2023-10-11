@@ -28,7 +28,7 @@ class ShopController extends BaseController
     {
         $query = $this->repository()->filter($request->all());
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->with('certify')
                 ->offset($request->input('offset', 0))
@@ -43,7 +43,7 @@ class ShopController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -56,7 +56,7 @@ class ShopController extends BaseController
         $shop->auth_state = $request->input('auth_state', 0);
         $shop->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -66,7 +66,7 @@ class ShopController extends BaseController
     public function batchUpdate(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->update($request->input('data', []));
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -94,6 +94,6 @@ class ShopController extends BaseController
             }
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

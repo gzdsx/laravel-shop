@@ -52,18 +52,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
  * @property \Illuminate\Support\Carbon|null $updated_at 更新时间
  * @property-read \App\Models\User|null $buyer
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderDiscount[] $discounts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderDiscount> $discounts
  * @property-read int|null $discounts_count
  * @property-read mixed|null $buyer_state_des
  * @property-read array|\Illuminate\Contracts\Translation\Translator|string|null $pay_state_des
  * @property-read mixed|null $pay_type_des
  * @property-read mixed|null $seller_state_des
  * @property-read mixed|null $state_des
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderItem[] $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $items
  * @property-read int|null $items_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderLog[] $logs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderLog> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Refund[] $refunds
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Refund> $refunds
  * @property-read int|null $refunds_count
  * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\OrderShipping|null $shipping

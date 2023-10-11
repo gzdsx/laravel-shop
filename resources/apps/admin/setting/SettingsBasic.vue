@@ -5,7 +5,7 @@
             <tr>
                 <td class="cell-label" width="110">LOGO:</td>
                 <td class="cell-input" width="400">
-                    <div class="w120" @click="showPicker=true">
+                    <div class="w120" @click="showMediaDialog=true">
                         <el-image :src="settings.logo" class="w120" fit="contain" v-if="settings.logo"></el-image>
                         <div class="img-placeholder img-120" v-else></div>
                     </div>
@@ -73,28 +73,24 @@
             </tr>
             </tbody>
         </table>
-        <image-picker v-model="showPicker" @confirm="handlePickedImage"></image-picker>
+        <media-dialog v-model="showMediaDialog" :options="{type:'image'}" @confirm="onChooseImage"/>
     </div>
 </template>
 
 <script>
-    import ImagePicker from "../../lib/ImagePicker";
     export default {
         name: "SettingsBasic",
-        components: {
-            ImagePicker,
-        },
         props: {
             settings: Object
         },
         data: function () {
             return {
-                showPicker: false
+                showMediaDialog: false
             }
         },
         methods: {
-            handlePickedImage(data) {
-                this.settings.logo = data.image;
+            onChooseImage(media) {
+                this.settings.logo = media.url;
             }
         }
     }

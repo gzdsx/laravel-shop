@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserCoupon
  *
  * @property int $id 主键
- * @property int|null $uid 关联用户
+ * @property int|null $user_id 关联用户
  * @property int|null $coupon_id 关联优惠券
  * @property string|null $code 优惠券编码
  * @property int $used 是否已使用
@@ -24,9 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereCouponId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereUsed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserCoupon whereUserId($value)
  * @mixin \Eloquent
  */
 class UserCoupon extends Model
@@ -40,7 +40,7 @@ class UserCoupon extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 
     /**

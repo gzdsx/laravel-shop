@@ -15,6 +15,6 @@ class ShopController extends Controller
     {
         $result = EcomProductItem::whereShopId($request->input('shop_id'))->where('state', 1)->count();
 
-        return jsonSuccess($result);
+        return json_success($result);
     }
 }

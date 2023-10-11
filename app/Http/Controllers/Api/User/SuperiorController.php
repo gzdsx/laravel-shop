@@ -16,7 +16,7 @@ class SuperiorController extends BaseController
      */
     public function getInfo(Request $request)
     {
-        return jsonSuccess(['superior' => Auth::user()->parent()->firstOrFail()]);
+        return json_success(['superior' => Auth::user()->parent()->firstOrFail()]);
     }
 
     /**
@@ -36,7 +36,7 @@ class SuperiorController extends BaseController
         if ($superior = User::where(compact('username', 'phone'))->first()) {
             $user->parent()->associate($superior);
             $user->save();
-            return jsonSuccess();
+            return json_success();
         }
 
         return jsonError(500, '您填写的联系人不存在');

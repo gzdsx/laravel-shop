@@ -62,7 +62,7 @@ trait WechatPayManagers
             ->setOpenid($openid)
             ->setTradeType($payment->config->get('trade_type', 'JSAPI'))
             ->setNotifyUrl('/notify/wechat/order/paid/' . $app);
-        //return jsonSuccess($unifiedOrder->all());
+        //return json_success($unifiedOrder->all());
         $res = new UnifiedOrderResponse($payment->order->unify($unifiedOrder->getBizContent()));
         //解决订单号重复问题
         if ($res->errCode() === 'INVALID_REQUEST') {
@@ -94,7 +94,7 @@ trait WechatPayManagers
      */
     protected function sendUnifiedOrderResponse(Request $request, $payment, UnifiedOrderResponse $unifiedResponse)
     {
-        return jsonSuccess(['config' => $payment->jssdk->bridgeConfig($unifiedResponse->prepayId(), false)]);
+        return json_success(['config' => $payment->jssdk->bridgeConfig($unifiedResponse->prepayId(), false)]);
     }
 
     /**

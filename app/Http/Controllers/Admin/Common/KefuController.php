@@ -18,12 +18,12 @@ class KefuController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function kefus(Request $request)
     {
         $query = $this->repository();
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 15);
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($offset)->limit($count)->get()
         ]);
@@ -35,19 +35,20 @@ class KefuController extends BaseController
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('kefu', []))->save();
+        $newKefu = $request->input('kefu', []);
+        $model = $this->repository()->findOrNew($newKefu['id'] ?? 0);
+        $model->fill($newKefu)->save();
 
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -21,9 +21,9 @@ class GroupController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function groups(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->orderBy('credits')->get()]);
+        return json_success(['items' => $this->repository()->orderBy('credits')->get()]);
     }
 
     /**
@@ -32,18 +32,19 @@ class GroupController extends BaseController
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('gid'));
-        $model->fill($request->input('group', []))->save();
-        return jsonSuccess($model);
+        $newGroup = $request->input('group', []);
+        $model = $this->repository()->findOrNew($newGroup['gid'] ?? 0);
+        $model->fill($newGroup)->save();
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -31,23 +31,23 @@ trait BlockTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function block(Request $request)
     {
         $model = $this->repository()->with(['items'])->findOrFail($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function blocks(Request $request)
     {
         $offset = $request->input('offset', 0);
         $count = $request->input('count', 15);
         $query = $this->repository();
 
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($offset)->take($count)->get()
         ]);
@@ -59,9 +59,10 @@ trait BlockTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('block', []))->save();
-        return jsonSuccess($model);
+        $newBlock = $request->input('block', []);
+        $model = $this->repository()->findOrNew($newBlock['id'] ?? 0);
+        $model->fill($newBlock)->save();
+        return json_success($model);
     }
 
     /**
@@ -70,20 +71,7 @@ trait BlockTrait
      */
     public function delete(Request $request)
     {
-        if ($model = $this->repository()->find($request->input('id'))) {
-            $model->delete();
-        }
-
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

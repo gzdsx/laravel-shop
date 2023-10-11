@@ -46,22 +46,22 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at 开店时间
  * @property Carbon|null $updated_at 更新时间
  * @property-read \App\Models\EcomShopCertify|null $certify
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductClassify[] $classifies
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductClassify> $classifies
  * @property-read int|null $classifies_count
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $auth_state_des
  * @property-read array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null $bond_state_des
  * @property-read string $formatted_address
  * @property-read string $state_des
  * @property-read string|null $we_url
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomShopImage[] $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomShopImage> $images
  * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductAttr[] $productAttrs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductAttr> $productAttrs
  * @property-read int|null $product_attrs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EcomProductItem[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomProductItem> $products
  * @property-read int|null $products_count
  * @property-read \App\Models\User|null $seller
  * @property-read \App\Models\EcomShopStats|null $stats
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $subscribedUsers
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $subscribedUsers
  * @property-read int|null $subscribed_users_count
  * @method static Builder|EcomShop filter(array $input = [], $filter = null)
  * @method static Builder|EcomShop newModelQuery()

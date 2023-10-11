@@ -33,7 +33,8 @@ trait MaterialTrait
 
     /**
      * @param Request $request
-     * @return CommonMaterial|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function upload(Request $request)
     {
@@ -48,6 +49,7 @@ trait MaterialTrait
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     protected function storeImage(Request $request)
     {
@@ -181,7 +183,7 @@ trait MaterialTrait
         $material->width = $image->width();
         $material->height = $image->height();
         $material->thumb = $thumbPath;
-        $material->source = $imagePath;
+        $material->url = $imagePath;
         $material->save();
 
         return $this->uploadSuccess($request, $material);
@@ -219,7 +221,7 @@ trait MaterialTrait
 
         $sourcePath = $material->type . '/' . date('Y') . '/' . date('m');
         Storage::makeDirectory($sourcePath);
-        $material->source = $file->store($sourcePath);
+        $material->url = $file->store($sourcePath);
         $material->save();
 
         return $this->uploadSuccess($request, $material);
@@ -232,7 +234,7 @@ trait MaterialTrait
      */
     protected function uploadSuccess(Request $request, $material)
     {
-        return jsonSuccess($material);
+        return json_success($material);
     }
 
     /**
@@ -241,27 +243,27 @@ trait MaterialTrait
      */
     protected function uploadFail(Request $request)
     {
-        return jsonError(500, 'material upload fail');
+        return json_fail('material upload fail');
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function material(Request $request)
     {
         $material = $this->repository()->findOrFail($request->input('id'));
-        return jsonSuccess($material);
+        return json_success($material);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function materials(Request $request)
     {
-        $query = $this->repository()->where('type', $request->input('type', 'image'));
-        return jsonSuccess([
+        $query = $this->repository()->filter($request->all());
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 10))->orderByDesc('id')->get()
@@ -274,21 +276,6 @@ trait MaterialTrait
      */
     public function delete(Request $request)
     {
-        $material = $this->repository()->find($request->input('id'));
-        if ($material) {
-            $material->delete();
-        }
-
-        return $this->deletedSuccess($request);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
         return $this->deletedSuccess($request);
     }
@@ -299,6 +286,18 @@ trait MaterialTrait
      */
     protected function deletedSuccess(Request $request)
     {
-        return jsonSuccess();
+        return json_success();
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $model = $this->repository()->findOrNew($request->input('id'));
+        $model->fill($request->input('material', []))->save();
+
+        return json_success($model);
     }
 }

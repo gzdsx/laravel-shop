@@ -1,118 +1,112 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">编辑页面</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <table class="dsxui-formtable">
-                    <tr>
-                        <td class="w60">标题</td>
-                        <td>
-                            <el-input size="medium" class="w300" v-model="page.title"></el-input>
-                        </td>
-                        <td class="w60">别名</td>
-                        <td>
-                            <el-input size="medium" class="w300" v-model="page.alias"></el-input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>分类</td>
-                        <td>
-                            <el-select size="medium" class="w300" v-model="page.cate_id">
-                                <el-option
-                                        v-for="(category,index) in categoryList"
-                                        :value="category.cate_id"
-                                        :label="category.cate_name"
-                                        :key="index"
-                                ></el-option>
-                            </el-select>
-                        </td>
-                        <td>模板</td>
-                        <td>
-                            <el-input size="medium" class="w300" v-model="page.template"></el-input>
-                        </td>
-                    </tr>
-                </table>
-                <table class="dsxui-formtable">
-                    <tbody>
-                    <tr>
-                        <td class="w60">内容</td>
-                        <td>
-                            <vue-editor v-model="page.content"></vue-editor>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <main-layout>
+        <h2 slot="header">编辑页面</h2>
+        <div class="post-body">
+            <div class="post-body-main">
+                <div class="page-section">
+                    <table class="dsxui-formtable">
+                        <tr>
+                            <td class="w60">标题</td>
+                            <td>
+                                <el-input size="medium" class="w-100" v-model="page.title"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="w60">别名</td>
+                            <td>
+                                <el-input size="medium" class="w-100" v-model="page.name"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="dsxui-formtable">
+                        <tbody>
+                        <tr>
+                            <td class="w60">内容</td>
+                            <td>
+                                <vue-editor v-model="page.content"></vue-editor>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="dsxui-formtable">
+                        <tr>
+                            <td class="w60">摘要</td>
+                            <td>
+                                <el-input type="textarea" rows="5" class="w-100" v-model="page.excerpt"></el-input>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="post-body-box">
+                <div class="post-card">
+                    <div class="post-card-header">
+                        <h2>特色图片</h2>
+                    </div>
+                    <div class="post-card-body">
+                        <div class="feature-image-box" @click="showMediaDialog=true">
+                            <img :src="page.image" v-if="page.image" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="h40"></div>
-        <div class="edit-bottom">
+        <fixed-bottom>
             <el-button class="w100" :disabled="disabled" @click="$router.go(-1)">取消</el-button>
             <el-button class="w100" :disabled="disabled" type="primary" @click="onSubmit">保存</el-button>
-        </div>
-    </div>
+        </fixed-bottom>
+        <media-dialog v-model="showMediaDialog" @confirm="onChooseImage"/>
+    </main-layout>
 </template>
 
 <script>
-    export default {
-        name: "PageEdit",
-        data() {
-            return {
-                page: {},
-                categoryList: [],
-                disabled: false
+export default {
+    name: "PageEdit",
+    data() {
+        return {
+            page: {},
+            disabled: false,
+            showMediaDialog: false
+        }
+    },
+    methods: {
+        fetchData() {
+            let {id} = this.$route.params;
+            if (!id) return;
+            this.$get('/page', {id}).then(response => {
+                this.page = response.result;
+            });
+        },
+        onSubmit() {
+            let {page} = this;
+            if (!page.title) {
+                this.$message.error('请填写页面标题');
+                return false;
             }
-        },
-        methods: {
-            fetchData() {
-                let {id} = this.$route.params;
-                if (!id) return;
-                this.$get('/page/page.getInfo', {id}).then(response => {
-                    this.page = response.result;
-                });
-            },
-            fetchCategoryList() {
-                this.$get('/page/category.getList').then(response => {
-                    this.categoryList = response.result.items;
-                });
-            },
-            onSubmit() {
-                let {page} = this;
-                let {id} = page;
-                if (!page.title) {
-                    this.$showToast('请填写页面标题');
-                    return false;
-                }
 
-                if (!page.cate_id) {
-                    this.$showToast('请选择页面分类');
-                    return false;
-                }
-
-                this.disabled = true;
-                this.$post('/page/page.save', {id, page}).then(response => {
-                    this.$showToast('页面保存成功', () => {
-                        this.$router.go(0);
-                    });
-                });
-            },
-            resetData() {
-                this.page = {
-                    title: '',
-                    cate_id: 0,
-                    alias: '',
-                    template: '',
-                    content: ''
-                };
-            }
+            this.disabled = true;
+            this.$post('/page', {page}).then((res) => {
+                this.$message.success('页面保存成功');
+                this.$router.replace('/page/edit/' + res.result.id);
+            });
         },
-        mounted() {
-            this.resetData();
-            this.fetchData();
-            this.fetchCategoryList();
+        resetData() {
+            this.page = {
+                title: '',
+                name: '',
+                image: '',
+                content: ''
+            };
         },
-    }
+        onChooseImage(media) {
+            this.page.image = media.url;
+        },
+    },
+    mounted() {
+        this.resetData();
+        this.fetchData();
+    },
+}
 </script>
 
 <style scoped>

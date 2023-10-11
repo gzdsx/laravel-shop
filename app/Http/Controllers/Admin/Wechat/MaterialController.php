@@ -16,10 +16,10 @@ class MaterialController extends BaseController
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getInfo(Request $request)
+    public function material(Request $request)
     {
         $material = $this->officialAccount()->material->get($request->input('media_id'));
-        return jsonSuccess(['material' => $material]);
+        return json_success(['material' => $material]);
     }
 
     /**
@@ -28,7 +28,7 @@ class MaterialController extends BaseController
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getList(Request $request)
+    public function materials(Request $request)
     {
         if ($request->input('type') == 'news') {
             $items = [];
@@ -45,7 +45,7 @@ class MaterialController extends BaseController
                     'create_time' => date('Y-m-d H:i:s', $item['content']['create_time']),
                 ];
             }
-            return jsonSuccess([
+            return json_success([
                 'total' => $result['total_count'],
                 'items' => $items
             ]);
@@ -53,7 +53,7 @@ class MaterialController extends BaseController
             $result = $this->officialAccount()->material->list(
                 $request->input('type', 'image'),
                 $request->input('offset', 0), 15);
-            return jsonSuccess([
+            return json_success([
                 'total' => $result['total_count'],
                 'items' => $result['item']
             ]);
@@ -66,12 +66,12 @@ class MaterialController extends BaseController
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function batchDelete(Request $request)
+    public function delete(Request $request)
     {
         foreach ($request->input('ids', []) as $id) {
             $this->officialAccount()->material->delete($id);
         }
-        return jsonSuccess();
+        return json_success();
     }
 
     /**

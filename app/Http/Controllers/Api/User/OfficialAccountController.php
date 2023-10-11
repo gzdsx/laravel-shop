@@ -65,7 +65,7 @@ class OfficialAccountController extends BaseController
 
         $access_token = $user->createToken('official')->accessToken;
 
-        return jsonSuccess([
+        return json_success([
             'openid' => $openid,
             'access_token' => $access_token
         ]);

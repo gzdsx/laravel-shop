@@ -42,6 +42,6 @@ class PhoneController extends BaseController
             $verify->delete();
         }
 
-        return jsonSuccess();
+        return json_success();
     }
 }

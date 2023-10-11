@@ -31,6 +31,6 @@ class EmailController extends BaseController
         $user->email = $email;
         $user->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 }

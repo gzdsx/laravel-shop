@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\UserPrepay
  *
  * @property int $id 主键
- * @property int $uid 付款人ID
+ * @property int $user_id 付款人ID
  * @property int $payable_id 关联类型ID
  * @property string $out_trade_no 单号
  * @property string|null $prepay_id 微信支付prepay_id
@@ -27,8 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay whereOutTradeNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay wherePayableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay wherePrepayId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserPrepay whereUserId($value)
  * @mixin \Eloquent
  */
 class UserPrepay extends Model
@@ -37,7 +37,7 @@ class UserPrepay extends Model
 
     protected $table = 'user_prepay';
     protected $primaryKey = 'id';
-    protected $fillable = ['out_trade_no', 'uid', 'payable_id', 'prepay_id', 'data'];
+    protected $fillable = ['out_trade_no', 'user_id', 'payable_id', 'prepay_id', 'data'];
     protected $casts = [
         'data' => 'array'
     ];
@@ -47,6 +47,6 @@ class UserPrepay extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'uid', 'uid');
+        return $this->belongsTo(User::class, 'user_id', 'uid');
     }
 }

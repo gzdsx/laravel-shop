@@ -1,64 +1,64 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">门店管理</div>
-        </header>
-        <div class="mainframe-content">
-            <div class="content-block">
-                <div class="table-edit-header">
-                    <el-tabs @tab-click="onClickTab" value="all">
-                        <el-tab-pane label="全部" name="all"></el-tab-pane>
-                        <el-tab-pane label="营业中" name="0"></el-tab-pane>
-                        <el-tab-pane label="已关闭" name="1"></el-tab-pane>
-                    </el-tabs>
-                    <div class="buttons-wrapper">
-                        <router-link to="/shop/edit">
-                            <el-button type="primary" size="small">添加门店</el-button>
-                        </router-link>
-                    </div>
-                </div>
-                <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
-                    <el-table-column width="45" type="selection"/>
-                    <el-table-column label="Logo" width="70">
-                        <template slot-scope="scope">
-                            <a :href="scope.row.url" target="_blank">
-                                <img :src="scope.row.logo" class="img-50 img-round">
-                            </a>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="shop_name" label="店铺名称"/>
-                    <el-table-column prop="seller.nickname" width="120px" label="店主"></el-table-column>
-                    <el-table-column prop="state_des" width="120px" label="店铺状态"></el-table-column>
-                    <el-table-column prop="created_at" width="170" label="创建时间"></el-table-column>
-                    <el-table-column width="50" label="选项" align="right">
-                        <template slot-scope="scope">
-                            <router-link :to="'/shop/edit/'+scope.row.shop_id">编辑</router-link>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="table-edit-footer">
-                    <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="onDelete">
-                        批量删除
-                    </el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0"
-                               @click="onBatchUpdate({closed:1})">批量关闭
-                    </el-button>
-                    <el-button size="small" :disabled="selectionIds.length === 0"
-                               @click="onBatchUpdate({closed:0})">批量开启
-                    </el-button>
-                    <div class="flex"></div>
-                    <el-pagination
-                            background
-                            layout="prev, pager, next,total"
-                            :total="total"
-                            :page-size="pageSize"
-                            :current-page="page"
-                            @current-change="onPageChange"
-                    >
-                    </el-pagination>
+    <main-layout>
+        <div class="d-flex" slot="header">
+            <h2>门店管理</h2>
+        </div>
+
+        <div class="page-section">
+            <div class="table-edit-header">
+                <el-tabs @tab-click="onClickTab" value="all">
+                    <el-tab-pane label="全部" name="all"></el-tab-pane>
+                    <el-tab-pane label="营业中" name="0"></el-tab-pane>
+                    <el-tab-pane label="已关闭" name="1"></el-tab-pane>
+                </el-tabs>
+                <div class="buttons-wrapper">
+                    <router-link to="/shop/edit">
+                        <el-button type="primary" size="small">添加门店</el-button>
+                    </router-link>
                 </div>
             </div>
+            <el-table :data="dataList" v-loading="loading" @selection-change="onSelectionChange">
+                <el-table-column width="45" type="selection"/>
+                <el-table-column label="Logo" width="70">
+                    <template slot-scope="scope">
+                        <a :href="scope.row.url" target="_blank">
+                            <img :src="scope.row.logo" class="img-50 img-round">
+                        </a>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="shop_name" label="店铺名称"/>
+                <el-table-column prop="seller.nickname" width="120px" label="店主"></el-table-column>
+                <el-table-column prop="state_des" width="120px" label="店铺状态"></el-table-column>
+                <el-table-column prop="created_at" width="170" label="创建时间"></el-table-column>
+                <el-table-column width="50" label="选项" align="right">
+                    <template slot-scope="scope">
+                        <router-link :to="'/shop/edit/'+scope.row.shop_id">编辑</router-link>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="table-edit-footer">
+                <el-button size="small" type="primary" :disabled="selectionIds.length === 0" @click="onDelete">
+                    批量删除
+                </el-button>
+                <el-button size="small" :disabled="selectionIds.length === 0"
+                           @click="onBatchUpdate({closed:1})">批量关闭
+                </el-button>
+                <el-button size="small" :disabled="selectionIds.length === 0"
+                           @click="onBatchUpdate({closed:0})">批量开启
+                </el-button>
+                <div class="flex"></div>
+                <el-pagination
+                    background
+                    layout="prev, pager, next,total"
+                    :total="total"
+                    :page-size="pageSize"
+                    :current-page="page"
+                    @current-change="onPageChange"
+                >
+                </el-pagination>
+            </div>
         </div>
+
         <el-dialog title="店铺详情" closeable :visible.sync="showDialog" :close-on-click-modal="false"
                    :close-on-press-escape="false">
             <el-form class="description-form" label-width="90px">
@@ -98,7 +98,7 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-    </div>
+    </main-layout>
 </template>
 
 <script>

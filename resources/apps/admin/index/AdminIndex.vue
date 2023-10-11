@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <header class="page-header">
-            <div class="page-title">仪表板</div>
-        </header>
-        <div class="mainframe-content">
+    <main-layout>
+        <h2 slot="header">仪表板</h2>
+        <section>
             <div class="dashboard">
                 <div class="dashboard-left">
                     <div class="dashboard-content">
@@ -40,62 +38,50 @@
                         <div class="quick-operation">
                             <router-link to="/settings" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-setting-fill"></span>
+                                    <i class="bi bi-gear-fill"></i>
                                 </div>
-                                <div class="tips">店铺设置</div>
+                                <div class="tips">系统设置</div>
                             </router-link>
                             <router-link to="/user/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-peoplefill"></span>
+                                    <i class="bi bi-person-circle"></i>
                                 </div>
                                 <div class="tips">用户管理</div>
                             </router-link>
-                            <router-link to="/product/list" class="module">
-                                <div class="icon">
-                                    <span class="iconfont icon-goodsfill"></span>
-                                </div>
-                                <div class="tips">商品管理</div>
-                            </router-link>
-                            <router-link to="/product/category" class="module">
-                                <div class="icon">
-                                    <span class="iconfont icon-dashboard-fill"></span>
-                                </div>
-                                <div class="tips">产品分类</div>
-                            </router-link>
                             <router-link to="/post/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-formfill"></span>
+                                    <i class="bi bi-pencil-square"></i>
                                 </div>
                                 <div class="tips">文章管理</div>
                             </router-link>
                             <router-link to="/post/category" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-round_menu_fill"></span>
+                                    <i class="bi bi-bookmarks-fill"></i>
                                 </div>
                                 <div class="tips">文章分类</div>
                             </router-link>
 
                             <router-link to="/page/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-round_text_fill"></span>
+                                    <i class="bi bi-box-fill"></i>
                                 </div>
                                 <div class="tips">页面管理</div>
                             </router-link>
                             <router-link to="/material/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-picfill"></span>
+                                    <i class="bi bi-images"></i>
                                 </div>
                                 <div class="tips">素材管理</div>
                             </router-link>
                             <router-link to="/link/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-round_link_fill"></span>
+                                    <i class="bi bi-browser-chrome"></i>
                                 </div>
                                 <div class="tips">友情链接</div>
                             </router-link>
                             <router-link to="/block/list" class="module">
                                 <div class="icon">
-                                    <span class="iconfont icon-slack-circle-fill"></span>
+                                    <i class="bi bi-server"></i>
                                 </div>
                                 <div class="tips">内容模块</div>
                             </router-link>
@@ -127,8 +113,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main-layout>
 </template>
 
 <script>
@@ -148,15 +134,15 @@
             }
         },
         mounted() {
-            this.$get('/common/dashboard.posts').then(response => {
+            this.$get('/dashboard/posts').then(response => {
                 this.postList = response.result.items;
             });
 
-            this.$get('/common/dashboard.newusers').then(response => {
+            this.$get('/dashboard/users').then(response => {
                 this.userList = response.result.items;
             });
 
-            this.$get('/common/dashboard.stats').then(response => {
+            this.$get('/dashboard/stats').then(response => {
                 this.stats = {
                     ...this.stats,
                     ...response.result

@@ -15,8 +15,8 @@ namespace App\Traits\Common;
 
 
 use App\Models\Page;
-use App\Models\PageCategory;
 use Illuminate\Http\Request;
+use Overtrue\LaravelPinyin\Facades\Pinyin;
 
 trait PageTrait
 {
@@ -32,27 +32,23 @@ trait PageTrait
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getInfo(Request $request)
+    public function page(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'), ['id', 'title', 'alias']);
-        return jsonSuccess($model);
+        $model = $this->repository()->findOrNew($request->input('id'));
+        return json_success($model);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getList(Request $request)
+    public function pages(Request $request)
     {
         $query = $this->repository();
-        if ($cate_id = $request->input('cate_id')) {
-            $query->where('cate_id', $cate_id);
-        }
-
         $total = $query->count();
-        $items = $query->get(['id', 'cate_id', 'title', 'alias', 'image', 'template', 'sort_num', 'created_at', 'updated_at']);
+        $items = $query->get();
 
-        return jsonSuccess(['items' => $items, 'total' => $total]);
+        return json_success(['items' => $items, 'total' => $total]);
     }
 
     /**
@@ -61,9 +57,14 @@ trait PageTrait
      */
     public function save(Request $request)
     {
-        $model = $this->repository()->findOrNew($request->input('id'));
-        $model->fill($request->input('page', []))->save();
-        return jsonSuccess($model);
+        $page = $request->input('page');
+        $model = $this->repository()->findOrNew($page['id'] ?? 0);
+        $model->fill($page);
+        if (!$model->name) {
+            $model->name = Pinyin::permalink($model->title);
+        }
+        $model->save();
+        return json_success($model);
     }
 
     /**
@@ -72,20 +73,7 @@ trait PageTrait
      */
     public function delete(Request $request)
     {
-        if ($model = $this->repository()->find($request->input('id'))) {
-            $model->delete();
-        }
-
-        return jsonSuccess();
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function batchDelete(Request $request)
-    {
         $this->repository()->whereKey($request->input('ids', []))->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

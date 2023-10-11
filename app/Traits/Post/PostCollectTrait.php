@@ -36,7 +36,7 @@ trait PostCollectTrait
     {
         $aid = $request->input('aid');
         $result = $this->repository()->syncWithoutDetaching([$aid]);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -47,7 +47,7 @@ trait PostCollectTrait
     {
         $aid = $request->input('aid');
         $result = $this->repository()->detach([$aid]);
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -59,7 +59,7 @@ trait PostCollectTrait
         $aid = $request->input('aid');
         $result = $this->repository()->toggle([$aid]);
 
-        return jsonSuccess($result);
+        return json_success($result);
     }
 
     /**
@@ -71,7 +71,7 @@ trait PostCollectTrait
         $aid = $request->input('aid');
         $collect = $this->repository()->find($aid);
 
-        return jsonSuccess(compact('collect'));
+        return json_success(compact('collect'));
     }
 
     /**
@@ -81,7 +81,7 @@ trait PostCollectTrait
     public function getList(Request $request)
     {
         $query = $this->repository();
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->limit($request->input('count', 15))->get()

@@ -5,8 +5,8 @@
             <tr>
                 <td class="cell-label" width="110">二维码:</td>
                 <td class="cell-input" width="400">
-                    <div @click="showImagePicker('wechat_qrcode')">
-                        <el-image :src="settings.wechat_qrcode" class="img-80" v-if="settings.wechat_qrcode"></el-image>
+                    <div @click="onShowDialog('wechat_qrcode')">
+                        <el-image :src="settings.wechat_qrcode" class="img-80" v-if="settings.wechat_qrcode"/>
                         <div class="img-placeholder img-80" v-else></div>
                     </div>
                 </td>
@@ -15,9 +15,9 @@
             <tr>
                 <td class="cell-label">消息配图:</td>
                 <td class="cell-input">
-                    <div @click="showImagePicker('wechat_subscribe_msg_img')">
+                    <div @click="onShowDialog('wechat_subscribe_msg_img')">
                         <el-image :src="settings.wechat_subscribe_msg_img" class="img-80"
-                                  v-if="settings.wechat_subscribe_msg_img"></el-image>
+                                  v-if="settings.wechat_subscribe_msg_img"/>
                         <div class="img-placeholder img-80" v-else></div>
                     </div>
                 </td>
@@ -26,7 +26,7 @@
             <tr>
                 <td class="cell-label">消息标题:</td>
                 <td class="cell-input">
-                    <el-input size="medium" v-model="settings.wechat_subscribe_msg_title"></el-input>
+                    <el-input size="medium" v-model="settings.wechat_subscribe_msg_title"/>
                 </td>
                 <td class="cell-tips">关注公众号时自动回复图文消息标题</td>
             </tr>
@@ -46,7 +46,7 @@
             </tr>
             </tbody>
         </table>
-        <image-picker v-model="showPicker" @confirm="handlePickedImage"></image-picker>
+        <media-dialog v-model="showMediaDialog" @confirm="onChooseImage"/>
     </div>
 </template>
 
@@ -58,17 +58,17 @@
         },
         data() {
             return {
-                showPicker: false,
+                showMediaDialog: false,
                 key: ''
             }
         },
         methods: {
-            handlePickedImage(data) {
-                this.settings[this.key] = data.image;
+            onChooseImage(m) {
+                this.settings[this.key] = m.url;
             },
-            showImagePicker(key) {
+            onShowDialog(key) {
                 this.key = key;
-                this.showPicker = true;
+                this.showMediaDialog = true;
             }
         }
     }

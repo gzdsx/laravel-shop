@@ -23,7 +23,7 @@ class MemberController extends BaseController
     public function getInfo(Request $request)
     {
         $model = $this->repository()->findOrFail($request->input('id'));
-        return jsonSuccess($model);
+        return json_success($model);
     }
 
     /**
@@ -32,7 +32,7 @@ class MemberController extends BaseController
      */
     public function getList(Request $request)
     {
-        return jsonSuccess(['items' => $this->repository()->get()]);
+        return json_success(['items' => $this->repository()->get()]);
     }
 
     /**
@@ -50,7 +50,7 @@ class MemberController extends BaseController
 
         $model->save();
 
-        return jsonSuccess();
+        return json_success();
     }
 
     /**
@@ -60,6 +60,6 @@ class MemberController extends BaseController
     public function batchDelete(Request $request)
     {
         $this->repository()->whereKey($request->input('ids', []))->get()->each->delete();
-        return jsonSuccess();
+        return json_success();
     }
 }

@@ -14,6 +14,6 @@ class RedpackController extends BaseController
      */
     public function count(Request $request)
     {
-        return jsonSuccess(['count' => 0]);
+        return json_success(['count' => 0]);
     }
 }

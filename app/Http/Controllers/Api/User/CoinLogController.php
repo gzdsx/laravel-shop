@@ -23,7 +23,7 @@ class CoinLogController extends BaseController
     public function getList(Request $request)
     {
         $query = $this->repository()->where('type', $request->input('type', 1));
-        return jsonSuccess([
+        return json_success([
             'total' => $query->count(),
             'items' => $query->offset($request->input('offset', 0))
                 ->take($request->input('count', 10))->orderByDesc('id')->get()
