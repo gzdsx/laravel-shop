@@ -12,26 +12,6 @@ function appversion()
 }
 
 /**
- * @param $name
- * @param $default
- * @return \Illuminate\Support\Collection|mixed
- * @throws Exception
- */
-function settings($name = null, $default = null)
-{
-    static $_settings;
-    if (!$_settings) {
-        $_settings = collect(cache('settings', []));
-    }
-
-    if (is_null($name)) {
-        return $_settings;
-    } else {
-        return $_settings->get($name, $default);
-    }
-}
-
-/**
  * @param $str
  * @param $length
  * @param string $dot
@@ -213,21 +193,6 @@ function admin_url($path = '')
 }
 
 /**
- * @param $priv
- * @return bool
- */
-function admin_has_priv($priv)
-{
-    if (auth()->id() == 1000000) {
-        return true;
-    }
-
-    return true;
-//    $privileges = session()->get('adminprivileges', []);
-//    return in_array($priv, $privileges);
-}
-
-/**
  * @return bool
  */
 function is_wechat()
@@ -262,32 +227,18 @@ function json_success($result = [], $description = '')
     ]);
 }
 
-function json_fail($message, $code = 500)
+function json_fail($message, $code = 500, $errors = null)
 {
-    return response()->json([
-        'result' => [],
-        'status' => [
-            'code' => $code,
-            'message' => $message
-        ]
-    ]);
-}
-
-/**
- * @param int $errCode
- * @param string $errMsg
- * @param null $extra
- * @return \Illuminate\Http\JsonResponse
- * @deprecated
- */
-function jsonError(int $errCode, string $errMsg, $extra = null)
-{
-    $return = [
-        'errCode' => $errCode,
-        'errMsg' => $errMsg,
+    $result = [
+        'code' => $code,
+        'message' => $message
     ];
-    if ($extra) $return['extra'] = $extra;
-    return response()->json($return);
+    if ($errors) $result['errors'] = $errors;
+    return response()->json($result);
 }
 
 require __DIR__ . '/hooks.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/block.php';
+require __DIR__ . '/category.php';
+require __DIR__ . '/post.php';

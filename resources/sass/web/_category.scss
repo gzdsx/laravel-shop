@@ -1,0 +1,20 @@
+.nav-categories{
+    padding: 10px 0;
+    display: flex;
+    margin-bottom: 20px;
+    list-style-type: none;
+    column-gap: 1rem;
+
+    li {
+        display: inline-block;
+
+        a {
+            font-size: 18px;
+            color: #777;
+
+            &:hover, &.active {
+                color: #5AB7D7;
+            }
+        }
+    }
+}

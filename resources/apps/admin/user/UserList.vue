@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column label="昵称">
                     <template slot-scope="scope">
-                        <a>{{scope.row.nickname}}</a>
+                        <a>{{ scope.row.nickname }}</a>
                     </template>
                 </el-table-column>
                 <el-table-column prop="phone" label="手机号"/>
@@ -82,12 +82,12 @@
                     </el-button>
                 </div>
                 <el-pagination
-                    background
-                    layout="prev, pager, next, total"
-                    :total="total"
-                    :page-size="pageSize"
-                    :current-page="page"
-                    @current-change="onPageChange"
+                        background
+                        layout="prev, pager, next, total"
+                        :total="total"
+                        :page-size="pageSize"
+                        :current-page="page"
+                        @current-change="onPageChange"
                 >
                 </el-pagination>
             </div>
@@ -96,54 +96,55 @@
 </template>
 
 <script>
-    import PaginationMixin from "../mixins/PaginationMixin";
+import PaginationMixin from "../mixins/PaginationMixin";
+import UserService from "../utils/UserService";
 
-    export default {
-        name: "UserList",
-        mixins: [PaginationMixin],
-        data() {
-            return {
-                params: {
-                    uid: '',
-                    nickname: '',
-                    status: '',
-                    email: '',
-                    phone: ''
-                },
-                amount: 10000,
-                showDialog: false,
-                user: {},
-                listApi: '/users'
-            }
-        },
-        methods: {
-            onDelete() {
-                let ids = this.selectionIds.map((d) => d.uid);
-                this.$confirm('此操作将永久删除所选用户, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$post('/user/user.batchDelete', {ids}).then(() => {
-                        this.fetchList();
-                    });
-                });
+export default {
+    name: "UserList",
+    mixins: [PaginationMixin],
+    data() {
+        return {
+            params: {
+                uid: '',
+                nickname: '',
+                status: '',
+                email: '',
+                phone: ''
             },
-            onClickTab(tab) {
-                this.params.status = tab.name;
-                this.onSearch();
-            },
-            onBatchUpdate(data) {
-                let ids = this.selectionIds.map((d) => d.uid);
-                this.$post('/user/user.batchUpdate', {ids, data}).then(() => {
+            amount: 10000,
+            showDialog: false,
+            user: {},
+            listApi: '/users'
+        }
+    },
+    methods: {
+        onDelete() {
+            let ids = this.selectionIds.map((d) => d.uid);
+            this.$confirm('此操作将永久删除所选用户, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                UserService.deleteUser(ids).then(() => {
                     this.fetchList();
                 });
-            },
+            });
         },
-        mounted() {
-            this.fetchList();
+        onClickTab(tab) {
+            this.params.status = tab.name;
+            this.onSearch();
         },
-    }
+        onBatchUpdate(data) {
+            let ids = this.selectionIds.map((d) => d.uid);
+            UserService.batchUpdate(ids, data).then(() => {
+                this.fetchList();
+            });
+        },
+    },
+    mounted() {
+        this.fetchList();
+    },
+}
 </script>
 
 <style scoped>

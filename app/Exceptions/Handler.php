@@ -79,20 +79,20 @@ class Handler extends ExceptionHandler
 
     protected function invalidJson($request, ValidationException $exception)
     {
-        return jsonError($exception->status, $exception->validator->errors()->first(), ['errors' => $exception->errors()]);
+        return json_fail($exception->validator->errors()->first(), $exception->status, $exception->errors());
     }
 
     protected function prepareJsonResponse($request, Throwable $e)
     {
-        return jsonError(
-            $this->isHttpException($e) ? $e->getStatusCode() : 500,
+        return json_fail(
             $e->getMessage() ? $e->getMessage() : 'Server Error',
+            $this->isHttpException($e) ? $e->getStatusCode() : 500,
             env('APP_DEBUG') ?
                 [
                     'headers' => $this->isHttpException($e) ? $e->getHeaders() : [],
                     'extra' => $this->convertExceptionToArray($e)
                 ]
-                : []
+                : null
         );
     }
 
@@ -106,7 +106,7 @@ class Handler extends ExceptionHandler
     {
         $redirect = $request->input('redirect', $request->fullUrl());
         return $request->expectsJson()
-            ? jsonError(401, $exception->getMessage())->setStatusCode(401)
+            ? json_fail($exception->getMessage(), 401)
             : redirect()->guest($exception->redirectTo() ?? route('login', ['redirect' => $redirect]));
     }
 }

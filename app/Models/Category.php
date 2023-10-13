@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasImageAttribute;
 use App\Models\Traits\HasMetas;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,12 +27,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Category|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $siblings
  * @property-read int|null $siblings_count
+ * @method static Builder|Category filter(array $input = [], $filter = null)
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
+ * @method static Builder|Category paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static Builder|Category query()
+ * @method static Builder|Category simplePaginateFilter(?int $perPage = null, ?int $columns = [], ?int $pageName = 'page', ?int $page = null)
+ * @method static Builder|Category whereBeginsWith(string $column, string $value, string $boolean = 'and')
  * @method static Builder|Category whereCateId($value)
  * @method static Builder|Category whereDescription($value)
+ * @method static Builder|Category whereEndsWith(string $column, string $value, string $boolean = 'and')
  * @method static Builder|Category whereImage($value)
+ * @method static Builder|Category whereLike(string $column, string $value, string $boolean = 'and')
  * @method static Builder|Category whereName($value)
  * @method static Builder|Category whereParentId($value)
  * @method static Builder|Category whereSlug($value)
@@ -41,7 +48,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    use HasImageAttribute, HasMetas;
+    use HasImageAttribute, HasMetas, Filterable;
 
     protected $table = 'category';
     protected $primaryKey = 'cate_id';

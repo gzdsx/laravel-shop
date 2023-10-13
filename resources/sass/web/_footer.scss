@@ -1,0 +1,11 @@
+.footer {
+    padding: 1.25rem 0;
+
+    a {
+        color: #333333;
+
+        &:hover{
+            color: $g-link-hover-color;
+        }
+    }
+}

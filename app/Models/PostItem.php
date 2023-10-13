@@ -251,4 +251,9 @@ class PostItem extends Model
     {
         return $this->hasMany(PostMeta::class, 'post_id', 'id');
     }
+
+    public function incrementViews($amount = 1)
+    {
+        return $this->increment('views', $amount);
+    }
 }

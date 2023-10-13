@@ -1,0 +1,167 @@
+* {
+    outline: none;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-sizing: border-box;
+}
+
+html, body {
+    background: $g-body-bg;
+    font-family: $g-font-family;
+}
+
+ul, li, p, dd, dl, dt, h1, h2, h3, h4, h5 {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+div:after, p:after, ul:after, li:after, ol:after, dl:after, dd:after, dt:after,
+h1:after, h2:after, h3:after, h4:after, h5:after {
+    clear: both;
+    content: " ";
+    display: block;
+}
+
+dd, dt {
+    font-weight: normal;
+}
+
+img {
+    border: 0;
+    object-fit: cover;
+}
+
+input[type=text], textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:focus {
+        outline: none;
+        appearance: none;
+    }
+}
+
+input[type=number] {
+    -webkit-appearance: textfield;
+}
+
+button {
+    cursor: pointer;
+}
+
+.radio, .checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+*:focus {
+    box-shadow: none;
+    appearance: none;
+}
+
+.iconfont {
+    vertical-align: -1px;
+}
+
+.breadcrumb {
+    padding: 10px 15px;
+
+    .breadcrumb-item {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .active {
+        color: #000;
+    }
+}
+
+.page {
+    &-section {
+        background-color: #ffffff;
+        padding: 15px;
+    }
+}
+
+h3 {
+    font-size: 1.35rem !important;
+}
+
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    appearance: none;
+}
+
+.blank-1 {
+    height: 1rem;
+    display: block;
+}
+
+.blank-2 {
+    height: 2rem;
+    display: block;
+}
+
+.blank-3 {
+    height: 3rem;
+    display: block;
+}
+
+.blank-4 {
+    height: 4rem;
+    display: block;
+}
+
+.blank-5 {
+    height: 5rem;
+    display: block;
+}
+
+.main{
+    padding: 1rem 0;
+    display: block;
+}
+
+/*==jQuery UI==*/
+.ui-sortable-placeholder {
+    border: 2px #0099CC dashed !important;
+    visibility: visible !important;
+    display: block !important;
+    background: none !important;
+}
+
+.nav-pagination {
+    display: flex;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+    justify-content: center;
+    align-items: center;
+
+    .pagination {
+        list-style-type: none;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main {
+        padding: 0;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .nav-pagination .pagination {
+        row-gap: 10px;
+        justify-content: center;
+    }
+}

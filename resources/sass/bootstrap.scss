@@ -1,11 +1,8 @@
-// Body
-$body-bg: #fff;
-$blue: #0097D0;
-
-// Typography
-$font-family-sans-serif: "PingFang SC","Microsoft YaHei","Hiragino Sans GB","Arial","sans-serif";
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
+// Typograph
+$font-family-sans-serif: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Arial", "sans-serif";
+$link-color: #333;
+$link-hover-color: #59B6D7;
+$primary: #59B6D7;
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';

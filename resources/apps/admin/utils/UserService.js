@@ -13,6 +13,9 @@ const UserService = {
     deleteUser(ids) {
         return ApiService.post('/user/delete', {ids});
     },
+    batchUpdate(ids, data) {
+        return ApiService.post('/user/batch_update', {ids, data});
+    },
     listGroups(params) {
         return ApiService.get('/user/groups', {params});
     },

@@ -1,0 +1,85 @@
+.header {
+    background-color: #fff;
+    height: 64px;
+    display: block;
+
+    a{
+        color: #333333;
+
+        &:hover{
+            color: #59b6d7 !important;
+            text-decoration: none;
+        }
+    }
+
+    .header {
+        &-container {
+            display: flex;
+            column-gap: 4rem;
+
+            .logo {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                img {
+                    height: 50px;
+                    display: inline-block;
+                }
+            }
+
+            .nav {
+                display: flex;
+                flex: 1;
+                list-style-type: none;
+                padding: 0;
+                column-gap: 10px;
+
+                li {
+                    padding: 10px 0;
+
+                    a {
+                        display: block;
+                        height: 44px;
+                        line-height: 44px;
+                        box-sizing: border-box;
+                        font-size: 18px;
+                        border-bottom: 3px transparent solid;
+                        transition: all .1s;
+                        margin: 0 10px;
+                        padding: 0 10px;
+
+                        &.active {
+                            color: #59b6d7 !important;
+                            border-bottom: 2px solid #59b6d7;
+                        }
+                    }
+                }
+            }
+
+            .user-auth {
+                display: flex;
+                font-size: 14px;
+                line-height: 30px;
+                column-gap: 10px;
+                padding-left: 0;
+                margin-bottom: 0;
+                list-style-type: none;
+
+                li{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .avatar {
+                    width: 30px;
+                    height: 30px;
+                    display: inline-block;
+                    border-radius: 15px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}

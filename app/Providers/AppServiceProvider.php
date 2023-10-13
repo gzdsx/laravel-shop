@@ -10,6 +10,7 @@ use App\Validators\AccountValidator;
 use App\Validators\PhoneValidaotr;
 use App\Validators\PasswordValidator;
 use App\Validators\NickNameValidator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +31,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerValidators();
+        Paginator::defaultView('web.pagination');
+        Paginator::defaultSimpleView('web.pagination-simple');
+
+        view()->composer('layouts.default', function ($view) {
+            return $view->with('navName', '');
+        });
     }
 
     /**

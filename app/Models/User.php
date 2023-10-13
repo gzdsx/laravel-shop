@@ -36,7 +36,6 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \App\Models\UserAccount|null $account
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAddress> $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Models\AdminUser|null $admin
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $boughts
  * @property-read int|null $boughts_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EcomCart> $cartItems

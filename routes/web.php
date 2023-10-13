@@ -13,22 +13,16 @@
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
-require __DIR__ . '/post.php';
-require __DIR__ . '/ecom.php';
-require __DIR__ . '/live.php';
-require __DIR__ . '/video.php';
-//首页
-Route::get('/', 'Ecom\IndexController@index');
 
-//页面
-Route::group(['namespace' => 'Page', 'prefix' => 'page'], function () {
-    Route::get('{id}.html', 'IndexController@detail');
+Route::namespace('Web')->group(function () {
+    Route::get('/', 'PostController@index');
+
+    Route::get('post/{cate?}', 'PostController@index')->where('cate', '[0-9]+');
+    Route::get('post/{id}.html', 'PostController@show')->where('id', '[0-9]+');
+
+    Route::get('shop', 'ShopController@index');
+    Route::get('video', 'VideoController@index');
+    Route::get('live', 'LiveController@index');
 });
 
-Route::group(['namespace' => 'User', 'prefix' => 'user', 'middleware' => 'auth'], function () {
-    Route::get('/', 'IndexController@index');
-});
-
-
-Route::get('/test', 'Web\TestController@index');
-Route::get('/app/chatapp', 'Test\IndexController@chatapp');
+Route::get('table', 'Test\IndexController@table');

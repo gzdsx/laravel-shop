@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\CommonFeedback
  *
  * @property int $id 主键
- * @property int $uid 管理用户
+ * @property int $user_id 管理用户
  * @property string|null $title 标题
  * @property string|null $message 内容
  * @property \Illuminate\Support\Carbon|null $created_at 创建时间
@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CommonFeedback whereUserId($value)
  * @mixin \Eloquent
  */
 class CommonFeedback extends Model

@@ -34,7 +34,11 @@ class PostItemFilter extends ModelFilter
      */
     public function cate($cate)
     {
-        return $this->related('categories', 'cate_id', '=', $cate);
+        if ($cate){
+            return $this->related('categories', 'cate_id', '=', $cate);
+        }
+
+        return $this;
     }
 
     /**

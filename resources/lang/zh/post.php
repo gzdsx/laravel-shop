@@ -29,5 +29,5 @@ return [
     'post save failed' => '文章保存失败',
     'post update success' => '文章更新成功',
     'post delete success' => '文章删除成功',
-    'the post has been deleted' => '文章未审核或已被删除'
+    'the post has been deleted' => '文章不存在或已被删除'
 ];

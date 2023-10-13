@@ -35,20 +35,7 @@ class SettingController extends BaseController
             CommonSetting::updateOrCreate(['skey'=>$skey], ['svalue' => $svalue]);
         }
 
-        $this->updateCache();
+        CommonSetting::updateCache();
         return json_success();
-    }
-
-    /**
-     * @throws \Exception
-     */
-    protected function updateCache()
-    {
-        $settings = [];
-        foreach (CommonSetting::all() as $setting) {
-            $svalue = json_decode($setting->svalue, true);
-            $settings[$setting->skey] = is_array($svalue) ? $svalue : $setting->svalue;
-        }
-        cache()->forever('settings', $settings);
     }
 }
